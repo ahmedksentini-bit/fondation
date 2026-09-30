@@ -47,8 +47,8 @@ function accueil() {
       <h3>Exerciseur</h3><p>Des exercices à données tirées au hasard, corrigés pas à pas,
       en mode apprentissage, entraînement ou examen.</p></a>
     <a class="resource" href="bureau.html"><span class="resource-mark">⌗</span>
-      <h3>Bureau de calcul</h3><p>Une semelle ou un pieu justifié de bout en bout, au
-      Fascicule 62 et à l'Eurocode 7 côte à côte, avec sa note de calcul.</p></a>
+      <h3>Bureau de calcul</h3><p>Un sondage pressiométrique dépouillé, une semelle ou un pieu
+      justifié de bout en bout, au Fascicule 62 et à l'Eurocode 7 côte à côte, avec sa note de calcul.</p></a>
   </section>
 
   ${parPartie}`;
