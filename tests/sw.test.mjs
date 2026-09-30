@@ -19,7 +19,7 @@ const reponseCache = (texte, { redirected = false, type = "text/html" } = {}) =>
   text: async () => texte,
 });
 
-function monter({ cache = {}, enLigne = false }) {
+function monter({ cache = {}, enLigne = false, appels = [] }) {
   const ecouteurs = {};
   const cle = (x) => new URL(typeof x === "string" ? x : x.url, `${ORIGINE}/sw.js`).pathname;
   const contexte = {
@@ -29,7 +29,8 @@ function monter({ cache = {}, enLigne = false }) {
       open: async () => ({ put: async () => {}, add: async () => {} }),
       keys: async () => [], delete: async () => true,
     },
-    fetch: async () => {
+    fetch: async (requete, init = {}) => {
+      appels.push({ url: typeof requete === "string" ? requete : requete.url, cache: init.cache ?? "default" });
       if (!enLigne) throw new TypeError("Failed to fetch");
       return new Response("réseau", { status: 200 });
     },
@@ -71,4 +72,17 @@ test("hors ligne : une adresse inconnue retombe sur l'accueil, pour une navigati
 test("en ligne : le réseau passe d'abord", async () => {
   const servir = monter({ cache: { "/cours.html": reponseCache("ANCIEN") }, enLigne: true });
   assert.equal(await (await servir("/cours.html")).text(), "réseau");
+});
+
+// Cloudflare fait garder les scripts quatre heures par le navigateur : sans
+// revalidation, une page neuve chargerait des modules d'hier de même adresse.
+test("en ligne : scripts et données sont revalidés, pas lus dans le cache HTTP", async () => {
+  const appels = [];
+  const servir = monter({ enLigne: true, appels });
+  await servir("/src/cours-ch2.js", "cors");
+  await servir("/data/chapitres.json", "cors");
+  await servir("/cours", "navigate");
+  assert.equal(appels[0].cache, "no-cache");
+  assert.equal(appels[1].cache, "no-cache");
+  assert.equal(appels[2].cache, "default", "une navigation garde sa requête d'origine");
 });
