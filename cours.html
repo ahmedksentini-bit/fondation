@@ -360,11 +360,11 @@
     <h3>Temps de réponse d'un piézomètre ouvert</h3>
     <div class="data-grid">
       <div class="field"><label for="esPzD">Diamètre intérieur du tube</label>
-        <div class="input-wrap"><input id="esPzD" type="text" inputmode="decimal" value="50"><span class="unit">mm</span></div></div>
+        <div class="input-wrap"><input id="esPzD" type="text" inputmode="decimal" value="50" data-curseur="20 100 5"><span class="unit">mm</span></div></div>
       <div class="field"><label for="esPzL">Longueur de la crépine</label>
-        <div class="input-wrap"><input id="esPzL" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esPzL" type="text" inputmode="decimal" value="1" data-curseur="0.5 5 0.1"><span class="unit">m</span></div></div>
       <div class="field"><label for="esPzF">Diamètre du forage</label>
-        <div class="input-wrap"><input id="esPzF" type="text" inputmode="decimal" value="100"><span class="unit">mm</span></div></div>
+        <div class="input-wrap"><input id="esPzF" type="text" inputmode="decimal" value="100" data-curseur="60 200 5"><span class="unit">mm</span></div></div>
       <div class="field"><label for="esPzK">Perméabilité du sol k</label>
         <div class="input-wrap"><input id="esPzK" type="text" inputmode="decimal" value="1e-7"><span class="unit">m/s</span></div></div>
     </div>
@@ -408,21 +408,21 @@
     <h3>Une mesure au piézocône sur l'abaque de Robertson</h3>
     <div class="data-grid">
       <div class="field"><label for="esCptZ">Profondeur z</label>
-        <div class="input-wrap"><input id="esCptZ" type="text" inputmode="decimal" value="10"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esCptZ" type="text" inputmode="decimal" value="10" data-curseur="1 30 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="esCptQc">Résistance de pointe q<sub>c</sub></label>
-        <div class="input-wrap"><input id="esCptQc" type="text" inputmode="decimal" value="1.2"><span class="unit">MPa</span></div></div>
+        <div class="input-wrap"><input id="esCptQc" type="text" inputmode="decimal" value="1.2" data-curseur="0.2 30 0.1"><span class="unit">MPa</span></div></div>
       <div class="field"><label for="esCptFs">Frottement f<sub>s</sub></label>
-        <div class="input-wrap"><input id="esCptFs" type="text" inputmode="decimal" value="25"><span class="unit">kPa</span></div></div>
+        <div class="input-wrap"><input id="esCptFs" type="text" inputmode="decimal" value="25" data-curseur="5 300 5"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="esCptU2">Pression interstitielle u<sub>2</sub></label>
-        <div class="input-wrap"><input id="esCptU2" type="text" inputmode="decimal" value="400"><span class="unit">kPa</span></div></div>
+        <div class="input-wrap"><input id="esCptU2" type="text" inputmode="decimal" value="400" data-curseur="0 1500 10"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="esCptA">Rapport de surfaces a</label>
-        <div class="input-wrap"><input id="esCptA" type="text" inputmode="decimal" value="0.8"><span class="unit">—</span></div></div>
+        <div class="input-wrap"><input id="esCptA" type="text" inputmode="decimal" value="0.8" data-curseur="0.6 0.9 0.01"><span class="unit">—</span></div></div>
       <div class="field"><label for="esCptG">Poids volumique γ</label>
         <div class="input-wrap"><input id="esCptG" type="text" inputmode="decimal" value="18"><span class="unit">kN/m³</span></div></div>
       <div class="field"><label for="esCptZw">Profondeur de la nappe</label>
-        <div class="input-wrap"><input id="esCptZw" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esCptZw" type="text" inputmode="decimal" value="1" data-curseur="0 10 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="esCptNkt">N<sub>kt</sub> (pour c<sub>u</sub>)</label>
-        <div class="input-wrap"><input id="esCptNkt" type="text" inputmode="decimal" value="14"><span class="unit">—</span></div></div>
+        <div class="input-wrap"><input id="esCptNkt" type="text" inputmode="decimal" value="14" data-curseur="10 20 0.5"><span class="unit">—</span></div></div>
     </div>
     <div class="figure" id="esCptFig"></div>
     <div id="esCptOut"></div>
@@ -482,9 +482,9 @@
       <div class="field"><label for="esDpMe">Enclume, guide et pointe</label>
         <div class="input-wrap"><input id="esDpMe" type="text" inputmode="decimal" value="18"><span class="unit">kg</span></div></div>
       <div class="field"><label for="esDpZ">Profondeur (longueur de tiges)</label>
-        <div class="input-wrap"><input id="esDpZ" type="text" inputmode="decimal" value="6"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esDpZ" type="text" inputmode="decimal" value="6" data-curseur="1 30 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="esDpN">Nombre de coups pour 10 cm</label>
-        <div class="input-wrap"><input id="esDpN" type="text" inputmode="decimal" value="12"><span class="unit">coups</span></div></div>
+        <div class="input-wrap"><input id="esDpN" type="text" inputmode="decimal" value="12" data-curseur="1 60 1"><span class="unit">coups</span></div></div>
     </div>
     <div class="figure" id="esDpFig"></div>
     <p class="final-result" id="esDpOut"></p>
@@ -512,9 +512,9 @@
     <h3>N corrigé et angle de frottement d'un sable</h3>
     <div class="data-grid">
       <div class="field"><label for="esSptN">Nombre de coups N</label>
-        <div class="input-wrap"><input id="esSptN" type="text" inputmode="decimal" value="20"><span class="unit">coups</span></div></div>
+        <div class="input-wrap"><input id="esSptN" type="text" inputmode="decimal" value="20" data-curseur="1 60 1"><span class="unit">coups</span></div></div>
       <div class="field"><label for="esSptSv">Contrainte effective σ'<sub>v0</sub></label>
-        <div class="input-wrap"><input id="esSptSv" type="text" inputmode="decimal" value="64"><span class="unit">kPa</span></div></div>
+        <div class="input-wrap"><input id="esSptSv" type="text" inputmode="decimal" value="64" data-curseur="10 400 2"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="esSptMouton">Mouton (C<sub>E</sub>)</label>
         <div class="input-wrap"><select id="esSptMouton">
           <option value="0.75">annulaire lâché à la corde : 0,75</option>
@@ -522,9 +522,9 @@
           <option value="1.2">automatique : 1,20</option>
         </select></div></div>
       <div class="field"><label for="esSptDf">Diamètre du forage</label>
-        <div class="input-wrap"><input id="esSptDf" type="text" inputmode="decimal" value="115"><span class="unit">mm</span></div></div>
+        <div class="input-wrap"><input id="esSptDf" type="text" inputmode="decimal" value="115" data-curseur="60 200 5"><span class="unit">mm</span></div></div>
       <div class="field"><label for="esSptL">Longueur des tiges</label>
-        <div class="input-wrap"><input id="esSptL" type="text" inputmode="decimal" value="8"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esSptL" type="text" inputmode="decimal" value="8" data-curseur="1 40 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="esSptCs">Carottier (C<sub>S</sub>)</label>
         <div class="input-wrap"><select id="esSptCs"><option value="1">standard : 1,0</option><option value="1.2">sans étui : 1,2</option></select></div></div>
     </div>
@@ -551,17 +551,17 @@
     <h3>Dépouillement d'une lecture au dilatomètre</h3>
     <div class="data-grid">
       <div class="field"><label for="esDmtA">Lecture A</label>
-        <div class="input-wrap"><input id="esDmtA" type="text" inputmode="decimal" value="280"><span class="unit">kPa</span></div></div>
+        <div class="input-wrap"><input id="esDmtA" type="text" inputmode="decimal" value="280" data-curseur="50 1000 5"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="esDmtB">Lecture B</label>
-        <div class="input-wrap"><input id="esDmtB" type="text" inputmode="decimal" value="980"><span class="unit">kPa</span></div></div>
+        <div class="input-wrap"><input id="esDmtB" type="text" inputmode="decimal" value="980" data-curseur="100 3000 10"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="esDmtDa">ΔA</label>
         <div class="input-wrap"><input id="esDmtDa" type="text" inputmode="decimal" value="15"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="esDmtDb">ΔB</label>
         <div class="input-wrap"><input id="esDmtDb" type="text" inputmode="decimal" value="40"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="esDmtU0">u<sub>0</sub></label>
-        <div class="input-wrap"><input id="esDmtU0" type="text" inputmode="decimal" value="50"><span class="unit">kPa</span></div></div>
+        <div class="input-wrap"><input id="esDmtU0" type="text" inputmode="decimal" value="50" data-curseur="0 300 5"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="esDmtSv">σ'<sub>v0</sub></label>
-        <div class="input-wrap"><input id="esDmtSv" type="text" inputmode="decimal" value="80"><span class="unit">kPa</span></div></div>
+        <div class="input-wrap"><input id="esDmtSv" type="text" inputmode="decimal" value="80" data-curseur="10 400 5"><span class="unit">kPa</span></div></div>
     </div>
     <div class="figure" id="esDmtFig"></div>
     <div id="esDmtOut"></div>
@@ -582,15 +582,15 @@
     <h3>Cohésion non drainée au scissomètre</h3>
     <div class="data-grid">
       <div class="field"><label for="esVstM">Couple maximal M</label>
-        <div class="input-wrap"><input id="esVstM" type="text" inputmode="decimal" value="50"><span class="unit">N·m</span></div></div>
+        <div class="input-wrap"><input id="esVstM" type="text" inputmode="decimal" value="50" data-curseur="5 200 1"><span class="unit">N·m</span></div></div>
       <div class="field"><label for="esVstMr">Couple résiduel</label>
-        <div class="input-wrap"><input id="esVstMr" type="text" inputmode="decimal" value="20"><span class="unit">N·m</span></div></div>
+        <div class="input-wrap"><input id="esVstMr" type="text" inputmode="decimal" value="20" data-curseur="1 100 1"><span class="unit">N·m</span></div></div>
       <div class="field"><label for="esVstD">Diamètre du moulinet D</label>
         <div class="input-wrap"><input id="esVstD" type="text" inputmode="decimal" value="70"><span class="unit">mm</span></div></div>
       <div class="field"><label for="esVstH">Hauteur du moulinet H</label>
         <div class="input-wrap"><input id="esVstH" type="text" inputmode="decimal" value="140"><span class="unit">mm</span></div></div>
       <div class="field"><label for="esVstIp">Indice de plasticité I<sub>p</sub></label>
-        <div class="input-wrap"><input id="esVstIp" type="text" inputmode="decimal" value="40"><span class="unit">%</span></div></div>
+        <div class="input-wrap"><input id="esVstIp" type="text" inputmode="decimal" value="40" data-curseur="5 100 1"><span class="unit">%</span></div></div>
     </div>
     <div class="figure" id="esVstFig"></div>
     <p class="final-result" id="esVstOut"></p>
@@ -638,9 +638,9 @@
     <h3>Module à la plaque : E<sub>V1</sub>, E<sub>V2</sub> et compactage</h3>
     <div class="data-grid">
       <div class="field"><label for="esPlqZ1">Enfoncement au 1er cycle (0,25 MPa)</label>
-        <div class="input-wrap"><input id="esPlqZ1" type="text" inputmode="decimal" value="2.63"><span class="unit">mm</span></div></div>
+        <div class="input-wrap"><input id="esPlqZ1" type="text" inputmode="decimal" value="2.63" data-curseur="0.2 10 0.01"><span class="unit">mm</span></div></div>
       <div class="field"><label for="esPlqZ2">Enfoncement au 2e cycle (0,20 MPa)</label>
-        <div class="input-wrap"><input id="esPlqZ2" type="text" inputmode="decimal" value="1.56"><span class="unit">mm</span></div></div>
+        <div class="input-wrap"><input id="esPlqZ2" type="text" inputmode="decimal" value="1.56" data-curseur="0.1 8 0.01"><span class="unit">mm</span></div></div>
     </div>
     <div class="figure" id="esPlqFig"></div>
     <p class="final-result" id="esPlqOut"></p>
@@ -697,13 +697,13 @@
       <div class="field"><label for="esLefMode">Mode</label>
         <div class="input-wrap"><select id="esLefMode"><option value="constant">charge constante</option><option value="variable">charge variable</option></select></div></div>
       <div class="field"><label for="esLefL">Longueur de la cavité L</label>
-        <div class="input-wrap"><input id="esLefL" type="text" inputmode="decimal" value="0.5"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esLefL" type="text" inputmode="decimal" value="0.5" data-curseur="0.2 3 0.1"><span class="unit">m</span></div></div>
       <div class="field"><label for="esLefD">Diamètre de la cavité D</label>
-        <div class="input-wrap"><input id="esLefD" type="text" inputmode="decimal" value="0.1"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esLefD" type="text" inputmode="decimal" value="0.1" data-curseur="0.05 0.3 0.01"><span class="unit">m</span></div></div>
       <div class="field"><label for="esLefQ">Débit Q (charge constante)</label>
-        <div class="input-wrap"><input id="esLefQ" type="text" inputmode="decimal" value="0.5"><span class="unit">L/min</span></div></div>
+        <div class="input-wrap"><input id="esLefQ" type="text" inputmode="decimal" value="0.5" data-curseur="0.05 10 0.05"><span class="unit">L/min</span></div></div>
       <div class="field"><label for="esLefH">Charge h (charge constante)</label>
-        <div class="input-wrap"><input id="esLefH" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esLefH" type="text" inputmode="decimal" value="1" data-curseur="0.1 5 0.1"><span class="unit">m</span></div></div>
       <div class="field"><label for="esLefDt">Diamètre du tubage (charge variable)</label>
         <div class="input-wrap"><input id="esLefDt" type="text" inputmode="decimal" value="100"><span class="unit">mm</span></div></div>
       <div class="field"><label for="esLefH1">Charges h<sub>1</sub> puis h<sub>2</sub></label>
@@ -728,13 +728,13 @@
 0.4 10.1
 0.2 5.0</textarea></div>
       <div class="field"><label for="esLugL">Longueur de la passe</label>
-        <div class="input-wrap"><input id="esLugL" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esLugL" type="text" inputmode="decimal" value="3" data-curseur="1 10 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="esLugHm">Hauteur du manomètre</label>
-        <div class="input-wrap"><input id="esLugHm" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esLugHm" type="text" inputmode="decimal" value="1" data-curseur="0 3 0.1"><span class="unit">m</span></div></div>
       <div class="field"><label for="esLugZw">Profondeur de la nappe</label>
-        <div class="input-wrap"><input id="esLugZw" type="text" inputmode="decimal" value="12"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esLugZw" type="text" inputmode="decimal" value="12" data-curseur="0 50 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="esLugZ">Profondeur du milieu de la passe</label>
-        <div class="input-wrap"><input id="esLugZ" type="text" inputmode="decimal" value="20"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esLugZ" type="text" inputmode="decimal" value="20" data-curseur="1 80 0.5"><span class="unit">m</span></div></div>
     </div>
     <div class="figure" id="esLugFig"></div>
     <p class="final-result" id="esLugOut"></p>
@@ -750,11 +750,11 @@
       <div class="field champ-large"><label for="esPompSt">Lectures</label>
         <textarea id="esPompSt" rows="5" spellcheck="false"></textarea></div>
       <div class="field"><label for="esPompQ">Débit pompé Q</label>
-        <div class="input-wrap"><input id="esPompQ" type="text" inputmode="decimal" value="36"><span class="unit">m³/h</span></div></div>
+        <div class="input-wrap"><input id="esPompQ" type="text" inputmode="decimal" value="36" data-curseur="1 200 1"><span class="unit">m³/h</span></div></div>
       <div class="field"><label for="esPompR">Distance du piézomètre r</label>
-        <div class="input-wrap"><input id="esPompR" type="text" inputmode="decimal" value="20"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esPompR" type="text" inputmode="decimal" value="20" data-curseur="1 100 1"><span class="unit">m</span></div></div>
       <div class="field"><label for="esPompE">Épaisseur de l'aquifère</label>
-        <div class="input-wrap"><input id="esPompE" type="text" inputmode="decimal" value="10"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="esPompE" type="text" inputmode="decimal" value="10" data-curseur="1 50 0.5"><span class="unit">m</span></div></div>
     </div>
     <div class="figure" id="esPompFig"></div>
     <p class="final-result" id="esPompOut"></p>
@@ -931,17 +931,17 @@
           <option value="shg">comme le logiciel Shg Ménard</option>
         </select></div></div>
       <div class="field"><label for="psZ">Profondeur de l'essai z</label>
-        <div class="input-wrap"><input id="psZ" type="text" inputmode="decimal" value="6"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="psZ" type="text" inputmode="decimal" value="6" data-curseur="1 30 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="psHc">Hauteur du manomètre h<sub>c</sub></label>
-        <div class="input-wrap"><input id="psHc" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="psHc" type="text" inputmode="decimal" value="1" data-curseur="0 2 0.1"><span class="unit">m</span></div></div>
       <div class="field"><label for="psZw">Profondeur de la nappe</label>
-        <div class="input-wrap"><input id="psZw" type="text" inputmode="decimal" value="2"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="psZw" type="text" inputmode="decimal" value="2" data-curseur="0 20 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="psGam">γ au-dessus de la nappe</label>
         <div class="input-wrap"><input id="psGam" type="text" inputmode="decimal" value="19"><span class="unit">kN/m³</span></div></div>
       <div class="field"><label for="psGsat">γ<sub>sat</sub> sous la nappe</label>
         <div class="input-wrap"><input id="psGsat" type="text" inputmode="decimal" value="20"><span class="unit">kN/m³</span></div></div>
       <div class="field"><label for="psK0">K<sub>0</sub></label>
-        <div class="input-wrap"><input id="psK0" type="text" inputmode="decimal" value="0.5"><span class="unit">—</span></div></div>
+        <div class="input-wrap"><input id="psK0" type="text" inputmode="decimal" value="0.5" data-curseur="0.3 1.2 0.05"><span class="unit">—</span></div></div>
       <div class="field"><label for="psNature">Nature du sol (pour α)</label>
         <div class="input-wrap"><select id="psNature">
           <option value="argile">argile</option><option value="limon" selected>limon</option>
@@ -1133,17 +1133,17 @@
     <h3>De p<sub>l</sub> mesurée à p<sub>l</sub>* nette</h3>
     <div class="data-grid">
       <div class="field"><label for="plZ">Profondeur de l'essai z</label>
-        <div class="input-wrap"><input id="plZ" type="text" inputmode="decimal" value="12"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="plZ" type="text" inputmode="decimal" value="12" data-curseur="1 30 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="plMes">Pression limite mesurée p<sub>l</sub></label>
-        <div class="input-wrap"><input id="plMes" type="text" inputmode="decimal" value="0.85"><span class="unit">MPa</span></div></div>
+        <div class="input-wrap"><input id="plMes" type="text" inputmode="decimal" value="0.85" data-curseur="0.1 5 0.05"><span class="unit">MPa</span></div></div>
       <div class="field"><label for="plGamma">Poids volumique γ</label>
-        <div class="input-wrap"><input id="plGamma" type="text" inputmode="decimal" value="19"><span class="unit">kN/m³</span></div></div>
+        <div class="input-wrap"><input id="plGamma" type="text" inputmode="decimal" value="19" data-curseur="15 22 0.5"><span class="unit">kN/m³</span></div></div>
       <div class="field"><label for="plNappe">Profondeur de la nappe</label>
-        <div class="input-wrap"><input id="plNappe" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="plNappe" type="text" inputmode="decimal" value="3" data-curseur="0 20 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="plGsat">γ saturé sous la nappe</label>
-        <div class="input-wrap"><input id="plGsat" type="text" inputmode="decimal" value="20"><span class="unit">kN/m³</span></div></div>
+        <div class="input-wrap"><input id="plGsat" type="text" inputmode="decimal" value="20" data-curseur="16 23 0.5"><span class="unit">kN/m³</span></div></div>
       <div class="field"><label for="plK0">K<sub>0</sub></label>
-        <div class="input-wrap"><input id="plK0" type="text" inputmode="decimal" value="0.5"><span class="unit">—</span></div></div>
+        <div class="input-wrap"><input id="plK0" type="text" inputmode="decimal" value="0.5" data-curseur="0.3 1.2 0.05"><span class="unit">—</span></div></div>
     </div>
     <p class="final-result" id="plOut"></p>
   </div>
@@ -1237,9 +1237,9 @@
           <option value="B">limon, grave compacte, craie altérée</option>
         </select></div></div>
       <div class="field"><label for="psSemB">Largeur de la semelle B</label>
-        <div class="input-wrap"><input id="psSemB" type="text" inputmode="decimal" value="2"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="psSemB" type="text" inputmode="decimal" value="2" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
       <div class="field"><label for="psSemD">Profondeur de la base D</label>
-        <div class="input-wrap"><input id="psSemD" type="text" inputmode="decimal" value="1.5"><span class="unit">m</span></div></div>
+        <div class="input-wrap"><input id="psSemD" type="text" inputmode="decimal" value="1.5" data-curseur="0 5 0.1"><span class="unit">m</span></div></div>
     </div>
     <div class="figure" id="psFigProfil"></div>
     <div id="psOutProfil"></div>
@@ -1339,14 +1339,14 @@
     <p class="method-note">Torseur à la base de la fondation : V (kN), H (kN), M (kN·m).
        Coefficients ψ d'une charge d'exploitation courante de bâtiment.</p>
     <div class="data-grid">
-      <div class="field"><label for="cbGV">G : V</label><div class="input-wrap"><input id="cbGV" type="text" inputmode="decimal" value="800"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="cbGH">G : H</label><div class="input-wrap"><input id="cbGH" type="text" inputmode="decimal" value="40"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="cbGM">G : M</label><div class="input-wrap"><input id="cbGM" type="text" inputmode="decimal" value="60"><span class="unit">kN·m</span></div></div>
-      <div class="field"><label for="cbQV">Q : V</label><div class="input-wrap"><input id="cbQV" type="text" inputmode="decimal" value="300"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="cbQH">Q : H</label><div class="input-wrap"><input id="cbQH" type="text" inputmode="decimal" value="30"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="cbQM">Q : M</label><div class="input-wrap"><input id="cbQM" type="text" inputmode="decimal" value="90"><span class="unit">kN·m</span></div></div>
-      <div class="field"><label for="cbPsi1">ψ<sub>1</sub></label><div class="input-wrap"><input id="cbPsi1" type="text" inputmode="decimal" value="0.5"><span class="unit">—</span></div></div>
-      <div class="field"><label for="cbPsi2">ψ<sub>2</sub></label><div class="input-wrap"><input id="cbPsi2" type="text" inputmode="decimal" value="0.3"><span class="unit">—</span></div></div>
+      <div class="field"><label for="cbGV">G : V</label><div class="input-wrap"><input id="cbGV" type="text" inputmode="decimal" value="800" data-curseur="0 3000 10"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="cbGH">G : H</label><div class="input-wrap"><input id="cbGH" type="text" inputmode="decimal" value="40" data-curseur="0 500 5"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="cbGM">G : M</label><div class="input-wrap"><input id="cbGM" type="text" inputmode="decimal" value="60" data-curseur="0 1000 10"><span class="unit">kN·m</span></div></div>
+      <div class="field"><label for="cbQV">Q : V</label><div class="input-wrap"><input id="cbQV" type="text" inputmode="decimal" value="300" data-curseur="0 2000 10"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="cbQH">Q : H</label><div class="input-wrap"><input id="cbQH" type="text" inputmode="decimal" value="30" data-curseur="0 500 5"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="cbQM">Q : M</label><div class="input-wrap"><input id="cbQM" type="text" inputmode="decimal" value="90" data-curseur="0 1000 10"><span class="unit">kN·m</span></div></div>
+      <div class="field"><label for="cbPsi1">ψ<sub>1</sub></label><div class="input-wrap"><input id="cbPsi1" type="text" inputmode="decimal" value="0.5" data-curseur="0 1 0.05"><span class="unit">—</span></div></div>
+      <div class="field"><label for="cbPsi2">ψ<sub>2</sub></label><div class="input-wrap"><input id="cbPsi2" type="text" inputmode="decimal" value="0.3" data-curseur="0 1 0.05"><span class="unit">—</span></div></div>
       <div class="field"><label for="cbGQ">γ<sub>Q</sub> (1,5 bâtiment ; 1,35 trafic)</label><div class="input-wrap"><input id="cbGQ" type="text" inputmode="decimal" value="1.5"><span class="unit">—</span></div></div>
     </div>
     <div id="cbOut"></div>
@@ -1433,11 +1433,11 @@
   <div class="calc" id="calcDe">
     <h3>D<sub>e</sub> d'une semelle sous une couverture plus faible</h3>
     <div class="data-grid">
-      <div class="field"><label for="deD">Profondeur D</label><div class="input-wrap"><input id="deD" type="text" inputmode="decimal" value="1.2"><span class="unit">m</span></div></div>
-      <div class="field"><label for="dePlc">p<sub>l</sub>* de la couverture</label><div class="input-wrap"><input id="dePlc" type="text" inputmode="decimal" value="0.4"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="dePle">p<sub>le</sub>* sous la semelle</label><div class="input-wrap"><input id="dePle" type="text" inputmode="decimal" value="1.2"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="deB">Largeur B</label><div class="input-wrap"><input id="deB" type="text" inputmode="decimal" value="1.5"><span class="unit">m</span></div></div>
-      <div class="field"><label for="ded">Épaisseur écartée d</label><div class="input-wrap"><input id="ded" type="text" inputmode="decimal" value="0"><span class="unit">m</span></div></div>
+      <div class="field"><label for="deD">Profondeur D</label><div class="input-wrap"><input id="deD" type="text" inputmode="decimal" value="1.2" data-curseur="0 5 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="dePlc">p<sub>l</sub>* de la couverture</label><div class="input-wrap"><input id="dePlc" type="text" inputmode="decimal" value="0.4" data-curseur="0.05 3 0.05"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="dePle">p<sub>le</sub>* sous la semelle</label><div class="input-wrap"><input id="dePle" type="text" inputmode="decimal" value="1.2" data-curseur="0.2 5 0.05"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="deB">Largeur B</label><div class="input-wrap"><input id="deB" type="text" inputmode="decimal" value="1.5" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ded">Épaisseur écartée d</label><div class="input-wrap"><input id="ded" type="text" inputmode="decimal" value="0" data-curseur="0 3 0.1"><span class="unit">m</span></div></div>
     </div>
     <div class="figure" id="deFig"></div>
     <p class="final-result" id="deOut"></p>
@@ -1496,9 +1496,9 @@
   <div class="calc" id="calcExc">
     <h3>Excentrement d'une semelle : diagramme, q'<sub>ref</sub> et critères</h3>
     <div class="data-grid">
-      <div class="field"><label for="exB">Largeur B</label><div class="input-wrap"><input id="exB" type="text" inputmode="decimal" value="2.4"><span class="unit">m</span></div></div>
-      <div class="field"><label for="exV">Charge verticale V</label><div class="input-wrap"><input id="exV" type="text" inputmode="decimal" value="600"><span class="unit">kN/m</span></div></div>
-      <div class="field"><label for="exM">Moment M</label><div class="input-wrap"><input id="exM" type="text" inputmode="decimal" value="180"><span class="unit">kN·m/m</span></div></div>
+      <div class="field"><label for="exB">Largeur B</label><div class="input-wrap"><input id="exB" type="text" inputmode="decimal" value="2.4" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="exV">Charge verticale V</label><div class="input-wrap"><input id="exV" type="text" inputmode="decimal" value="600" data-curseur="50 2000 10"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="exM">Moment M</label><div class="input-wrap"><input id="exM" type="text" inputmode="decimal" value="180" data-curseur="0 1500 5"><span class="unit">kN·m/m</span></div></div>
     </div>
     <div class="figure" id="exFig"></div>
     <div id="exOut"></div>
@@ -1563,12 +1563,12 @@
   <div class="calc" id="calcPle">
     <h3>Moyenne géométrique ou arithmétique : l'effet d'une couche molle</h3>
     <div class="data-grid">
-      <div class="field"><label for="pleB">Largeur B</label><div class="input-wrap"><input id="pleB" type="text" inputmode="decimal" value="2"><span class="unit">m</span></div></div>
-      <div class="field"><label for="pleH1">Épaisseur couche 1</label><div class="input-wrap"><input id="pleH1" type="text" inputmode="decimal" value="1.2"><span class="unit">m</span></div></div>
-      <div class="field"><label for="plePl1">p<sub>l</sub>* couche 1</label><div class="input-wrap"><input id="plePl1" type="text" inputmode="decimal" value="1.4"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="pleH2">Épaisseur couche 2 (molle)</label><div class="input-wrap"><input id="pleH2" type="text" inputmode="decimal" value="0.8"><span class="unit">m</span></div></div>
-      <div class="field"><label for="plePl2">p<sub>l</sub>* couche 2</label><div class="input-wrap"><input id="plePl2" type="text" inputmode="decimal" value="0.3"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="plePl3">p<sub>l</sub>* couche 3 (au-delà)</label><div class="input-wrap"><input id="plePl3" type="text" inputmode="decimal" value="1.8"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="pleB">Largeur B</label><div class="input-wrap"><input id="pleB" type="text" inputmode="decimal" value="2" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="pleH1">Épaisseur couche 1</label><div class="input-wrap"><input id="pleH1" type="text" inputmode="decimal" value="1.2" data-curseur="0 4 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="plePl1">p<sub>l</sub>* couche 1</label><div class="input-wrap"><input id="plePl1" type="text" inputmode="decimal" value="1.4" data-curseur="0.1 5 0.05"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="pleH2">Épaisseur couche 2 (molle)</label><div class="input-wrap"><input id="pleH2" type="text" inputmode="decimal" value="0.8" data-curseur="0 4 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="plePl2">p<sub>l</sub>* couche 2</label><div class="input-wrap"><input id="plePl2" type="text" inputmode="decimal" value="0.3" data-curseur="0.05 3 0.05"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="plePl3">p<sub>l</sub>* couche 3 (au-delà)</label><div class="input-wrap"><input id="plePl3" type="text" inputmode="decimal" value="1.8" data-curseur="0.1 5 0.05"><span class="unit">MPa</span></div></div>
     </div>
     <div class="figure" id="pleFig"></div>
     <p class="final-result" id="pleOut"></p>
@@ -1620,7 +1620,7 @@
         <option value="craie-B">Craie B</option><option value="marne-A">Marne A</option></select></div></div>
       <div class="field"><label for="kpForme">Forme</label><div class="input-wrap"><select id="kpForme">
         <option value="filante">filante (B/L = 0)</option><option value="carree">carrée (B/L = 1)</option></select></div></div>
-      <div class="field"><label for="kpDeB">D<sub>e</sub>/B du projet</label><div class="input-wrap"><input id="kpDeB" type="text" inputmode="decimal" value="0.5"><span class="unit">—</span></div></div>
+      <div class="field"><label for="kpDeB">D<sub>e</sub>/B du projet</label><div class="input-wrap"><input id="kpDeB" type="text" inputmode="decimal" value="0.5" data-curseur="0 2 0.05"><span class="unit">—</span></div></div>
     </div>
     <div class="figure" id="kpFig"></div>
     <p class="final-result" id="kpOut"></p>
@@ -1696,26 +1696,26 @@
     <div class="data-grid">
       <div class="field"><label for="ptForme">Forme</label><div class="input-wrap"><select id="ptForme">
         <option value="filante" selected>filante</option><option value="rectangulaire">rectangulaire</option><option value="carree">carrée</option></select></div></div>
-      <div class="field"><label for="ptB">Largeur B</label><div class="input-wrap"><input id="ptB" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
-      <div class="field"><label for="ptL">Longueur L</label><div class="input-wrap"><input id="ptL" type="text" inputmode="decimal" value="15"><span class="unit">m</span></div></div>
-      <div class="field"><label for="ptD">Profondeur D</label><div class="input-wrap"><input id="ptD" type="text" inputmode="decimal" value="0.8"><span class="unit">m</span></div></div>
-      <div class="field"><label for="ptPlc">p<sub>l</sub>* couverture</label><div class="input-wrap"><input id="ptPlc" type="text" inputmode="decimal" value="1.0"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="ptB">Largeur B</label><div class="input-wrap"><input id="ptB" type="text" inputmode="decimal" value="3" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ptL">Longueur L</label><div class="input-wrap"><input id="ptL" type="text" inputmode="decimal" value="15" data-curseur="0.5 40 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ptD">Profondeur D</label><div class="input-wrap"><input id="ptD" type="text" inputmode="decimal" value="0.8" data-curseur="0 3 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ptPlc">p<sub>l</sub>* couverture</label><div class="input-wrap"><input id="ptPlc" type="text" inputmode="decimal" value="1.0" data-curseur="0.1 3 0.05"><span class="unit">MPa</span></div></div>
       <div class="field"><label for="ptGam">γ couverture</label><div class="input-wrap"><input id="ptGam" type="text" inputmode="decimal" value="20"><span class="unit">kN/m³</span></div></div>
       <div class="field"><label for="ptClasse">Sol d'assise (classe F62)</label><div class="input-wrap"><select id="ptClasse">
         <option value="argile-A" selected>Argile, limon A</option><option value="argile-B">Argile, limon B</option><option value="argile-C">Argile C</option>
         <option value="sable-A">Sable A</option><option value="sable-B">Sable B</option><option value="sable-C">Sable C</option>
         <option value="craie-B">Craie B</option><option value="marne-A">Marne A</option></select></div></div>
-      <div class="field"><label for="ptH1">Épaisseur couche d'assise</label><div class="input-wrap"><input id="ptH1" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
-      <div class="field"><label for="ptPl1">p<sub>l</sub>* couche d'assise</label><div class="input-wrap"><input id="ptPl1" type="text" inputmode="decimal" value="0.7"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="ptPl2">p<sub>l</sub>* couche inférieure</label><div class="input-wrap"><input id="ptPl2" type="text" inputmode="decimal" value="2"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="ptH1">Épaisseur couche d'assise</label><div class="input-wrap"><input id="ptH1" type="text" inputmode="decimal" value="3" data-curseur="0.5 10 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ptPl1">p<sub>l</sub>* couche d'assise</label><div class="input-wrap"><input id="ptPl1" type="text" inputmode="decimal" value="0.7" data-curseur="0.1 5 0.05"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="ptPl2">p<sub>l</sub>* couche inférieure</label><div class="input-wrap"><input id="ptPl2" type="text" inputmode="decimal" value="2" data-curseur="0.1 5 0.05"><span class="unit">MPa</span></div></div>
       <div class="field"><label for="ptSol">Comportement pour i<sub>δ</sub></label><div class="input-wrap"><select id="ptSol">
         <option value="frottant" selected>frottant</option><option value="coherent">cohérent</option></select></div></div>
-      <div class="field"><label for="ptVu">ELU : V<sub>d</sub></label><div class="input-wrap"><input id="ptVu" type="text" inputmode="decimal" value="174"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="ptHu">ELU : H<sub>d</sub></label><div class="input-wrap"><input id="ptHu" type="text" inputmode="decimal" value="20.6"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="ptEu">ELU : e</label><div class="input-wrap"><input id="ptEu" type="text" inputmode="decimal" value="0"><span class="unit">m</span></div></div>
-      <div class="field"><label for="ptVs">ELS : V</label><div class="input-wrap"><input id="ptVs" type="text" inputmode="decimal" value="129"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="ptHs">ELS : H</label><div class="input-wrap"><input id="ptHs" type="text" inputmode="decimal" value="13.7"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="ptEs">ELS : e</label><div class="input-wrap"><input id="ptEs" type="text" inputmode="decimal" value="0"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ptVu">ELU : V<sub>d</sub></label><div class="input-wrap"><input id="ptVu" type="text" inputmode="decimal" value="174" data-curseur="10 2000 1"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="ptHu">ELU : H<sub>d</sub></label><div class="input-wrap"><input id="ptHu" type="text" inputmode="decimal" value="20.6" data-curseur="0 500 0.5"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="ptEu">ELU : e</label><div class="input-wrap"><input id="ptEu" type="text" inputmode="decimal" value="0" data-curseur="0 1 0.01"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ptVs">ELS : V</label><div class="input-wrap"><input id="ptVs" type="text" inputmode="decimal" value="129" data-curseur="10 1500 1"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="ptHs">ELS : H</label><div class="input-wrap"><input id="ptHs" type="text" inputmode="decimal" value="13.7" data-curseur="0 400 0.5"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="ptEs">ELS : e</label><div class="input-wrap"><input id="ptEs" type="text" inputmode="decimal" value="0" data-curseur="0 1 0.01"><span class="unit">m</span></div></div>
     </div>
     <div class="figure" id="ptFig"></div>
     <div id="ptOut"></div>
@@ -1841,20 +1841,20 @@
     <p class="method-note">Semelle filante à base horizontale, sol homogène, calcul par mètre.
        Charges en tête de semelle ; poids du béton 25 kN/m³ ; approche 2 : 1,35 G + 1,5 Q.</p>
     <div class="data-grid">
-      <div class="field"><label for="cpB">Largeur B</label><div class="input-wrap"><input id="cpB" type="text" inputmode="decimal" value="2.7"><span class="unit">m</span></div></div>
-      <div class="field"><label for="cpD">Profondeur D</label><div class="input-wrap"><input id="cpD" type="text" inputmode="decimal" value="1.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="cpB">Largeur B</label><div class="input-wrap"><input id="cpB" type="text" inputmode="decimal" value="2.7" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="cpD">Profondeur D</label><div class="input-wrap"><input id="cpD" type="text" inputmode="decimal" value="1.5" data-curseur="0 4 0.1"><span class="unit">m</span></div></div>
       <div class="field"><label for="cpH">Hauteur de semelle</label><div class="input-wrap"><input id="cpH" type="text" inputmode="decimal" value="0.5"><span class="unit">m</span></div></div>
-      <div class="field"><label for="cpDw">Profondeur de la nappe</label><div class="input-wrap"><input id="cpDw" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
-      <div class="field"><label for="cpGam">γ du sol</label><div class="input-wrap"><input id="cpGam" type="text" inputmode="decimal" value="21"><span class="unit">kN/m³</span></div></div>
-      <div class="field"><label for="cpCu">c<sub>u</sub></label><div class="input-wrap"><input id="cpCu" type="text" inputmode="decimal" value="45"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="cpPhi">φ'</label><div class="input-wrap"><input id="cpPhi" type="text" inputmode="decimal" value="25"><span class="unit">°</span></div></div>
-      <div class="field"><label for="cpC">c'</label><div class="input-wrap"><input id="cpC" type="text" inputmode="decimal" value="5"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="cpE">Excentrement de G et Q</label><div class="input-wrap"><input id="cpE" type="text" inputmode="decimal" value="0.1"><span class="unit">m</span></div></div>
-      <div class="field"><label for="cpG">G vertical</label><div class="input-wrap"><input id="cpG" type="text" inputmode="decimal" value="140"><span class="unit">kN/m</span></div></div>
-      <div class="field"><label for="cpQ">Q vertical</label><div class="input-wrap"><input id="cpQ" type="text" inputmode="decimal" value="30"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="cpDw">Profondeur de la nappe</label><div class="input-wrap"><input id="cpDw" type="text" inputmode="decimal" value="1" data-curseur="0 10 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="cpGam">γ du sol</label><div class="input-wrap"><input id="cpGam" type="text" inputmode="decimal" value="21" data-curseur="15 23 0.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="cpCu">c<sub>u</sub></label><div class="input-wrap"><input id="cpCu" type="text" inputmode="decimal" value="45" data-curseur="5 300 5"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="cpPhi">φ'</label><div class="input-wrap"><input id="cpPhi" type="text" inputmode="decimal" value="25" data-curseur="0 45 1"><span class="unit">°</span></div></div>
+      <div class="field"><label for="cpC">c'</label><div class="input-wrap"><input id="cpC" type="text" inputmode="decimal" value="5" data-curseur="0 50 1"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="cpE">Excentrement de G et Q</label><div class="input-wrap"><input id="cpE" type="text" inputmode="decimal" value="0.1" data-curseur="0 1 0.01"><span class="unit">m</span></div></div>
+      <div class="field"><label for="cpG">G vertical</label><div class="input-wrap"><input id="cpG" type="text" inputmode="decimal" value="140" data-curseur="10 1000 5"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="cpQ">Q vertical</label><div class="input-wrap"><input id="cpQ" type="text" inputmode="decimal" value="30" data-curseur="0 500 5"><span class="unit">kN/m</span></div></div>
       <div class="field"><label for="cpL">Hauteur d'application de H</label><div class="input-wrap"><input id="cpL" type="text" inputmode="decimal" value="0.6"><span class="unit">m</span></div></div>
-      <div class="field"><label for="cpGH">G horizontal</label><div class="input-wrap"><input id="cpGH" type="text" inputmode="decimal" value="20"><span class="unit">kN/m</span></div></div>
-      <div class="field"><label for="cpQH">Q horizontal</label><div class="input-wrap"><input id="cpQH" type="text" inputmode="decimal" value="25"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="cpGH">G horizontal</label><div class="input-wrap"><input id="cpGH" type="text" inputmode="decimal" value="20" data-curseur="0 200 1"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="cpQH">Q horizontal</label><div class="input-wrap"><input id="cpQH" type="text" inputmode="decimal" value="25" data-curseur="0 200 1"><span class="unit">kN/m</span></div></div>
     </div>
     <div class="figure" id="cpFig"></div>
     <div id="cpOut"></div>
@@ -1917,16 +1917,16 @@
   <div class="calc" id="calcGl">
     <h3>Glissement : les deux référentiels côte à côte</h3>
     <div class="data-grid">
-      <div class="field"><label for="glB">Largeur B</label><div class="input-wrap"><input id="glB" type="text" inputmode="decimal" value="2.5"><span class="unit">m</span></div></div>
-      <div class="field"><label for="glE">Excentrement e</label><div class="input-wrap"><input id="glE" type="text" inputmode="decimal" value="0.35"><span class="unit">m</span></div></div>
+      <div class="field"><label for="glB">Largeur B</label><div class="input-wrap"><input id="glB" type="text" inputmode="decimal" value="2.5" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="glE">Excentrement e</label><div class="input-wrap"><input id="glE" type="text" inputmode="decimal" value="0.35" data-curseur="0 1.5 0.01"><span class="unit">m</span></div></div>
       <div class="field"><label for="glMise">Mise en œuvre</label><div class="input-wrap"><select id="glMise">
         <option value="coule" selected>béton coulé en place</option><option value="prefa">préfabriqué lisse</option></select></div></div>
-      <div class="field"><label for="glV">V<sub>d</sub> (minimal)</label><div class="input-wrap"><input id="glV" type="text" inputmode="decimal" value="250"><span class="unit">kN/m</span></div></div>
-      <div class="field"><label for="glH">H<sub>d</sub></label><div class="input-wrap"><input id="glH" type="text" inputmode="decimal" value="95"><span class="unit">kN/m</span></div></div>
-      <div class="field"><label for="glCu">c<sub>u</sub> (court terme)</label><div class="input-wrap"><input id="glCu" type="text" inputmode="decimal" value="60"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="glPhi">φ' (pic)</label><div class="input-wrap"><input id="glPhi" type="text" inputmode="decimal" value="32"><span class="unit">°</span></div></div>
-      <div class="field"><label for="glPhiC">φ'<sub>crit</sub></label><div class="input-wrap"><input id="glPhiC" type="text" inputmode="decimal" value="30"><span class="unit">°</span></div></div>
-      <div class="field"><label for="glC">c'</label><div class="input-wrap"><input id="glC" type="text" inputmode="decimal" value="10"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="glV">V<sub>d</sub> (minimal)</label><div class="input-wrap"><input id="glV" type="text" inputmode="decimal" value="250" data-curseur="10 1500 5"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="glH">H<sub>d</sub></label><div class="input-wrap"><input id="glH" type="text" inputmode="decimal" value="95" data-curseur="0 500 5"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="glCu">c<sub>u</sub> (court terme)</label><div class="input-wrap"><input id="glCu" type="text" inputmode="decimal" value="60" data-curseur="5 200 5"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="glPhi">φ' (pic)</label><div class="input-wrap"><input id="glPhi" type="text" inputmode="decimal" value="32" data-curseur="15 45 1"><span class="unit">°</span></div></div>
+      <div class="field"><label for="glPhiC">φ'<sub>crit</sub></label><div class="input-wrap"><input id="glPhiC" type="text" inputmode="decimal" value="30" data-curseur="15 40 1"><span class="unit">°</span></div></div>
+      <div class="field"><label for="glC">c'</label><div class="input-wrap"><input id="glC" type="text" inputmode="decimal" value="10" data-curseur="0 50 1"><span class="unit">kPa</span></div></div>
     </div>
     <div class="figure" id="glFig"></div>
     <div id="glOut"></div>
@@ -1947,9 +1947,9 @@
   <div class="calc" id="calcSe">
     <h3>Paramètres de calcul pour la stabilité d'ensemble</h3>
     <div class="data-grid">
-      <div class="field"><label for="sePhi">φ'</label><div class="input-wrap"><input id="sePhi" type="text" inputmode="decimal" value="30"><span class="unit">°</span></div></div>
-      <div class="field"><label for="seC">c'</label><div class="input-wrap"><input id="seC" type="text" inputmode="decimal" value="15"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="seCu">c<sub>u</sub></label><div class="input-wrap"><input id="seCu" type="text" inputmode="decimal" value="50"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="sePhi">φ'</label><div class="input-wrap"><input id="sePhi" type="text" inputmode="decimal" value="30" data-curseur="10 45 1"><span class="unit">°</span></div></div>
+      <div class="field"><label for="seC">c'</label><div class="input-wrap"><input id="seC" type="text" inputmode="decimal" value="15" data-curseur="0 50 1"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="seCu">c<sub>u</sub></label><div class="input-wrap"><input id="seCu" type="text" inputmode="decimal" value="50" data-curseur="5 200 5"><span class="unit">kPa</span></div></div>
     </div>
     <div id="seOut"></div>
   </div>
@@ -2038,17 +2038,17 @@
     <div class="data-grid">
       <div class="field"><label for="meForme">Forme</label><div class="input-wrap"><select id="meForme">
         <option value="filante">filante</option><option value="rectangulaire" selected>rectangulaire</option><option value="carree">carrée</option><option value="circulaire">circulaire</option></select></div></div>
-      <div class="field"><label for="meB">Largeur B</label><div class="input-wrap"><input id="meB" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
-      <div class="field"><label for="meL">Longueur L</label><div class="input-wrap"><input id="meL" type="text" inputmode="decimal" value="15"><span class="unit">m</span></div></div>
-      <div class="field"><label for="meQ">q' (ELS quasi permanent)</label><div class="input-wrap"><input id="meQ" type="text" inputmode="decimal" value="39.3"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="meS">σ'<sub>v0</sub> à la base</label><div class="input-wrap"><input id="meS" type="text" inputmode="decimal" value="16"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="meB">Largeur B</label><div class="input-wrap"><input id="meB" type="text" inputmode="decimal" value="3" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="meL">Longueur L</label><div class="input-wrap"><input id="meL" type="text" inputmode="decimal" value="15" data-curseur="0.5 40 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="meQ">q' (ELS quasi permanent)</label><div class="input-wrap"><input id="meQ" type="text" inputmode="decimal" value="39.3" data-curseur="10 500 1"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="meS">σ'<sub>v0</sub> à la base</label><div class="input-wrap"><input id="meS" type="text" inputmode="decimal" value="16" data-curseur="0 200 1"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="meAlpha">Coefficient α</label><div class="input-wrap"><select id="meAlpha">
         <option value="1">1</option><option value="0.6666666667">2/3</option><option value="0.5" selected>1/2</option><option value="0.3333333333">1/3</option><option value="0.25">1/4</option></select></div></div>
-      <div class="field"><label for="meH1">Couche 1 : épaisseur sous la base</label><div class="input-wrap"><input id="meH1" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
-      <div class="field"><label for="meE1">Couche 1 : E<sub>M</sub></label><div class="input-wrap"><input id="meE1" type="text" inputmode="decimal" value="6"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="meH2">Couche 2 : épaisseur</label><div class="input-wrap"><input id="meH2" type="text" inputmode="decimal" value="6"><span class="unit">m</span></div></div>
-      <div class="field"><label for="meE2">Couche 2 : E<sub>M</sub></label><div class="input-wrap"><input id="meE2" type="text" inputmode="decimal" value="20"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="meE3">Couche 3 (au-delà) : E<sub>M</sub></label><div class="input-wrap"><input id="meE3" type="text" inputmode="decimal" value="20"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="meH1">Couche 1 : épaisseur sous la base</label><div class="input-wrap"><input id="meH1" type="text" inputmode="decimal" value="3" data-curseur="0.5 10 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="meE1">Couche 1 : E<sub>M</sub></label><div class="input-wrap"><input id="meE1" type="text" inputmode="decimal" value="6" data-curseur="1 60 0.5"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="meH2">Couche 2 : épaisseur</label><div class="input-wrap"><input id="meH2" type="text" inputmode="decimal" value="6" data-curseur="0.5 20 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="meE2">Couche 2 : E<sub>M</sub></label><div class="input-wrap"><input id="meE2" type="text" inputmode="decimal" value="20" data-curseur="1 100 0.5"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="meE3">Couche 3 (au-delà) : E<sub>M</sub></label><div class="input-wrap"><input id="meE3" type="text" inputmode="decimal" value="20" data-curseur="1 150 0.5"><span class="unit">MPa</span></div></div>
       <div class="field"><label for="meConnu">Modules connus jusqu'à</label><div class="input-wrap"><select id="meConnu">
         <option value="16" selected>8 B (16 tranches)</option><option value="8">4 B (8 tranches)</option><option value="5">2,5 B (5 tranches)</option></select></div></div>
     </div>
@@ -2088,18 +2088,18 @@
     <div class="data-grid">
       <div class="field"><label for="scForme">Forme</label><div class="input-wrap"><select id="scForme">
         <option value="filante" selected>filante (L &gt; 10 B)</option><option value="carree">carrée ou circulaire</option></select></div></div>
-      <div class="field"><label for="scB">Largeur B</label><div class="input-wrap"><input id="scB" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
-      <div class="field"><label for="scT">Durée t</label><div class="input-wrap"><input id="scT" type="text" inputmode="decimal" value="1"><span class="unit">an</span></div></div>
-      <div class="field"><label for="scQ">q'</label><div class="input-wrap"><input id="scQ" type="text" inputmode="decimal" value="203.3"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="scS">σ'<sub>v0</sub> à la base</label><div class="input-wrap"><input id="scS" type="text" inputmode="decimal" value="18"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="scSp">σ'<sub>vp</sub> au pic de I<sub>z</sub></label><div class="input-wrap"><input id="scSp" type="text" inputmode="decimal" value="74"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="scH1">Couche 1 : épaisseur</label><div class="input-wrap"><input id="scH1" type="text" inputmode="decimal" value="2"><span class="unit">m</span></div></div>
-      <div class="field"><label for="scQ1">Couche 1 : q<sub>c</sub></label><div class="input-wrap"><input id="scQ1" type="text" inputmode="decimal" value="2.5"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="scH2">Couche 2 : épaisseur</label><div class="input-wrap"><input id="scH2" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
-      <div class="field"><label for="scQ2">Couche 2 : q<sub>c</sub></label><div class="input-wrap"><input id="scQ2" type="text" inputmode="decimal" value="4"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="scH3">Couche 3 : épaisseur</label><div class="input-wrap"><input id="scH3" type="text" inputmode="decimal" value="2"><span class="unit">m</span></div></div>
-      <div class="field"><label for="scQ3">Couche 3 : q<sub>c</sub></label><div class="input-wrap"><input id="scQ3" type="text" inputmode="decimal" value="12"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="scQ4">q<sub>c</sub> au-delà</label><div class="input-wrap"><input id="scQ4" type="text" inputmode="decimal" value="18"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="scB">Largeur B</label><div class="input-wrap"><input id="scB" type="text" inputmode="decimal" value="3" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="scT">Durée t</label><div class="input-wrap"><input id="scT" type="text" inputmode="decimal" value="1" data-curseur="0.1 50 0.1"><span class="unit">an</span></div></div>
+      <div class="field"><label for="scQ">q'</label><div class="input-wrap"><input id="scQ" type="text" inputmode="decimal" value="203.3" data-curseur="20 600 5"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="scS">σ'<sub>v0</sub> à la base</label><div class="input-wrap"><input id="scS" type="text" inputmode="decimal" value="18" data-curseur="0 200 1"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="scSp">σ'<sub>vp</sub> au pic de I<sub>z</sub></label><div class="input-wrap"><input id="scSp" type="text" inputmode="decimal" value="74" data-curseur="10 300 1"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="scH1">Couche 1 : épaisseur</label><div class="input-wrap"><input id="scH1" type="text" inputmode="decimal" value="2" data-curseur="0.5 10 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="scQ1">Couche 1 : q<sub>c</sub></label><div class="input-wrap"><input id="scQ1" type="text" inputmode="decimal" value="2.5" data-curseur="0.5 40 0.5"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="scH2">Couche 2 : épaisseur</label><div class="input-wrap"><input id="scH2" type="text" inputmode="decimal" value="3" data-curseur="0.5 10 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="scQ2">Couche 2 : q<sub>c</sub></label><div class="input-wrap"><input id="scQ2" type="text" inputmode="decimal" value="4" data-curseur="0.5 40 0.5"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="scH3">Couche 3 : épaisseur</label><div class="input-wrap"><input id="scH3" type="text" inputmode="decimal" value="2" data-curseur="0.5 10 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="scQ3">Couche 3 : q<sub>c</sub></label><div class="input-wrap"><input id="scQ3" type="text" inputmode="decimal" value="12" data-curseur="0.5 40 0.5"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="scQ4">q<sub>c</sub> au-delà</label><div class="input-wrap"><input id="scQ4" type="text" inputmode="decimal" value="18" data-curseur="0.5 40 0.5"><span class="unit">MPa</span></div></div>
     </div>
     <div class="figure" id="scFig"></div>
     <div id="scOut"></div>
@@ -2126,16 +2126,16 @@
     <div class="data-grid">
       <div class="field"><label for="oeForme">Forme</label><div class="input-wrap"><select id="oeForme">
         <option value="filante">filante</option><option value="carree" selected>carrée</option><option value="circulaire">circulaire</option></select></div></div>
-      <div class="field"><label for="oeB">Largeur B</label><div class="input-wrap"><input id="oeB" type="text" inputmode="decimal" value="2.5"><span class="unit">m</span></div></div>
-      <div class="field"><label for="oeDq">Surcharge nette q' − q'<sub>0</sub></label><div class="input-wrap"><input id="oeDq" type="text" inputmode="decimal" value="150"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="oeZ">Toit de l'argile sous la base</label><div class="input-wrap"><input id="oeZ" type="text" inputmode="decimal" value="1.5"><span class="unit">m</span></div></div>
-      <div class="field"><label for="oeH">Épaisseur d'argile</label><div class="input-wrap"><input id="oeH" type="text" inputmode="decimal" value="4"><span class="unit">m</span></div></div>
-      <div class="field"><label for="oeS0">σ'<sub>v0</sub> au toit de l'argile</label><div class="input-wrap"><input id="oeS0" type="text" inputmode="decimal" value="45"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="oeB">Largeur B</label><div class="input-wrap"><input id="oeB" type="text" inputmode="decimal" value="2.5" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="oeDq">Surcharge nette q' − q'<sub>0</sub></label><div class="input-wrap"><input id="oeDq" type="text" inputmode="decimal" value="150" data-curseur="10 500 5"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="oeZ">Toit de l'argile sous la base</label><div class="input-wrap"><input id="oeZ" type="text" inputmode="decimal" value="1.5" data-curseur="0 10 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="oeH">Épaisseur d'argile</label><div class="input-wrap"><input id="oeH" type="text" inputmode="decimal" value="4" data-curseur="0.5 10 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="oeS0">σ'<sub>v0</sub> au toit de l'argile</label><div class="input-wrap"><input id="oeS0" type="text" inputmode="decimal" value="45" data-curseur="5 300 5"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="oeG">γ' de l'argile</label><div class="input-wrap"><input id="oeG" type="text" inputmode="decimal" value="8"><span class="unit">kN/m³</span></div></div>
-      <div class="field"><label for="oeE0">e<sub>0</sub></label><div class="input-wrap"><input id="oeE0" type="text" inputmode="decimal" value="0.9"><span class="unit">—</span></div></div>
-      <div class="field"><label for="oeCc">C<sub>c</sub></label><div class="input-wrap"><input id="oeCc" type="text" inputmode="decimal" value="0.3"><span class="unit">—</span></div></div>
-      <div class="field"><label for="oeCs">C<sub>s</sub></label><div class="input-wrap"><input id="oeCs" type="text" inputmode="decimal" value="0.05"><span class="unit">—</span></div></div>
-      <div class="field"><label for="oeOcr">σ'<sub>p</sub> − σ'<sub>v0</sub></label><div class="input-wrap"><input id="oeOcr" type="text" inputmode="decimal" value="30"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="oeE0">e<sub>0</sub></label><div class="input-wrap"><input id="oeE0" type="text" inputmode="decimal" value="0.9" data-curseur="0.3 2 0.05"><span class="unit">—</span></div></div>
+      <div class="field"><label for="oeCc">C<sub>c</sub></label><div class="input-wrap"><input id="oeCc" type="text" inputmode="decimal" value="0.3" data-curseur="0.05 1 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="oeCs">C<sub>s</sub></label><div class="input-wrap"><input id="oeCs" type="text" inputmode="decimal" value="0.05" data-curseur="0.005 0.2 0.005"><span class="unit">—</span></div></div>
+      <div class="field"><label for="oeOcr">σ'<sub>p</sub> − σ'<sub>v0</sub></label><div class="input-wrap"><input id="oeOcr" type="text" inputmode="decimal" value="30" data-curseur="0 200 5"><span class="unit">kPa</span></div></div>
     </div>
     <div class="figure" id="oeFig"></div>
     <div id="oeOut"></div>
@@ -2221,14 +2221,14 @@
   <div class="calc" id="calcCourbe">
     <h3>Courbe de chargement d'un pieu (lois de transfert de Frank et Zhao)</h3>
     <div class="data-grid">
-      <div class="field"><label for="ccB">Diamètre B</label><div class="input-wrap"><input id="ccB" type="text" inputmode="decimal" value="0.6"><span class="unit">m</span></div></div>
-      <div class="field"><label for="ccD">Longueur D</label><div class="input-wrap"><input id="ccD" type="text" inputmode="decimal" value="12"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ccB">Diamètre B</label><div class="input-wrap"><input id="ccB" type="text" inputmode="decimal" value="0.6" data-curseur="0.3 2 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ccD">Longueur D</label><div class="input-wrap"><input id="ccD" type="text" inputmode="decimal" value="12" data-curseur="3 40 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="ccMise">Mise en œuvre</label><div class="input-wrap"><select id="ccMise">
         <option value="fore" selected>forée (sans refoulement)</option><option value="battu">battue (avec refoulement)</option></select></div></div>
-      <div class="field"><label for="ccEs">E<sub>M</sub> le long du fût</label><div class="input-wrap"><input id="ccEs" type="text" inputmode="decimal" value="8"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="ccQs">Frottement limite q<sub>s</sub></label><div class="input-wrap"><input id="ccQs" type="text" inputmode="decimal" value="50"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="ccEp">E<sub>M</sub> sous la pointe</label><div class="input-wrap"><input id="ccEp" type="text" inputmode="decimal" value="15"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="ccQb">Résistance de pointe q<sub>b</sub></label><div class="input-wrap"><input id="ccQb" type="text" inputmode="decimal" value="1500"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="ccEs">E<sub>M</sub> le long du fût</label><div class="input-wrap"><input id="ccEs" type="text" inputmode="decimal" value="8" data-curseur="1 60 0.5"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="ccQs">Frottement limite q<sub>s</sub></label><div class="input-wrap"><input id="ccQs" type="text" inputmode="decimal" value="50" data-curseur="10 200 5"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="ccEp">E<sub>M</sub> sous la pointe</label><div class="input-wrap"><input id="ccEp" type="text" inputmode="decimal" value="15" data-curseur="1 100 1"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="ccQb">Résistance de pointe q<sub>b</sub></label><div class="input-wrap"><input id="ccQb" type="text" inputmode="decimal" value="1500" data-curseur="200 10000 100"><span class="unit">kPa</span></div></div>
       <div class="field"><label for="ccSol">Nature des sols</label><div class="input-wrap"><select id="ccSol">
         <option value="fin" selected>sols fins</option><option value="granulaire">sols granulaires</option></select></div></div>
       <div class="field"><label for="ccE">Module du béton</label><div class="input-wrap"><input id="ccE" type="text" inputmode="decimal" value="20000"><span class="unit">MPa</span></div></div>
@@ -2318,8 +2318,8 @@
         <option value="injecte-bp|19">Injecté basse pression / IGU (cat. 19)</option>
         <option value="injecte-hp|20">Injecté haute pression / IRS (cat. 20)</option>
       </select></div></div>
-      <div class="field"><label for="piB">Diamètre B</label><div class="input-wrap"><input id="piB" type="text" inputmode="decimal" value="0.8"><span class="unit">m</span></div></div>
-      <div class="field"><label for="piD">Longueur D</label><div class="input-wrap"><input id="piD" type="text" inputmode="decimal" value="15"><span class="unit">m</span></div></div>
+      <div class="field"><label for="piB">Diamètre B</label><div class="input-wrap"><input id="piB" type="text" inputmode="decimal" value="0.8" data-curseur="0.3 2 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="piD">Longueur D</label><div class="input-wrap"><input id="piD" type="text" inputmode="decimal" value="15" data-curseur="3 40 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="piMeth">Essai</label><div class="input-wrap"><select id="piMeth">
         <option value="pressio" selected>pressiomètre</option><option value="penetro">pénétromètre</option></select></div></div>
     </div>
@@ -2404,8 +2404,8 @@
   <div class="calc" id="calcJust">
     <h3>Des valeurs calculées aux vérifications</h3>
     <div class="data-grid">
-      <div class="field"><label for="juRb">Pointe calculée R<sub>b</sub></label><div class="input-wrap"><input id="juRb" type="text" inputmode="decimal" value="436"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="juRs">Frottement calculé R<sub>s</sub></label><div class="input-wrap"><input id="juRs" type="text" inputmode="decimal" value="1395"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="juRb">Pointe calculée R<sub>b</sub></label><div class="input-wrap"><input id="juRb" type="text" inputmode="decimal" value="436" data-curseur="0 5000 10"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="juRs">Frottement calculé R<sub>s</sub></label><div class="input-wrap"><input id="juRs" type="text" inputmode="decimal" value="1395" data-curseur="0 8000 10"><span class="unit">kN</span></div></div>
       <div class="field"><label for="juMeth">Essai</label><div class="input-wrap"><select id="juMeth">
         <option value="pressio">pressiomètre</option><option value="penetro" selected>pénétromètre</option></select></div></div>
       <div class="field"><label for="juCat">Catégorie de pieu</label><div class="input-wrap"><select id="juCat"></select></div></div>
@@ -2413,13 +2413,13 @@
         <option value="oui" selected>oui</option><option value="non">non</option></select></div></div>
       <div class="field"><label for="juProc">Procédure</label><div class="input-wrap"><select id="juProc">
         <option value="terrain">modèle de terrain</option><option value="modele" selected>pieu modèle</option></select></div></div>
-      <div class="field"><label for="juN">Nombre de sondages N</label><div class="input-wrap"><input id="juN" type="text" inputmode="decimal" value="1"><span class="unit">—</span></div></div>
-      <div class="field"><label for="juS">Surface investiguée S</label><div class="input-wrap"><input id="juS" type="text" inputmode="decimal" value="338"><span class="unit">m²</span></div></div>
+      <div class="field"><label for="juN">Nombre de sondages N</label><div class="input-wrap"><input id="juN" type="text" inputmode="decimal" value="1" data-curseur="1 10 1"><span class="unit">—</span></div></div>
+      <div class="field"><label for="juS">Surface investiguée S</label><div class="input-wrap"><input id="juS" type="text" inputmode="decimal" value="338" data-curseur="100 2500 10"><span class="unit">m²</span></div></div>
       <div class="field"><label for="juRaide">Structure raide</label><div class="input-wrap"><select id="juRaide">
         <option value="non" selected>non</option><option value="oui">oui (ξ/1,1)</option></select></div></div>
-      <div class="field"><label for="juFu">F<sub>c;d</sub> ELU</label><div class="input-wrap"><input id="juFu" type="text" inputmode="decimal" value="950"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="juFc">F<sub>c;d</sub> ELS caract.</label><div class="input-wrap"><input id="juFc" type="text" inputmode="decimal" value="700"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="juFq">F<sub>c;d</sub> ELS q. perm.</label><div class="input-wrap"><input id="juFq" type="text" inputmode="decimal" value="600"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="juFu">F<sub>c;d</sub> ELU</label><div class="input-wrap"><input id="juFu" type="text" inputmode="decimal" value="950" data-curseur="0 5000 10"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="juFc">F<sub>c;d</sub> ELS caract.</label><div class="input-wrap"><input id="juFc" type="text" inputmode="decimal" value="700" data-curseur="0 5000 10"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="juFq">F<sub>c;d</sub> ELS q. perm.</label><div class="input-wrap"><input id="juFq" type="text" inputmode="decimal" value="600" data-curseur="0 5000 10"><span class="unit">kN</span></div></div>
     </div>
     <div id="juOut"></div>
   </div>
@@ -2479,20 +2479,20 @@
   <div class="calc" id="calcFn">
     <h3>Frottement négatif sous un remblai</h3>
     <div class="data-grid">
-      <div class="field"><label for="fnB">Diamètre B</label><div class="input-wrap"><input id="fnB" type="text" inputmode="decimal" value="0.6"><span class="unit">m</span></div></div>
+      <div class="field"><label for="fnB">Diamètre B</label><div class="input-wrap"><input id="fnB" type="text" inputmode="decimal" value="0.6" data-curseur="0.3 2 0.05"><span class="unit">m</span></div></div>
       <div class="field"><label for="fnMise">Pieu</label><div class="input-wrap"><select id="fnMise">
         <option value="tube">tubé</option><option value="fore" selected>foré</option><option value="battu">battu</option><option value="bitume">chemisé au bitume</option></select></div></div>
       <div class="field"><label for="fnNat">Couche compressible</label><div class="input-wrap"><select id="fnNat">
         <option value="tourbe">tourbe</option><option value="argile-molle" selected>argile ou limon mou</option><option value="argile-ferme">argile ferme</option></select></div></div>
-      <div class="field"><label for="fnH">Épaisseur compressible</label><div class="input-wrap"><input id="fnH" type="text" inputmode="decimal" value="10"><span class="unit">m</span></div></div>
-      <div class="field"><label for="fnG">γ' de la couche</label><div class="input-wrap"><input id="fnG" type="text" inputmode="decimal" value="6"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="fnH">Épaisseur compressible</label><div class="input-wrap"><input id="fnH" type="text" inputmode="decimal" value="10" data-curseur="1 30 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="fnG">γ' de la couche</label><div class="input-wrap"><input id="fnG" type="text" inputmode="decimal" value="6" data-curseur="3 12 0.5"><span class="unit">kN/m³</span></div></div>
       <div class="field"><label for="fnH2">h<sub>2</sub> (tassement &lt; B/100)</label><div class="input-wrap"><input id="fnH2" type="text" inputmode="decimal" value=""><span class="unit">m</span></div></div>
-      <div class="field"><label for="fnHr">Hauteur de remblai</label><div class="input-wrap"><input id="fnHr" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
-      <div class="field"><label for="fnGr">γ du remblai</label><div class="input-wrap"><input id="fnGr" type="text" inputmode="decimal" value="20"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="fnHr">Hauteur de remblai</label><div class="input-wrap"><input id="fnHr" type="text" inputmode="decimal" value="3" data-curseur="0 10 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="fnGr">γ du remblai</label><div class="input-wrap"><input id="fnGr" type="text" inputmode="decimal" value="20" data-curseur="16 22 0.5"><span class="unit">kN/m³</span></div></div>
       <div class="field"><label for="fnNr">Remblai</label><div class="input-wrap"><select id="fnNr">
         <option value="sable-autre" selected>granulaire (K tanδ = 1)</option><option value="sable-lache">sable lâche (0,45)</option><option value="argile-ferme">argileux compacté</option></select></div></div>
-      <div class="field"><label for="fnD">Entraxe d</label><div class="input-wrap"><input id="fnD" type="text" inputmode="decimal" value="1.8"><span class="unit">m</span></div></div>
-      <div class="field"><label for="fnFiles">Nombre de files</label><div class="input-wrap"><input id="fnFiles" type="text" inputmode="decimal" value="3"><span class="unit">—</span></div></div>
+      <div class="field"><label for="fnD">Entraxe d</label><div class="input-wrap"><input id="fnD" type="text" inputmode="decimal" value="1.8" data-curseur="0.6 6 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="fnFiles">Nombre de files</label><div class="input-wrap"><input id="fnFiles" type="text" inputmode="decimal" value="3" data-curseur="1 6 1"><span class="unit">—</span></div></div>
     </div>
     <div class="figure" id="fnFig"></div>
     <div id="fnOut"></div>
@@ -2537,14 +2537,14 @@
   <div class="calc" id="calcGr">
     <h3>Coefficient d'efficacité et bloc monolithique</h3>
     <div class="data-grid">
-      <div class="field"><label for="grB">Diamètre B</label><div class="input-wrap"><input id="grB" type="text" inputmode="decimal" value="0.6"><span class="unit">m</span></div></div>
-      <div class="field"><label for="grD">Entraxe d</label><div class="input-wrap"><input id="grD" type="text" inputmode="decimal" value="1.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="grB">Diamètre B</label><div class="input-wrap"><input id="grB" type="text" inputmode="decimal" value="0.6" data-curseur="0.3 2 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="grD">Entraxe d</label><div class="input-wrap"><input id="grD" type="text" inputmode="decimal" value="1.5" data-curseur="0.3 6 0.05"><span class="unit">m</span></div></div>
       <div class="field"><label for="grM">Rangées m × pieux par rangée n</label><div class="input-wrap"><input id="grM" type="text" inputmode="decimal" value="3"><span class="unit">×</span><input id="grN" type="text" inputmode="decimal" value="4"></div></div>
-      <div class="field"><label for="grRb">R<sub>b;d</sub> d'un pieu isolé</label><div class="input-wrap"><input id="grRb" type="text" inputmode="decimal" value="300"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="grRs">R<sub>s;d</sub> d'un pieu isolé</label><div class="input-wrap"><input id="grRs" type="text" inputmode="decimal" value="900"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="grRb">R<sub>b;d</sub> d'un pieu isolé</label><div class="input-wrap"><input id="grRb" type="text" inputmode="decimal" value="300" data-curseur="0 3000 10"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="grRs">R<sub>s;d</sub> d'un pieu isolé</label><div class="input-wrap"><input id="grRs" type="text" inputmode="decimal" value="900" data-curseur="0 5000 10"><span class="unit">kN</span></div></div>
       <div class="field"><label for="grSol">Sol et mise en œuvre (F62)</label><div class="input-wrap"><select id="grSol">
         <option value="coherent">sol cohérent</option><option value="frottant" selected>sol frottant, pieux sans refoulement</option><option value="lache">sable lâche, pieux refoulants</option></select></div></div>
-      <div class="field"><label for="grF">Charge totale du groupe</label><div class="input-wrap"><input id="grF" type="text" inputmode="decimal" value="11000"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="grF">Charge totale du groupe</label><div class="input-wrap"><input id="grF" type="text" inputmode="decimal" value="11000" data-curseur="0 50000 100"><span class="unit">kN</span></div></div>
     </div>
     <div class="figure" id="grFig"></div>
     <div id="grOut"></div>
@@ -2602,24 +2602,24 @@
   <div class="calc" id="calcLat">
     <h3>Pieu sous effort horizontal en tête (différences finies)</h3>
     <div class="data-grid">
-      <div class="field"><label for="laB">Diamètre B</label><div class="input-wrap"><input id="laB" type="text" inputmode="decimal" value="0.8"><span class="unit">m</span></div></div>
-      <div class="field"><label for="laL">Longueur L</label><div class="input-wrap"><input id="laL" type="text" inputmode="decimal" value="15"><span class="unit">m</span></div></div>
+      <div class="field"><label for="laB">Diamètre B</label><div class="input-wrap"><input id="laB" type="text" inputmode="decimal" value="0.8" data-curseur="0.3 2 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="laL">Longueur L</label><div class="input-wrap"><input id="laL" type="text" inputmode="decimal" value="15" data-curseur="2 40 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="laE">Module du béton</label><div class="input-wrap"><input id="laE" type="text" inputmode="decimal" value="30000"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="laH">Effort H en tête</label><div class="input-wrap"><input id="laH" type="text" inputmode="decimal" value="150"><span class="unit">kN</span></div></div>
-      <div class="field"><label for="laM">Moment M en tête</label><div class="input-wrap"><input id="laM" type="text" inputmode="decimal" value="0"><span class="unit">kN·m</span></div></div>
+      <div class="field"><label for="laH">Effort H en tête</label><div class="input-wrap"><input id="laH" type="text" inputmode="decimal" value="150" data-curseur="0 1000 5"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="laM">Moment M en tête</label><div class="input-wrap"><input id="laM" type="text" inputmode="decimal" value="0" data-curseur="0 2000 10"><span class="unit">kN·m</span></div></div>
       <div class="field"><label for="laTete">Tête</label><div class="input-wrap"><select id="laTete">
         <option value="libre" selected>libre</option><option value="encastree">encastrée (rotation nulle)</option></select></div></div>
       <div class="field"><label for="laDuree">Sollicitation</label><div class="input-wrap"><select id="laDuree">
         <option value="courte" selected>courte durée</option><option value="longue">longue durée</option></select></div></div>
       <div class="field"><label for="laMin">Minoration près de la surface</label><div class="input-wrap"><select id="laMin">
         <option value="non">non</option><option value="oui" selected>oui</option><option value="simple">oui, simplifiée (0,5 et 0,7)</option></select></div></div>
-      <div class="field"><label for="laH1">Couche 1 : épaisseur</label><div class="input-wrap"><input id="laH1" type="text" inputmode="decimal" value="4"><span class="unit">m</span></div></div>
+      <div class="field"><label for="laH1">Couche 1 : épaisseur</label><div class="input-wrap"><input id="laH1" type="text" inputmode="decimal" value="4" data-curseur="0 20 0.5"><span class="unit">m</span></div></div>
       <div class="field"><label for="laSol1">Couche 1 : nature</label><div class="input-wrap"><select id="laSol1">
         <option value="coherent" selected>cohérente</option><option value="frottant">frottante</option></select></div></div>
-      <div class="field"><label for="laEM1">Couche 1 : E<sub>M</sub> · α</label><div class="input-wrap"><input id="laEM1" type="text" inputmode="decimal" value="8"><span class="unit">MPa</span><select id="laA1"><option value="1">1</option><option value="0.6666666667" selected>2/3</option><option value="0.5">1/2</option><option value="0.3333333333">1/3</option><option value="0.25">1/4</option></select></div></div>
-      <div class="field"><label for="laPf1">Couche 1 : p<sub>f</sub>*</label><div class="input-wrap"><input id="laPf1" type="text" inputmode="decimal" value="0.5"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="laEM2">Couche 2 : E<sub>M</sub> · α</label><div class="input-wrap"><input id="laEM2" type="text" inputmode="decimal" value="25"><span class="unit">MPa</span><select id="laA2"><option value="1">1</option><option value="0.6666666667">2/3</option><option value="0.5" selected>1/2</option><option value="0.3333333333">1/3</option><option value="0.25">1/4</option></select></div></div>
-      <div class="field"><label for="laPf2">Couche 2 : p<sub>f</sub>*</label><div class="input-wrap"><input id="laPf2" type="text" inputmode="decimal" value="1.2"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="laEM1">Couche 1 : E<sub>M</sub> · α</label><div class="input-wrap"><input id="laEM1" type="text" inputmode="decimal" value="8" data-curseur="1 60 0.5"><span class="unit">MPa</span><select id="laA1"><option value="1">1</option><option value="0.6666666667" selected>2/3</option><option value="0.5">1/2</option><option value="0.3333333333">1/3</option><option value="0.25">1/4</option></select></div></div>
+      <div class="field"><label for="laPf1">Couche 1 : p<sub>f</sub>*</label><div class="input-wrap"><input id="laPf1" type="text" inputmode="decimal" value="0.5" data-curseur="0.05 3 0.05"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="laEM2">Couche 2 : E<sub>M</sub> · α</label><div class="input-wrap"><input id="laEM2" type="text" inputmode="decimal" value="25" data-curseur="1 100 0.5"><span class="unit">MPa</span><select id="laA2"><option value="1">1</option><option value="0.6666666667">2/3</option><option value="0.5" selected>1/2</option><option value="0.3333333333">1/3</option><option value="0.25">1/4</option></select></div></div>
+      <div class="field"><label for="laPf2">Couche 2 : p<sub>f</sub>*</label><div class="input-wrap"><input id="laPf2" type="text" inputmode="decimal" value="1.2" data-curseur="0.05 5 0.05"><span class="unit">MPa</span></div></div>
     </div>
     <div class="figure" id="laFig"></div>
     <div id="laOut"></div>
@@ -2699,18 +2699,18 @@
     <div class="data-grid">
       <div class="field"><label for="szSol">Sol</label><div class="input-wrap"><select id="szSol">
         <option value="coherent" selected>purement cohérent</option><option value="frottant">purement frottant</option></select></div></div>
-      <div class="field"><label for="szB">Largeur B</label><div class="input-wrap"><input id="szB" type="text" inputmode="decimal" value="2.4"><span class="unit">m</span></div></div>
+      <div class="field"><label for="szB">Largeur B</label><div class="input-wrap"><input id="szB" type="text" inputmode="decimal" value="2.4" data-curseur="0.5 6 0.1"><span class="unit">m</span></div></div>
       <div class="field"><label for="szGam">γ du sol</label><div class="input-wrap"><input id="szGam" type="text" inputmode="decimal" value="20"><span class="unit">kN/m³</span></div></div>
-      <div class="field"><label for="szCu">c<sub>u</sub> (γ<sub>M</sub> = 1,4)</label><div class="input-wrap"><input id="szCu" type="text" inputmode="decimal" value="150"><span class="unit">kPa</span></div></div>
-      <div class="field"><label for="szPhi">φ' (γ<sub>φ'</sub> = 1,25)</label><div class="input-wrap"><input id="szPhi" type="text" inputmode="decimal" value="34"><span class="unit">°</span></div></div>
+      <div class="field"><label for="szCu">c<sub>u</sub> (γ<sub>M</sub> = 1,4)</label><div class="input-wrap"><input id="szCu" type="text" inputmode="decimal" value="150" data-curseur="10 300 5"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="szPhi">φ' (γ<sub>φ'</sub> = 1,25)</label><div class="input-wrap"><input id="szPhi" type="text" inputmode="decimal" value="34" data-curseur="20 45 1"><span class="unit">°</span></div></div>
       <div class="field"><label for="szRd">Coefficient γ<sub>Rd</sub></label><div class="input-wrap"><select id="szRd">
         <option value="1">1,00 — sable dense, argile non sensible</option><option value="1.15">1,15 — sable lâche sec, argile sensible</option><option value="1.5">1,50 — sable lâche saturé</option></select></div></div>
-      <div class="field"><label for="szAg">a<sub>g</sub>/g = γ<sub>I</sub> a<sub>gR</sub>/g</label><div class="input-wrap"><input id="szAg" type="text" inputmode="decimal" value="0.24"><span class="unit">—</span></div></div>
-      <div class="field"><label for="szS">Paramètre de sol S</label><div class="input-wrap"><input id="szS" type="text" inputmode="decimal" value="1.35"><span class="unit">—</span></div></div>
-      <div class="field"><label for="szAv">a<sub>v</sub>/g (sol frottant)</label><div class="input-wrap"><input id="szAv" type="text" inputmode="decimal" value="0.1"><span class="unit">—</span></div></div>
-      <div class="field"><label for="szN">N<sub>Ed</sub></label><div class="input-wrap"><input id="szN" type="text" inputmode="decimal" value="600"><span class="unit">kN/m</span></div></div>
-      <div class="field"><label for="szV">V<sub>Ed</sub></label><div class="input-wrap"><input id="szV" type="text" inputmode="decimal" value="80"><span class="unit">kN/m</span></div></div>
-      <div class="field"><label for="szM">M<sub>Ed</sub></label><div class="input-wrap"><input id="szM" type="text" inputmode="decimal" value="120"><span class="unit">kN·m/m</span></div></div>
+      <div class="field"><label for="szAg">a<sub>g</sub>/g = γ<sub>I</sub> a<sub>gR</sub>/g</label><div class="input-wrap"><input id="szAg" type="text" inputmode="decimal" value="0.24" data-curseur="0 0.6 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="szS">Paramètre de sol S</label><div class="input-wrap"><input id="szS" type="text" inputmode="decimal" value="1.35" data-curseur="1 1.8 0.05"><span class="unit">—</span></div></div>
+      <div class="field"><label for="szAv">a<sub>v</sub>/g (sol frottant)</label><div class="input-wrap"><input id="szAv" type="text" inputmode="decimal" value="0.1" data-curseur="0 0.5 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="szN">N<sub>Ed</sub></label><div class="input-wrap"><input id="szN" type="text" inputmode="decimal" value="600" data-curseur="10 3000 10"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="szV">V<sub>Ed</sub></label><div class="input-wrap"><input id="szV" type="text" inputmode="decimal" value="80" data-curseur="0 800 5"><span class="unit">kN/m</span></div></div>
+      <div class="field"><label for="szM">M<sub>Ed</sub></label><div class="input-wrap"><input id="szM" type="text" inputmode="decimal" value="120" data-curseur="0 1500 10"><span class="unit">kN·m/m</span></div></div>
     </div>
     <div class="figure" id="szFig"></div>
     <div id="szOut"></div>

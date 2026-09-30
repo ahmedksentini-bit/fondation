@@ -108,3 +108,17 @@ test("les normes et les feuilles de calcul fournies ne sont pas publiées", () =
   const ignore = lire(".gitignore");
   assert.match(ignore, /^docs\/$/m, "docs/ (normes, guides, tableurs) doit rester hors du dépôt");
 });
+
+test("chaque curseur de calcul encadre la valeur de départ de sa case", () => {
+  const html = lire("cours.html");
+  assert.ok(html.includes('src="src/curseurs.js"'), "le module des curseurs est chargé par le cours");
+  const champs = [...html.matchAll(/<input id="([^"]+)"[^>]*value="([^"]*)" data-curseur="([^"]+)"/g)];
+  assert.ok(champs.length >= 150, "les calculateurs ont leurs curseurs");
+  for (const [, id, valeur, plage] of champs) {
+    const [min, max, pas] = plage.split(/\s+/).map(Number);
+    assert.ok(max > min && pas > 0, `${id} : plage « ${plage} » incohérente`);
+    assert.ok((max - min) / pas <= 20000, `${id} : pas trop fin pour une réglette`);
+    const v = Number(valeur);
+    assert.ok(valeur === "" || (v >= min && v <= max), `${id} : ${valeur} hors de la plage ${plage}`);
+  }
+});
