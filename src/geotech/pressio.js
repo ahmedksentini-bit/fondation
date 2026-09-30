@@ -334,7 +334,7 @@ export function depouiller({ paliers, Vs, z, hc = 0, pe = () => 0, a = 0, sol = 
   const apres = courbe.filter((q) => q.p > fl.pf).length;
   if (apres < 3 && lim.extrapolee) avert.push("moins de trois paliers au-delà de pf : extrapolation fragile");
   if (lim.lointaine) avert.push("le dernier volume n'atteint pas Vs + V1 : extrapolation lointaine");
-  if (pel && Number.isFinite(pl) && pel > 0.2 * pl) avert.push("la résistance propre de la sonde n'est pas négligeable devant pl");
+  if (pel && Number.isFinite(pl) && pel > 0.3 * pl) avert.push("la résistance propre de la sonde dépasse 30 % de pl : sonde trop raide pour ce sol");
   if (Number.isFinite(pl) && (pl / fl.pf < 1.2 || pl / fl.pf > 3.5)) avert.push(`pl/pf = ${(pl / fl.pf).toFixed(2)}, hors de la fourchette usuelle (1,5 à 3)`);
   return {
     applicable: true, courbe, phase, EM, G, Vm, pf: fl.pf, fluage: fl, limite: lim, pl, contraintes: c, p0,

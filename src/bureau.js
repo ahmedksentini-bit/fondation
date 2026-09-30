@@ -1,4 +1,4 @@
-// Bureau de calcul : cinq modules dans une coque de logiciel. Les calculs sont
+// Bureau de calcul : six modules dans une coque de logiciel. Les calculs sont
 // faits par src/bureau/semelle.js, src/bureau/pieu.js et les solveurs de
 // src/geotech ; ce fichier ne gère que la saisie, la sauvegarde, les figures
 // et l'impression de la note.
@@ -11,6 +11,11 @@ import { CLASSES_F62, CATEGORIES_EC7 } from "./geotech/sols.js";
 import { K_TAN_DELTA, lambdaCombarieu, muIsole, frottementNegatif, rayonInfluence, repartitionGroupe } from "./geotech/frottement-negatif.js";
 import { converseLabarre, efficaciteCoherentF62, efficaciteEC7, verifGroupeEC7, blocMonolithique } from "./geotech/groupes.js";
 import { moduleKf, minorationSurface, pieuLongAnalytique, pieuDifferencesFinies, pieuSouple } from "./geotech/lateral.js";
+import { calibrageAppareil, etalonnageSonde, depouiller, CONVENTIONS } from "./geotech/pressio.js";
+import { alphaMenard } from "./geotech/sols.js";
+import { profilPressio } from "./figures.js";
+import { TUBE, AIR, SONDE, sondage, texteReleves, texteCouples } from "./pressio-exemples.js";
+import { lireTableau } from "./ui.js";
 
 const app = document.getElementById("app");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -34,8 +39,40 @@ const TYPES_PIEU = [
   ["injecte-bp|19", "Injecté basse pression / IGU (cat. 19)"], ["injecte-hp|20", "Injecté haute pression / IRS (cat. 20)"],
 ];
 
+// Sondage pressiométrique d'exemple : un bloc « z = … » par essai, puis ses paliers.
+const EXEMPLE_SONDAGE = sondage("A");
+const texteSondage = (s) => s.essais.map((e) => `z = ${e.z}\n${texteReleves(e.paliers)}`).join("\n");
+const OPT_NATURE = [["argile", "argile"], ["limon", "limon"], ["sable", "sable"], ["grave", "grave"]];
+const OPT_MOTIF = [["remblai", "remblai"], ["argile", "argile"], ["limon", "limon"], ["sable", "sable"], ["grave", "grave"], ["craie", "craie"], ["marne", "marne"], ["roche", "roche"]];
+const POIDS_A = { remblai: [18, 19], argile: [17, 17.5], sable: [19, 20], marne: [20, 21] };
+
 // ─────────────────────────── Définition des modules ───────────────────────
 const MODULES = [
+  {
+    id: "pressio", groupe: "Essais en place", icone: "◎", titre: "Sondage pressiométrique", sous: "dépouillement des essais, profil",
+    description: "Dépouillement d'un sondage pressiométrique complet, comme dans un logiciel dédié : étalonnages de la sonde, corrections de chaque palier, EM, pf et pl de chaque essai, pressions nettes, puis la feuille de sondage et sa note de calcul.",
+    champs: [
+      ["Appareillage", [
+        ["conv", "Conventions de correction", "choix", "norme", [["norme", "NF P94-110-1"], ["shg", "logiciel Shg Ménard"]]],
+        ["hc", "Hauteur du manomètre hc", "m", "1"],
+        ["di", "Diamètre intérieur du tube d'étalonnage", "mm", String(SONDE.di)], ["ls", "Longueur de la cellule centrale", "mm", String(SONDE.ls)],
+        ["pminTube", "Droite du tube à partir de", "MPa", String(SONDE.pminTube)], ["Vs", "Vs imposé (vide : d'après le tube)", "cm³", ""],
+        ["tube", "Étalonnage en tube : pr (MPa), Vr (cm³)", "texte", texteCouples(TUBE)],
+        ["dzAir", "Dénivelé manomètre − sonde à l'air", "m", String(SONDE.dzAir)],
+        ["air", "Étalonnage à l'air : pr (MPa), V (cm³)", "texte", texteCouples(AIR)],
+      ]],
+      ["Sondage", [
+        ["zw", "Profondeur de la nappe (vide : pas de nappe)", "m", String(EXEMPLE_SONDAGE.zw)], ["K0", "K0 pour p0", "", "0.5"],
+        ["essais", "Essais : une ligne « z = … », puis un palier par ligne (pr, V15, V30, V60)", "texte", texteSondage(EXEMPLE_SONDAGE)],
+      ]],
+    ],
+    couches: {
+      colonnes: [["base", "Base (m)", "nombre"], ["nom", "Description", "texte"], ["nature", "Nature (α)", "choix", OPT_NATURE], ["sol", "Motif", "choix", OPT_MOTIF],
+        ["gamma", "γ (kN/m³)", "nombre"], ["gammaSat", "γsat", "nombre"]],
+      defaut: EXEMPLE_SONDAGE.couches.map((c) => ({ base: String(c.z1), nom: c.nom, nature: c.nature, sol: c.sol, gamma: String(POIDS_A[c.sol]?.[0] ?? 18), gammaSat: String(POIDS_A[c.sol]?.[1] ?? 19) })),
+    },
+    calculer: calculerSondage,
+  },
   {
     id: "semelle", groupe: "Fondations superficielles", icone: "▭", titre: "Semelle", sous: "excentrement, portance, glissement, tassement",
     description: "Une semelle justifiée au Fascicule 62 titre V et à la NF P94-261 sur les mêmes données : combinaisons, excentrement, portance pressiométrique, glissement et tassement de Ménard.",
@@ -212,6 +249,10 @@ function champ([id, label, unite, , options, visible], v) {
   // Pour un champ numérique, la fonction de visibilité occupe la place des options.
   if (typeof options === "function") { visible = options; options = null; }
   const cache = visible && !visible(v) ? ' style="display:none"' : "";
+  if (unite === "texte") {
+    return `<div class="field champ-large"${cache}><label for="c_${id}">${esc(label)}</label>
+      <textarea id="c_${id}" data-champ="${id}" rows="${String(v[id] ?? "").split("\n").length > 12 ? 10 : 5}" spellcheck="false">${esc(v[id])}</textarea></div>`;
+  }
   if (unite === "choix") {
     return `<div class="field"${cache}><label for="c_${id}">${esc(label)}</label><div class="input-wrap"><select id="c_${id}" data-champ="${id}">
       ${options.map(([val, t]) => `<option value="${esc(val)}"${String(v[id]) === String(val) ? " selected" : ""}>${esc(t)}</option>`).join("")}</select></div></div>`;
@@ -223,7 +264,9 @@ function champ([id, label, unite, , options, visible], v) {
 function ligneCouche(m, c, i) {
   return `<tr>${m.couches.colonnes.map(([id, t, type, options]) => type === "choix"
     ? `<td><select data-couche="${i}" data-col="${id}" aria-label="${esc(t)}, couche ${i + 1}">${options.map(([val, txt]) => `<option value="${esc(val)}"${c[id] === val ? " selected" : ""}>${esc(txt)}</option>`).join("")}</select></td>`
-    : `<td><input data-couche="${i}" data-col="${id}" type="text" inputmode="decimal" value="${esc(c[id] ?? "")}" style="width:4.8em" aria-label="${esc(t)}, couche ${i + 1}"></td>`).join("")}
+    : type === "texte"
+      ? `<td><input data-couche="${i}" data-col="${id}" type="text" value="${esc(c[id] ?? "")}" style="width:11em" aria-label="${esc(t)}, couche ${i + 1}"></td>`
+      : `<td><input data-couche="${i}" data-col="${id}" type="text" inputmode="decimal" value="${esc(c[id] ?? "")}" style="width:4.8em" aria-label="${esc(t)}, couche ${i + 1}"></td>`).join("")}
     <td><button data-suppr="${i}" title="Supprimer la couche" aria-label="Supprimer la couche ${i + 1}">✕</button></td></tr>`;
 }
 
@@ -409,6 +452,85 @@ function calculerFrottement(v) {
     <h3>${grp ? 4 : 3} · Effort axial de calcul</h3>
     <p class="formula">F<sub>d</sub> = G'<sub>d</sub> + max(G<sub>sn,d</sub> ; Q'<sub>d</sub>) = ${f(1.35 * G + 1.5 * psi2 * Q, 5)} + max(${f(1.35 * Fdim, 4)} ; ${f(1.5 * (1 - psi2) * Q, 4)}) = ${f(c.ELU, 5)} kN (ELU)</p>
     <p>ELS caractéristique : ${f(c.ELS_car, 5)} kN · ELS quasi permanent : ${f(c.ELS_QP, 5)} kN. Le frottement positif est à retirer de la portance au-dessus du point neutre.</p>`;
+  return { figure, synthese, note };
+}
+
+// ─────────────────────────── Sondage pressiométrique ─────────────────────
+/** Blocs « z = … » suivis de leurs paliers (pr, V15, V30, V60 ; ou pr, V30, V60 ; ou pr, V60). */
+function lireEssais(texte) {
+  const essais = [];
+  for (const brut of String(texte ?? "").split(/\r?\n/)) {
+    const l = brut.trim();
+    const m = l.match(/^z\s*=\s*([-\d.,]+)/i);
+    if (m) { essais.push({ z: nombre(m[1]), paliers: [] }); continue; }
+    if (!essais.length) continue;
+    const r = lireTableau(l)[0];
+    if (!r) continue;
+    essais[essais.length - 1].paliers.push(r.length >= 4 ? { p: r[0], V15: r[1], V30: r[2], V60: r[3] }
+      : r.length === 3 ? { p: r[0], V30: r[1], V60: r[2] } : { p: r[0], V60: r[1] });
+  }
+  return essais.filter((e) => Number.isFinite(e.z) && e.paliers.length);
+}
+
+function calculerSondage(v) {
+  const convention = v.conv === "shg" ? "shg" : "norme";
+  const hc = nombre(v.hc, 0), zw = nombre(v.zw, Infinity), K0 = nombre(v.K0, 0.5);
+  const tube = calibrageAppareil(lireTableau(v.tube).filter((r) => r.length >= 2).map(([p, V]) => ({ p, V })), { pmin: nombre(v.pminTube, null), di: nombre(v.di, null), ls: nombre(v.ls, null) });
+  const Vs = nombre(v.Vs) > 0 ? nombre(v.Vs) : tube.Vs > 0 ? tube.Vs : 535;
+  const a = tube.applicable ? tube.a : 0;
+  const air = etalonnageSonde(lireTableau(v.air).filter((r) => r.length >= 2).map(([p, V]) => ({ p, V })), { dz: nombre(v.dzAir, 0), Vs, gammaW: CONVENTIONS[convention].gammaW });
+  const pe = air.applicable ? air.pe : () => 0;
+  // Coupe : chaque couche va de la base précédente à la sienne.
+  let z0 = 0;
+  const couches = v.couches.map((c) => {
+    const z1 = nombre(c.base);
+    const k = { z0, z1, nom: c.nom || c.sol, nature: c.nature, sol: c.sol, gamma: nombre(c.gamma, 18), gammaSat: nombre(c.gammaSat, nombre(c.gamma, 18)) };
+    z0 = z1;
+    return k;
+  }).filter((c) => c.z1 > c.z0);
+  if (!couches.length) throw new Error("décrire au moins une couche");
+  const essais = lireEssais(v.essais);
+  if (!essais.length) throw new Error("saisir au moins un essai : une ligne « z = … » puis ses paliers");
+  const coucheDe = (z) => couches.find((c) => z >= c.z0 && z < c.z1) ?? couches[couches.length - 1];
+  const res = essais.map((e) => {
+    const r = depouiller({ paliers: e.paliers, Vs, z: e.z, hc, pe, a, sol: { zw, couches, K0 }, convention, pel: air.pel });
+    const c = coucheDe(e.z);
+    const al = r.applicable && r.plNette > 0 ? alphaMenard(c.nature, r.EM, r.plNette) : null;
+    return { ...e, r, c, al };
+  });
+  const ok = res.filter((e) => e.r.applicable);
+  const seuils = couches.map((c) => ({ z0: c.z0, z1: c.z1, valeurs: c.nature === "argile" ? [9, 16] : c.nature === "limon" ? [8, 14] : c.nature === "grave" ? [6, 10] : [7, 12] }));
+  const figure = profilPressio({ couches, essais: ok.map((e) => ({ z: e.z, EM: e.r.EM, plNette: e.r.plNette, pfNette: e.r.pfNette })), seuils, largeur: 640, hauteur: 500 });
+  const signales = res.filter((e) => !e.r.applicable || e.r.avertissements.length);
+  const synthese = `<table class="resultats"><thead><tr><th>z (m)</th><th class="num">E<sub>M</sub></th><th class="num">p<sub>f</sub>*</th><th class="num">p<sub>l</sub>*</th><th class="num">E<sub>M</sub>/p<sub>l</sub>*</th><th>α</th></tr></thead><tbody>
+    ${res.map((e) => (e.r.applicable ? `<tr class="${e.r.avertissements.length ? "ko" : ""}"><td>${fd(e.z, 1)}</td><td class="n">${fd(e.r.EM, 1)}</td><td class="n">${fd(e.r.pfNette, 2)}</td><td class="n">${fd(e.r.plNette, 2)}${e.r.limite.extrapolee ? "<small>e</small>" : ""}</td>
+      <td class="n">${fd(e.r.rapport, 1)}</td><td>${e.al ? fd(e.al.alpha, 2) : "—"}</td></tr>` : `<tr class="ko"><td>${fd(e.z, 1)}</td><td colspan="5">${esc(e.r.motif)}</td></tr>`)).join("")}
+    </tbody></table>
+    <p class="method-note">MPa ; « e » : p<sub>l</sub> extrapolée. ${signales.length ? `${signales.length} essai(s) à relire (lignes marquées, détail dans la note).` : "Aucun essai signalé par les contrôles."}</p>`;
+  const court = (m = "") => (m.startsWith("lue") ? "lue" : m.includes("hyperbolique") ? "hyperbole" : m.includes("trois derniers") ? "1/V, 3 derniers" : m.includes("inverse") ? "inverse du volume" : m);
+  const ligneEssai = (e) => {
+    const r = e.r;
+    if (!r.applicable) return `<tr><td>${fd(e.z, 1)}</td><td colspan="8">${esc(r.motif)}</td></tr>`;
+    const ph = r.phase, lim = r.limite;
+    return `<tr><td>${fd(e.z, 1)}</td><td class="n">${r.courbe.length}</td><td class="n">${ph.i1 + 1}–${ph.i2 + 1}</td><td class="n">${fd(ph.V1, 0)}</td><td class="n">${fd(r.EM, 2)}</td>
+      <td class="n">${fd(r.pf, 3)}</td><td class="n">${fd(r.pl, 3)}</td><td class="motif">${esc(court(lim.methode))}${lim.extrapolee && lim.ecart !== null && lim.ecart !== undefined ? ` (écart ${fd(100 * lim.ecart, 1)} %)` : ""}</td><td class="n">${fd(1000 * r.p0, 1)}</td></tr>`;
+  };
+  const note = `
+    <h3>1 · Appareillage et conventions</h3>
+    <p>Étalonnage en tube : ${tube.applicable ? `a = ${fd(tube.a, 3)} cm³/MPa (droite sur ${tube.points} paliers, R² = ${fd(tube.r2, 4)}), V<sub>c</sub> = ${fd(tube.Vc, 1)} cm³` : "absent (a = 0)"} ;
+      V<sub>s</sub> = ${fd(Vs, 1)} cm³${nombre(v.Vs) > 0 ? " (imposé)" : tube.Vtube ? ` = π d<sub>i</sub>² l<sub>s</sub>/4 − V<sub>c</sub>` : ""}.
+      Étalonnage à l'air : ${air.applicable ? `${air.table.length} points, p<sub>el</sub> = p<sub>e</sub>(1,2 V<sub>s</sub>) = ${fd(air.pel, 3)} MPa` : "absent (p<sub>e</sub> = 0)"}.
+      Manomètre à h<sub>c</sub> = ${fd(hc, 2)} m ; conventions : ${esc(CONVENTIONS[convention].nom)}.</p>
+    <p class="formula">V = V<sub>r</sub> − a·${convention === "shg" ? "p" : "p<sub>r</sub>"} · p = p<sub>r</sub> + γ<sub>w</sub>(h<sub>c</sub> + z) − p<sub>e</sub>(${convention === "shg" ? "V<sub>r</sub>" : "V"}) · E<sub>M</sub> = 2,66 (V<sub>s</sub> + V<sub>m</sub>) Δp/ΔV · p<sub>l</sub> à V<sub>s</sub> + 2V<sub>1</sub></p>
+    <h3>2 · Coupe et état initial</h3>
+    <p>${couches.map((c) => `${fd(c.z0, 1)}–${fd(c.z1, 1)} m : ${esc(c.nom)} (γ = ${f(c.gamma, 3)}, γ<sub>sat</sub> = ${f(c.gammaSat, 3)} kN/m³)`).join(" ; ")}.
+      Nappe ${Number.isFinite(zw) ? `à ${fd(zw, 2)} m` : "absente"} ; p<sub>0</sub> = K<sub>0</sub> σ'<sub>v0</sub> + u<sub>0</sub> avec K<sub>0</sub> = ${fd(K0, 2)}.</p>
+    <h3>3 · Dépouillement des essais</h3>
+    <div class="table-large"><table class="resultats"><thead><tr><th>z (m)</th><th class="num">paliers</th><th class="num">plage E<sub>M</sub></th><th class="num">V<sub>1</sub> (cm³)</th><th class="num">E<sub>M</sub> (MPa)</th>
+      <th class="num">p<sub>f</sub> (MPa)</th><th class="num">p<sub>l</sub> (MPa)</th><th>p<sub>l</sub> obtenue par</th><th class="num">p<sub>0</sub> (kPa)</th></tr></thead><tbody>${res.map(ligneEssai).join("")}</tbody></table></div>
+    <h3>4 · Critique des essais</h3>
+    ${signales.length ? `<ul>${signales.map((e) => `<li>z = ${fd(e.z, 1)} m : ${esc(e.r.applicable ? e.r.avertissements.join(" ; ") : e.r.motif)}</li>`).join("")}</ul>` : "<p>Aucune anomalie relevée par les contrôles automatiques (nombre de paliers, plage pseudo-élastique, V<sub>1</sub>, extrapolation de p<sub>l</sub>, rapport p<sub>l</sub>/p<sub>f</sub>).</p>"}
+    <p class="method-note">Les valeurs de calcul (p<sub>le</sub>*, modules des tranches) se tirent de ce profil couche par couche, après élimination motivée des essais douteux.</p>`;
   return { figure, synthese, note };
 }
 

@@ -15,9 +15,9 @@ d'hydrologie.
 | Ressource | Fichier | Rôle |
 |---|---|---|
 | Accueil | `index.html` | ressources, parties, chapitres, banques d'exercices (3 modes) |
-| Cours interactif | `cours.html` | 13 chapitres, figures et 22 calculateurs au fil du texte |
-| Exerciseur | `exerciseur.html` | 79 modèles d'exercices à données tirées au hasard, corrigés pas à pas |
-| Bureau de calcul | `bureau.html` | semelle, pieu, frottement négatif, groupe, effort transversal — note de calcul imprimable |
+| Cours interactif | `cours.html` | 15 chapitres, figures et 46 calculateurs au fil du texte, dont l'assistant de dépouillement pressiométrique |
+| Exerciseur | `exerciseur.html` | 97 modèles d'exercices à données tirées au hasard, corrigés pas à pas |
+| Bureau de calcul | `bureau.html` | sondage pressiométrique, semelle, pieu, frottement négatif, groupe, effort transversal — note de calcul imprimable |
 | Polycopié | `polycopie/fondations-polycopie.pdf` | le cours complet, produit à partir de `cours.html` |
 
 ## Déploiement — Cloudflare Pages
@@ -44,6 +44,8 @@ index.html, cours.html, exerciseur.html, bureau.html
 src/geotech/        solveurs purs et testés (aucun accès au DOM)
   outils.js           intégration, profils par couches, conventions d'unités
   sols.js             classes F62, catégories EC7, pression limite nette, α
+  pressio.js          dépouillement pressiométrique : étalonnages, corrections, EM, pf, pl
+  essais.js           CPTU, SPT, pénétromètre dynamique, DMT, scissomètre, plaque, essais d'eau
   combinaisons.js     combinaisons F62 (A.5) et EN 1990 (approche 2)
   superficielles.js   excentrement, ple*, qce, De, kp, kc, iδ, iβ, portance, glissement
   cphi.js             méthode c–φ (EN 1997-1 annexe D, NF P94-261 annexe F)
@@ -51,6 +53,7 @@ src/geotech/        solveurs purs et testés (aucun accès au DOM)
   pieux.js            portance F62 (C.3, C.4) et NF P94-262 (F, G), ξ, pieu modèle
   frottement-negatif.js, groupes.js, lateral.js, tassement-pieu.js
 src/cours-chN.js    calculateurs du chapitre N du cours
+src/pressio-exemples.js, src/essais-exemples.js  jeux d'essais fabriqués pour le cours
 src/exos/           modèles d'exercices paramétrés (un fichier par chapitre)
 src/exercices.js    rendu des exercices : apprentissage, entraînement, examen
 src/exerciseur.js   tirages aléatoires reproductibles (#ch6/ch6-ple/123456)
@@ -72,6 +75,10 @@ par exercice. Les tests vérifient que les banques correspondent aux modèles.
   une case vide sans motif est un défaut, pas un résultat.
 - Les formules et tableaux sont repris des textes et vérifiés sur les exemples
   des guides Cerema (NF P94-261, NF P94-262) et sur la feuille c–φ du CSTB.
+- Le dépouillement pressiométrique suit la NF P94-110-1 ; il est contrôlé sur un
+  essai de référence construit pour le cours. Son option « Shg Ménard » redonne
+  les résultats du logiciel ELK / Shg Ménard sur l'essai de démonstration de
+  celui-ci (vérification faite hors dépôt : ces données ne sont pas publiées).
 - Les valeurs du coefficient de modèle de l'annexe F de la NF P94-261
   (γR;d;v = 2,0 drainé, 1,2 non drainé) sont celles présentées au CFMS
   (J. Habert et S. Burlon, 11 octobre 2012) et reprises par la notice FONDSUP
@@ -88,7 +95,7 @@ npm run serve       # site en local
 ```
 
 Après toute modification publiée, changer la version du service worker
-(`python tools/generer-sw.py fond-v2`) et la constante `VERSION_ATTENDUE` de
+(`python tools/generer-sw.py fond-v4`, par exemple) et la constante `VERSION_ATTENDUE` de
 `src/socle.js`, pour que les lecteurs déjà venus reçoivent la nouvelle version.
 
 ---

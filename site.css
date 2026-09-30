@@ -55,10 +55,10 @@ a.brand strong,a.brand small{text-decoration:none}
 .calc .figure:empty{display:none}
 .calc .figure svg{display:block;width:100%;height:auto}
 /* Saisie de relevés : un tableau de nombres collé depuis un tableur. */
-.calc .field.champ-large{grid-column:1/-1}
-.calc textarea{display:block;width:100%;min-height:120px;padding:9px 11px;border:1px solid #cbd5e1;border-radius:11px;background:#fff;color:var(--ink);
+.calc .field.champ-large,.bureau-groupe .field.champ-large{grid-column:1/-1}
+.calc textarea,.bureau textarea{display:block;width:100%;min-height:120px;padding:9px 11px;border:1px solid #cbd5e1;border-radius:11px;background:#fff;color:var(--ink);
   font:13px/1.45 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;font-variant-numeric:tabular-nums;resize:vertical}
-.calc textarea:focus{outline:3px solid #bae6fd;border-color:var(--cyan)}
+.calc textarea:focus,.bureau textarea:focus{outline:3px solid #bae6fd;border-color:var(--cyan)}
 .resultats tr.ligne-retenue td{background:#ecfdf5}
 
 /* Deux colonnes F62 / EC7, empilées si étroit. */
