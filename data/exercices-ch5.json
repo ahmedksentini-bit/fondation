@@ -1,0 +1,297 @@
+{
+ "chapitre": "ch5",
+ "exercices": [
+  {
+   "id": "ch5-N",
+   "titre": "Facteurs de portance",
+   "difficulte": 1,
+   "graine": 3053605918,
+   "enonce": "Sol d'angle de frottement effectif φ' = 38°. On applique l'annexe D de l'EN 1997-1.",
+   "donnees": [
+    {
+     "label": "φ'",
+     "valeur": "38°"
+    },
+    {
+     "label": "tan φ'",
+     "valeur": "0,7813"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Nq ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 48.9333,
+     "explication": "Nq = e^(π tanφ') tan²(45° + φ'/2) = e^(2,4545) × tan²(64,0°) = 48,93.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Nc ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 61.3518,
+     "explication": "Nc = (Nq − 1) cotφ' = 47,933 / 0,7813 = 61,35.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Nγ (base rugueuse) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 74.8991,
+     "explication": "Nγ = 2 (Nq − 1) tanφ' = 2 × 47,933 × 0,7813 = 74,90.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Lequel de ces facteurs n'a pas de solution exacte ?",
+     "type": "choix",
+     "options": [
+      "Nc",
+      "Nq",
+      "Nγ"
+     ],
+     "reponse": 2,
+     "explication": "Nq et Nc sont exacts (Prandtl, Reissner) pour un sol sans poids ; Nγ, qui dépend du poids du sol mobilisé, n'a que des approximations — et varie de ± 25 % selon les auteurs."
+    }
+   ]
+  },
+  {
+   "id": "ch5-nd",
+   "titre": "Portance à court terme d'une semelle filante",
+   "difficulte": 2,
+   "graine": 4284172846,
+   "enonce": "Semelle filante B = 2,3 m, fondée à D = 1,8 m (γ = 18,0 kN/m³) sur une argile saturée de cohésion non drainée cu = 45 kPa. À l'ELU : Vd = 420 kN/m, Hd = 28 kN/m, excentrement e = 0,05 m.",
+   "donnees": [
+    {
+     "label": "B · e",
+     "valeur": "2,3 m · 0,05 m"
+    },
+    {
+     "label": "cu",
+     "valeur": "45 kPa"
+    },
+    {
+     "label": "q = γ D",
+     "valeur": "32,4 kPa"
+    },
+    {
+     "label": "Vd · Hd",
+     "valeur": "420 · 28 kN/m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Largeur effective B' ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 2.2,
+     "explication": "B' = B − 2e = 2,3 − 2 × 0,05 = 2,20 m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Facteur d'inclinaison ic ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.92343,
+     "explication": "ic = ½ [1 + √(1 − H/(A' cu))] = ½ [1 + √(1 − 28/(2,20 × 45))] = 0,923.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Contrainte de rupture brute R/A' ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 246.056,
+     "explication": "R/A' = (π + 2) cu ic + q = 5,142 × 45 × 0,923 + 32,4 = 246,1 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance de calcul Rd (approche 2, γR;v = 1,4) ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 386.659,
+     "explication": "Rd = A' (R/A') / 1,4 = 2,20 × 246,1 / 1,4 = 386,7 kN/m < Vd = 420 kN/m.",
+     "toleranceRel": 0.015
+    }
+   ]
+  },
+  {
+   "id": "ch5-dr",
+   "titre": "Portance à long terme sous charge inclinée",
+   "difficulte": 3,
+   "graine": 3645049206,
+   "enonce": "Semelle filante de largeur effective B' = 1,7 m. Sol : φ' = 27°, c' = 10 kPa, γ' = 9,0 kN/m³ (nappe au niveau de la base) ; surcharge effective des terres q' = 25,5 kPa. Charges de calcul : V = 680 kN/m, H = 143 kN/m.",
+   "donnees": [
+    {
+     "label": "B'",
+     "valeur": "1,7 m"
+    },
+    {
+     "label": "φ' · c'",
+     "valeur": "27° · 10 kPa"
+    },
+    {
+     "label": "γ' · q'",
+     "valeur": "9,0 kN/m³ · 25,5 kPa"
+    },
+    {
+     "label": "V · H",
+     "valeur": "680 · 143 kN/m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Facteur iq ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.639267,
+     "explication": "m = 2 (filante) ; iq = [1 − H/(V + A'c' cotφ')]² = [1 − 143/(680 + 1,7 × 10 / 0,510)]² = 0,639.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Facteur iγ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.51112,
+     "explication": "iγ = [ … ]³ = 0,511.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Contrainte de rupture brute R/A' ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 409.746,
+     "explication": "c' Nc ic + q' Nq iq + ½ γ' B' Nγ iγ = 146 + 215,2 + 48,61 = 409,7 kPa (Nq = 13,20, Nc = 23,94, Nγ = 12,43).",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Quel terme porte l'essentiel de la résistance ici ?",
+     "type": "choix",
+     "options": [
+      "le terme de pesanteur ½ γ' B' Nγ",
+      "le terme de cohésion c' Nc",
+      "le terme de surcharge q' Nq"
+     ],
+     "reponse": 2,
+     "explication": "Les trois termes valent 146, 215 et 48,6 kPa. L'inclinaison frappe plus fort le terme de pesanteur (iγ = 0,511) que les autres."
+    }
+   ]
+  },
+  {
+   "id": "ch5-forme",
+   "titre": "Semelle rectangulaire : facteurs de forme",
+   "difficulte": 2,
+   "graine": 715907237,
+   "enonce": "Semelle 2,9 m × 5,1 m (dimensions effectives), sable φ' = 36°, c' = 0, γ = 18,0 kN/m³, q' = 25 kPa. Charge verticale centrée.",
+   "donnees": [
+    {
+     "label": "B' × L'",
+     "valeur": "2,9 × 5,1 m"
+    },
+    {
+     "label": "φ'",
+     "valeur": "36°"
+    },
+    {
+     "label": "γ · q'",
+     "valeur": "18,0 kN/m³ · 25 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "sq ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.33423,
+     "explication": "sq = 1 + (B'/L') sinφ' = 1 + 0,569 × 0,588 = 1,334.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "sγ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.829412,
+     "explication": "sγ = 1 − 0,3 B'/L' = 0,829.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "R/A' ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 2415.35,
+     "explication": "q' Nq sq + ½ γ B' Nγ sγ = 1 259 + 1 156 = 2 415 kPa (sans cohésion, le terme c' Nc disparaît).",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Résistance totale Rk = A' (R/A') ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 35723,
+     "explication": "14,79 m² × 2 415 kPa = 35 723 kN.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch5-annexeF",
+   "titre": "La même semelle à l'EN 1997-1 et à la NF P94-261",
+   "difficulte": 3,
+   "graine": 3177126913,
+   "enonce": "Semelle filante B = 2,6 m, largeur effective B' = 2,29 m. Le calcul de l'annexe D donne une contrainte de rupture brute R/A' = 285 kPa en conditions drainées ; q0 = 40 kPa au niveau de la base (sans nappe). À l'ELU : Vd = 435 kN/m.",
+   "donnees": [
+    {
+     "label": "B · B'",
+     "valeur": "2,6 · 2,29 m"
+    },
+    {
+     "label": "R/A'",
+     "valeur": "285 kPa"
+    },
+    {
+     "label": "q0",
+     "valeur": "40 kPa"
+    },
+    {
+     "label": "Vd",
+     "valeur": "435 kN/m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rd de l'EN 1997-1, approche 2 ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 466.179,
+     "explication": "Rd = A' (R/A') / 1,4 = 2,29 × 285 / 1,4 = 466,2 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rv;d de la NF P94-261, annexe F ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 200.375,
+     "explication": "qnet = 285 − 40 = 245 kPa ; γR;v γR;d;v = 1,4 × 2,0 = 2,80 ; Rv;d = 2,29 × 245 / 2,80 = 200,4 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Taux (Vd − R0)/Rv;d ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.6519,
+     "explication": "R0 = B q0 = 104 kN/m ; (435 − 104) / 200,4 = 1,652.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Verdicts ?",
+     "type": "choix",
+     "options": [
+      "EN 1997-1 : vérifié ; NF P94-261 : non vérifié",
+      "EN 1997-1 : non vérifié ; NF P94-261 : non vérifié",
+      "EN 1997-1 : vérifié ; NF P94-261 : vérifié"
+     ],
+     "reponse": 0,
+     "explication": "Surdimensionnement 1,07 à l'approche 2 contre un taux de 1,65 à la norme française. En conditions drainées, le coefficient de modèle 2,0 porte le facteur global à 2,8 : c'est lui qui fait la différence."
+    }
+   ]
+  }
+ ]
+}

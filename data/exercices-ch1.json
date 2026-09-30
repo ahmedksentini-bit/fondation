@@ -1,0 +1,349 @@
+{
+ "chapitre": "ch1",
+ "exercices": [
+  {
+   "id": "ch1-pnette",
+   "titre": "Pression limite nette d'un essai sous la nappe",
+   "difficulte": 1,
+   "graine": 2600021384,
+   "enonce": "Un essai pressiométrique mené à 9,5 m de profondeur donne une pression limite pl = 1,65 MPa. La nappe est à 3 m de profondeur ; le sol pèse 20 kN/m³ au-dessus et 21,5 kN/m³ (saturé) au-dessous. On prend K0 = 0,5 et γw = 10 kN/m³.",
+   "donnees": [
+    {
+     "label": "Profondeur de l'essai",
+     "valeur": "9,5 m"
+    },
+    {
+     "label": "pl mesurée",
+     "valeur": "1,65 MPa"
+    },
+    {
+     "label": "Nappe",
+     "valeur": "3 m"
+    },
+    {
+     "label": "γ / γsat",
+     "valeur": "20 / 21,5 kN/m³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Contrainte verticale effective σ'v0 au niveau de l'essai ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 134.75,
+     "explication": "σv0 = 20 × 3 + 21,5 × 6,5 = 199,8 kPa ; u = 10 × 6,5 = 65 kPa ; σ'v0 = σv0 − u = 134,8 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Pression horizontale totale au repos p0 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 132.375,
+     "explication": "p0 = u + K0 σ'v0 = 65 + 0,5 × 134,8 = 132,4 kPa : l'eau compte entière, le squelette pour moitié.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Pression limite nette pl* ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 1.51763,
+     "explication": "pl* = pl − p0 = 1,65 − 0,132 = 1,518 MPa. La correction représente 8 % de pl : elle n'est pas négligeable en profondeur et sous la nappe.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Quelle pression entre dans les formules de portance des deux référentiels ?",
+     "type": "choix",
+     "options": [
+      "la pression p0 au repos",
+      "la pression limite nette pl*",
+      "la pression limite mesurée pl",
+      "la pression de fluage pf"
+     ],
+     "reponse": 1,
+     "explication": "Les facteurs de portance kp multiplient la pression limite nette, qui mesure ce que le sol peut reprendre au-delà de son état initial. Les classes du Fascicule 62, elles, sont tabulées en pl."
+    }
+   ]
+  },
+  {
+   "id": "ch1-classe",
+   "titre": "Classer un sol au Fascicule 62",
+   "difficulte": 1,
+   "graine": 1060492039,
+   "enonce": "Un sol sableux donne au pressiomètre pl = 0,45 MPa et EM = 3,8 MPa.",
+   "donnees": [
+    {
+     "label": "Nature",
+     "valeur": "sable"
+    },
+    {
+     "label": "pl",
+     "valeur": "0,45 MPa"
+    },
+    {
+     "label": "EM",
+     "valeur": "3,8 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Classe du sol au Fascicule 62 (annexe E.1) ?",
+     "type": "choix",
+     "options": [
+      "Sables et graves moyennement compacts (B)",
+      "Sables et graves compacts (C)",
+      "Sables et graves lâches (A)"
+     ],
+     "reponse": 2,
+     "explication": "Le tableau donne pour les sables : A pour pl < 0,5 MPa, B pour pl de 1,0 à 2,0 MPa, C pour pl > 2,5 MPa. Avec 0,45 MPa, on retient la classe A."
+    },
+    {
+     "texte": "Rapport EM/pl ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 8.44444,
+     "explication": "EM/pl = 3,8 / 0,45 = 8,44.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Coefficient rhéologique α ?",
+     "type": "choix",
+     "options": [
+      "2/3",
+      "1",
+      "1/3",
+      "1/2"
+     ],
+     "reponse": 2,
+     "explication": "Pour un sable, EM/pl = 8,44 correspond à l'état « normalement serré » : α = 1/3. Un grand rapport EM/pl signale un sol surconsolidé ou serré."
+    }
+   ]
+  },
+  {
+   "id": "ch1-alpha",
+   "titre": "Coefficient rhéologique et état du sol",
+   "difficulte": 1,
+   "graine": 1845478228,
+   "enonce": "Dans un argile, l'essai pressiométrique donne EM = 38 MPa et pl = 2,0 MPa.",
+   "donnees": [
+    {
+     "label": "Nature",
+     "valeur": "argile"
+    },
+    {
+     "label": "EM",
+     "valeur": "38 MPa"
+    },
+    {
+     "label": "pl",
+     "valeur": "2,0 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rapport EM/pl ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 19,
+     "explication": "EM/pl = 38 / 2,0 = 19,00.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "État du sol d'après le tableau de α ?",
+     "type": "choix",
+     "options": [
+      "surconsolidé",
+      "sous-consolidé, altéré, remanié",
+      "normalement consolidé"
+     ],
+     "reponse": 0,
+     "explication": "Le tableau du coefficient rhéologique (F62 annexe C.5 ; NF P94-261 tableau H.2.1.1.1 corrigé) classe ce rapport dans « surconsolidé »."
+    },
+    {
+     "texte": "Coefficient α à retenir ?",
+     "type": "choix",
+     "options": [
+      "2/3",
+      "1/2",
+      "1/3",
+      "1"
+     ],
+     "reponse": 3,
+     "explication": "α = 1. Il sert au tassement (chapitre 7) et au module de réaction transversal des pieux (chapitre 12)."
+    }
+   ]
+  },
+  {
+   "id": "ch1-homogene",
+   "titre": "Une formation homogène ?",
+   "difficulte": 2,
+   "graine": 2940640432,
+   "enonce": "Quatre essais pressiométriques, espacés d'un mètre dans une même argile, donnent pl* = 1,05 ; 2,08 ; 1,80 ; 0,80 MPa.",
+   "donnees": [
+    {
+     "label": "Essai 1",
+     "valeur": "1,05 MPa"
+    },
+    {
+     "label": "Essai 2",
+     "valeur": "2,08 MPa"
+    },
+    {
+     "label": "Essai 3",
+     "valeur": "1,80 MPa"
+    },
+    {
+     "label": "Essai 4",
+     "valeur": "0,80 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rapport pl*,max / pl*,min ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2.6,
+     "explication": "2,08 / 0,80 = 2,60.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Selon le critère indicatif du guide Cerema, la formation est-elle homogène ?",
+     "type": "choix",
+     "options": [
+      "oui : le maximum ne dépasse pas deux fois le minimum",
+      "non : le maximum dépasse deux fois le minimum"
+     ],
+     "reponse": 1,
+     "explication": "Le guide Cerema de la NF P94-261 (note 27) considère, à titre indicatif, une formation comme homogène si elle est de nature unique et si ses pressions limites maximales n'excèdent pas deux fois les minimales."
+    },
+    {
+     "texte": "Moyenne géométrique des quatre valeurs (épaisseurs égales) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 1.33169,
+     "explication": "(1,05 × 2,08 × 1,80 × 0,80)^(1/4) = 1,332 MPa — c'est la forme que prend p_le* sous une semelle quand les épaisseurs sont égales (chapitre 4).",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Ce critère s'applique-t-il aux essais pénétrométriques ?",
+     "type": "choix",
+     "options": [
+      "oui, sans restriction",
+      "oui, à condition de doubler le seuil",
+      "non : les diagrammes de qc sont trop irréguliers"
+     ],
+     "reponse": 2,
+     "explication": "Le guide l'exclut explicitement pour le pénétromètre, dont les diagrammes sont trop irréguliers pour ce type de critère."
+    }
+   ]
+  },
+  {
+   "id": "ch1-categories",
+   "titre": "Du Fascicule 62 à l'Eurocode 7 : classer les sols",
+   "difficulte": 1,
+   "graine": 148196268,
+   "enonce": "Questions de cours sur la reconnaissance et le classement des sols.",
+   "questions": [
+    {
+     "texte": "Les lettres A, B, C des classes du Fascicule 62 traduisent…",
+     "type": "choix",
+     "options": [
+      "la résistance mesurée du sol (pl ou qc)",
+      "la profondeur de la couche",
+      "la nature minéralogique du sol",
+      "la position de la nappe"
+     ],
+     "reponse": 0,
+     "explication": "Au Fascicule 62, chaque famille (argiles, sables, craies, marnes, roches) est découpée en classes A, B, C selon les fourchettes de pl et de qc. La NF P94-261/262 ne garde que la nature : la résistance entre directement par pl* ou qc dans les formules."
+    },
+    {
+     "texte": "Un sable limoneux, dont la nature hésite entre sable et limon, relève à la NF P94-262 de…",
+     "type": "choix",
+     "options": [
+      "la catégorie des sables et graves",
+      "la catégorie des sols intermédiaires",
+      "la catégorie des marnes",
+      "la catégorie des argiles et limons"
+     ],
+     "reponse": 1,
+     "explication": "La norme a créé une catégorie « sols intermédiaires » entre les argiles-limons et les sables-graves. Le choix entre les catégories reste un jugement sur la nature dominante du sol."
+    },
+    {
+     "texte": "Le coefficient rhéologique α se lit…",
+     "type": "choix",
+     "options": [
+      "sur la seule pression limite pl",
+      "sur la résistance de pointe qc",
+      "sur le rapport EM/pl, selon la nature du sol",
+      "sur l'indice de plasticité"
+     ],
+     "reponse": 2,
+     "explication": "Un rapport EM/pl élevé indique un sol surconsolidé (argile) ou serré (sable) ; le tableau donne α selon la nature et ce rapport."
+    },
+    {
+     "texte": "Dans les tableaux pressiométriques des pieux (NF P94-262), un sol intermédiaire à dominante argileuse est traité comme…",
+     "type": "choix",
+     "options": [
+      "une argile",
+      "une craie",
+      "une marne",
+      "un sable"
+     ],
+     "reponse": 0,
+     "explication": "Les tableaux pressiométriques n'ont pas de colonne « intermédiaire » : ces sols y rejoignent la colonne de leur nature dominante. Les tableaux pénétrométriques, eux, en ont une."
+    }
+   ]
+  },
+  {
+   "id": "ch1-penetro",
+   "titre": "Pénétromètre et pressiomètre : deux regards sur un sable",
+   "difficulte": 1,
+   "graine": 3412994669,
+   "enonce": "Dans un sable, le pénétromètre statique donne qc = 4,5 MPa et, à la même profondeur, le pressiomètre pl = 0,25 MPa.",
+   "donnees": [
+    {
+     "label": "qc",
+     "valeur": "4,5 MPa"
+    },
+    {
+     "label": "pl",
+     "valeur": "0,25 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Classe d'après qc ?",
+     "type": "choix",
+     "options": [
+      "Sables et graves compacts (C)",
+      "Sables et graves moyennement compacts (B)",
+      "Sables et graves lâches (A)"
+     ],
+     "reponse": 2,
+     "explication": "Sables : A pour qc < 5 MPa, B de 8 à 15 MPa, C au-delà de 20 MPa. qc = 4,5 MPa → classe A."
+    },
+    {
+     "texte": "Classe d'après pl ?",
+     "type": "choix",
+     "options": [
+      "Sables et graves moyennement compacts (B)",
+      "Sables et graves compacts (C)",
+      "Sables et graves lâches (A)"
+     ],
+     "reponse": 2,
+     "explication": "Sables : A pour pl < 0,5 MPa, B de 1 à 2 MPa, C au-delà de 2,5 MPa. pl = 0,25 MPa → classe A."
+    },
+    {
+     "texte": "Lequel des deux essais donne aussi un module de déformation utilisable pour les tassements de Ménard ?",
+     "type": "choix",
+     "options": [
+      "le pressiomètre (EM)",
+      "aucun des deux",
+      "le pénétromètre (qc)"
+     ],
+     "reponse": 0,
+     "explication": "La méthode de Ménard utilise EM. Au pénétromètre, le tassement se calcule par Schmertmann, avec un module empirique 2,5 à 3,5 qc qui n'est pas un module d'Young."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,275 @@
+{
+  "cours": {
+    "titre": "Fondations des ouvrages",
+    "sous_titre": "Génie civil · Fascicule 62 titre V et Eurocode 7",
+    "etablissement": "École Nationale d'Ingénieurs de Sfax",
+    "enseignant": "Dr Ahmed Ksentini"
+  },
+  "parties": [
+    {
+      "id": "A",
+      "titre": "Bases",
+      "resume": "Le sol mesuré en place, les actions combinées, la sécurité répartie : ce qui est commun aux semelles et aux pieux."
+    },
+    {
+      "id": "B",
+      "titre": "Fondations superficielles",
+      "resume": "Semelles et radiers : excentrement, portance, glissement, tassement — au Fascicule 62 et à la NF P94-261."
+    },
+    {
+      "id": "C",
+      "titre": "Fondations profondes",
+      "resume": "Pieux et barrettes : portance, justification, frottement négatif, groupes et efforts transversaux — au Fascicule 62 et à la NF P94-262."
+    },
+    {
+      "id": "D",
+      "titre": "Compléments",
+      "resume": "Situations sismiques : la portance d'une semelle selon l'annexe F de l'Eurocode 8."
+    }
+  ],
+  "chapitres": [
+    {
+      "id": "ch1",
+      "number": 1,
+      "partie": "A",
+      "title": "Le sol de fondation et sa reconnaissance",
+      "description": "Pressiomètre Ménard, pénétromètre statique, essais de laboratoire ; pression limite nette, catégories de sols du Fascicule 62 et de l'Eurocode 7, coefficient rhéologique.",
+      "notions": [
+        "essai pressiométrique : EM, pf, pl",
+        "pression limite nette pl* = pl − p0",
+        "pénétromètre statique : qc",
+        "classes A, B, C du Fascicule 62",
+        "catégories conventionnelles de l'EC7",
+        "sols intermédiaires",
+        "coefficient rhéologique α",
+        "valeurs caractéristiques",
+        "formation homogène"
+      ],
+      "exercices": 6,
+      "cours": true
+    },
+    {
+      "id": "ch2",
+      "number": 2,
+      "partie": "A",
+      "title": "Actions, combinaisons et sécurité",
+      "description": "États limites, situations de projet, combinaisons du Fascicule 62 et de l'Eurocode 0 ; approche de calcul 2 ; où chaque référentiel place ses coefficients.",
+      "notions": [
+        "ELU fondamental et accidentel",
+        "ELS rare / caractéristique, fréquent, quasi permanent",
+        "combinaisons du Fascicule 62 (A.5)",
+        "combinaisons de l'Eurocode 0",
+        "approche de calcul 2",
+        "facteurs partiels et coefficients de modèle",
+        "niveaux d'eau de référence",
+        "actions dues au sol"
+      ],
+      "exercices": 6,
+      "cours": true
+    },
+    {
+      "id": "ch3",
+      "number": 3,
+      "partie": "B",
+      "title": "Géométrie, encastrement et excentrement",
+      "description": "Encastrement équivalent De, diagramme des contraintes, surface comprimée, modèle de Meyerhof et contrainte de référence ; les critères d'excentrement comparés.",
+      "notions": [
+        "superficielle, semi-profonde, profonde",
+        "hauteur d'encastrement équivalente De",
+        "diagramme trapézoïdal ou triangulaire",
+        "surface comprimée : 100 %, 75 %, 10 %",
+        "q'ref = (3 q'max + q'min)/4",
+        "largeur de Meyerhof B' = B − 2e",
+        "ie et A' de l'EC7",
+        "critères 2/3, 1/2, 1/15"
+      ],
+      "exercices": 6,
+      "cours": true
+    },
+    {
+      "id": "ch4",
+      "number": 4,
+      "partie": "B",
+      "title": "Portance à partir des essais en place",
+      "description": "Pression limite nette équivalente et résistance de pointe équivalente, facteurs kp et kc, inclinaison de la charge et talus ; la vérification au Fascicule 62 et à la NF P94-261.",
+      "notions": [
+        "ple* : moyenne géométrique sur hr",
+        "qce : moyenne écrêtée à 1,3 qcm",
+        "kp, kc du Fascicule 62",
+        "kp, kc de la NF P94-261",
+        "iδ : Φ1, Φ2",
+        "iβ : proximité d'un talus",
+        "q'ref ≤ (q'u − q'0) iδβ/γq + q'0",
+        "Vd − R0 ≤ A' qnet/(γR;v γR;d;v)"
+      ],
+      "exercices": 8,
+      "cours": true
+    },
+    {
+      "id": "ch5",
+      "number": 5,
+      "partie": "B",
+      "title": "Portance par la méthode c–φ",
+      "description": "La formule à trois termes de l'annexe D de la NF EN 1997-1 : conditions drainées et non drainées, facteurs de forme et d'inclinaison, nappe ; vérification brute (approche 2) ou nette avec le coefficient de modèle de l'annexe F de la NF P94-261.",
+      "notions": [
+        "Nq, Nc, Nγ",
+        "mécanisme de Prandtl",
+        "surface effective B' L'",
+        "facteurs de forme s",
+        "facteurs d'inclinaison i",
+        "conditions non drainées (π + 2) cu",
+        "déjaugeage sous la nappe",
+        "γR;v = 1,4 (approche 2)",
+        "annexe F : γR;d;v = 2,0 ou 1,2"
+      ],
+      "exercices": 5,
+      "cours": true
+    },
+    {
+      "id": "ch6",
+      "number": 6,
+      "partie": "B",
+      "title": "Glissement et dispositions constructives",
+      "description": "Résistance au glissement drainée et non drainée, butée frontale, profondeur hors gel, distance au talus, stabilité d'ensemble.",
+      "notions": [
+        "Hd ≤ Vd tanφ'/1,2 + c'A'/1,5 (F62)",
+        "Rh;d = Vd tanδa;k/(γR;h γR;d;h)",
+        "non drainé : min(A' cu ; 0,4 Vd)",
+        "δa;k = φ'crit ou 2/3 φ'crit",
+        "butée négligée",
+        "0,50 m hors gel, 2 m du talus"
+      ],
+      "exercices": 5,
+      "cours": true
+    },
+    {
+      "id": "ch7",
+      "number": 7,
+      "partie": "B",
+      "title": "Tassements et module de réaction",
+      "description": "Méthode pressiométrique de Ménard, méthode de Schmertmann, méthodes élastique et œdométrique, module de réaction et répartition des contraintes.",
+      "notions": [
+        "tassement sphérique sc et déviatorique sd",
+        "modules Ec et Ed par tranches B/2",
+        "coefficients de forme λc, λd",
+        "Schmertmann : facteur Iz",
+        "abaques de Giroud",
+        "consolidation œdométrique",
+        "module de réaction kv",
+        "valeurs admissibles"
+      ],
+      "exercices": 6,
+      "cours": true
+    },
+    {
+      "id": "ch8",
+      "number": 8,
+      "partie": "C",
+      "title": "Les pieux : technologies et comportement",
+      "description": "Mise en œuvre avec ou sans refoulement, classes et catégories de la NF P94-262, courbe de chargement, charge limite et charge de fluage.",
+      "notions": [
+        "forés, vissés, battus, injectés",
+        "refoulement du sol",
+        "8 classes, 20 catégories",
+        "courbe de chargement, Qu à B/10",
+        "résistance de pointe, frottement axial",
+        "charge de fluage 0,5 / 0,7",
+        "pieu flottant"
+      ],
+      "exercices": 6,
+      "cours": true
+    },
+    {
+      "id": "ch9",
+      "number": 9,
+      "partie": "C",
+      "title": "Portance d'un pieu isolé",
+      "description": "Méthodes pressiométrique et pénétrométrique : ple* et qce sous la pointe, kp et kc, frottement unitaire par les courbes Q1–Q7 (F62) ou par αpieu-sol·fsol (EC7).",
+      "notions": [
+        "intervalle [D − b ; D + 3a]",
+        "kp du Fascicule 62",
+        "kpmax, encastrement effectif Def",
+        "courbes Q1 à Q7",
+        "fsol, αpieu-sol, qsmax",
+        "méthode pénétrométrique",
+        "pieux métalliques ouverts"
+      ],
+      "exercices": 8,
+      "cours": true
+    },
+    {
+      "id": "ch10",
+      "number": 10,
+      "partie": "C",
+      "title": "Justifier un pieu",
+      "description": "Qmax et Qmin du Fascicule 62 ; modèle de terrain, pieu modèle et essais de chargement à la NF P94-262 ; traction ; tassement d'un pieu isolé.",
+      "notions": [
+        "Qu/1,4, Qc/1,1, Qc/1,4",
+        "γR;d1 et γR;d2",
+        "facteurs de corrélation ξ",
+        "γt, γb, γs, γcr",
+        "procédure pieu modèle",
+        "essais de chargement statique",
+        "tassement forfaitaire, Frank et Zhao"
+      ],
+      "exercices": 7,
+      "cours": true
+    },
+    {
+      "id": "ch11",
+      "number": 11,
+      "partie": "C",
+      "title": "Frottement négatif et groupes de pieux",
+      "description": "Méthode de Combarieu, hauteur d'action, pieux en groupe ; règles de cumul ; coefficient d'efficacité et bloc monolithique.",
+      "notions": [
+        "K tanδ et accrochage λ",
+        "σ'v(z) de proche en proche",
+        "hauteur d'action min(h1 ; h2)",
+        "Fn(b) dans un groupe",
+        "cumul max(Fn ; Q)",
+        "Converse-Labarre",
+        "Ce de la NF P94-262",
+        "bloc monolithique"
+      ],
+      "exercices": 6,
+      "cours": true
+    },
+    {
+      "id": "ch12",
+      "number": 12,
+      "partie": "C",
+      "title": "Pieux sous efforts transversaux",
+      "description": "Module de réaction de Ménard, lois de réaction courte et longue durée, poutre sur appuis élastiques, pieu souple ou rigide, poussées latérales du sol.",
+      "notions": [
+        "Kf de Ménard",
+        "paliers B pf* et B pl*",
+        "longueur de transfert l0",
+        "tête libre ou encastrée",
+        "minoration près de la surface",
+        "effets de groupe transversaux",
+        "déplacement libre g(z)"
+      ],
+      "exercices": 6,
+      "cours": true
+    },
+    {
+      "id": "ch13",
+      "number": 13,
+      "partie": "D",
+      "title": "Semelles sous séisme",
+      "description": "Portance sismique d'une semelle filante selon l'annexe F de la NF EN 1998-5, avec les précisions de la NF P94-261 : efforts normalisés, inertie du sol, surface limite, sols cohérents et frottants.",
+      "notions": [
+        "combinaison sismique G + AEd + ψ2 Q",
+        "NF EN 1998-5 annexe F",
+        "Nmax, efforts normalisés N̄, V̄, M̄",
+        "force d'inertie du sol F̄",
+        "sols purement cohérents",
+        "sols purement frottants",
+        "γRd (tableau F.2), γM",
+        "glissement sous séisme"
+      ],
+      "exercices": 4,
+      "cours": true
+    }
+  ]
+}

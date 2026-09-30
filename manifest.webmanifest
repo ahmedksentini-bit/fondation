@@ -1,0 +1,14 @@
+{
+  "name": "Fondations des ouvrages — Fascicule 62 et Eurocode 7",
+  "short_name": "Fondations",
+  "description": "Cours, exercices, exerciseur et bureau de calcul des fondations superficielles et profondes, au Fascicule 62 titre V et à l'Eurocode 7",
+  "lang": "fr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f8fb",
+  "theme_color": "#075985",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

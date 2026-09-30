@@ -1,0 +1,294 @@
+{
+ "chapitre": "ch11",
+ "exercices": [
+  {
+   "id": "ch11-lambda",
+   "titre": "Effet d'accrochage de Combarieu",
+   "difficulte": 1,
+   "graine": 3289724924,
+   "enonce": "Pieu tubé de rayon R = 0,40 m traversant argiles et limons mous.",
+   "donnees": [
+    {
+     "label": "Sol",
+     "valeur": "Argiles et limons mous"
+    },
+    {
+     "label": "Pieu",
+     "valeur": "tube"
+    },
+    {
+     "label": "R",
+     "valeur": "0,40 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "K tanδ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.1,
+     "explication": "Tableau de l'annexe G.2 (F62) / H.2.2.1 (NF P94-262) : K tanδ = 0,10.",
+     "tolerance": 0.001
+    },
+    {
+     "texte": "Coefficient λ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.333333,
+     "explication": "K tanδ ≤ 0,15 : λ = 1/(0,5 + 25 K tanδ) = 0,333.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "μ = λ²/(1 + λ) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.0833333,
+     "explication": "μ = 0,333² / 1,333 = 0,0833.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Longueur caractéristique L0 = R/(μ K tanδ) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 48,
+     "explication": "L0 = 0,40 / (0,0833 × 0,10) = 48,0 m : sur une couche beaucoup plus mince que L0, σ'v au contact reste proche de sa valeur en tête.",
+     "toleranceRel": 0.015
+    }
+   ]
+  },
+  {
+   "id": "ch11-fn-sable",
+   "titre": "Frottement négatif sans accrochage",
+   "difficulte": 2,
+   "graine": 1799356431,
+   "enonce": "Un pieu de diamètre B = 0,4 m traverse 8,0 m de sable lâche (γ' = 8,5 kN/m³, K tanδ = 0,45) sur lequel on applique une surcharge étendue q = 75 kPa. Toute la couche tasse plus que le pieu.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "0,4 m"
+    },
+    {
+     "label": "Couche",
+     "valeur": "8,0 m · γ' = 8,5 kN/m³"
+    },
+    {
+     "label": "q",
+     "valeur": "75 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Coefficient λ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0,
+     "explication": "K tanδ = 0,45 > 0,385 : λ = 0, pas d'effet d'accrochage — la contrainte au contact est celle du champ libre σ'1 = q + γ' z.",
+     "tolerance": 0.001
+    },
+    {
+     "texte": "∫ σ'v dz sur la couche ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 872,
+     "explication": "∫ (q + γ' z) dz = q H + γ' H²/2 = 600 + 272 = 872 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Frottement négatif Fn ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 493.104,
+     "explication": "Fn = P K tanδ ∫ σ'v dz = 1,257 × 0,45 × 872 = 493,1 kN.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch11-cumul",
+   "titre": "Cumul du frottement négatif et des charges variables",
+   "difficulte": 2,
+   "graine": 1871715559,
+   "enonce": "Tête de pieu : effort permanent (parts quasi permanentes des variables comprises) G' = 1 300 kN ; part non quasi permanente des actions variables Q' = 250 kN ; frottement négatif caractéristique Gsn = 650 kN.",
+   "donnees": [
+    {
+     "label": "G'",
+     "valeur": "1 300 kN"
+    },
+    {
+     "label": "Q'",
+     "valeur": "250 kN"
+    },
+    {
+     "label": "Gsn",
+     "valeur": "650 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Gsn,d à l'ELU (défavorable) ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 877.5,
+     "explication": "γsn = 1,35 : 877,5 kN (au Fascicule 62 : 1,125 × 1,2 = 1,35 également).",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Q'd ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 375,
+     "explication": "1,5 × 250 = 375 kN.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Effort axial de calcul Fd ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2632.5,
+     "explication": "Fd = G'd + max(Gsn,d ; Q'd) = 1 755 + max(877,5 ; 375) = 2 632,5 kN.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Ce qu'aurait donné, à tort, la somme des maxima ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 3007.5,
+     "explication": "3 007,5 kN, soit 375 kN de trop : une charge variable réduit le frottement négatif au lieu de s'y ajouter.",
+     "toleranceRel": 0.005
+    }
+   ]
+  },
+  {
+   "id": "ch11-converse",
+   "titre": "Coefficient d'efficacité au Fascicule 62",
+   "difficulte": 1,
+   "graine": 3147779662,
+   "enonce": "Groupe de 2 × 4 pieux de diamètre B = 0,9 m, en maille carrée d'entraxe d = 2,70 m.",
+   "donnees": [
+    {
+     "label": "m × n",
+     "valeur": "2 × 4"
+    },
+    {
+     "label": "B · d",
+     "valeur": "0,9 · 2,70 m"
+    },
+    {
+     "label": "d/B",
+     "valeur": "3,00"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Converse-Labarre ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.743959,
+     "explication": "Ce = 1 − [arctan(B/d)/(π/2)] (2 − 1/m − 1/n) = 1 − [0,3218/1,5708] × 1,250 = 0,744.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Formule des sols cohérents ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1,
+     "explication": "d ≥ 3B : Ce = 1.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Dans un sable lâche, avec des pieux battus, quelle valeur le Fascicule 62 autorise-t-il ?",
+     "type": "choix",
+     "options": [
+      "Converse-Labarre",
+      "la formule des sols cohérents",
+      "Ce = 1"
+     ],
+     "reponse": 2,
+     "explication": "Le battage densifie le sable lâche : le groupe porte au moins autant que la somme des pieux (F62 annexe G.1 § 2.5,2) — à condition de battre d'abord les pieux périphériques."
+    }
+   ]
+  },
+  {
+   "id": "ch11-ce-ec7",
+   "titre": "Effet de groupe à la NF P94-262",
+   "difficulte": 2,
+   "graine": 3670389683,
+   "enonce": "Groupe de 3 × 5 pieux, B = 0,6 m, d = 1,68 m. Pour un pieu isolé : Rb;d = 740 kN, Rs;d = 1 400 kN.",
+   "donnees": [
+    {
+     "label": "m × n",
+     "valeur": "3 × 5"
+    },
+    {
+     "label": "d/B",
+     "valeur": "2,80"
+    },
+    {
+     "label": "Rb;d · Rs;d",
+     "valeur": "740 · 1 400 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cd ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.05,
+     "explication": "Cd = 1 − ¼ (1 + d/B) = 1 − ¼ × 3,80 = 0,050.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Ce ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.926667,
+     "explication": "Ce = 1 − Cd [2 − (1/m + 1/n)] = 1 − 0,050 × 1,467 = 0,927.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance de calcul du groupe ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 30560,
+     "explication": "N (Rb;d + Ce Rs;d) = 15 × (740 + 0,927 × 1 400) = 30 560 kN : seul le frottement est réduit.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch11-rayon",
+   "titre": "Pieu au sein d'un groupe : cylindre d'influence",
+   "difficulte": 2,
+   "graine": 436778000,
+   "enonce": "Groupe en maille rectangulaire d × d' = 1,4 m × 1,7 m sous un remblai qui applique q = 40 kPa au terrain naturel.",
+   "donnees": [
+    {
+     "label": "d × d'",
+     "valeur": "1,4 × 1,7 m"
+    },
+    {
+     "label": "q",
+     "valeur": "40 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rayon d'influence b ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.870389,
+     "explication": "b = √(d d'/π) = √(2,38/π) = 0,870 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Borne π b² q du frottement négatif d'un pieu intérieur ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 95.2,
+     "explication": "π × 0,870² × 40 = 95,2 kN : un pieu ne peut pas porter plus que le poids de remblai de sa cellule.",
+     "toleranceRel": 0.01
+    }
+   ]
+  }
+ ]
+}

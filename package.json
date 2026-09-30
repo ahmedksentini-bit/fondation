@@ -1,0 +1,14 @@
+{
+  "name": "fondations-f62-ec7",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Fondations des ouvrages : cours, exercices, exerciseur et bureau de calcul au Fascicule 62 titre V et à l'Eurocode 7",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "exercices": "node tools/generer-exercices.mjs",
+    "sw": "python tools/generer-sw.py",
+    "polycopie": "python tools/polycopie.py",
+    "serve": "npx serve ."
+  }
+}

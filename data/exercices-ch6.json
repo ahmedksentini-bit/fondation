@@ -1,0 +1,271 @@
+{
+ "chapitre": "ch6",
+ "exercices": [
+  {
+   "id": "ch6-f62",
+   "titre": "Glissement au Fascicule 62",
+   "difficulte": 1,
+   "graine": 4292008927,
+   "enonce": "Semelle filante B = 2,3 m, V = 430 kN/m excentrée de e = 0,57 m, H = 142 kN/m (ELU, combinaison la plus défavorable). Sol : φ' = 33°, c' = 10 kPa.",
+   "donnees": [
+    {
+     "label": "B · e",
+     "valeur": "2,3 · 0,57 m"
+    },
+    {
+     "label": "Vd · Hd",
+     "valeur": "430 · 142 kN/m"
+    },
+    {
+     "label": "φ' · c'",
+     "valeur": "33° · 10 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Surface comprimée A' (par mètre) ?",
+     "type": "nombre",
+     "unite": "m²/m",
+     "reponse": 1.74,
+     "explication": "e > B/6 : A' = 3(B/2 − e) = 1,740 m²/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance au glissement de calcul ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 244.304,
+     "explication": "Vd tanφ'/1,2 + c'A'/1,5 = 430 × 0,649 / 1,2 + 10 × 1,740 / 1,5 = 232,7 + 11,6 = 244,3 kN/m.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Glissement vérifié ?",
+     "type": "choix",
+     "options": [
+      "non",
+      "oui"
+     ],
+     "reponse": 1,
+     "explication": "Hd = 142 kN/m ≤ 244,3 kN/m (taux 0,58)."
+    }
+   ]
+  },
+  {
+   "id": "ch6-ec7-dr",
+   "titre": "Glissement drainé à la NF P94-261",
+   "difficulte": 1,
+   "graine": 4272865857,
+   "enonce": "Semelle coulée en place ; Vd = 630 kN/m, Hd = 284 kN/m à l'ELU fondamental ; angle de frottement à l'état critique du sol φ'crit = 30°.",
+   "donnees": [
+    {
+     "label": "Vd · Hd",
+     "valeur": "630 · 284 kN/m"
+    },
+    {
+     "label": "φ'crit",
+     "valeur": "30°"
+    },
+    {
+     "label": "Semelle",
+     "valeur": "coulée en place"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Angle de frottement d'interface δa;k ?",
+     "type": "nombre",
+     "unite": "°",
+     "reponse": 30,
+     "explication": "Coulée en place : δ = φ'crit = 30°.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Rh;d ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 300.604,
+     "explication": "Rh;d = Vd tanδ / (γR;h γR;d;h) = 630 × 0,577 / (1,1 × 1,1) = 300,6 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Glissement vérifié ?",
+     "type": "choix",
+     "options": [
+      "non",
+      "oui"
+     ],
+     "reponse": 1,
+     "explication": "Hd = 284 ≤ 300,6 kN/m (taux 0,94). La cohésion effective est négligée."
+    }
+   ]
+  },
+  {
+   "id": "ch6-ec7-nd",
+   "titre": "Glissement à court terme sur une argile",
+   "difficulte": 2,
+   "graine": 347991917,
+   "enonce": "Semelle filante B = 2,5 m sur argile saturée (cu = 35 kPa), charge excentrée de e = 0,03 m. ELU : Vd = 320 kN/m, Hd = 112 kN/m.",
+   "donnees": [
+    {
+     "label": "B · e",
+     "valeur": "2,5 · 0,03 m"
+    },
+    {
+     "label": "cu",
+     "valeur": "35 kPa"
+    },
+    {
+     "label": "Vd · Hd",
+     "valeur": "320 · 112 kN/m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Terme d'adhérence A' cu / (γR;h γR;d;h) ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 70.5785,
+     "explication": "A' = B − 2e = 2,44 m²/m ; 2,44 × 35 / 1,21 = 70,58 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Plafond 0,4 Vd ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 128,
+     "explication": "0,4 × 320 = 128 kN/m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Rh;d retenue ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 70.5785,
+     "explication": "Le minimum des deux : 70,58 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Si la vérification échouait, que recommanderait le commentaire du Fascicule 62 ?",
+     "type": "choix",
+     "options": [
+      "une disposition constructive (bêche, butons…)",
+      "augmenter cu dans le calcul",
+      "élargir la semelle jusqu'à ce que le calcul passe"
+     ],
+     "reponse": 0,
+     "explication": "F62 B.3.4 (commentaire) : un risque de glissement à court terme se traite de préférence par des dispositions constructives plutôt que par le dimensionnement de la fondation."
+    }
+   ]
+  },
+  {
+   "id": "ch6-vmin",
+   "titre": "Le bon V pour vérifier le glissement",
+   "difficulte": 2,
+   "graine": 2072700061,
+   "enonce": "Une semelle coulée en place reçoit G = 550 kN/m (poids propre compris), une charge d'exploitation verticale Qv = 70 kN/m et un effort variable horizontal Qh = 110 kN/m indépendant de Qv. Sol : φ'crit = 27°.",
+   "donnees": [
+    {
+     "label": "G",
+     "valeur": "550 kN/m"
+    },
+    {
+     "label": "Qv · Qh",
+     "valeur": "70 · 110 kN/m"
+    },
+    {
+     "label": "φ'crit",
+     "valeur": "27°"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Hd à l'ELU ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 165,
+     "explication": "Hd = 1,5 Qh = 165 kN/m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Vd à associer à Hd pour le glissement ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 550,
+     "explication": "G est favorable (γG = 1,0) et Qv, favorable, est omise : Vd = 550 kN/m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Rh;d correspondante ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 231.602,
+     "explication": "550 × tan27° / 1,21 = 231,6 kN/m : taux 0,71.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rh;d que l'on trouverait à tort avec 1,35 G + 1,5 Qv ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 356.878,
+     "explication": "Vd = 847,5 kN/m donnerait 356,9 kN/m, soit 54 % de résistance fictive.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch6-stabilite",
+   "titre": "Paramètres de calcul pour la stabilité d'ensemble",
+   "difficulte": 1,
+   "graine": 1163740042,
+   "enonce": "Talus sous une semelle : φ' = 30°, c' = 15 kPa, et à court terme cu = 40 kPa.",
+   "donnees": [
+    {
+     "label": "φ'",
+     "valeur": "30°"
+    },
+    {
+     "label": "c'",
+     "valeur": "15 kPa"
+    },
+    {
+     "label": "cu",
+     "valeur": "40 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "φd au Fascicule 62 (B.3.6) ?",
+     "type": "nombre",
+     "unite": "°",
+     "reponse": 25.6934,
+     "explication": "tanφd = tan30°/1,20 = 0,4811 ⇒ φd = 25,69°.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "φ'd en approche 3 (γφ' = 1,25) ?",
+     "type": "nombre",
+     "unite": "°",
+     "reponse": 24.7913,
+     "explication": "tanφ'd = tan30°/1,25 = 0,4619 ⇒ φ'd = 24,79°.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "cd au Fascicule 62 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 10,
+     "explication": "cd = c/1,50 = 10,00 kPa (contre 12,00 kPa en approche 3).",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "cu,d en approche 3 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 28.5714,
+     "explication": "cu,d = cu/1,4 = 28,57 kPa (contre cu/1,5 = 26,67 kPa au Fascicule 62).",
+     "toleranceRel": 0.01
+    }
+   ]
+  }
+ ]
+}

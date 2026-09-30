@@ -1,0 +1,330 @@
+{
+ "chapitre": "ch3",
+ "exercices": [
+  {
+   "id": "ch3-De",
+   "titre": "Encastrement équivalent sous une couverture faible",
+   "difficulte": 1,
+   "graine": 660651473,
+   "enonce": "Une semelle de largeur B = 2,8 m est fondée à D = 2,1 m sous une couverture de pl* = 0,40 MPa ; sous la base, ple* = 1,30 MPa.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "2,8 m"
+    },
+    {
+     "label": "D",
+     "valeur": "2,1 m"
+    },
+    {
+     "label": "pl* couverture",
+     "valeur": "0,40 MPa"
+    },
+    {
+     "label": "ple*",
+     "valeur": "1,30 MPa"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 560 220\" role=\"img\" aria-label=\"Coupe de la semelle\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f0-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f0-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f0-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f0-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f0-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}</style>\n  <rect x=\"176.2\" y=\"58.0\" width=\"207.6\" height=\"48.7\" fill=\"#e8dcc3\"/>\n    <rect x=\"176.2\" y=\"58.0\" width=\"207.6\" height=\"48.7\" fill=\"url(#f0-argile)\"/><text x=\"377.8\" y=\"76.0\" text-anchor=\"end\" class=\"gr\" style=\"font-size:11px\">pl* = 0,40 MPa</text><rect x=\"176.2\" y=\"106.7\" width=\"207.6\" height=\"97.3\" fill=\"#f3e5ae\"/>\n    <rect x=\"176.2\" y=\"106.7\" width=\"207.6\" height=\"97.3\" fill=\"url(#f0-sable)\"/><text x=\"377.8\" y=\"124.7\" text-anchor=\"end\" class=\"gr\" style=\"font-size:11px\">ple* = 1,30 MPa</text><path d=\"M176.2 58.0L383.8 58.0\" stroke=\"#334155\" stroke-width=\"1.8\" fill=\"none\" /><text x=\"379.8\" y=\"52.0\" text-anchor=\"end\" class=\"pt\">TN après travaux</text><rect x=\"247.6\" y=\"84.0\" width=\"64.9\" height=\"22.7\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.6\"/><rect x=\"247.6\" y=\"84.0\" width=\"64.9\" height=\"22.7\" fill=\"url(#f0-beton)\"/><rect x=\"271.9\" y=\"24.0\" width=\"16.2\" height=\"60.0\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.6\"/><path d=\"M247.6 118.7L312.4 118.7\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f0-fc)\" marker-end=\"url(#f0-fc)\"/>\n    <text x=\"280.0\" y=\"132.7\" text-anchor=\"middle\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">B = 2,8 m</text><path d=\"M233.6 58.0L233.6 106.7\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f0-fc)\" marker-end=\"url(#f0-fc)\"/>\n    <text x=\"228.6\" y=\"86.3\" text-anchor=\"end\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">D = 2,1 m</text></svg>",
+   "questions": [
+    {
+     "texte": "Hauteur d'encastrement équivalente De ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.646154,
+     "explication": "De = (1/ple*) ∫ pl*(z) dz = 0,40 × 2,1 / 1,30 = 0,646 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Encastrement relatif De/B ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.230769,
+     "explication": "0,646 / 2,8 = 0,231.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Type de fondation ?",
+     "type": "choix",
+     "options": [
+      "superficielle",
+      "semi-profonde",
+      "profonde"
+     ],
+     "reponse": 0,
+     "explication": "De/B < 1,5 : fondation superficielle. C'est De/B, et non D/B = 0,75, qui classe la fondation."
+    }
+   ]
+  },
+  {
+   "id": "ch3-trapeze",
+   "titre": "Diagramme trapézoïdal et contrainte de référence",
+   "difficulte": 1,
+   "graine": 2946879177,
+   "enonce": "Semelle filante de largeur B = 2,5 m, sous V = 840 kN/m et M = 21,0 kN·m/m à la base.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "2,5 m"
+    },
+    {
+     "label": "V",
+     "valeur": "840 kN/m"
+    },
+    {
+     "label": "M",
+     "valeur": "21,0 kN·m/m"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 520 230\" role=\"img\" aria-label=\"Diagramme des contraintes sous la semelle\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f1-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f1-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f1-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f1-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f1-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}</style>\n  <rect x=\"70\" y=\"52\" width=\"380\" height=\"26\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.5\"/><rect x=\"70\" y=\"52\" width=\"380\" height=\"26\" fill=\"url(#f1-beton)\"/><path d=\"M263.8 8.0L263.8 48.0\" stroke=\"#dc2626\" stroke-width=\"2.4\" fill=\"none\" marker-end=\"url(#f1-fl)\"/>\n    <text x=\"270.8\" y=\"22.0\" text-anchor=\"start\" style=\"font-weight:800;fill:#dc2626\">V = 840</text><path d=\"M260.0 48.0L260.0 80.0\" stroke=\"#64748b\" stroke-width=\"1\" fill=\"none\" stroke-dasharray=\"3 3\"/><path d=\"M70.0 78.0L70.0 175.5L450.0 188.0L450.0 78.0Z\" fill=\"#0f766e\" fill-opacity=\".2\" stroke=\"#0f766e\" stroke-width=\"1.8\"/><text x=\"456.0\" y=\"192.0\" style=\"font-weight:800;fill:#0f766e\">q'max = 356,2 kPa</text><text x=\"76.0\" y=\"190.5\" style=\"font-weight:700;fill:#0f766e\">q'min = 315,8</text><path d=\"M70.0 216.0L450.0 216.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f1-fc)\" marker-end=\"url(#f1-fc)\"/>\n    <text x=\"260.0\" y=\"211.0\" text-anchor=\"middle\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">B = 2,5 m</text><path d=\"M70.0 42.0L450.0 42.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f1-fc)\" marker-end=\"url(#f1-fc)\"/>\n    <text x=\"260.0\" y=\"37.0\" text-anchor=\"middle\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">comprimée : 100 %</text></svg>",
+   "questions": [
+    {
+     "texte": "Excentrement e ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.025,
+     "explication": "e = M/V = 21,0 / 840 = 0,025 m < B/6 = 0,417 m : toute la semelle est comprimée.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Contrainte maximale q'max ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 356.16,
+     "explication": "q'max = (V/B)(1 + 6e/B) = 336 × 1,060 = 356,2 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Contrainte minimale q'min ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 315.84,
+     "explication": "q'min = (V/B)(1 − 6e/B) = 315,8 kPa.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Contrainte de référence q'ref du Fascicule 62 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 346.08,
+     "explication": "q'ref = (3 q'max + q'min)/4 = 346,1 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Contrainte uniforme de Meyerhof V/(B − 2e) ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 342.857,
+     "explication": "B' = 2,450 m ; V/B' = 342,9 kPa — proche de q'ref tant que l'excentrement est faible.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch3-triangle",
+   "titre": "Semelle partiellement décollée",
+   "difficulte": 2,
+   "graine": 3882711422,
+   "enonce": "Semelle filante B = 1,5 m, V = 280 kN/m, M = 92,4 kN·m/m (combinaison rare).",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "1,5 m"
+    },
+    {
+     "label": "V",
+     "valeur": "280 kN/m"
+    },
+    {
+     "label": "M",
+     "valeur": "92,4 kN·m/m"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 520 230\" role=\"img\" aria-label=\"Diagramme des contraintes sous la semelle\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f2-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f2-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f2-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f2-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f2-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f2-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f2-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}</style>\n  <rect x=\"70\" y=\"52\" width=\"380\" height=\"26\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.5\"/><rect x=\"70\" y=\"52\" width=\"380\" height=\"26\" fill=\"url(#f2-beton)\"/><path d=\"M343.6 8.0L343.6 48.0\" stroke=\"#dc2626\" stroke-width=\"2.4\" fill=\"none\" marker-end=\"url(#f2-fl)\"/>\n    <text x=\"350.6\" y=\"22.0\" text-anchor=\"start\" style=\"font-weight:800;fill:#dc2626\">V = 280</text><path d=\"M260.0 48.0L260.0 80.0\" stroke=\"#64748b\" stroke-width=\"1\" fill=\"none\" stroke-dasharray=\"3 3\"/><path d=\"M130.8 78.0L130.8 78.0L450.0 188.0L450.0 78.0Z\" fill=\"#0f766e\" fill-opacity=\".2\" stroke=\"#0f766e\" stroke-width=\"1.8\"/><rect x=\"70\" y=\"78\" width=\"60.8\" height=\"8\" fill=\"#fee2e2\"/><text x=\"100.4\" y=\"100.0\" text-anchor=\"middle\" style=\"fill:#b91c1c;font-size:11px;font-weight:800\">décollée</text><text x=\"456.0\" y=\"192.0\" style=\"font-weight:800;fill:#0f766e\">q'max = 444,4 kPa</text><path d=\"M70.0 216.0L450.0 216.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f2-fc)\" marker-end=\"url(#f2-fc)\"/>\n    <text x=\"260.0\" y=\"211.0\" text-anchor=\"middle\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">B = 1,5 m</text><path d=\"M130.8 42.0L450.0 42.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f2-fc)\" marker-end=\"url(#f2-fc)\"/>\n    <text x=\"290.4\" y=\"37.0\" text-anchor=\"middle\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">comprimée : 84 %</text></svg>",
+   "questions": [
+    {
+     "texte": "Largeur comprimée Bc ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.26,
+     "explication": "e = 0,330 m > B/6 : diagramme triangulaire, Bc = 3(B/2 − e) = 3 × (0,75 − 0,330) = 1,260 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Contrainte maximale q'max ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 444.444,
+     "explication": "q'max = 2V/Bc = 2 × 280 / 1,260 = 444,4 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Fraction comprimée (en %) ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 84,
+     "explication": "Bc/B = 1,260 / 1,5 = 84 %.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Le critère du Fascicule 62 sous combinaison rare est-il satisfait ?",
+     "type": "choix",
+     "options": [
+      "non : il faut 100 % sous combinaison rare",
+      "oui : au moins 75 % de la surface est comprimée"
+     ],
+     "reponse": 1,
+     "explication": "F62 B.3.3 : 75 % au moins sous combinaisons rares, soit e ≤ B/4 = 0,375 m. Ici 84 %."
+    }
+   ]
+  },
+  {
+   "id": "ch3-ie",
+   "titre": "Surface effective d'une semelle rectangulaire",
+   "difficulte": 2,
+   "graine": 866764496,
+   "enonce": "Semelle rectangulaire 2,3 m × 5,2 m, résultante excentrée de eB = 0,41 m selon B et eL = 0,10 m selon L (combinaison quasi permanente).",
+   "donnees": [
+    {
+     "label": "B × L",
+     "valeur": "2,3 × 5,2 m"
+    },
+    {
+     "label": "eB",
+     "valeur": "0,41 m"
+    },
+    {
+     "label": "eL",
+     "valeur": "0,10 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Coefficient ie ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.6144,
+     "explication": "ie = (1 − 2eB/B)(1 − 2eL/L) = 0,640 × 0,960 = 0,614.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Surface effective A' ?",
+     "type": "nombre",
+     "unite": "m²",
+     "reponse": 7.34822,
+     "explication": "A' = A · ie = 11,96 × 0,614 = 7,35 m², soit B' × L' = 1,47 × 4,99 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Le critère de la NF P94-261 à l'ELS quasi permanent est-il vérifié ?",
+     "type": "choix",
+     "options": [
+      "non : ie < 2/3",
+      "oui : ie ≥ 2/3"
+     ],
+     "reponse": 0,
+     "explication": "Tableau 9 du guide Cerema : pour une semelle rectangulaire, (1 − 2eB/B)(1 − 2eL/L) ≥ 2/3 aux ELS quasi permanents et fréquents. Ici 0,614."
+    }
+   ]
+  },
+  {
+   "id": "ch3-cercle",
+   "titre": "Semelle circulaire excentrée",
+   "difficulte": 3,
+   "graine": 1676269442,
+   "enonce": "Semelle circulaire de diamètre B = 3,9 m ; la résultante est excentrée de e = 1,01 m (ELS caractéristique).",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "3,9 m"
+    },
+    {
+     "label": "e",
+     "valeur": "1,01 m"
+    },
+    {
+     "label": "e/R",
+     "valeur": "0,520"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Coefficient de réduction ie (annexe Q) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.369099,
+     "explication": "ie = 2 arccos(e/R)/π − (2e/πR) √(1 − (e/R)²) avec e/R = 0,520 : ie = 0,369.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Critère 1 − 2e/B ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.48,
+     "explication": "1 − 2 × 1,01 / 3,9 = 0,480.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Critère d'excentrement à l'ELS caractéristique ?",
+     "type": "choix",
+     "options": [
+      "non vérifié : 1 − 2e/B < 9/16",
+      "vérifié : 1 − 2e/B ≥ 9/16"
+     ],
+     "reponse": 0,
+     "explication": "Pour une semelle circulaire, les seuils deviennent 3/40, 9/16 et 3/4 (ELU, ELS caractéristique, ELS quasi permanent) : ils correspondent aux mêmes surfaces comprimées que 1/15, 1/2 et 2/3 pour un rectangle."
+    }
+   ]
+  },
+  {
+   "id": "ch3-emax",
+   "titre": "Excentrements admissibles d'une semelle filante",
+   "difficulte": 1,
+   "graine": 908828389,
+   "enonce": "Semelle filante de largeur B = 3,2 m. On cherche les excentrements maximaux admis par le Fascicule 62.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "3,2 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Excentrement maximal à l'ELU (10 % comprimé) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.49333,
+     "explication": "3(B/2 − e) ≥ 0,1 B ⇒ e ≤ B/2 − B/30 = 7B/15 = 1,493 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Excentrement maximal sous combinaison rare (75 %) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.8,
+     "explication": "3(B/2 − e) ≥ 0,75 B ⇒ e ≤ B/4 = 0,800 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Excentrement maximal sous combinaison fréquente (100 %) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.533333,
+     "explication": "Diagramme trapézoïdal : e ≤ B/6 = 0,533 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Que valent ces limites exprimées en 1 − 2e/B, forme de la NF P94-261 ?",
+     "type": "choix",
+     "options": [
+      "1/10, 3/4 et 1",
+      "1/6, 1/4 et 7/15",
+      "1/15, 1/2 et 2/3"
+     ],
+     "reponse": 2,
+     "explication": "1 − 2(7B/15)/B = 1/15 ; 1 − 2(B/4)/B = 1/2 ; 1 − 2(B/6)/B = 2/3 : les critères de la norme sont ceux du fascicule, réécrits en largeur de Meyerhof."
+    }
+   ]
+  }
+ ]
+}

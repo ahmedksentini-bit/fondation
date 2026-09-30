@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<title>Fondations des ouvrages — couverture</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 297mm; }
+  body { font-family: Inter, -apple-system, "Segoe UI", sans-serif; color: #0f172a;
+    background: linear-gradient(160deg, #082f49 0%, #075985 58%, #0891b2 100%);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { position: relative; height: 297mm; padding: 34mm 22mm 24mm; color: #fff; overflow: hidden; }
+  .page:after { content: ""; position: absolute; right: -60mm; bottom: -70mm; width: 190mm; height: 190mm;
+    border: 30mm solid rgba(255,255,255,.07); border-radius: 50%; }
+  .eyebrow { margin: 0; color: #a5f3fc; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: 11pt; }
+  h1 { margin: 10mm 0 0; font-size: 44pt; line-height: 1.02; }
+  .sous { margin: 8mm 0 0; max-width: 150mm; color: #e0f2fe; font-size: 15pt; line-height: 1.4; }
+  .refs { display: flex; gap: 4mm; margin-top: 12mm; flex-wrap: wrap; }
+  .refs span { padding: 2.5mm 5mm; border-radius: 3mm; font-weight: 800; font-size: 11pt; }
+  .f62 { background: #fef3c7; color: #92400e; }
+  .ec7 { background: #ccfbf1; color: #115e59; }
+  .icone { position: absolute; right: 24mm; top: 120mm; width: 62mm; height: 62mm; opacity: .95; }
+  .contenu { position: absolute; left: 22mm; right: 22mm; bottom: 58mm; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 10mm;
+    color: #e0f2fe; font-size: 10.5pt; line-height: 1.45; }
+  .contenu strong { display: block; color: #fff; font-size: 11pt; margin-bottom: 1mm; }
+  .signature { position: absolute; left: 22mm; bottom: 22mm; padding: 4mm 6mm; border-left: 1mm solid #67e8f9;
+    background: rgba(255,255,255,.08); border-radius: 0 3mm 3mm 0; color: #e0f2fe; font-size: 11pt; }
+  .signature strong { color: #fff; }
+  .edition { position: absolute; right: 22mm; bottom: 24mm; color: #bae6fd; font-size: 10pt; text-align: right; }
+</style>
+</head><body>
+<div class="page">
+  <p class="eyebrow">Génie civil · Géotechnique</p>
+  <h1>Fondations<br>des ouvrages</h1>
+  <p class="sous">Semelles et pieux justifiés deux fois : au Fascicule 62 titre V et à l'Eurocode 7 —
+     pour voir ce qui change, et pourquoi.</p>
+  <div class="refs"><span class="f62">Fascicule 62 titre V</span><span class="ec7">NF EN 1997-1</span><span class="ec7">NF P94-261</span><span class="ec7">NF P94-262</span></div>
+  <svg class="icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="15" fill="rgba(255,255,255,.10)"/>
+    <path d="M6 24h52" stroke="#e0f2fe" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M8 40h8M40 40h16M8 50h6M50 50h6" stroke="#bae6fd" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+    <rect x="28" y="9" width="8" height="17" rx="1.5" fill="#fff"/>
+    <rect x="15" y="26" width="34" height="7" rx="1.5" fill="#fff"/>
+    <rect x="19" y="33" width="5" height="22" rx="1.2" fill="#fff" opacity=".92"/>
+    <rect x="40" y="33" width="5" height="22" rx="1.2" fill="#fff" opacity=".92"/>
+  </svg>
+  <div class="contenu">
+    <div><strong>A · Bases</strong>Le sol mesuré en place ; actions, combinaisons et sécurité.</div>
+    <div><strong>B · Fondations superficielles</strong>Excentrement, portance, méthode c–φ, glissement, tassements.</div>
+    <div><strong>C · Fondations profondes</strong>Technologies, portance, justification, frottement négatif, groupes, efforts transversaux.</div>
+    <div><strong>En ligne</strong>Cours interactif, exerciseur et bureau de calcul : les mêmes méthodes, à manipuler.</div>
+  </div>
+  <div class="signature">École Nationale d'Ingénieurs de Sfax<br><strong>Dr Ahmed Ksentini</strong></div>
+  <div class="edition" id="edition">Édition __DATE__</div>
+</div>
+</body></html>

@@ -1,0 +1,432 @@
+{
+ "chapitre": "ch4",
+ "exercices": [
+  {
+   "id": "ch4-ple",
+   "titre": "Pression limite nette équivalente sous une semelle",
+   "difficulte": 1,
+   "graine": 3940855296,
+   "enonce": "Semelle filante de largeur B = 1,8 m. Sous la base : 1,62 m à pl* = 1,00 MPa, puis 0,54 m à 0,55 MPa, puis 1,50 MPa.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "1,8 m"
+    },
+    {
+     "label": "couche 1",
+     "valeur": "1,62 m · 1,00 MPa"
+    },
+    {
+     "label": "couche 2",
+     "valeur": "0,54 m · 0,55 MPa"
+    },
+    {
+     "label": "couche 3",
+     "valeur": "1,50 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Épaisseur d'étude hr (charge centrée) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 2.7,
+     "explication": "hr = 1,5 B = 2,70 m ; la couche 3 y intervient sur 0,54 m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Pression limite nette équivalente ple* (moyenne géométrique) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.962256,
+     "explication": "ple* = (1,00^1,62 × 0,55^0,54 × 1,50^0,54)^(1/2,70) = 0,962 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Pour comparaison, moyenne arithmétique sur la même épaisseur ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 1.01,
+     "explication": "(1,620 + 0,297 + 0,810) / 2,70 = 1,010 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Pourquoi les deux textes prennent-ils la moyenne géométrique ?",
+     "type": "choix",
+     "options": [
+      "elle est plus simple à calculer",
+      "elle donne plus de poids à la couche la plus faible",
+      "elle est toujours supérieure à la moyenne arithmétique"
+     ],
+     "reponse": 1,
+     "explication": "La moyenne géométrique est toujours inférieure ou égale à la moyenne arithmétique, d'autant plus que le profil est contrasté : ici 4,7 % de moins. La couche molle pèse davantage, ce qui est le comportement réel d'une semelle."
+    }
+   ]
+  },
+  {
+   "id": "ch4-qce",
+   "titre": "Résistance de pointe équivalente écrêtée",
+   "difficulte": 2,
+   "graine": 2125356844,
+   "enonce": "Semelle filante B = 2,4 m sur un sable reconnu au pénétromètre : sous la base, 1,44 m à qc = 4,5 MPa, 0,54 m à 24,5 MPa, puis 4,0 MPa.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "2,4 m"
+    },
+    {
+     "label": "couche 1",
+     "valeur": "1,44 m · 4,5 MPa"
+    },
+    {
+     "label": "couche 2",
+     "valeur": "0,54 m · 24,5 MPa"
+    },
+    {
+     "label": "couche 3",
+     "valeur": "4,0 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Moyenne qcm sur hr = 1,5 B ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 7.275,
+     "explication": "qcm = (4,5 × 1,44 + 24,5 × 0,54 + 4,0 × 1,62) / 3,60 = 7,275 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Plafond d'écrêtage 1,3 qcm ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 9.4575,
+     "explication": "1,3 × 7,275 = 9,458 MPa : la couche 2 est écrêtée.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance de pointe équivalente qce ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 5.01863,
+     "explication": "qce = moyenne du profil écrêté = (4,50 × 1,44 + 9,46 × 0,54 + 4,00 × 1,62) / 3,60 = 5,019 MPa.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch4-kp-f62",
+   "titre": "Facteur de portance du Fascicule 62",
+   "difficulte": 1,
+   "graine": 2894046805,
+   "enonce": "Semelle filante de largeur B = 2,6 m, sol d'assise marnes et marno-calcaires tendres (classe A), De = 2,86 m.",
+   "donnees": [
+    {
+     "label": "Sol",
+     "valeur": "Marnes et marno-calcaires tendres (A)"
+    },
+    {
+     "label": "B",
+     "valeur": "2,6 m"
+    },
+    {
+     "label": "B/L",
+     "valeur": "0,000"
+    },
+    {
+     "label": "De",
+     "valeur": "2,86 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Encastrement relatif De/B ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.1,
+     "explication": "2,86 / 2,6 = 1,100.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Facteur de portance kp (F62 annexe B.1, tableau I) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.1782,
+     "explication": "kp = k0 [1 + a (0,6 + 0,4 B/L) De/B] = 1,0 × [1 + 0,27 × (0,6 + 0,4 × 0,000) × 1,100] = 1,178.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch4-kp-ec7",
+   "titre": "Facteur de portance de la NF P94-261",
+   "difficulte": 2,
+   "graine": 1636459202,
+   "enonce": "Semelle rectangulaire 2,8 m × 14,7 m sur un sable, De = 2,66 m.",
+   "donnees": [
+    {
+     "label": "Catégorie",
+     "valeur": "sable"
+    },
+    {
+     "label": "B × L",
+     "valeur": "2,8 × 14,7 m"
+    },
+    {
+     "label": "De",
+     "valeur": "2,66 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "kp pour B/L = 0 (filante) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.29552,
+     "explication": "k = k0 + (a + b De/B)(1 − e^(−c De/B)) avec k0 = 1,0, a = 0,30, b = 0,05, c = 2,0 et De/B = 0,950 : 1,296.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "kp pour B/L = 1 (carrée) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.38762,
+     "explication": "Mêmes formules avec k0 = 1,0, a = 0,22, b = 0,18, c = 5,0 : 1,388.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "kp de la semelle (B/L = 0,190) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.31307,
+     "explication": "Interpolation linéaire : 1,296 × (1 − 0,190) + 1,388 × 0,190 = 1,313.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch4-idelta",
+   "titre": "Réduction pour charge inclinée",
+   "difficulte": 2,
+   "graine": 3636591734,
+   "enonce": "Semelle filante B = 2,3 m, De = 1,72 m, sol frottant. Charges de calcul : Vd = 620 kN/m, Hd = 118 kN/m.",
+   "donnees": [
+    {
+     "label": "B · De",
+     "valeur": "2,3 m · 1,72 m"
+    },
+    {
+     "label": "Sol",
+     "valeur": "frottant"
+    },
+    {
+     "label": "Vd · Hd",
+     "valeur": "620 · 118 kN/m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Inclinaison δ de la charge ?",
+     "type": "nombre",
+     "unite": "°",
+     "reponse": 10.7758,
+     "explication": "δ = arctan(Hd/Vd) = arctan(118/620) = 10,78°.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Coefficient iδ de la NF P94-261 (sol frottant) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.682074,
+     "explication": "iδ = (1 − 2δ/π)² − (2δ/π)(2 − 3·2δ/π) e^(−De/B), avec 2δ/π = 0,1197 et e^(−De/B) = 0,472 : iδ = 0,682.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Même coefficient au Fascicule 62 (Φ2) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.682074,
+     "explication": "Φ2(δ) = (1 − δ/90)² (1 − e^(−De/B)) + [max(1 − δ/45 ; 0)]² e^(−De/B) = 0,682 : identique, les deux textes ont la même formule sous deux écritures.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch4-ibeta",
+   "titre": "Semelle en crête de talus",
+   "difficulte": 2,
+   "graine": 3338346354,
+   "enonce": "Semelle filante B = 3,0 m posée en surface (De = 0) sur un sable, à d = 3,75 m de la crête d'un talus de pente β = 26°.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "3,0 m"
+    },
+    {
+     "label": "d",
+     "valeur": "3,75 m"
+    },
+    {
+     "label": "β",
+     "valeur": "26°"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 560 220\" role=\"img\" aria-label=\"Coupe de la semelle\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f3-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f3-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f3-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f3-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f3-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f3-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f3-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f3-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f3-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}</style>\n  <rect x=\"175.4\" y=\"58.0\" width=\"209.3\" height=\"146.0\" fill=\"#f3e5ae\"/>\n    <rect x=\"175.4\" y=\"58.0\" width=\"209.3\" height=\"146.0\" fill=\"url(#f3-sable)\"/><path d=\"M175.36666666666667 57L214.3 57L175.4 77.0L175.36666666666667 77.0Z\" fill=\"#fff\"/><path d=\"M214.3 58.0L175.4 77.0\" stroke=\"#334155\" stroke-width=\"1.6\" fill=\"none\" /><text x=\"184.3\" y=\"84.0\" class=\"pt\">β = 26°</text><path d=\"M214.3 46.0L287.3 46.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f3-fc)\" marker-end=\"url(#f3-fc)\"/>\n    <text x=\"250.8\" y=\"41.0\" text-anchor=\"middle\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">d = 3,75 m</text><path d=\"M175.4 58.0L384.6 58.0\" stroke=\"#334155\" stroke-width=\"1.8\" fill=\"none\" /><text x=\"380.6\" y=\"52.0\" text-anchor=\"end\" class=\"pt\">TN après travaux</text><rect x=\"287.3\" y=\"58.0\" width=\"58.4\" height=\"5.8\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.6\"/><rect x=\"287.3\" y=\"58.0\" width=\"58.4\" height=\"5.8\" fill=\"url(#f3-beton)\"/><rect x=\"309.2\" y=\"24.0\" width=\"14.6\" height=\"34.0\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.6\"/><path d=\"M287.3 75.8L345.7 75.8\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f3-fc)\" marker-end=\"url(#f3-fc)\"/>\n    <text x=\"316.5\" y=\"89.8\" text-anchor=\"middle\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">B = 3 m</text><path d=\"M273.3 58.0L273.3 63.8\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f3-fc)\" marker-end=\"url(#f3-fc)\"/>\n    <text x=\"268.3\" y=\"64.9\" text-anchor=\"end\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">D = 0,3 m</text></svg>",
+   "questions": [
+    {
+     "texte": "Rapport d/8B ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.15625,
+     "explication": "3,75 / (8 × 3,0) = 0,156.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Coefficient iβ (Corté et Garnier) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.527414,
+     "explication": "iβ = 1 − 0,9 tanβ (2 − tanβ) (1 − d/8B)² = 1 − 0,9 × 0,488 × 1,512 × 0,712 = 0,527.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "À partir de quelle distance le talus n'a-t-il plus d'effet ?",
+     "type": "choix",
+     "options": [
+      "d ≥ 5 B",
+      "d ≥ 8 B",
+      "d ≥ 2 B"
+     ],
+     "reponse": 1,
+     "explication": "Le terme (1 − d/8B)² s'annule pour d = 8 B : au-delà, iβ = 1. Le Fascicule 62 impose en outre 2 m au moins entre le bord de la semelle et le talus (B.4.1,2)."
+    }
+   ]
+  },
+  {
+   "id": "ch4-f62",
+   "titre": "Portance d'une semelle au Fascicule 62",
+   "difficulte": 2,
+   "graine": 2514853769,
+   "enonce": "Semelle filante B = 2,4 m fondée à D = 1,4 m (γ = 19 kN/m³, pas de nappe) sur argiles et limons mous (classe A, comportement cohérent) : ple* = 0,35 MPa, De = 1,12 m. À l'ELU fondamental : V = 540 kN/m centrée, H = 65 kN/m.",
+   "donnees": [
+    {
+     "label": "B · D",
+     "valeur": "2,4 · 1,4 m"
+    },
+    {
+     "label": "Sol",
+     "valeur": "Argiles et limons mous (A)"
+    },
+    {
+     "label": "ple* · De",
+     "valeur": "0,35 MPa · 1,12 m"
+    },
+    {
+     "label": "V · H (ELU)",
+     "valeur": "540 · 65 kN/m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Facteur de portance kp ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.856,
+     "explication": "kp = 0,8 [1 + 0,25 × 0,6 × 0,467] = 0,856 (filante : B/L = 0).",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Coefficient iδβ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.85329,
+     "explication": "δ = 6,86° ; sol cohérent : Φ1 = 0,853.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Contrainte admissible q'0 + kp ple* iδβ / 2 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 154.423,
+     "explication": "q'0 = 19 × 1,4 = 26,6 kPa ; 0,856 × 350 × 0,853 / 2 + 26,6 = 154,4 kPa.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Taux de travail q'ref / q'adm ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.45704,
+     "explication": "q'ref = V/B = 225 kPa (charge centrée) ; 225 / 154,4 = 1,457 > 1 : portance insuffisante.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch4-ec7",
+   "titre": "Portance d'une semelle à la NF P94-261",
+   "difficulte": 3,
+   "graine": 1387544166,
+   "enonce": "Semelle filante B = 2,5 m, D = 1,0 m (γ = 19 kN/m³), sur une argile (comportement cohérent) : ple* = 1,90 MPa, De = 0,90 m. ELU fondamental : Vd = 800 kN/m (poids de la semelle et des terres compris), Hd = 160 kN/m, excentrement e = 0,07 m.",
+   "donnees": [
+    {
+     "label": "B · D",
+     "valeur": "2,5 · 1,0 m"
+    },
+    {
+     "label": "ple* · De",
+     "valeur": "1,90 MPa · 0,90 m"
+    },
+    {
+     "label": "Vd · Hd",
+     "valeur": "800 · 160 kN/m"
+    },
+    {
+     "label": "e",
+     "valeur": "0,07 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "kp (filante) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.87744,
+     "explication": "kp = k0 + (a + b De/B)(1 − e^(−c De/B)) = 0,877 pour De/B = 0,360.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "iδ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.76446,
+     "explication": "δ = 11,31° → iδ = 0,764.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Surface effective A' par mètre ?",
+     "type": "nombre",
+     "unite": "m²/m",
+     "reponse": 2.36,
+     "explication": "A' = B − 2e = 2,5 − 2 × 0,07 = 2,360 m²/m (ie = 0,944).",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance nette de calcul Rv;d ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 1790.31,
+     "explication": "qnet = kp ple* iδ = 1 274 kPa ; Rv;d = A' qnet / (1,4 × 1,2) = 2,360 × 1 274 / 1,68 = 1 790 kN/m.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Taux (Vd − R0) / Rv;d ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.420318,
+     "explication": "R0 = A q0 = 2,5 × 19 = 47,5 kN/m ; (800 − 47,5) / 1 790 = 0,420 : vérifié.",
+     "toleranceRel": 0.02
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,307 @@
+{
+ "chapitre": "ch8",
+ "exercices": [
+  {
+   "id": "ch8-Qc",
+   "titre": "Charge limite et charge de fluage",
+   "difficulte": 1,
+   "graine": 1145846309,
+   "enonce": "Un pieu battu (mis en place avec refoulement du sol) a une résistance de pointe Qpu = 790 kN et un frottement latéral limite Qsu = 2 560 kN.",
+   "donnees": [
+    {
+     "label": "Mise en œuvre",
+     "valeur": "battu"
+    },
+    {
+     "label": "Qpu",
+     "valeur": "790 kN"
+    },
+    {
+     "label": "Qsu",
+     "valeur": "2 560 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Charge limite Qu ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 3350,
+     "explication": "Qu = Qpu + Qsu = 3 350 kN.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Charge de fluage Qc ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2345,
+     "explication": "Qc = 0,7 Qpu + 0,7 Qsu = 553 + 1 792 = 2 345 kN (F62 annexe C.2 ; formule 14.2.2 de la NF P94-262 pour Rc;cr;k).",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Rapport Qc/Qu ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.7,
+     "explication": "0,700 : la charge de fluage est d'autant plus proche de la charge limite que le frottement domine.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch8-flottant",
+   "titre": "Un pieu flottant ?",
+   "difficulte": 1,
+   "graine": 23100233,
+   "enonce": "Pieu foré de diamètre B = 1,2 m et de longueur D = 21 m ; contrainte de rupture sous la pointe qb = 3 200 kPa, frottement unitaire moyen qs = 35 kPa.",
+   "donnees": [
+    {
+     "label": "B · D",
+     "valeur": "1,2 · 21 m"
+    },
+    {
+     "label": "qb",
+     "valeur": "3 200 kPa"
+    },
+    {
+     "label": "qs",
+     "valeur": "35 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Résistance de pointe Qpu ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 3619.11,
+     "explication": "Ab = π B²/4 = 1,1310 m² ; Qpu = 1,1310 × 3 200 = 3 619 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Frottement Qsu ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2770.88,
+     "explication": "P = π B = 3,770 m ; Qsu = 3,770 × 21 × 35 = 2 771 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Le pieu est-il flottant au sens du Fascicule 62 ?",
+     "type": "choix",
+     "options": [
+      "oui : sous Qc, le frottement mobilisé dépasse la pointe",
+      "non : la pointe l'emporte"
+     ],
+     "reponse": 0,
+     "explication": "F62 C.4.1,21 : sous la charge de fluage, frottement 0,7 Qsu = 1 940 kN contre pointe 0,5 Qpu = 1 810 kN. Un groupe de pieux flottants appelle une vérification d'effet de groupe."
+    }
+   ]
+  },
+  {
+   "id": "ch8-traction",
+   "titre": "Pieu en traction",
+   "difficulte": 1,
+   "graine": 4101467001,
+   "enonce": "Un pieu sollicité en traction a un frottement latéral limite Qsu = 1 800 kN (le poids propre est négligé).",
+   "donnees": [
+    {
+     "label": "Qsu",
+     "valeur": "1 800 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Charge limite en traction Qtu ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1800,
+     "explication": "Qtu = Qsu = 1 800 kN : la pointe ne travaille pas en traction.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Charge de fluage en traction Qtc ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1260,
+     "explication": "Qtc = 0,7 Qsu = 1 260 kN.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Qmin à l'ELU fondamental (Fascicule 62) ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": -1285.71,
+     "explication": "Qmin = −Qtu/1,4 = −1 286 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Qmin sous combinaison rare ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": -900,
+     "explication": "Qmin = −Qtc/1,4 = −900 kN. Sous combinaison quasi permanente, aucune traction n'est admise.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch8-categories",
+   "titre": "Classes et catégories de pieux",
+   "difficulte": 1,
+   "graine": 1378334949,
+   "enonce": "Un projet prévoit des pieux de type « foré tarière creuse simple ou double rotation » (sigle FTC, FTCD).",
+   "donnees": [
+    {
+     "label": "Technologie",
+     "valeur": "Foré tarière creuse simple ou double rotation"
+    },
+    {
+     "label": "Sigle",
+     "valeur": "FTC, FTCD"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Classe de la NF P94-262 ?",
+     "type": "choix",
+     "options": [
+      "classe 5",
+      "classe 4",
+      "classe 3",
+      "classe 2"
+     ],
+     "reponse": 3,
+     "explication": "Catégorie 6 (FTC, FTCD), classe 2 de l'annexe A de la NF P94-262. La classe fixe k_p,max et k_c,max ; la catégorie fixe α_pieu-sol et q_s,max."
+    },
+    {
+     "texte": "Mise en place avec refoulement du sol ?",
+     "type": "choix",
+     "options": [
+      "non",
+      "oui"
+     ],
+     "reponse": 0,
+     "explication": "Pieu foré : le sol est extrait ; la charge de fluage ne prend que 0,5 R_b."
+    },
+    {
+     "texte": "Combien de catégories de pieux la NF P94-262 distingue-t-elle ?",
+     "type": "choix",
+     "options": [
+      "12",
+      "20",
+      "7",
+      "8"
+     ],
+     "reponse": 1,
+     "explication": "Vingt catégories, regroupées en huit classes (plus la classe 1bis des micropieux)."
+    }
+   ]
+  },
+  {
+   "id": "ch8-section",
+   "titre": "Pieu carré ou pieu circulaire",
+   "difficulte": 1,
+   "graine": 287632452,
+   "enonce": "On compare un pieu circulaire de diamètre 0,35 m et un pieu carré de 0,35 m de côté, avec qb = 5 100 kPa et qs = 75 kPa.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "0,35 m"
+    },
+    {
+     "label": "qb",
+     "valeur": "5 100 kPa"
+    },
+    {
+     "label": "qs",
+     "valeur": "75 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Résistance de pointe du pieu circulaire ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 490.678,
+     "explication": "Ab = π B²/4 = 0,0962 m² ; Rb = 490,7 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance de pointe du pieu carré ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 624.75,
+     "explication": "Ab = B² = 0,1225 m² ; Rb = 624,7 kN, soit 4/π = 1,27 fois plus.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Frottement par mètre de fût du pieu carré ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 105,
+     "explication": "P = 4 B = 1,400 m ; P qs = 105 kN/m (contre 82,47 kN/m pour le pieu circulaire).",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch8-frankzhao",
+   "titre": "Lois de transfert de Frank et Zhao",
+   "difficulte": 2,
+   "graine": 1607130573,
+   "enonce": "Pieu de diamètre B = 1,1 m dans un sol fin de module pressiométrique EM = 14 MPa ; frottement limite qs = 60 kPa.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "1,1 m"
+    },
+    {
+     "label": "EM",
+     "valeur": "14 MPa"
+    },
+    {
+     "label": "Sol",
+     "valeur": "fin"
+    },
+    {
+     "label": "qs",
+     "valeur": "60 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Pente kt de la loi de frottement ?",
+     "type": "nombre",
+     "unite": "MPa/m",
+     "reponse": 25.4545,
+     "explication": "kt = 2 EM/B = 25,5 MPa/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Pente kq de la loi de pointe ?",
+     "type": "nombre",
+     "unite": "MPa/m",
+     "reponse": 140,
+     "explication": "kq = 11 EM/B = 140 MPa/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Déplacement mobilisant qs/2 ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 1.17857,
+     "explication": "La loi est linéaire jusqu'à qs/2 : s = qs/(2 kt) = 1,18 mm.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Déplacement mobilisant qs en entier ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 7.07143,
+     "explication": "Au-delà, la pente est divisée par 5 : s = qs/(2kt) + (qs/2)/(kt/5) = 3 qs/kt = 7,07 mm — quelques millimètres, contre des centimètres pour la pointe.",
+     "toleranceRel": 0.02
+    }
+   ]
+  }
+ ]
+}

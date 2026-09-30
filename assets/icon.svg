@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Fondations — Fascicule 62 et Eurocode 7">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0369a1"/><stop offset="1" stop-color="#0891b2"/>
+  </linearGradient></defs>
+  <rect width="64" height="64" rx="15" fill="url(#g)"/>
+  <path d="M6 24h52" stroke="#e0f2fe" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M8 40h8M40 40h16M8 50h6M50 50h6" stroke="#bae6fd" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+  <rect x="28" y="9" width="8" height="17" rx="1.5" fill="#fff"/>
+  <rect x="15" y="26" width="34" height="7" rx="1.5" fill="#fff"/>
+  <rect x="19" y="33" width="5" height="22" rx="1.2" fill="#fff" opacity=".92"/>
+  <rect x="40" y="33" width="5" height="22" rx="1.2" fill="#fff" opacity=".92"/>
+</svg>
