@@ -15,9 +15,9 @@ d'hydrologie.
 | Ressource | Fichier | Rôle |
 |---|---|---|
 | Accueil | `index.html` | ressources, parties, chapitres, banques d'exercices (3 modes) |
-| Cours interactif | `cours.html` | 15 chapitres, figures et 46 calculateurs au fil du texte, dont l'assistant de dépouillement pressiométrique |
-| Exerciseur | `exerciseur.html` | 97 modèles d'exercices à données tirées au hasard, corrigés pas à pas |
-| Bureau de calcul | `bureau.html` | sondage pressiométrique, semelle, pieu, frottement négatif, groupe, effort transversal — note de calcul imprimable |
+| Cours interactif | `cours.html` | 15 chapitres, une quarantaine de schémas explicatifs (dont les appareils d'essai), 49 calculateurs à curseurs de calcul en direct, dont l'assistant de dépouillement pressiométrique |
+| Exerciseur | `exerciseur.html` | 96 modèles d'exercices à données tirées au hasard, corrigés pas à pas |
+| Bureau de calcul | `bureau.html` | projet et tableau de bord, sondage pressiométrique, semelle, pieu, frottement négatif, groupe, effort transversal — étapes numérotées, étude paramétrique, note de calcul avec cartouche |
 | Polycopié | `polycopie/fondations-polycopie.pdf` | le cours complet, produit à partir de `cours.html` |
 
 ## Déploiement — Cloudflare Pages
@@ -57,8 +57,11 @@ src/pressio-exemples.js, src/essais-exemples.js  jeux d'essais fabriqués pour l
 src/exos/           modèles d'exercices paramétrés (un fichier par chapitre)
 src/exercices.js    rendu des exercices : apprentissage, entraînement, examen
 src/exerciseur.js   tirages aléatoires reproductibles (#ch6/ch6-ple/123456)
-src/bureau/         justification complète d'une semelle et d'un pieu, notes de calcul
+src/bureau/         justification complète d'une semelle et d'un pieu, notes de calcul, projet (sondage → couches, étude paramétrique)
 src/figures.js      figures SVG (coupes, diagrammes, graphes) communes à tout le site
+src/schemas-essais.js, src/schemas-cours.js  schémas des appareils d'essai et schémas explicatifs du cours
+src/cours-schemas.js  pose chaque schéma dans sa <figure data-schema>
+src/curseurs.js     curseurs de calcul en direct (champs marqués data-curseur)
 data/chapitres.json plan du cours ; data/exercices-chN.json banques figées
 tests/              contrôles numériques (exemples des guides Cerema, feuille CSTB)
 tools/              génération des banques, du service worker et du polycopié

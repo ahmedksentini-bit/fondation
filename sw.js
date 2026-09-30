@@ -6,7 +6,7 @@
 // pour que le cours, l'exerciseur et le bureau de calcul marchent hors ligne.
 // Ce fichier est produit par tools/generer-sw.py ; tests/pages.test.mjs vérifie
 // qu'aucun fichier de src/ ou de data/ ne manque à la coquille.
-const VERSION = "fond-v5";
+const VERSION = "fond-v6";
 const COQUILLE = [
   "./", "./index.html", "./cours.html", "./exerciseur.html", "./bureau.html",
   "./cours", "./exerciseur", "./bureau", "./styles.css", "./enhancements.css",
