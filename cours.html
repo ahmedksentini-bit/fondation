@@ -1049,6 +1049,7 @@
      contact, reste basse et presque constante dans la phase pseudo-élastique, puis se met à
      croître. La <strong>pression de fluage p<sub>f</sub></strong> est à cette cassure : on
      l'obtient en coupant la droite du palier bas par celle de la branche montante.</p>
+  <figure class="figure-cours" data-schema="schemaCourbePressio"><figcaption>Courbe pressiométrique idéalisée. I : remise en contact avec la paroi ; II : phase pseudo-élastique, entre p<sub>1</sub> et p<sub>f</sub>, dont la pente donne E<sub>M</sub> ; III : phase plastique, jusqu'à la pression limite p<sub>l</sub>, atteinte quand la cavité a doublé de volume (V<sub>s</sub> + 2V<sub>1</sub>). En dessous, la courbe de fluage se casse à p<sub>f</sub>.</figcaption></figure>
 
   <div class="calc" id="psEtape5">
     <h3>Étapes 5 et 6 · Phase pseudo-élastique, pression de fluage et module E<sub>M</sub></h3>
@@ -1275,6 +1276,7 @@
          d'un pieu, fissuration des éléments en béton — tout ce qui empêche l'ouvrage de
          <em>fonctionner</em> sans qu'il soit ruiné.</p></div>
   </div>
+  <figure class="figure-cours" data-schema="schemaEtatsLimites"><figcaption>La courbe charge–tassement d'une semelle : le service se juge sur les déplacements, loin de la rupture ; la ruine, sur la charge limite Q<sub>u</sub>. Les pictogrammes rappellent ce que l'on vérifie dans chaque famille d'états limites.</figcaption></figure>
 
   <h3>Les actions, et celles qui viennent du sol</h3>
   <p>On distingue les actions <strong>permanentes G</strong>, <strong>variables Q</strong> et
@@ -1292,6 +1294,7 @@
         période de retour 50 ans) et EE (exceptionnel). Pour la portance, c'est souvent le
         niveau <em>bas</em> qui est défavorable ; pour les poussées, le niveau <em>haut</em>.</li>
   </ul>
+  <figure class="figure-cours" data-schema="schemaActions"><figcaption>Les actions d'une fondation. Au-dessus, celles de la structure (G, Q, W) ; autour, le poids des terres et l'eau, dont le niveau (EB à EE) est un choix de calcul ; sur les pieux, les actions du sol lui-même : frottement négatif G<sub>sn</sub> sous un remblai récent, poussée latérale G<sub>sp</sub> d'un sol mou qui flue.</figcaption></figure>
 
   <h3>Les combinaisons du Fascicule 62</h3>
   <p>Le fascicule reprend la logique des règles BAEL et des directives communes de 1979
@@ -1358,6 +1361,8 @@
      partiel</strong> γ<sub>R</sub> (la dispersion du sol) et un <strong>coefficient de
      modèle</strong> γ<sub>R;d</sub> (la précision de la méthode, calée sur une base d'essais de
      chargement) :</p>
+  <figure class="figure-cours" data-schema="schemaSecurite"><figcaption>Les deux référentiels majorent les actions de la même façon, mais divisent la résistance différemment : le Fascicule 62 applique un coefficient global à la résistance nette ; l'Eurocode 7 le décompose en un facteur de résistance, pour la dispersion du sol, et un coefficient de modèle, pour la précision de la méthode.</figcaption></figure>
+
   <table class="resultats"><thead><tr><th>Vérification</th><th><span class="tag-f62">F62</span></th><th><span class="tag-ec7">EC7</span></th><th class="num">Diviseur EC7</th></tr></thead>
     <tbody>
       <tr><td>Semelle, portance ELU</td><td class="motif">(q'<sub>u</sub> − q'<sub>0</sub>) / 2</td><td class="motif">q<sub>net</sub> / (γ<sub>R;v</sub> γ<sub>R;d;v</sub>) = q<sub>net</sub> / (1,4 × 1,2)</td><td class="q">1,68</td></tr>
@@ -1409,6 +1414,8 @@
       <tr><td>Profonde</td><td class="motif">D<sub>e</sub>/B &gt; 5 <span class="ref">[C.1]</span></td><td class="motif">NF P94-262 : élancement D/B &gt; 5</td></tr>
     </tbody></table>
 
+  <figure class="figure-cours" data-schema="schemaTypesFondations"><figcaption>Une fondation se classe par son encastrement équivalent rapporté à sa largeur, et non par sa seule profondeur : le même puits est superficiel sous un remblai mou, semi-profond dans un sol régulier.</figcaption></figure>
+
   <h3>La hauteur d'encastrement équivalente D<sub>e</sub></h3>
   <p>Les sols de couverture sont presque toujours plus faibles que le sol d'assise.
      D<sub>e</sub> est la hauteur qu'aurait la couverture si elle avait la résistance du sol
@@ -1421,6 +1428,7 @@
      peut lui être supérieure si la couverture est plus résistante que le sol d'assise — la
      formule ne s'en émeut pas. Pour la NF P94-261, D<sub>e</sub> se calcule avec le
      p<sub>le</sub>* de l'ELS quasi permanent.</p>
+  <figure class="figure-cours" data-schema="schemaEncastrement"><figcaption>D<sub>e</sub> est la hauteur de sol d'assise qui aurait la même résistance cumulée que la couverture réelle : l'aire sous le profil de p<sub>l</sub>* entre d et D, divisée par p<sub>le</sub>*. Une couverture faible donne un D<sub>e</sub> bien inférieur à D.</figcaption></figure>
 
   <div class="calc" id="calcDe">
     <h3>D<sub>e</sub> d'une semelle sous une couverture plus faible</h3>
@@ -1531,6 +1539,7 @@
   <p>Tout le travail consiste à définir <strong>trois choses</strong> : quelle pression limite
      représente le sol sous la semelle (p<sub>le</sub>*), quel facteur k<sub>p</sub> lui appliquer,
      et combien retrancher pour une charge inclinée ou un talus voisin.</p>
+  <figure class="figure-cours" data-schema="schemaPortancePressio"><figcaption>La portance pressiométrique en une image. Le sol qui travaille occupe environ 1,5 B sous la base : p<sub>le</sub>* en est la moyenne géométrique, qui fait peser la couche molle. À la rupture, la contrainte sous la semelle vaut ce que le sol portait déjà, q'<sub>0</sub>, plus ce qu'il ajoute, k<sub>p</sub> · p<sub>le</sub>*.</figcaption></figure>
 
   <h3>p<sub>le</sub>* : une moyenne géométrique, et ce n'est pas un détail</h3>
   <p>Le sol qui travaille sous une semelle occupe environ <strong>1,5 B</strong> de hauteur.
@@ -1634,6 +1643,8 @@
      Et si l'inclinaison et l'excentrement ont des effets <em>antagonistes</em> (la charge penche
      vers le côté décollé), la prise en compte de i<sub>δ</sub> est trop pessimiste : la norme
      conseille alors une étude spécifique.</div>
+
+  <figure class="figure-cours" data-schema="schemaInclinaisonTalus"><figcaption>Deux réductions de la portance : une charge inclinée d'un angle δ sur la verticale, et un talus de pente β à la distance d de l'arête de la semelle, sans effet au-delà de 8 B.</figcaption></figure>
 
   <h3>Semelle en crête de talus : i<sub>β</sub></h3>
   <p>Un talus de pente β à une distance d de l'arête de la semelle réduit la portance. Pour un
@@ -1752,6 +1763,7 @@
     <li><strong>½ γ' B' N<sub>γ</sub></strong> : le poids du sol entraîné dans le mécanisme, qui croît
         avec la largeur. C'est le seul terme qui dépend de B'.</li>
   </ul>
+  <figure class="figure-cours" data-schema="schemaTerzaghi"><figcaption>Les trois termes de la superposition de Terzaghi, chacun sur le même mécanisme : la cohésion mobilisée le long de la surface de rupture, les terres situées au-dessus du niveau de la base que le coin de butée doit soulever, et le poids du sol entraîné dans le mécanisme.</figcaption></figure>
 
   <div class="calc" id="calcPrandtl">
     <h3>Le mécanisme s'élargit avec φ'</h3>
@@ -1878,6 +1890,8 @@
          pour un béton coulé en place, 2/3 φ'<sub>crit</sub> pour une semelle préfabriquée lisse ;
          c' est <strong>négligée</strong>.</p></div>
   </div>
+  <figure class="figure-cours" data-schema="schemaGlissement"><figcaption>L'effort horizontal H<sub>d</sub> n'est équilibré que par le frottement sous la base, proportionnel à V<sub>d</sub> : c'est la seule vérification où la charge verticale est une résistance. La butée frontale, lente à se mobiliser et fragile, est d'ordinaire négligée.</figcaption></figure>
+
   <p>Trois différences de fond. L'Eurocode prend l'angle à l'<strong>état critique</strong>
      φ'<sub>crit</sub> — celui d'un sol cisaillé à grand déplacement, inférieur à l'angle de pic
      d'un sol dense —, là où le Fascicule 62 prend φ'. Il ignore la cohésion effective, que le
@@ -1953,6 +1967,8 @@
       <tr><td>Semelle non armée à la flexion</td><td class="motif">épaisseur ≥ 2 fois le débord ; aciers longitudinaux ≥ 1/1000 de la section en face inférieure <span class="ref">[B.4.2]</span></td><td class="motif">EN 1992-1-1 § 12.9.3 : h<sub>F</sub>/a ≥ 2 en simplification</td></tr>
       <tr><td>Semelle armée</td><td class="motif">épaisseur ≥ 0,50 m pour les ponts ; aciers longitudinaux ≥ 1/1000 (inférieurs), 0,5/1000 (supérieurs), et ≥ 1/4 des aciers de flexion <span class="ref">[B.4.3]</span></td><td class="motif">dispositions de l'EN 1992-1-1</td></tr>
     </tbody></table></div>
+  <figure class="figure-cours" data-schema="schemaDispositions"><figcaption>Les dispositions constructives d'une semelle : un niveau d'appui hors gel, un béton de propreté, l'enrobage des aciers, l'épaisseur d'une semelle non armée (au moins deux fois le débord), et une distance suffisante à la surface d'un talus voisin.</figcaption></figure>
+
   <div class="a-retenir"><strong>Deux règles à ne jamais oublier</strong>
     <p>Hors gel, et loin du talus. Une semelle parfaitement calculée mais posée à 30 cm de
        profondeur dans un limon gélif, ou à un mètre de l'arête d'un talus, ne tiendra pas : ce
@@ -2005,6 +2021,7 @@
      la moyenne harmonique E<sub>i</sub> des modules mesurés. E<sub>c</sub> = E<sub>1</sub> ; E<sub>d</sub> combine
      les tranches avec des poids décroissants, E<sub>i;j</sub> désignant la moyenne harmonique des
      tranches i à j :</p>
+  <figure class="figure-cours" data-schema="schemaTranchesMenard"><figcaption>Seize tranches de B/2 sous la base, jusqu'à 8 B. La première, où le sol se comprime, donne E<sub>c</sub> ; toutes interviennent dans E<sub>d</sub>, avec des poids qui décroissent en profondeur. Les poids de la NF P94-261 somment à 1 : dans un sol homogène, E<sub>d</sub> = E<sub>M</sub>.</figcaption></figure>
   <div class="comparaison">
     <div class="f62"><h4>Fascicule 62 — annexe F.2</h4>
       <p class="formula">4/E<sub>d</sub> = 1/E<sub>1</sub> + 1/(0,85 E<sub>2</sub>) + 1/E<sub>3;5</sub> + 1/(2,5 E<sub>6;8</sub>) + 1/(2,5 E<sub>9;16</sub>)</p></div>
@@ -2048,6 +2065,7 @@
      <span class="ref">[F62 F.3]</span>, et la NF P94-261 reprend la méthode <span class="ref">[guide Cerema § 5.2.5]</span> :</p>
   <p class="formula">1/k<sub>v</sub> = α λ<sub>c</sub> B/(9 E<sub>c</sub>) + (2 B<sub>0</sub>/9 E<sub>d</sub>) (λ<sub>d</sub> B/B<sub>0</sub>)<sup>α</sup>
      &nbsp;&nbsp;·&nbsp;&nbsp; k<sub>i</sub> = 2 k<sub>v</sub> pour les charges de courte durée</p>
+  <figure class="figure-cours" data-schema="schemaWinkler"><figcaption>Le modèle de Winkler remplace le sol par des ressorts indépendants : la réaction en un point ne dépend que de l'enfoncement en ce point. C'est commode pour répartir les efforts sous une semelle ou un radier, mais k dépend de la largeur chargée.</figcaption></figure>
   <p>Deux mises en garde des textes : les déplacements obtenus ainsi « sont peu représentatifs
      des déplacements réels », et la semelle doit être assez raide dans le sens de B —
      B ≤ 2 L<sub>0</sub>, avec la longueur de transfert L<sub>0</sub> = (4 E I/k B)<sup>1/4</sup>, ce qui exclut
@@ -2167,6 +2185,7 @@
   <p class="method-note">Pour les micropieux de types I et II, la norme ne donne pas de valeurs
      semi-empiriques : il faut des essais de chargement. Les pieux vibrofoncés (catégories 13, 14,
      16) voient leur frottement réduit de 30 % et leur k<sub>p,max</sub> divisé par deux.</p>
+  <figure class="figure-cours" data-schema="schemaMiseEnOeuvre"><figcaption>La mise en œuvre commande le comportement. Un pieu foré ou à la tarière creuse remplace un sol extrait : le terrain autour est décomprimé. Un pieu battu ou vissé chasse le sol : il le densifie, et sa pointe en tire une résistance bien plus grande.</figcaption></figure>
 
   <h3>La courbe de chargement</h3>
   <p>Chargeons un pieu en tête, par paliers, et mesurons son enfoncement. Le frottement latéral
@@ -2179,7 +2198,9 @@
     <li>la <strong>charge de fluage</strong> Q<sub>c</sub> (R<sub>c;cr</sub>), au-delà de laquelle
         l'enfoncement sous charge constante ne se stabilise plus.</li>
   </ul>
-  <p>Faute d'essai de chargement, les deux textes tirent la charge de fluage de la charge limite
+<figure class="figure-cours" data-schema="schemaTransfert"><figcaption>La charge en tête descend dans le fût en se déchargeant par frottement : l'effort normal N(z) décroît jusqu'à la pointe. Le frottement se mobilise après quelques millimètres ; la pointe n'atteint sa résistance qu'après un enfoncement de l'ordre de B/10.</figcaption></figure>
+
+    <p>Faute d'essai de chargement, les deux textes tirent la charge de fluage de la charge limite
      décomposée en pointe et frottement :</p>
   <div class="comparaison">
     <div class="f62"><h4>Fascicule 62 — annexe C.2</h4>
@@ -2250,6 +2271,7 @@
   <p class="formula">p<sub>le</sub>* = 1/(b + 3a) ∫<sub>D−b</sub><sup>D+3a</sup> p<sub>l</sub>*(z) dz &nbsp;&nbsp; a = max(B/2 ; 0,5 m) &nbsp;·&nbsp; b = min(a ; h)</p>
   <p>h est la hauteur du pieu dans la couche porteuse. Au pénétromètre, q<sub>ce</sub> se calcule sur
      le même intervalle, écrêté à 1,3 q<sub>cm</sub>.</p>
+  <figure class="figure-cours" data-schema="schemaPointePieu"><figcaption>La portance d'un pieu additionne sa pointe et son frottement. Sous la pointe, p<sub>le</sub>* est la moyenne arithmétique de p<sub>l</sub>* entre D − b et D + 3a ; le long du fût, chaque couche apporte son frottement unitaire q<sub>s,i</sub> sur sa hauteur h<sub>i</sub>.</figcaption></figure>
   <div class="comparaison">
     <div class="f62"><h4>Fascicule 62 — annexe C.3, tableau I</h4>
       <p>k<sub>p</sub> dépend de la classe du sol et du refoulement : argiles 1,1 à 1,6 ; sables
@@ -2352,6 +2374,7 @@
       <p>On calcule un pieu au droit de chacun des N sondages ; les facteurs de corrélation ξ
          dépendent de N et de la surface investiguée S.</p></div>
   </div>
+  <figure class="figure-cours" data-schema="schemaProcedures"><figcaption>Les étages de la sécurité d'un pieu. La NF P94-262 passe des valeurs calculées aux valeurs caractéristiques, par l'une des deux procédures, puis aux valeurs de calcul ; le Fascicule 62 divise en une seule fois. Le produit des coefficients de la norme retrouve les 1,4 et 1,1 du fascicule.</figcaption></figure>
   <p>γ<sub>R;d1</sub>, coefficient de modèle, mesure la dispersion de la méthode de calcul face aux
      essais de chargement : 1,15 au pressiomètre et 1,18 au pénétromètre en compression, 1,4 et 1,45
      en traction ; davantage pour les pieux ancrés dans la craie (1,4 et 1,45 en compression), et
@@ -2429,6 +2452,7 @@
      tasse plus que le pieu : au-dessous du <strong>point neutre</strong>, le frottement redevient
      positif. Les deux textes calculent les charges limite et de fluage en supposant nul le
      frottement positif au-dessus de ce point <span class="ref">[F62 C.3.2 ; guide Cerema, chap. 12]</span>.</p>
+  <figure class="figure-cours" data-schema="schemaFrottementNegatif"><figcaption>Sous un remblai récent, l'argile molle tasse et entraîne le pieu : au-dessus du point neutre, où le sol tasse plus que le pieu, le frottement devient une charge ; au-dessous, il redevient une résistance.</figcaption></figure>
 
   <h3>La méthode de Combarieu</h3>
   <p>Le Fascicule 62 (annexe G.2) et la NF P94-262 (annexe H) donnent la même méthode. Le frottement
@@ -2496,6 +2520,7 @@
      pointes et dont le périmètre frotte sur le sol. La question ne se pose sérieusement que pour les
      pieux <em>flottants</em>, les groupes tendus, ou un ancrage raide au-dessus d'une couche molle
      <span class="ref">[F62 C.4.1,2]</span>.</p>
+  <figure class="figure-cours" data-schema="schemaGroupePieux"><figcaption>Un groupe de pieux vu en plan. Le bloc monolithique a pour base le plan des pointes et frotte par son périmètre ; chaque pieu intérieur ne peut entraîner, en frottement négatif, que le sol de son cylindre d'influence.</figcaption></figure>
   <div class="comparaison">
     <div class="f62"><h4>Fascicule 62 — annexe G.1</h4>
       <p class="formula">Converse-Labarre : C<sub>e</sub> = 1 − [arctan(B/d)/(π/2)] (2 − 1/m − 1/n)</p>
@@ -2539,6 +2564,7 @@
      fonction du déplacement y : c'est le modèle de Winkler, que les deux textes calent sur le
      pressiomètre <span class="ref">[F62 annexe C.5 ; 262 annexe I]</span>.</p>
   <p class="formula">EI · d⁴y/dz⁴ + r(y) = 0 &nbsp;&nbsp; avec r = K<sub>f</sub> · y jusqu'au palier r<sub>1</sub></p>
+  <figure class="figure-cours" data-schema="schemaPieuLateral"><figcaption>Le pieu fléchit sous H et M ; le sol résiste par une réaction proportionnelle au déplacement, jusqu'à un palier. Près de la surface, la réaction est minorée. Au-delà de trois longueurs de transfert l<sub>0</sub> environ, la pointe ne bouge plus.</figcaption></figure>
 
   <h3>Le module de réaction de Ménard</h3>
   <p class="formula">K<sub>f</sub> = 12 E<sub>M</sub> / [ 4/3 (B<sub>0</sub>/B)(2,65 B/B<sub>0</sub>)<sup>α</sup> + α ] si B ≥ B<sub>0</sub>
@@ -2628,6 +2654,7 @@
      <span class="ref">[NF EN 1998-5 5.4.1.1]</span> : la portance avec la limitation de l'excentrement, le
      glissement, et les pertes de résistance propres au chargement cyclique — liquéfaction des sables
      sous la nappe, dégradation des argiles sensibles.</p>
+  <figure class="figure-cours" data-schema="schemaSeisme"><figcaption>Sous séisme, la semelle reçoit les forces d'inertie de la structure — un effort N, un effort horizontal V et un moment M — tandis que le sol, lui aussi secoué, perd une part de sa capacité portante.</figcaption></figure>
 
   <h3>Une surface limite dans l'espace (N, V, M)</h3>
   <p>L'annexe F de la NF EN 1998-5 décrit, pour une semelle filante posée sur un sol homogène, la
