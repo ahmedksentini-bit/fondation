@@ -335,19 +335,39 @@ export function nappe(x, y, largeur, P = null) {
  * zones : [{ x0, x1, y0, y1, couleur, opacite, libelle, position: "gauche"|"droite" }]
  * marques : [{ x, y, couleur, libelle, guides, rayon }]
  * inverserY : pour un profil en profondeur (z croissant vers le bas).
+ * logX, logY : échelles logarithmiques (bornes strictement positives).
+ * textes : [{ x, y, texte, couleur }] annotations libres, posées près du point.
  * legende : "dessous" (défaut) | "dedans" | false.
- * Les libellés des marques puis des zones sont posés par le placeur : ils
- * évitent les courbes, les guides, les points et les autres libellés.
+ * Les libellés des marques, des annotations puis des zones sont posés par le
+ * placeur : ils évitent les courbes, les guides, les points et les autres libellés.
  */
 export function graphe({
   largeur = 560, hauteur = 300, xmin, xmax, ymin, ymax, xlabel = "", ylabel = "", series = [],
   titre = "", inverserY = false, pasX = null, pasY = null, marques = [], legende = "dessous", zones = [],
+  logX = false, logY = false, textes = [],
 }) {
   const g = { gauche: 58, droite: 18, haut: 14, bas: 44 };
   const W = largeur - g.gauche - g.droite, H = hauteur - g.haut - g.bas;
-  const X = (x) => g.gauche + ((x - xmin) / (xmax - xmin)) * W;
-  const Y = (y) => inverserY ? g.haut + ((y - ymin) / (ymax - ymin)) * H : g.haut + H - ((y - ymin) / (ymax - ymin)) * H;
+  const fx = logX ? (x) => (Math.log10(x) - Math.log10(xmin)) / (Math.log10(xmax) - Math.log10(xmin)) : (x) => (x - xmin) / (xmax - xmin);
+  const fy = logY ? (y) => (Math.log10(y) - Math.log10(ymin)) / (Math.log10(ymax) - Math.log10(ymin)) : (y) => (y - ymin) / (ymax - ymin);
+  const X = (x) => g.gauche + fx(x) * W;
+  const Y = (y) => inverserY ? g.haut + fy(y) * H : g.haut + H - fy(y) * H;
   const px = pasX || pasJoli(xmax - xmin), py = pasY || pasJoli(ymax - ymin);
+  // Graduations : pas rond en linéaire ; en logarithmique, 1-2-5 par décade, chiffres aux décades
+  // (et aux 2 et 5 quand l'axe ne couvre qu'une ou deux décades).
+  const graduer = (a, b, pas, log) => {
+    if (!log) {
+      const t = [];
+      for (let v = Math.ceil(a / pas - 1e-9) * pas; v <= b + 1e-9; v += pas) t.push({ v: Math.abs(v) < pas * 1e-9 ? 0 : v, chiffre: true });
+      return t;
+    }
+    const decades = Math.log10(b / a);
+    return graduationsLog(a, b).map((v) => {
+      const m = Math.round(v / 10 ** Math.floor(Math.log10(v) + 1e-9));
+      return { v, chiffre: m === 1 || (decades <= 2.2 && (m === 2 || m === 5)), majeur: m === 1 };
+    });
+  };
+  const okX = (x) => Number.isFinite(x) && (!logX || x > 0), okY = (y) => Number.isFinite(y) && (!logY || y > 0);
 
   // Légende : rangées d'éléments sous le titre de l'axe x.
   const avecLibelle = series.filter((se) => se.libelle);
@@ -371,13 +391,13 @@ export function graphe({
         s += `<rect x="${X(z.x0).toFixed(1)}" y="${Math.min(Y(z.y0), Y(z.y1)).toFixed(1)}" width="${(X(z.x1) - X(z.x0)).toFixed(1)}" height="${Math.abs(Y(z.y1) - Y(z.y0)).toFixed(1)}" fill="${z.couleur}" opacity="${z.opacite ?? 0.18}"/>`;
       }
       // Graduations ; le zéro s'écrit « 0 », jamais « -0 ».
-      for (let x = Math.ceil(xmin / px) * px; x <= xmax + 1e-9; x += px) {
-        s += ligne(X(x), g.haut, X(x), g.haut + H, COULEURS.grille, 1);
-        s += texte(X(x), g.haut + H + 16, fmt(Math.abs(x) < px * 1e-9 ? 0 : x, 4), `text-anchor="middle" class="pt"`);
+      for (const { v, chiffre, majeur } of graduer(xmin, xmax, px, logX)) {
+        s += ligne(X(v), g.haut, X(v), g.haut + H, COULEURS.grille, logX && !majeur ? 0.7 : 1);
+        if (chiffre) s += texte(X(v), g.haut + H + 16, fmt(v, 4), `text-anchor="middle" class="pt"`);
       }
-      for (let y = Math.ceil(ymin / py) * py; y <= ymax + 1e-9; y += py) {
-        s += ligne(g.gauche, Y(y), g.gauche + W, Y(y), COULEURS.grille, 1);
-        s += texte(g.gauche - 7, Y(y) + 4, fmt(Math.abs(y) < py * 1e-9 ? 0 : y, 4), `text-anchor="end" class="pt"`);
+      for (const { v, chiffre, majeur } of graduer(ymin, ymax, py, logY)) {
+        s += ligne(g.gauche, Y(v), g.gauche + W, Y(v), COULEURS.grille, logY && !majeur ? 0.7 : 1);
+        if (chiffre) s += texte(g.gauche - 7, Y(v) + 4, fmt(v, 4), `text-anchor="end" class="pt"`);
       }
       s += `<rect x="${g.gauche}" y="${g.haut}" width="${W}" height="${H}" fill="none" stroke="${COULEURS.trait}" stroke-width="1.2"/>`;
       s += texte(g.gauche + W / 2, hauteur - 10, xlabel, `text-anchor="middle" style="font-weight:700"`);
@@ -386,7 +406,7 @@ export function graphe({
       s += `<clipPath id="${clip}"><rect x="${g.gauche}" y="${g.haut}" width="${W}" height="${H}"/></clipPath>`;
       // Guides des marques d'abord : ils passent sous les courbes.
       for (const m of marques) {
-        if (!m.guides) continue;
+        if (!m.guides || !okX(m.x) || !okY(m.y)) continue;
         const col = m.couleur ?? COULEURS.effort, cx = X(m.x), cy = Y(m.y);
         s += ligne(cx, cy, cx, g.haut + H, col, 1, `stroke-dasharray="4 3" clip-path="url(#${clip})"`);
         s += ligne(g.gauche, cy, cx, cy, col, 1, `stroke-dasharray="4 3" clip-path="url(#${clip})"`);
@@ -394,17 +414,31 @@ export function graphe({
         P.segment(g.gauche, cy, cx, cy, 0.5);
       }
       series.forEach((se) => {
-        const pts = se.points.filter(([x, y]) => Number.isFinite(x) && Number.isFinite(y));
+        const pts = se.points.filter(([x, y]) => okX(x) && okY(y));
         if (!pts.length) return;
-        const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${X(x).toFixed(1)} ${Y(y).toFixed(1)}`).join("");
-        s += `<path d="${d}" fill="none" stroke="${se.couleur}" stroke-width="${se.epaisseur ?? 2.2}" ${se.tirets ? `stroke-dasharray="${se.tirets}"` : ""} stroke-linejoin="round" clip-path="url(#${clip})"/>`;
-        P.polyligne(pts.map(([x, y]) => [X(x), Y(y)]));
-        if (se.marqueurs) pts.forEach(([x, y]) => {
-          s += `<circle cx="${X(x).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="3" fill="${se.couleur}"/>`;
-          P.boite({ x: X(x) - 3, y: Y(y) - 3, w: 6, h: 6 }, 2);
+        // Série « nuage » : des points seuls, sans trait (mesures d'un profil sur un abaque…).
+        if (!se.nuage) {
+          const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${X(x).toFixed(1)} ${Y(y).toFixed(1)}`).join("");
+          s += `<path d="${d}" fill="none" stroke="${se.couleur}" stroke-width="${se.epaisseur ?? 2.2}" ${se.tirets ? `stroke-dasharray="${se.tirets}"` : ""} stroke-linejoin="round" clip-path="url(#${clip})"/>`;
+          P.polyligne(pts.map(([x, y]) => [X(x), Y(y)]));
+        }
+        if (se.marqueurs || se.nuage) pts.forEach(([x, y], i) => {
+          const col = se.couleurs?.[i] ?? se.couleur;
+          s += `<circle cx="${X(x).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="${se.rayon ?? 3}" fill="${col}"${se.nuage ? ' fill-opacity=".85" stroke="#fff" stroke-width=".6"' : ""} clip-path="url(#${clip})"/>`;
+          if (!se.nuage) P.boite({ x: X(x) - 3, y: Y(y) - 3, w: 6, h: 6 }, 2);
         });
       });
+      // Annotations libres : près de leur point, sans rien recouvrir.
+      for (const t of textes) {
+        if (!okX(t.x) || !okY(t.y) || t.x < xmin || t.x > xmax || t.y < Math.min(ymin, ymax) || t.y > Math.max(ymin, ymax)) continue;
+        const cx = X(t.x), cy = Y(t.y);
+        P.texte([
+          { x: cx, y: cy + 4, ancre: "middle" }, { x: cx + 6, y: cy - 4, ancre: "start" }, { x: cx - 6, y: cy - 4, ancre: "end" },
+          { x: cx + 6, y: cy + 13, ancre: "start" }, { x: cx - 6, y: cy + 13, ancre: "end" },
+        ].map((c) => ({ ...c, lignes: [t.texte] })), `class="halo" style="font-size:${t.taille ?? 11}px;font-weight:${t.gras === false ? 400 : 700};fill:${t.couleur ?? COULEURS.discret}"`, { taille: t.taille ?? 11, priorite: 1.5 });
+      }
       for (const m of marques) {
+        if (!okX(m.x) || !okY(m.y)) continue;
         const col = m.couleur ?? COULEURS.effort, cx = X(m.x), cy = Y(m.y), r = m.rayon ?? 5;
         s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="${col}" stroke="#fff" stroke-width="1.5"/>`;
         P.boite({ x: cx - r, y: cy - r, w: 2 * r, h: 2 * r });
@@ -720,6 +754,115 @@ export function schemaPressio({ z = 6, hc = 1, zw = 2, largeur = 560, hauteur = 
       P.texte([{ x: largeur - 24, y: 30, ancre: "end", lignes: ["ph = γw (hc + z)", "colonne d'eau du manomètre", "au centre de la sonde"] }],
         `class="halo" style="font-size:11.5px;font-weight:700;fill:${COULEURS.eau}"`, { taille: 11.5, priorite: 1 });
       s += P.rendre();
+      return s;
+    },
+  });
+}
+
+// ─────────────────────────── Profils verticaux ────────────────────────────
+
+/**
+ * Profils en fonction de la profondeur, panneaux côte à côte sur le même axe
+ * des z, avec la coupe du terrain à gauche (facultative). panneaux :
+ * [{ titre, min, max, log, series: [{ points: [[v, z]], couleur, tirets, epaisseur }],
+ *    bandes: [{ v0, v1, couleur, libelle }] }] — bandes verticales de valeurs
+ * (domaines d'un abaque, seuils de classement…). zw : niveau de la nappe.
+ */
+export function profilsVerticaux({ couches = [], panneaux, zMax, zw = null, largeur = 640, hauteur = 440, titre = "Profils" }) {
+  const haut = 40, bas = 12, gauche = 34, ecart = 16;
+  const H = hauteur - haut - bas;
+  const Y = (z) => haut + (z / zMax) * H;
+  const wCoupe = couches.length ? 104 : 0;
+  const wP = (largeur - gauche - wCoupe - (couches.length ? ecart : 0) - ecart * (panneaux.length - 1) - 8) / panneaux.length;
+  let x = gauche + wCoupe + (couches.length ? ecart : 0);
+  const cadres = panneaux.map((p) => {
+    const c = { ...p, x, w: wP };
+    x += wP + ecart;
+    const lg = p.log;
+    c.X = (v) => c.x + (lg ? (Math.log10(v) - Math.log10(p.min)) / (Math.log10(p.max) - Math.log10(p.min)) : (v - p.min) / (p.max - p.min)) * wP;
+    return c;
+  });
+  return svg({
+    largeur, hauteur, titre, contenu: (id) => {
+      let s = "";
+      const pasZ = pasJoli(zMax, 8);
+      for (let z = 0; z <= zMax + 1e-9; z += pasZ) {
+        s += texte(gauche - 6, Y(z) + 4, fmt(z, 3), `text-anchor="end" class="pt"`);
+        for (const c of cadres) s += ligne(c.x, Y(z), c.x + c.w, Y(z), COULEURS.grille, 1);
+      }
+      s += `<text transform="translate(11 ${haut + H / 2}) rotate(-90)" text-anchor="middle" style="font-weight:700;font-size:11px">profondeur (m)</text>`;
+      if (couches.length) {
+        const xc = gauche;
+        for (const c of couches) {
+          const a = Math.max(c.z0, 0), b = Math.min(c.z1, zMax);
+          if (b <= a) continue;
+          s += couche(id, { x: xc, y: Y(a), w: wCoupe, h: Y(b) - Y(a), sol: c.sol });
+          if (c.nom && Y(b) - Y(a) >= 14) {
+            const lignes = couper(c.nom, wCoupe - 10, 10.5).slice(0, Math.max(1, Math.floor((Y(b) - Y(a) - 4) / 12)));
+            s += texteLignes(xc + wCoupe / 2, (Y(a) + Y(b)) / 2 + 4 - (lignes.length - 1) * 6, lignes, `text-anchor="middle" class="gr halo" style="font-size:10.5px"`, 12);
+          }
+        }
+        s += `<rect x="${xc}" y="${haut}" width="${wCoupe}" height="${H}" fill="none" stroke="${COULEURS.trait}" stroke-width="1"/>`;
+        s += texte(xc + wCoupe / 2, 16, "Coupe", `text-anchor="middle" style="font-weight:800;font-size:11.5px"`);
+        if (zw !== null && zw < zMax) s += nappe(xc, Y(zw), wCoupe);
+      }
+      for (const c of cadres) {
+        for (const b of c.bandes ?? []) {
+          const x0 = c.X(Math.max(b.v0, c.min)), x1 = c.X(Math.min(b.v1, c.max));
+          s += `<rect x="${x0.toFixed(1)}" y="${haut}" width="${(x1 - x0).toFixed(1)}" height="${H}" fill="${b.couleur}" opacity="${b.opacite ?? 0.14}"/>`;
+          if (b.libelle && x1 - x0 > 14) s += `<text transform="translate(${((x0 + x1) / 2 + 4).toFixed(1)} ${haut + H - 6}) rotate(-90)" class="pt" style="font-size:10px">${esc(b.libelle)}</text>`;
+        }
+        const t = c.log ? graduationsLog(c.min, c.max).filter((v) => Math.abs(Math.log10(v) - Math.round(Math.log10(v))) < 1e-9) : [];
+        const pas = c.log ? null : pasJoli(c.max - c.min, 4);
+        const valeurs = c.log ? t : Array.from({ length: Math.floor((c.max - c.min) / pas + 1e-9) + 1 }, (_, i) => c.min + i * pas);
+        if (c.log) for (const v of graduationsLog(c.min, c.max)) s += ligne(c.X(v), haut, c.X(v), haut + H, COULEURS.grille, 0.7);
+        for (const v of valeurs) {
+          const px = c.X(v);
+          if (!c.log) s += ligne(px, haut, px, haut + H, COULEURS.grille, 1);
+          const ancre = px - c.x < 6 ? "start" : c.x + c.w - px < 6 ? "end" : "middle";
+          s += texte(px, haut - 6, fmt(v, 3), `text-anchor="${ancre}" class="pt"`);
+        }
+        s += `<rect x="${c.x.toFixed(1)}" y="${haut}" width="${c.w.toFixed(1)}" height="${H}" fill="none" stroke="${COULEURS.trait}" stroke-width="1.1"/>`;
+        s += texte(c.x + c.w / 2, 16, c.titre, `text-anchor="middle" style="font-weight:800;font-size:11.5px"`);
+        const clip = `${id}-p${cadres.indexOf(c)}`;
+        s += `<clipPath id="${clip}"><rect x="${c.x}" y="${haut}" width="${c.w}" height="${H}"/></clipPath>`;
+        for (const se of c.series) {
+          const pts = se.points.filter(([v, z]) => Number.isFinite(v) && Number.isFinite(z) && (!c.log || v > 0));
+          if (!pts.length) continue;
+          s += `<path d="${pts.map(([v, z], i) => `${i ? "L" : "M"}${c.X(v).toFixed(1)} ${Y(z).toFixed(1)}`).join("")}" fill="none" stroke="${se.couleur}" stroke-width="${se.epaisseur ?? 1.4}" ${se.tirets ? `stroke-dasharray="${se.tirets}"` : ""} stroke-linejoin="round" clip-path="url(#${clip})"/>`;
+        }
+      }
+      return s;
+    },
+  });
+}
+
+/** Passe de carottage : morceaux (cm) dans l'ordre, ceux d'au moins 10 cm comptés dans le RQD. */
+export function figureCarotte(morceaux, longueur, { largeur = 560, hauteur = 150 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Passe de carottage", contenu: () => {
+      let s = "";
+      const x0 = 30, w = largeur - 60, y = 46, h = 30;
+      const X = (cm) => x0 + (cm / longueur) * w;
+      s += `<rect x="${x0}" y="${y}" width="${w}" height="${h}" fill="#f1f5f9" stroke="${COULEURS.trait}" stroke-dasharray="4 3"/>`;
+      let pos = 0;
+      for (const l of morceaux) {
+        if (!(l > 0)) continue;
+        const compte = l >= 10;
+        s += `<rect x="${X(pos).toFixed(1)}" y="${y + 2}" width="${Math.max(1, X(pos + l) - X(pos) - 1.5).toFixed(1)}" height="${h - 4}" rx="4" fill="${compte ? "#94a3b8" : "#e2e8f0"}" stroke="${compte ? COULEURS.trait : "#94a3b8"}"/>`;
+        if (X(pos + l) - X(pos) > 22) s += texte((X(pos) + X(pos + l)) / 2, y + h / 2 + 4, fmt(l, 3), `text-anchor="middle" style="font-size:10.5px;font-weight:${compte ? 800 : 400}"`);
+        pos += l;
+      }
+      if (pos < longueur) s += texte((X(pos) + X(longueur)) / 2, y + h / 2 + 4, "perte", `text-anchor="middle" class="pt"`);
+      s += ligne(x0, y + h + 12, x0 + w, y + h + 12, COULEURS.cote, 1);
+      for (let cm = 0; cm <= longueur + 1e-9; cm += longueur > 200 ? 50 : 25) {
+        s += ligne(X(cm), y + h + 8, X(cm), y + h + 16, COULEURS.cote, 1);
+        s += texte(X(cm), y + h + 30, `${fmt(cm, 3)} cm`, `text-anchor="middle" class="pt"`);
+      }
+      s += `<rect x="${x0}" y="20" width="18" height="12" rx="3" fill="#94a3b8" stroke="${COULEURS.trait}"/>`;
+      s += texte(x0 + 24, 30, "morceau d'au moins 10 cm : compté dans le RQD", `style="font-size:11px;font-weight:700"`);
+      s += `<rect x="${x0 + 300}" y="20" width="18" height="12" rx="3" fill="#e2e8f0" stroke="#94a3b8"/>`;
+      s += texte(x0 + 324, 30, "morceau plus court", `style="font-size:11px"`);
       return s;
     },
   });

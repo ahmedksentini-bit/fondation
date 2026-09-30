@@ -64,8 +64,8 @@
         "Lefranc, Lugeon, pompage",
         "sismique réfraction, Vs,30"
       ],
-      "exercices": 0,
-      "cours": false
+      "exercices": 9,
+      "cours": true
     },
     {
       "id": "ch3",
@@ -84,7 +84,7 @@
         "pl*, pf*, EM/pl*",
         "profil pressiométrique"
       ],
-      "exercices": 0,
+      "exercices": 7,
       "cours": true
     },
     {

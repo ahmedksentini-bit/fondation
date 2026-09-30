@@ -1,28 +1,13 @@
 // Calculateurs du chapitre 3 : l'assistant de dépouillement d'un essai
 // pressiométrique, étape par étape (étalonnages, corrections, courbes, EM, pf,
 // pl, pressions nettes), puis le profil d'un sondage complet.
-import { el, num, f, fd, esc, verdict, brancher, garde } from "./ui.js";
+import { el, num, f, fd, esc, verdict, brancher, garde, lireTableau } from "./ui.js";
 import { graphe, schemaPressio, profilPressio, COULEURS } from "./figures.js";
 import * as P from "./geotech/pressio.js";
 import { alphaMenard } from "./geotech/sols.js";
 import { profilPoints } from "./geotech/outils.js";
 import { pleF62 } from "./geotech/superficielles.js";
 import { ESSAIS, TUBE, AIR, SONDE, texteReleves, texteCouples, sondage, etalonnagesExemple } from "./pressio-exemples.js";
-
-// ── Lecture des zones de saisie ──────────────────────────────────────────
-/**
- * Tableau de nombres, une ligne par palier : séparateurs espace, tabulation ou
- * point-virgule (virgule décimale alors acceptée), ou virgule seule (CSV).
- * Les lignes d'en-tête (commençant par une lettre) sont ignorées.
- */
-export function lireTableau(texte) {
-  return String(texte ?? "").split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !/^[A-Za-zÀ-ÿ#]/.test(l))
-    .map((l) => {
-      const champs = /[;\t]/.test(l) ? l.split(/[;\t]+/) : /\s/.test(l) ? l.split(/\s+/) : l.split(",");
-      return champs.map((c) => parseFloat(c.trim().replace(",", ".")));
-    })
-    .filter((r) => r.length && Number.isFinite(r[0]));
-}
 
 /** Paliers d'un essai : 4 colonnes (p, V15, V30, V60), 3 (p, V30, V60) ou 2 (p, V60). */
 function lirePaliers(texte) {

@@ -1,0 +1,508 @@
+{
+ "chapitre": "ch2",
+ "exercices": [
+  {
+   "id": "ch2-cptu",
+   "titre": "Une mesure au piézocône",
+   "difficulte": 2,
+   "graine": 1681439955,
+   "enonce": "Au piézocône, à z = 14,0 m (γ = 18,5 kN/m³, nappe à 3,0 m, γw = 9,81 kN/m³), on lit qc = 8,50 MPa, fs = 50 kPa et u2 = 106 kPa. Le rapport de surfaces de la pointe vaut a = 0,85.",
+   "donnees": [
+    {
+     "label": "z",
+     "valeur": "14,0 m"
+    },
+    {
+     "label": "qc",
+     "valeur": "8,50 MPa"
+    },
+    {
+     "label": "fs",
+     "valeur": "50 kPa"
+    },
+    {
+     "label": "u2",
+     "valeur": "106 kPa"
+    },
+    {
+     "label": "a",
+     "valeur": "0,85"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Résistance de pointe corrigée qt ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 8515.9,
+     "explication": "qt = qc + (1 − a) u2 = 8 500 + 0,15 × 106 = 8 515,9 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance normalisée Qt ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 54.6489,
+     "explication": "σv0 = 259 kPa, u0 = 108 kPa ; Qt = (qt − σv0)/σ'v0 = 8 257/151,1 = 54,6.",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Rapport de frottement normalisé Fr (en %) ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 0.605554,
+     "explication": "Fr = fs/(qt − σv0) = 50/8 257 = 0,61 %.",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Indice de comportement Ic ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2.0014,
+     "explication": "Ic = √[(3,47 − log Qt)² + (log Fr + 1,22)²] = 2,00.",
+     "tolerance": 0.05
+    },
+    {
+     "texte": "Zone de comportement de Robertson ?",
+     "type": "choix",
+     "options": [
+      "zone 7 : sable graveleux à sable dense",
+      "zone 5 : mélange sableux : sable limoneux à limon sableux",
+      "zone 2 : sol organique, tourbe",
+      "zone 6 : sable propre à sable limoneux"
+     ],
+     "reponse": 3,
+     "explication": "Ic = 2,00 : zone 6 : sable propre à sable limoneux. C'est un classement de comportement, non une granulométrie."
+    }
+   ]
+  },
+  {
+   "id": "ch2-spt",
+   "titre": "SPT : nombre de coups corrigé",
+   "difficulte": 1,
+   "graine": 2954786564,
+   "enonce": "Un SPT dans un sable donne N = 17 coups sous σ'v0 = 45 kPa, avec un mouton de sécurité (CE = 0,90), 5 m de tiges (CR = 0,85), un forage de 100 mm et un carottier standard (CB = CS = 1).",
+   "donnees": [
+    {
+     "label": "N",
+     "valeur": "17"
+    },
+    {
+     "label": "σ'v0",
+     "valeur": "45 kPa"
+    },
+    {
+     "label": "CE",
+     "valeur": "0,90"
+    },
+    {
+     "label": "CR",
+     "valeur": "0,85"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "N60 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 13.005,
+     "explication": "N60 = N · CE · CB · CR · CS = 17 × 0,90 × 1 × 0,85 × 1 = 13,01.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Facteur de contrainte CN ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.49071,
+     "explication": "CN = √(100/σ'v0) = √(100/45) = 1,491, borné entre 0,5 et 2.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "(N1)60 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 19.3867,
+     "explication": "(N1)60 = CN · N60 = 1,491 × 13,01 = 19,39.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "φ' selon Hatanaka et Uchida (φ' = √(20 (N1)60) + 20) ?",
+     "type": "nombre",
+     "unite": "°",
+     "reponse": 39.691,
+     "explication": "φ' = √(20 × 19,39) + 20 = 39,7° — la corrélation de Wolff donnerait 30,9° : un angle tiré du SPT reste un ordre de grandeur.",
+     "tolerance": 0.5
+    }
+   ]
+  },
+  {
+   "id": "ch2-dp",
+   "titre": "Pénétromètre dynamique : formule des Hollandais",
+   "difficulte": 1,
+   "graine": 515447399,
+   "enonce": "Pénétromètre dynamique : mouton de 30 kg tombant de 0,75 m, pointe de 30 cm². À 2 m, la masse frappée (tiges, enclume, pointe) vaut M' = 22,0 kg, et il faut 14 coups pour enfoncer la pointe de 10 cm.",
+   "donnees": [
+    {
+     "label": "M",
+     "valeur": "30 kg"
+    },
+    {
+     "label": "H",
+     "valeur": "0,75 m"
+    },
+    {
+     "label": "A",
+     "valeur": "30 cm²"
+    },
+    {
+     "label": "M'",
+     "valeur": "22,0 kg"
+    },
+    {
+     "label": "N",
+     "valeur": "14 coups / 10 cm"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Enfoncement moyen par coup e (mm) ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 7.14286,
+     "explication": "e = 100 mm / 14 = 7,14 mm.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance dynamique qd ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 5.9426,
+     "explication": "qd = M² g H / [(M + M') A e] = 30² × 9,81 × 0,75 / [(30 + 22,0) × 0,0030 × 0,00714] = 5,94 MPa.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch2-dmt",
+   "titre": "Dilatomètre plat : indices et module",
+   "difficulte": 2,
+   "graine": 1780260700,
+   "enonce": "Dilatomètre plat : lectures A = 260 kPa et B = 340 kPa, corrections de membrane ΔA = 18 kPa et ΔB = 60 kPa (zM = 0). Au niveau de l'essai, u0 = 65 kPa et σ'v0 = 60 kPa.",
+   "donnees": [
+    {
+     "label": "A",
+     "valeur": "260 kPa"
+    },
+    {
+     "label": "B",
+     "valeur": "340 kPa"
+    },
+    {
+     "label": "ΔA · ΔB",
+     "valeur": "18 · 60 kPa"
+    },
+    {
+     "label": "u0",
+     "valeur": "65 kPa"
+    },
+    {
+     "label": "σ'v0",
+     "valeur": "60 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "p0 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 277.9,
+     "explication": "p0 = 1,05 (A + ΔA) − 0,05 (B − ΔB) = 277,9 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Indice de matériau ID ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.00986379,
+     "explication": "p1 = B − ΔB = 280 kPa ; ID = (p1 − p0)/(p0 − u0) = 0,01 → argile.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Indice de contrainte horizontale KD ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 3.54833,
+     "explication": "KD = (p0 − u0)/σ'v0 = 3,55.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Module œdométrique M = RM · ED ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.104791,
+     "explication": "ED = 34,7 (p1 − p0) = 0,07 MPa ; RM = 1,44 ; M = 0,1 MPa.",
+     "toleranceRel": 0.04
+    }
+   ]
+  },
+  {
+   "id": "ch2-vst",
+   "titre": "Scissomètre : cohésion non drainée",
+   "difficulte": 1,
+   "graine": 3510035336,
+   "enonce": "Un moulinet de 70 × 140 mm, tourné dans une argile d'indice de plasticité 70 %, mesure un couple maximal de 21 N·m puis un couple résiduel de 9,5 N·m.",
+   "donnees": [
+    {
+     "label": "D × H",
+     "valeur": "70 × 140 mm"
+    },
+    {
+     "label": "M",
+     "valeur": "21 N·m"
+    },
+    {
+     "label": "M résiduel",
+     "valeur": "9,5 N·m"
+    },
+    {
+     "label": "Ip",
+     "valeur": "70 %"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Constante du moulinet K = πD²(H/2 + D/6) (cm³) ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 1257.16,
+     "explication": "K = π × 0,070² × (0,070 + 0,0117) = 1 257 cm³.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Cohésion non drainée cu ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 16.7043,
+     "explication": "cu = M/K = 21 / 0,001257 m³ = 16,7 kPa.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Sensibilité St ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2.21053,
+     "explication": "St = cu/cr = M/Mrésiduel = 2,21.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "cu corrigée par μ de Bjerrum (μ = 1,7 − 0,54 log Ip) ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 11.7539,
+     "explication": "μ = 0,704 ; cu × μ = 11,8 kPa.",
+     "toleranceRel": 0.03
+    }
+   ]
+  },
+  {
+   "id": "ch2-plaque",
+   "titre": "Essai de plaque : EV1, EV2 et compactage",
+   "difficulte": 1,
+   "graine": 3364699091,
+   "enonce": "Essai de plaque Ø 600 mm : enfoncement de 2,80 mm sous 0,25 MPa au premier chargement, puis de 1,00 mm sous 0,20 MPa au second.",
+   "donnees": [
+    {
+     "label": "z1 (0,25 MPa)",
+     "valeur": "2,80 mm"
+    },
+    {
+     "label": "z2 (0,20 MPa)",
+     "valeur": "1,00 mm"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "EV1 ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 40.1786,
+     "explication": "EV1 = 1,5 p R / z1 = 112,5/2,80 = 40,2 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "EV2 ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 90,
+     "explication": "EV2 = 90/1,00 = 90,0 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "k = EV2/EV1 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2.24,
+     "explication": "k = 2,24 : compactage insuffisant.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Classe de la plate-forme ?",
+     "type": "choix",
+     "options": [
+      "PF1",
+      "PF2",
+      "PF3",
+      "PF4"
+     ],
+     "reponse": 1,
+     "explication": "EV2 = 90,0 MPa : PF2 (PF1 de 20 à 50, PF2 de 50 à 120, PF3 de 120 à 200, PF4 au-delà)."
+    }
+   ]
+  },
+  {
+   "id": "ch2-lefranc",
+   "titre": "Essai Lefranc à charge constante",
+   "difficulte": 2,
+   "graine": 3787901116,
+   "enonce": "Essai Lefranc dans une cavité de 1,0 m de long et 8 cm de diamètre : on injecte 0,30 L/min pour maintenir une surcharge constante de 0,5 m au-dessus du niveau de la nappe.",
+   "donnees": [
+    {
+     "label": "L",
+     "valeur": "1,0 m"
+    },
+    {
+     "label": "D",
+     "valeur": "8 cm"
+    },
+    {
+     "label": "Q",
+     "valeur": "0,30 L/min"
+    },
+    {
+     "label": "h",
+     "valeur": "0,5 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Facteur de forme F = 2πL/ln[L/D + √(1 + (L/D)²)] ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.95101,
+     "explication": "F = 1,951 m (m = F/D = 24,39).",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Perméabilité k (m/s) ?",
+     "type": "nombre",
+     "unite": "m/s",
+     "reponse": 0.00000512554,
+     "explication": "Q = 0,000005 m³/s ; k = Q/(F h) = 0,00000513 m/s.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch2-jacob",
+   "titre": "Essai de pompage : méthode de Jacob",
+   "difficulte": 2,
+   "graine": 2051462646,
+   "enonce": "On pompe 10 m³/h dans une nappe captive de 9 m d'épaisseur. Dans un piézomètre à 30 m, le rabattement croît de 0,42 m par cycle logarithmique du temps, et la droite de Jacob coupe s = 0 à t0 = 120 s.",
+   "donnees": [
+    {
+     "label": "Q",
+     "valeur": "10 m³/h"
+    },
+    {
+     "label": "Δs",
+     "valeur": "0,42 m/cycle"
+    },
+    {
+     "label": "t0",
+     "valeur": "120 s"
+    },
+    {
+     "label": "r",
+     "valeur": "30 m"
+    },
+    {
+     "label": "épaisseur",
+     "valeur": "9 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Transmissivité T (m²/s) ?",
+     "type": "nombre",
+     "unite": "m²/s",
+     "reponse": 0.00121032,
+     "explication": "T = 0,183 Q/Δs = 0,183 × 0,00278 / 0,42 = 0,00121 m²/s.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Perméabilité k = T/e (m/s) ?",
+     "type": "nombre",
+     "unite": "m/s",
+     "reponse": 0.00013448,
+     "explication": "k = 0,00121 / 9 = 0,000134 m/s.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Coefficient d'emmagasinement S ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.000363095,
+     "explication": "S = 2,25 T t0 / r² = 2,25 × 0,00121 × 120 / 30² = 0,000363.",
+     "toleranceRel": 0.03
+    }
+   ]
+  },
+  {
+   "id": "ch2-rqd",
+   "titre": "RQD d'une passe de carottage",
+   "difficulte": 1,
+   "graine": 321771614,
+   "enonce": "Une passe de carottage de 220 cm a ramené des morceaux de 12, 25, 28, 19, 12, 11, 23, 25, 10, 24, 22 cm.",
+   "donnees": [
+    {
+     "label": "longueur de passe",
+     "valeur": "220 cm"
+    },
+    {
+     "label": "morceaux (cm)",
+     "valeur": "12 · 25 · 28 · 19 · 12 · 11 · 23 · 25 · 10 · 24 · 22"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "RQD (%) ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 95.9091,
+     "explication": "Morceaux d'au moins 10 cm : 12 + 25 + 28 + 19 + 12 + 11 + 23 + 25 + 10 + 24 + 22 = 211 cm ; RQD = 95,9 %.",
+     "tolerance": 1
+    },
+    {
+     "texte": "Taux de récupération (%) ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 95.9091,
+     "explication": "211/220 = 95,9 %.",
+     "tolerance": 1
+    },
+    {
+     "texte": "Qualité du rocher selon le RQD ?",
+     "type": "choix",
+     "options": [
+      "mauvaise",
+      "excellente",
+      "moyenne",
+      "très mauvaise"
+     ],
+     "reponse": 1,
+     "explication": "RQD = 96 % : qualité excellente (seuils 25, 50, 75, 90 %)."
+    }
+   ]
+  }
+ ]
+}

@@ -10,6 +10,20 @@ export function num(id, defaut = NaN) {
   return Number.isFinite(v) ? v : defaut;
 }
 
+/**
+ * Tableau de nombres saisi ou collé depuis un tableur, une ligne par mesure :
+ * séparateurs espace, tabulation ou point-virgule (virgule décimale alors
+ * acceptée), ou virgule seule (CSV). Les lignes d'en-tête sont ignorées.
+ */
+export function lireTableau(texte) {
+  return String(texte ?? "").split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !/^[A-Za-zÀ-ÿ#]/.test(l))
+    .map((l) => {
+      const champs = /[;\t]/.test(l) ? l.split(/[;\t]+/) : /\s/.test(l) ? l.split(/\s+/) : l.split(",");
+      return champs.map((c) => parseFloat(c.trim().replace(",", ".")));
+    })
+    .filter((r) => r.length && Number.isFinite(r[0]));
+}
+
 export const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 

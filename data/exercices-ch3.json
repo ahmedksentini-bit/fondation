@@ -1,0 +1,339 @@
+{
+ "chapitre": "ch3",
+ "exercices": [
+  {
+   "id": "ch3-corrections",
+   "titre": "Corriger un palier : ph, pe et dilatation",
+   "difficulte": 1,
+   "graine": 4269120587,
+   "enonce": "Palier d'un essai à 5,0 m, le manomètre du CPV étant à 0,8 m au-dessus du sol : pression lue 2,50 MPa, volume à 60 s 361 cm³. Le coefficient de dilatation vaut a = 4,3 cm³/MPa, et l'étalonnage à l'air donne pe = 0,105 MPa au volume corrigé du palier (γw = 9,81 kN/m³).",
+   "donnees": [
+    {
+     "label": "z · hc",
+     "valeur": "5,0 · 0,8 m"
+    },
+    {
+     "label": "pr",
+     "valeur": "2,50 MPa"
+    },
+    {
+     "label": "Vr",
+     "valeur": "361 cm³"
+    },
+    {
+     "label": "a",
+     "valeur": "4,3 cm³/MPa"
+    },
+    {
+     "label": "pe(V)",
+     "valeur": "0,105 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Pression hydrostatique ph (MPa) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.056898,
+     "explication": "ph = γw (hc + z) = 9,81 × 5,8 / 1000 = 0,0569 MPa. La nappe n'y joue aucun rôle.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Volume corrigé V ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 350.25,
+     "explication": "V = Vr − a·pr = 361 − 4,3 × 2,50 = 350,3 cm³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Pression corrigée p ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 2.4519,
+     "explication": "p = pr + ph − pe = 2,50 + 0,0569 − 0,105 = 2,4519 MPa.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch3-tube",
+   "titre": "Étalonnage en tube : a, Vc et Vs",
+   "difficulte": 2,
+   "graine": 2990220388,
+   "enonce": "Gonflée dans un tube d'acier de 63 mm de diamètre intérieur, une sonde dont la cellule centrale mesure 210 mm donne, une fois plaquée contre le tube : 186.1 cm³ sous 1 MPa, 189.2 cm³ sous 2 MPa, 192 cm³ sous 3 MPa, 195.2 cm³ sous 4 MPa.",
+   "donnees": [
+    {
+     "label": "p = 1 MPa",
+     "valeur": "V = 186.1 cm³"
+    },
+    {
+     "label": "p = 2 MPa",
+     "valeur": "V = 189.2 cm³"
+    },
+    {
+     "label": "p = 3 MPa",
+     "valeur": "V = 192 cm³"
+    },
+    {
+     "label": "p = 4 MPa",
+     "valeur": "V = 195.2 cm³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Coefficient de dilatation a (pente de la droite) ?",
+     "type": "nombre",
+     "unite": "cm³/MPa",
+     "reponse": 3.01,
+     "explication": "Droite des moindres carrés V = Vc + a·p : a = 3,010 cm³/MPa (sous 6 cm³/MPa : tubulures acceptables).",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Ordonnée à l'origine Vc ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 183.1,
+     "explication": "Vc = 183,10 cm³ : le volume injecté pour atteindre le tube.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Volume de la cellule au repos Vs = π di² ls/4 − Vc ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 471.522,
+     "explication": "π × 6,3² × 21,0/4 = 654,6 cm³ ; Vs = 654,6 − 183,1 = 471,5 cm³.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch3-em",
+   "titre": "Module pressiométrique EM",
+   "difficulte": 1,
+   "graine": 464690020,
+   "enonce": "Sur la courbe corrigée d'un essai (Vs = 555 cm³), la phase pseudo-élastique va de (p1 = 0,57 MPa ; V1 = 138 cm³) à (p2 = 2,480 MPa ; V2 = 306 cm³).",
+   "donnees": [
+    {
+     "label": "Vs",
+     "valeur": "555 cm³"
+    },
+    {
+     "label": "p1 · V1",
+     "valeur": "0,57 MPa · 138 cm³"
+    },
+    {
+     "label": "p2 · V2",
+     "valeur": "2,480 MPa · 306 cm³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Volume moyen Vm ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 222,
+     "explication": "Vm = (V1 + V2)/2 = 222,0 cm³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Module pressiométrique EM (ν = 0,33) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 23.4978,
+     "explication": "EM = 2,66 (Vs + Vm) Δp/ΔV = 2,66 × 777,0 × 1,910/168 = 23,50 MPa.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch3-pl-lue",
+   "titre": "Pression limite lue sur la courbe",
+   "difficulte": 1,
+   "graine": 1941477365,
+   "enonce": "Essai avec Vs = 538 cm³ et V1 = 137 cm³ au début de la phase pseudo-élastique. Deux paliers corrigés encadrent la fin de l'essai : (1,120 MPa ; 765 cm³) puis (1,200 MPa ; 830 cm³).",
+   "donnees": [
+    {
+     "label": "Vs · V1",
+     "valeur": "538 · 137 cm³"
+    },
+    {
+     "label": "palier n",
+     "valeur": "1,120 MPa · 765 cm³"
+    },
+    {
+     "label": "palier n + 1",
+     "valeur": "1,200 MPa · 830 cm³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Volume conventionnel Vl ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 812,
+     "explication": "Vl = Vs + 2V1 = 538 + 2 × 137 = 812 cm³ : la cavité a doublé de volume depuis le contact.",
+     "toleranceRel": 0.002
+    },
+    {
+     "texte": "Pression limite pl (interpolation linéaire) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 1.17785,
+     "explication": "pl = 1,120 + (1,200 − 1,120) × (812 − 765)/(830 − 765) = 1,178 MPa.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch3-pl-inverse",
+   "titre": "Pression limite extrapolée par l'inverse du volume",
+   "difficulte": 3,
+   "graine": 625286587,
+   "enonce": "L'essai (Vs = 535 cm³, V1 = 160 cm³) s'est arrêté avant d'atteindre Vl. Ses trois derniers paliers corrigés, au-delà de pf, sont : (1,131 MPa ; 2591 cm³), (1,218 MPa ; 3563 cm³), (1,305 MPa ; 5700 cm³).",
+   "donnees": [
+    {
+     "label": "palier 1",
+     "valeur": "1,131 MPa · 2591 cm³"
+    },
+    {
+     "label": "palier 2",
+     "valeur": "1,218 MPa · 3563 cm³"
+    },
+    {
+     "label": "palier 3",
+     "valeur": "1,305 MPa · 5700 cm³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Volume conventionnel Vl ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 855,
+     "explication": "Vl = 535 + 2 × 160 = 855 cm³.",
+     "toleranceRel": 0.002
+    },
+    {
+     "texte": "Pente A de la droite 1/V = A·p + B (en cm⁻³/MPa) ?",
+     "type": "nombre",
+     "unite": "cm⁻³/MPa",
+     "reponse": -0.00120984,
+     "explication": "Régression de 1/V sur p : A = -0,00121, B = 0,001754.",
+     "toleranceRel": 0.05
+    },
+    {
+     "texte": "Pression limite extrapolée pl ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.483271,
+     "explication": "pl = (1/Vl − B)/A = (0,00117 − 0,001754) / -0,00121 = 0,483 MPa ; la droite coupe 1/V = 0 à 1,450 MPa, pression limite théorique.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch3-nettes",
+   "titre": "Pressions nettes et état du sol",
+   "difficulte": 2,
+   "graine": 586327351,
+   "enonce": "Essai dans un sable à 18,0 m (γ = 19,5 kN/m³ au-dessus de la nappe, située à 1,5 m ; γsat = 21,0 kN/m³ dessous ; γw = 9,81 kN/m³ ; K0 = 0,5) : EM = 45,9 MPa, pf = 1,351 MPa, pl = 2,55 MPa.",
+   "donnees": [
+    {
+     "label": "z · nappe",
+     "valeur": "18,0 · 1,5 m"
+    },
+    {
+     "label": "EM",
+     "valeur": "45,9 MPa"
+    },
+    {
+     "label": "pf · pl",
+     "valeur": "1,351 · 2,55 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "p0 = K0 σ'v0 + u0 (kPa) ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 268.808,
+     "explication": "σv0 = 375,8 kPa, u0 = 162 kPa, σ'v0 = 213,9 kPa ; p0 = 0,5 × 213,9 + 162 = 268,8 kPa.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "pl* ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 2.28119,
+     "explication": "pl* = pl − p0 = 2,55 − 0,269 = 2,281 MPa.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "pf* ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 1.08219,
+     "explication": "pf* = pf − p0 = 1,082 MPa.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "État du sable d'après EM/pl* ?",
+     "type": "choix",
+     "options": [
+      "très serré",
+      "surconsolidé",
+      "normalement serré",
+      "sous-consolidé, altéré, remanié"
+     ],
+     "reponse": 0,
+     "explication": "EM/pl* = 20,1 : très serré, α = 0,50. Un rapport bas peut aussi trahir un forage remanié."
+    }
+   ]
+  },
+  {
+   "id": "ch3-fluage",
+   "titre": "Pression de fluage sur la courbe de fluage",
+   "difficulte": 2,
+   "graine": 1821477194,
+   "enonce": "Les paliers d'un essai donnent la courbe de fluage ci-dessous : 0,478 MPa → 2,1 cm³ ; 0,956 MPa → 2,2 cm³ ; 1,433 MPa → 2,3 cm³ ; 2,389 MPa → 7,2 cm³ ; 2,867 MPa → 11,4 cm³ ; 3,344 MPa → 15,6 cm³. Les 3 premiers forment le palier bas, les suivants la branche montante.",
+   "donnees": [
+    {
+     "label": "p = 0,478 MPa",
+     "valeur": "ΔV60/30 = 2,1 cm³"
+    },
+    {
+     "label": "p = 0,956 MPa",
+     "valeur": "ΔV60/30 = 2,2 cm³"
+    },
+    {
+     "label": "p = 1,433 MPa",
+     "valeur": "ΔV60/30 = 2,3 cm³"
+    },
+    {
+     "label": "p = 2,389 MPa",
+     "valeur": "ΔV60/30 = 7,2 cm³"
+    },
+    {
+     "label": "p = 2,867 MPa",
+     "valeur": "ΔV60/30 = 11,4 cm³"
+    },
+    {
+     "label": "p = 3,344 MPa",
+     "valeur": "ΔV60/30 = 15,6 cm³"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 520 220\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f0-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f0-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f0-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f0-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f0-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M58.0 14.0L58.0 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"192.0\" text-anchor=\"middle\" class=\"pt\">0</text><path d=\"M119.5 14.0L119.5 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"119.5\" y=\"192.0\" text-anchor=\"middle\" class=\"pt\">0,5</text><path d=\"M180.9 14.0L180.9 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"180.9\" y=\"192.0\" text-anchor=\"middle\" class=\"pt\">1</text><path d=\"M242.4 14.0L242.4 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"242.4\" y=\"192.0\" text-anchor=\"middle\" class=\"pt\">1,5</text><path d=\"M303.9 14.0L303.9 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"303.9\" y=\"192.0\" text-anchor=\"middle\" class=\"pt\">2</text><path d=\"M365.3 14.0L365.3 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"365.3\" y=\"192.0\" text-anchor=\"middle\" class=\"pt\">2,5</text><path d=\"M426.8 14.0L426.8 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"426.8\" y=\"192.0\" text-anchor=\"middle\" class=\"pt\">3</text><path d=\"M488.3 14.0L488.3 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"488.3\" y=\"192.0\" text-anchor=\"middle\" class=\"pt\">3,5</text><path d=\"M58.0 176.0L502.0 176.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"180.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M58.0 158.7L502.0 158.7\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"162.7\" text-anchor=\"end\" class=\"pt\">2</text><path d=\"M58.0 141.4L502.0 141.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"145.4\" text-anchor=\"end\" class=\"pt\">4</text><path d=\"M58.0 124.1L502.0 124.1\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"128.1\" text-anchor=\"end\" class=\"pt\">6</text><path d=\"M58.0 106.8L502.0 106.8\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"110.8\" text-anchor=\"end\" class=\"pt\">8</text><path d=\"M58.0 89.5L502.0 89.5\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"93.5\" text-anchor=\"end\" class=\"pt\">10</text><path d=\"M58.0 72.2L502.0 72.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"76.2\" text-anchor=\"end\" class=\"pt\">12</text><path d=\"M58.0 54.8L502.0 54.8\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"58.8\" text-anchor=\"end\" class=\"pt\">14</text><path d=\"M58.0 37.5L502.0 37.5\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"41.5\" text-anchor=\"end\" class=\"pt\">16</text><path d=\"M58.0 20.2L502.0 20.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"24.2\" text-anchor=\"end\" class=\"pt\">18</text><rect x=\"58\" y=\"14\" width=\"444\" height=\"162\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"280.0\" y=\"210.0\" text-anchor=\"middle\" style=\"font-weight:700\">pression corrigée p (MPa)</text><text transform=\"translate(14 95) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">ΔV60/30 (cm³)</text><clipPath id=\"f0-clip\"><rect x=\"58\" y=\"14\" width=\"444\" height=\"162\"/></clipPath><path d=\"M116.8 157.8L175.5 157.0L234.2 156.1L351.7 113.7L410.5 77.3L469.1 41.0\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"2.2\"  stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><circle cx=\"116.8\" cy=\"157.8\" r=\"3\" fill=\"#7c3aed\" clip-path=\"url(#f0-clip)\"/><circle cx=\"175.5\" cy=\"157.0\" r=\"3\" fill=\"#7c3aed\" clip-path=\"url(#f0-clip)\"/><circle cx=\"234.2\" cy=\"156.1\" r=\"3\" fill=\"#7c3aed\" clip-path=\"url(#f0-clip)\"/><circle cx=\"351.7\" cy=\"113.7\" r=\"3\" fill=\"#7c3aed\" clip-path=\"url(#f0-clip)\"/><circle cx=\"410.5\" cy=\"77.3\" r=\"3\" fill=\"#7c3aed\" clip-path=\"url(#f0-clip)\"/><circle cx=\"469.1\" cy=\"41.0\" r=\"3\" fill=\"#7c3aed\" clip-path=\"url(#f0-clip)\"/></svg>",
+   "questions": [
+    {
+     "texte": "Pression de fluage pf (intersection des deux droites) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 1.84181,
+     "explication": "Droite basse : ΔV ≈ 2,00 + 0,21 p ; droite montante : ΔV ≈ -13,81 + 8,80 p ; elles se coupent à pf = 1,842 MPa.",
+     "toleranceRel": 0.04
+    }
+   ]
+  }
+ ]
+}

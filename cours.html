@@ -247,6 +247,547 @@
     <a class="secondary" href="exerciseur.html#ch1">Exerciseur</a></div>
 </section>
 
+<!-- ══════════════════════════ CHAPITRE 2 ══════════════════════════ -->
+<section id="ch2" class="card">
+  <h2>2 · Les essais en place</h2>
+
+  <p>Un échantillon remonté d'un forage a quitté son état de contraintes, souvent sa teneur
+     en eau, parfois sa structure. Un <strong>essai en place</strong> mesure le sol là où il
+     est, sous ses contraintes et dans ses conditions de drainage, sur un volume bien plus
+     grand. Il paie ce privilège par une interprétation plus indirecte : aucun essai en place
+     ne donne directement c' ou φ'. Chacun mesure une <em>réponse</em> — une résistance à
+     l'enfoncement, un volume, un couple, un débit, un temps de trajet — qu'il faut
+     traduire en paramètres.</p>
+  <p>Ce chapitre passe les essais en revue, famille par famille : ce que chacun mesure,
+     comment on le dépouille, ce que le projeteur en retient. Chaque famille a son
+     calculateur, qui part des lectures de chantier. Le pressiomètre Ménard, sur lequel
+     reposent les méthodes françaises de calcul, a son propre chapitre (le suivant).</p>
+
+  <h3>Reconnaître un site : sondages, prélèvements, paramètres de forage</h3>
+  <p>La reconnaissance se mène par étapes, en suivant les missions géotechniques de la
+     NF P94-500 : une étude préalable (G1) situe les risques du site ; l'étude de conception
+     (G2) précise le modèle géologique et fixe les paramètres ; les missions d'exécution
+     (G3), de supervision (G4) et de diagnostic (G5) accompagnent ensuite le chantier et
+     l'ouvrage. À chaque étape, trois moyens se complètent :</p>
+  <ul>
+    <li>les <strong>sondages destructifs</strong>, où l'outil broie le terrain. Rapides et bon
+        marché, ils deviennent précieux quand on <strong>enregistre les paramètres de
+        forage</strong> : vitesse d'avance, poussée sur l'outil, couple de rotation, pression
+        du fluide. Ces courbes continues localisent les changements de couche, le toit du
+        rocher ou une cavité entre deux points d'essai ;</li>
+    <li>les <strong>sondages carottés</strong>, qui remontent des échantillons. Leur qualité
+        dépend du terrain, de l'outil (carottier poinçonneur à paroi mince, carottier rotatif
+        double ou triple…) et de l'équipe. Elle se classe de 1 à 5 selon ce que
+        l'échantillon permet encore de mesurer <span class="ref">[NF P94-202 ; NF EN ISO 22475-1]</span> ;</li>
+    <li>les <strong>puits et tranchées</strong>, qui donnent à voir le terrain et à y
+        tailler des blocs intacts, mais sur quelques mètres seulement.</li>
+  </ul>
+  <table class="resultats"><thead><tr><th>Classe</th><th>L'échantillon a conservé</th><th>On peut y mesurer</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="motif">structure, teneur en eau, densité, état de contraintes relâché seulement</td><td class="motif">identification, et résistance, compressibilité, perméabilité (c', φ', c<sub>u</sub>, C<sub>c</sub>, σ'<sub>p</sub>, k)</td></tr>
+      <tr><td>2</td><td class="motif">structure et teneur en eau, mais il a été remanié mécaniquement</td><td class="motif">identification, teneur en eau, densité — pas de mécanique</td></tr>
+      <tr><td>3</td><td class="motif">sa teneur en eau et tous ses constituants</td><td class="motif">identification, teneur en eau</td></tr>
+      <tr><td>4</td><td class="motif">ses constituants, pas sa teneur en eau</td><td class="motif">identification (granulométrie, limites d'Atterberg)</td></tr>
+      <tr><td>5</td><td class="motif">une partie seulement de ses constituants</td><td class="motif">une description grossière de la lithologie</td></tr>
+    </tbody></table>
+  <p>Dans le rocher, la carotte renseigne aussi sur la fracturation. Le
+     <strong>RQD</strong> (<em>Rock Quality Designation</em>) est la part d'une passe de
+     carottage formée de morceaux d'au moins 10 cm ; on le lit avec le taux de récupération,
+     qui mesure ce que le carottier a ramené.</p>
+
+  <div class="calc" id="esRqdCalc">
+    <h3>RQD d'une passe de carottage</h3>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="esRqdMorceaux">Longueurs des morceaux, dans l'ordre (cm)</label>
+        <textarea id="esRqdMorceaux" rows="2" spellcheck="false">12 8 25 4 30 5 15 9 22 6</textarea></div>
+      <div class="field"><label for="esRqdL">Longueur de la passe</label>
+        <div class="input-wrap"><input id="esRqdL" type="text" inputmode="decimal" value="150"><span class="unit">cm</span></div></div>
+    </div>
+    <div class="figure" id="esRqdFig"></div>
+    <p class="final-result" id="esRqdOut"></p>
+  </div>
+
+  <h3>L'eau dans le sol : niveau et pression</h3>
+  <p>La contrainte effective, donc tout calcul de fondation, dépend de la pression de l'eau.
+     Le <strong>piézomètre ouvert</strong> — un tube crépiné sur sa partie basse, entouré de
+     sable, isolé au-dessus par un bouchon d'argile — donne le niveau de la nappe, relevé à la
+     sonde. Le <strong>piézomètre fermé</strong> place un capteur de pression dans le terrain,
+     isolé de la surface. La différence tient au <strong>temps de réponse</strong> : pour
+     suivre une variation de pression, le tube ouvert doit échanger un volume d'eau avec le
+     sol, ce qui prend des minutes dans un sable et des jours ou des semaines dans une
+     argile. Hvorslev l'a mis en formule : le retard se résorbe exponentiellement, avec un
+     temps caractéristique T<sub>0</sub> = A/(F·k), où A est la section du tube, F le facteur
+     de forme de la crépine et k la perméabilité.</p>
+
+  <div class="calc" id="esPzCalc">
+    <h3>Temps de réponse d'un piézomètre ouvert</h3>
+    <div class="data-grid">
+      <div class="field"><label for="esPzD">Diamètre intérieur du tube</label>
+        <div class="input-wrap"><input id="esPzD" type="text" inputmode="decimal" value="50"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="esPzL">Longueur de la crépine</label>
+        <div class="input-wrap"><input id="esPzL" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esPzF">Diamètre du forage</label>
+        <div class="input-wrap"><input id="esPzF" type="text" inputmode="decimal" value="100"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="esPzK">Perméabilité du sol k</label>
+        <div class="input-wrap"><input id="esPzK" type="text" inputmode="decimal" value="1e-7"><span class="unit">m/s</span></div></div>
+    </div>
+    <div class="figure" id="esPzFig"></div>
+    <p class="final-result" id="esPzOut"></p>
+  </div>
+
+  <h3>Le pénétromètre statique et le piézocône</h3>
+  <p>On enfonce dans le sol, par vérin, à vitesse constante de <strong>2 cm/s</strong>, une
+     pointe conique de 60° et de 10 cm² de section, prolongée d'un manchon de frottement de
+     150 cm². On mesure en continu la <strong>résistance de pointe q<sub>c</sub></strong> et le
+     <strong>frottement latéral f<sub>s</sub></strong> ; leur rapport R<sub>f</sub> = f<sub>s</sub>/q<sub>c</sub>
+     trahit la nature du sol : faible dans les sables, élevé dans les argiles
+     <span class="ref">[NF EN ISO 22476-1]</span>. L'essai est rapide, répétable et donne un profil
+     presque continu ; il refuse en revanche les graves grossières, les blocs et le rocher.</p>
+  <p>Le <strong>piézocône</strong> (CPTU) mesure en plus la pression interstitielle u<sub>2</sub>,
+     juste derrière le cône. Dans une argile, l'enfoncement met l'eau en surpression ; comme
+     cette pression agit aussi sur l'épaulement de la pointe, on corrige la résistance
+     mesurée avec le rapport de surfaces a de la pointe (0,6 à 0,9, donné par l'étalonnage) :</p>
+  <p class="formula">q<sub>t</sub> = q<sub>c</sub> + (1 − a) u<sub>2</sub>&nbsp;&nbsp;·&nbsp;&nbsp;Q<sub>t</sub> = (q<sub>t</sub> − σ<sub>v0</sub>)/σ'<sub>v0</sub>&nbsp;&nbsp;·&nbsp;&nbsp;F<sub>r</sub> = f<sub>s</sub>/(q<sub>t</sub> − σ<sub>v0</sub>)&nbsp;&nbsp;·&nbsp;&nbsp;B<sub>q</sub> = (u<sub>2</sub> − u<sub>0</sub>)/(q<sub>t</sub> − σ<sub>v0</sub>)</p>
+  <p>Les grandeurs normalisées Q<sub>t</sub> et F<sub>r</sub> placent la mesure sur l'abaque de
+     <strong>Robertson</strong>, où l'indice I<sub>c</sub> = √[(3,47 − log Q<sub>t</sub>)² + (log F<sub>r</sub> + 1,22)²]
+     découpe des zones de comportement : sable (I<sub>c</sub> &lt; 2,05), mélanges sableux,
+     mélanges limoneux, argile (2,95 à 3,60), sols organiques. C'est un classement de
+     <em>comportement</em>, non une granulométrie : une argile très raide peut se comporter
+     comme un limon. Dans une argile, la cohésion non drainée s'en déduit par
+     c<sub>u</sub> = (q<sub>t</sub> − σ<sub>v0</sub>)/N<sub>kt</sub>, N<sub>kt</sub> valant 10 à 20
+     selon le site. En projet, q<sub>c</sub> entre directement dans les méthodes
+     pénétrométriques des semelles (k<sub>c</sub>·q<sub>ce</sub>, chapitre 6) et des pieux (chapitre 11).</p>
+
+  <div class="calc" id="esCptCalc">
+    <h3>Une mesure au piézocône sur l'abaque de Robertson</h3>
+    <div class="data-grid">
+      <div class="field"><label for="esCptZ">Profondeur z</label>
+        <div class="input-wrap"><input id="esCptZ" type="text" inputmode="decimal" value="10"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esCptQc">Résistance de pointe q<sub>c</sub></label>
+        <div class="input-wrap"><input id="esCptQc" type="text" inputmode="decimal" value="1.2"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="esCptFs">Frottement f<sub>s</sub></label>
+        <div class="input-wrap"><input id="esCptFs" type="text" inputmode="decimal" value="25"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="esCptU2">Pression interstitielle u<sub>2</sub></label>
+        <div class="input-wrap"><input id="esCptU2" type="text" inputmode="decimal" value="400"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="esCptA">Rapport de surfaces a</label>
+        <div class="input-wrap"><input id="esCptA" type="text" inputmode="decimal" value="0.8"><span class="unit">—</span></div></div>
+      <div class="field"><label for="esCptG">Poids volumique γ</label>
+        <div class="input-wrap"><input id="esCptG" type="text" inputmode="decimal" value="18"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="esCptZw">Profondeur de la nappe</label>
+        <div class="input-wrap"><input id="esCptZw" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esCptNkt">N<sub>kt</sub> (pour c<sub>u</sub>)</label>
+        <div class="input-wrap"><input id="esCptNkt" type="text" inputmode="decimal" value="14"><span class="unit">—</span></div></div>
+    </div>
+    <div class="figure" id="esCptFig"></div>
+    <div id="esCptOut"></div>
+  </div>
+
+  <div class="calc" id="esCpuCalc">
+    <h3>Un sondage au piézocône, du profil à l'abaque</h3>
+    <p class="method-note">Une ligne par mesure : z (m), q<sub>c</sub> (MPa), f<sub>s</sub> (kPa),
+       u<sub>2</sub> (kPa). Le sondage d'exemple traverse un remblai, une argile molle, un
+       limon, un sable dense puis une argile raide ; on peut coller le sien à la place.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="esCpuDonnees">Mesures</label>
+        <textarea id="esCpuDonnees" rows="6" spellcheck="false"></textarea></div>
+      <div class="field"><label for="esCpuG">γ moyen</label>
+        <div class="input-wrap"><input id="esCpuG" type="text" inputmode="decimal" value="18.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="esCpuZw">Profondeur de la nappe</label>
+        <div class="input-wrap"><input id="esCpuZw" type="text" inputmode="decimal" value="1.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esCpuA">Rapport de surfaces a</label>
+        <div class="input-wrap"><input id="esCpuA" type="text" inputmode="decimal" value="0.8"><span class="unit">—</span></div></div>
+    </div>
+    <div class="figure" id="esCpuProfil"></div>
+    <div class="figure" id="esCpuAbaque"></div>
+    <div id="esCpuOut"></div>
+  </div>
+
+  <h3>Le pénétromètre dynamique</h3>
+  <p>Ici on <strong>bat</strong> un train de tiges terminé par une pointe débordante, avec un
+     mouton de masse M tombant d'une hauteur H, et l'on compte les coups nécessaires pour
+     enfoncer la pointe de 10 cm. L'essai passe là où le pénétromètre statique refuse, il est
+     rapide et peu coûteux, mais il ne mesure qu'un indice : l'énergie réellement transmise
+     à la pointe est inconnue, les tiges frottent sur le terrain, et sous la nappe, dans les
+     sols fins, l'eau mise en pression gonfle la résistance. La <strong>formule des
+     Hollandais</strong> convertit le nombre de coups en une résistance dynamique de pointe,
+     en supposant un choc mou entre le mouton et la masse frappée M' (tiges, enclume, pointe) :</p>
+  <p class="formula">q<sub>d</sub> = M² g H / [(M + M') · A · e]&nbsp;&nbsp;avec&nbsp;&nbsp;e = h/N, enfoncement moyen par coup
+     <span class="ref">[NF EN ISO 22476-2]</span></p>
+
+  <div class="calc" id="esDpCalc">
+    <h3>Résistance dynamique de pointe (formule des Hollandais)</h3>
+    <div class="data-grid">
+      <div class="field"><label for="esDpApp">Appareil</label>
+        <div class="input-wrap"><select id="esDpApp">
+          <option value="pdb">PDB : 64 kg, 0,75 m, 20 cm²</option>
+          <option value="pda">PDA : 64 kg, 0,75 m, 30 cm²</option>
+          <option value="leger">léger : 10 kg, 0,50 m, 10 cm²</option>
+          <option value="libre">autre (saisie)</option>
+        </select></div></div>
+      <div class="field"><label for="esDpM">Masse du mouton M</label>
+        <div class="input-wrap"><input id="esDpM" type="text" inputmode="decimal" value="64"><span class="unit">kg</span></div></div>
+      <div class="field"><label for="esDpH">Hauteur de chute H</label>
+        <div class="input-wrap"><input id="esDpH" type="text" inputmode="decimal" value="0.75"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esDpA">Section de la pointe A</label>
+        <div class="input-wrap"><input id="esDpA" type="text" inputmode="decimal" value="20"><span class="unit">cm²</span></div></div>
+      <div class="field"><label for="esDpMt">Masse des tiges par mètre</label>
+        <div class="input-wrap"><input id="esDpMt" type="text" inputmode="decimal" value="6"><span class="unit">kg/m</span></div></div>
+      <div class="field"><label for="esDpMe">Enclume, guide et pointe</label>
+        <div class="input-wrap"><input id="esDpMe" type="text" inputmode="decimal" value="18"><span class="unit">kg</span></div></div>
+      <div class="field"><label for="esDpZ">Profondeur (longueur de tiges)</label>
+        <div class="input-wrap"><input id="esDpZ" type="text" inputmode="decimal" value="6"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esDpN">Nombre de coups pour 10 cm</label>
+        <div class="input-wrap"><input id="esDpN" type="text" inputmode="decimal" value="12"><span class="unit">coups</span></div></div>
+    </div>
+    <div class="figure" id="esDpFig"></div>
+    <p class="final-result" id="esDpOut"></p>
+  </div>
+
+  <h3>L'essai de pénétration au carottier (SPT)</h3>
+  <p>Au fond d'un forage, on bat un carottier fendu de 51 mm avec un mouton de 63,5 kg
+     tombant de 76 cm. Après 15 cm d'amorçage, on compte les coups pour deux fois 15 cm :
+     leur somme est le <strong>nombre N</strong>. Le carottier ramène un échantillon remanié
+     qui sert à l'identification <span class="ref">[NF EN ISO 22476-3]</span>. Très répandu hors de
+     France, l'essai est aussi très dépendant de l'énergie réellement transmise — de 30 à
+     100 % de l'énergie théorique selon le mouton et le mode de lâcher. D'où deux
+     corrections : on ramène N à 60 % de l'énergie théorique (N<sub>60</sub>), puis à une
+     contrainte effective de 100 kPa ((N<sub>1</sub>)<sub>60</sub>) :</p>
+  <p class="formula">N<sub>60</sub> = N · C<sub>E</sub> · C<sub>B</sub> · C<sub>R</sub> · C<sub>S</sub>&nbsp;&nbsp;·&nbsp;&nbsp;(N<sub>1</sub>)<sub>60</sub> = C<sub>N</sub> · N<sub>60</sub>&nbsp;&nbsp;avec&nbsp;&nbsp;C<sub>N</sub> = √(100/σ'<sub>v0</sub>), entre 0,5 et 2
+     <span class="ref">[NF EN 1998-5 annexe B]</span></p>
+  <p>Les corrélations tirées de N sont nombreuses et dispersées : pour un même sable, trois
+     formules publiées donnent des angles de frottement qui s'écartent de 5 à 8°. Le SPT sert
+     donc surtout à identifier, à comparer, et à juger le risque de liquéfaction ; pour
+     dimensionner une fondation, les méthodes françaises lui préfèrent le pressiomètre et le
+     pénétromètre statique.</p>
+
+  <div class="calc" id="esSptCalc">
+    <h3>N corrigé et angle de frottement d'un sable</h3>
+    <div class="data-grid">
+      <div class="field"><label for="esSptN">Nombre de coups N</label>
+        <div class="input-wrap"><input id="esSptN" type="text" inputmode="decimal" value="20"><span class="unit">coups</span></div></div>
+      <div class="field"><label for="esSptSv">Contrainte effective σ'<sub>v0</sub></label>
+        <div class="input-wrap"><input id="esSptSv" type="text" inputmode="decimal" value="64"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="esSptMouton">Mouton (C<sub>E</sub>)</label>
+        <div class="input-wrap"><select id="esSptMouton">
+          <option value="0.75">annulaire lâché à la corde : 0,75</option>
+          <option value="0.9">de sécurité : 0,90</option>
+          <option value="1.2">automatique : 1,20</option>
+        </select></div></div>
+      <div class="field"><label for="esSptDf">Diamètre du forage</label>
+        <div class="input-wrap"><input id="esSptDf" type="text" inputmode="decimal" value="115"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="esSptL">Longueur des tiges</label>
+        <div class="input-wrap"><input id="esSptL" type="text" inputmode="decimal" value="8"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esSptCs">Carottier (C<sub>S</sub>)</label>
+        <div class="input-wrap"><select id="esSptCs"><option value="1">standard : 1,0</option><option value="1.2">sans étui : 1,2</option></select></div></div>
+    </div>
+    <div class="figure" id="esSptFig"></div>
+    <div id="esSptOut"></div>
+  </div>
+
+  <h3>Le dilatomètre plat (DMT)</h3>
+  <p>Une lame d'acier de 95 × 15 mm, portant sur une face une membrane circulaire de 60 mm,
+     est foncée tous les 20 cm. À chaque arrêt, on gonfle la membrane au gaz et l'on lit deux
+     pressions : A, quand elle décolle, et B, quand son centre a avancé de 1,1 mm. Corrigées de
+     la raideur propre de la membrane (ΔA, ΔB), elles donnent p<sub>0</sub> et p<sub>1</sub>,
+     puis trois indices <span class="ref">[NF EN ISO 22476-11]</span> :</p>
+  <p class="formula">I<sub>D</sub> = (p<sub>1</sub> − p<sub>0</sub>)/(p<sub>0</sub> − u<sub>0</sub>)&nbsp;&nbsp;·&nbsp;&nbsp;K<sub>D</sub> = (p<sub>0</sub> − u<sub>0</sub>)/σ'<sub>v0</sub>&nbsp;&nbsp;·&nbsp;&nbsp;E<sub>D</sub> = 34,7 (p<sub>1</sub> − p<sub>0</sub>)</p>
+  <p>I<sub>D</sub> classe le sol (argile sous 0,6, limon jusqu'à 1,8, sable au-delà) ;
+     K<sub>D</sub> reflète la contrainte horizontale et la surconsolidation ; E<sub>D</sub> est un
+     module. Les corrélations de Marchetti en tirent le module œdométrique M = R<sub>M</sub>·E<sub>D</sub>,
+     et dans les argiles K<sub>0</sub>, OCR et c<sub>u</sub>, dans les sables φ'. L'essai est
+     apprécié pour les tassements, parce qu'il charge le sol dans une gamme de déformation
+     proche de celle des ouvrages.</p>
+
+  <div class="calc" id="esDmtCalc">
+    <h3>Dépouillement d'une lecture au dilatomètre</h3>
+    <div class="data-grid">
+      <div class="field"><label for="esDmtA">Lecture A</label>
+        <div class="input-wrap"><input id="esDmtA" type="text" inputmode="decimal" value="280"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="esDmtB">Lecture B</label>
+        <div class="input-wrap"><input id="esDmtB" type="text" inputmode="decimal" value="980"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="esDmtDa">ΔA</label>
+        <div class="input-wrap"><input id="esDmtDa" type="text" inputmode="decimal" value="15"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="esDmtDb">ΔB</label>
+        <div class="input-wrap"><input id="esDmtDb" type="text" inputmode="decimal" value="40"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="esDmtU0">u<sub>0</sub></label>
+        <div class="input-wrap"><input id="esDmtU0" type="text" inputmode="decimal" value="50"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="esDmtSv">σ'<sub>v0</sub></label>
+        <div class="input-wrap"><input id="esDmtSv" type="text" inputmode="decimal" value="80"><span class="unit">kPa</span></div></div>
+    </div>
+    <div class="figure" id="esDmtFig"></div>
+    <div id="esDmtOut"></div>
+  </div>
+
+  <h3>Le scissomètre et les essais de cisaillement en place</h3>
+  <p>Le <strong>scissomètre</strong> enfonce dans une argile un moulinet à quatre pales, puis le
+     fait tourner lentement en mesurant le couple. Le sol cisaillé forme un cylindre de
+     diamètre D et de hauteur H : si la résistance s'y répartit uniformément sur la surface
+     latérale et les deux bases, le couple maximal vaut M = c<sub>u</sub>·πD²(H/2 + D/6).
+     Après une dizaine de tours, le couple résiduel donne la résistance du sol remanié, et le
+     rapport des deux sa <strong>sensibilité</strong> <span class="ref">[NF EN ISO 22476-9]</span>. Dans
+     les argiles plastiques, la vitesse de l'essai surestime c<sub>u</sub> : Bjerrum a proposé
+     de la minorer d'un facteur μ qui décroît avec l'indice de plasticité.</p>
+
+  <div class="calc" id="esVstCalc">
+    <h3>Cohésion non drainée au scissomètre</h3>
+    <div class="data-grid">
+      <div class="field"><label for="esVstM">Couple maximal M</label>
+        <div class="input-wrap"><input id="esVstM" type="text" inputmode="decimal" value="50"><span class="unit">N·m</span></div></div>
+      <div class="field"><label for="esVstMr">Couple résiduel</label>
+        <div class="input-wrap"><input id="esVstMr" type="text" inputmode="decimal" value="20"><span class="unit">N·m</span></div></div>
+      <div class="field"><label for="esVstD">Diamètre du moulinet D</label>
+        <div class="input-wrap"><input id="esVstD" type="text" inputmode="decimal" value="70"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="esVstH">Hauteur du moulinet H</label>
+        <div class="input-wrap"><input id="esVstH" type="text" inputmode="decimal" value="140"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="esVstIp">Indice de plasticité I<sub>p</sub></label>
+        <div class="input-wrap"><input id="esVstIp" type="text" inputmode="decimal" value="40"><span class="unit">%</span></div></div>
+    </div>
+    <div class="figure" id="esVstFig"></div>
+    <p class="final-result" id="esVstOut"></p>
+  </div>
+
+  <p>Pour les sols qu'on ne sait pas prélever intacts — graves, éboulis, roches altérées —
+     on cisaille en place : à la <strong>boîte de cisaillement</strong> taillée dans un bloc au
+     fond d'un puits, ou au <strong>phicomètre</strong>, une sonde plaquée contre la paroi d'un
+     forage puis arrachée. Plusieurs essais sous des contraintes normales différentes placent
+     des points (σ, τ) qu'une droite de Coulomb ajuste.</p>
+
+  <div class="calc" id="esCoulCalc">
+    <h3>Droite de Coulomb sur des essais de cisaillement</h3>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="esCoulPts">Couples σ (kPa) et τ (kPa), un par ligne</label>
+        <textarea id="esCoulPts" rows="4" spellcheck="false">50 48
+100 80
+200 142
+300 205</textarea></div>
+    </div>
+    <div class="figure" id="esCoulFig"></div>
+    <p class="final-result" id="esCoulOut"></p>
+  </div>
+
+  <h3>Les essais de chargement : plaque et pieu</h3>
+  <p>L'<strong>essai de plaque</strong> charge le sol par une plaque rigide de 600 mm et mesure
+     son enfoncement. Deux cycles : le premier jusqu'à 0,25 MPa donne le module
+     E<sub>V1</sub>, le second jusqu'à 0,20 MPa le module E<sub>V2</sub>, par la formule de
+     Boussinesq d'une plaque rigide, E<sub>V</sub> = 1,5·p·R/s <span class="ref">[NF P94-117-1]</span>. Le
+     rapport k = E<sub>V2</sub>/E<sub>V1</sub> juge le compactage (bon sous 2) et E<sub>V2</sub>
+     classe la plate-forme (PF1 à PF4). L'essai n'intéresse que les 0,9 m sous la plaque :
+     c'est un essai de plate-forme et de couche d'assise, non de fondation profonde.</p>
+  <p>L'<strong>essai de chargement statique d'un pieu</strong> est l'essai de fondation par
+     excellence : on charge un vrai pieu par paliers en suivant l'enfoncement de sa tête, et,
+     s'il est instrumenté, l'effort à plusieurs niveaux du fût <span class="ref">[NF P94-150-1]</span>.
+     Sur chaque palier, le <strong>fluage</strong> α<sub>n</sub> = s<sub>60</sub> − s<sub>30</sub>
+     reste faible puis croît : la cassure donne la <strong>charge de fluage</strong>
+     Q<sub>c</sub>, comme la cassure du fluage pressiométrique donnait p<sub>f</sub>. Les
+     résultats d'essais de pieux entrent dans l'Eurocode 7 par les facteurs de corrélation ξ
+     (chapitre 12).</p>
+
+  <div class="calc" id="esPlqCalc">
+    <h3>Module à la plaque : E<sub>V1</sub>, E<sub>V2</sub> et compactage</h3>
+    <div class="data-grid">
+      <div class="field"><label for="esPlqZ1">Enfoncement au 1er cycle (0,25 MPa)</label>
+        <div class="input-wrap"><input id="esPlqZ1" type="text" inputmode="decimal" value="2.63"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="esPlqZ2">Enfoncement au 2e cycle (0,20 MPa)</label>
+        <div class="input-wrap"><input id="esPlqZ2" type="text" inputmode="decimal" value="1.56"><span class="unit">mm</span></div></div>
+    </div>
+    <div class="figure" id="esPlqFig"></div>
+    <p class="final-result" id="esPlqOut"></p>
+  </div>
+
+  <div class="calc" id="esPieuCalc">
+    <h3>Charge de fluage d'un pieu d'essai</h3>
+    <p class="method-note">Une ligne par palier : charge Q (kN), enfoncements de la tête à 30 et
+       60 min (mm).</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="esPieuPaliers">Paliers</label>
+        <textarea id="esPieuPaliers" rows="6" spellcheck="false">200 0.62 0.64
+400 1.35 1.39
+600 2.20 2.26
+800 3.18 3.26
+1000 4.35 4.46
+1200 5.90 6.12
+1400 8.20 8.66
+1600 11.9 12.8</textarea></div>
+    </div>
+    <div class="figure" id="esPieuFig"></div>
+    <p class="final-result" id="esPieuOut"></p>
+  </div>
+
+  <h3>Les essais d'eau</h3>
+  <p>La perméabilité commande les rabattements de nappe, les venues d'eau dans les fouilles et
+     la vitesse de consolidation. Elle varie d'un facteur un million d'une argile à une grave :
+     un ordre de grandeur juste vaut mieux qu'une décimale fausse. Trois essais la mesurent en
+     place :</p>
+  <ul>
+    <li>l'<strong>essai Lefranc</strong>, dans une cavité de longueur L et de diamètre D ouverte
+        sous la nappe au fond d'un forage tubé : on y injecte (ou on y pompe) un débit Q sous
+        une charge h constante, ou l'on suit la remontée d'une charge variable. Le facteur de
+        forme de la cavité, F = 2πL/ln[L/D + √(1 + (L/D)²)], relie débit et charge :
+        Q = F·k·h <span class="ref">[NF P94-132]</span> ;</li>
+    <li>l'<strong>essai Lugeon</strong>, dans le rocher : on injecte de l'eau sous pression dans
+        une passe isolée par obturateurs, par paliers croissants puis décroissants ; une
+        unité Lugeon est un débit d'un litre par minute et par mètre de passe sous 1 MPa,
+        soit une perméabilité voisine de 10⁻⁷ m/s. La forme de la courbe débit–pression
+        signale un écoulement laminaire, turbulent, un colmatage ou une ouverture des
+        fissures (claquage) <span class="ref">[NF P94-131]</span> ;</li>
+    <li>l'<strong>essai de pompage</strong>, qui sollicite toute la nappe : on pompe à débit
+        constant et l'on suit le rabattement dans des piézomètres. En régime transitoire, le
+        rabattement croît d'une même quantité Δs par cycle logarithmique du temps (Jacob) :
+        la transmissivité vaut T = 0,183 Q/Δs, et l'intersection de la droite avec s = 0 donne
+        le coefficient d'emmagasinement <span class="ref">[NF P94-130]</span>.</li>
+  </ul>
+
+  <div class="calc" id="esLefCalc">
+    <h3>Essai Lefranc</h3>
+    <div class="data-grid">
+      <div class="field"><label for="esLefMode">Mode</label>
+        <div class="input-wrap"><select id="esLefMode"><option value="constant">charge constante</option><option value="variable">charge variable</option></select></div></div>
+      <div class="field"><label for="esLefL">Longueur de la cavité L</label>
+        <div class="input-wrap"><input id="esLefL" type="text" inputmode="decimal" value="0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esLefD">Diamètre de la cavité D</label>
+        <div class="input-wrap"><input id="esLefD" type="text" inputmode="decimal" value="0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esLefQ">Débit Q (charge constante)</label>
+        <div class="input-wrap"><input id="esLefQ" type="text" inputmode="decimal" value="0.5"><span class="unit">L/min</span></div></div>
+      <div class="field"><label for="esLefH">Charge h (charge constante)</label>
+        <div class="input-wrap"><input id="esLefH" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esLefDt">Diamètre du tubage (charge variable)</label>
+        <div class="input-wrap"><input id="esLefDt" type="text" inputmode="decimal" value="100"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="esLefH1">Charges h<sub>1</sub> puis h<sub>2</sub></label>
+        <div class="input-wrap"><input id="esLefH1" type="text" inputmode="decimal" value="1"><span class="unit">m</span><input id="esLefH2" type="text" inputmode="decimal" value="0.5" aria-label="Charge h2"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esLefT">Durée entre h<sub>1</sub> et h<sub>2</sub></label>
+        <div class="input-wrap"><input id="esLefT" type="text" inputmode="decimal" value="600"><span class="unit">s</span></div></div>
+    </div>
+    <p class="final-result" id="esLefOut"></p>
+  </div>
+
+  <div class="calc" id="esLugCalc">
+    <h3>Essai Lugeon</h3>
+    <p class="method-note">Une ligne par palier : pression au manomètre (MPa) et débit (L/min),
+       paliers montants puis descendants.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="esLugPaliers">Paliers</label>
+        <textarea id="esLugPaliers" rows="5" spellcheck="false">0.2 5.1
+0.4 10.3
+0.6 15.2
+0.4 10.1
+0.2 5.0</textarea></div>
+      <div class="field"><label for="esLugL">Longueur de la passe</label>
+        <div class="input-wrap"><input id="esLugL" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esLugHm">Hauteur du manomètre</label>
+        <div class="input-wrap"><input id="esLugHm" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esLugZw">Profondeur de la nappe</label>
+        <div class="input-wrap"><input id="esLugZw" type="text" inputmode="decimal" value="12"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esLugZ">Profondeur du milieu de la passe</label>
+        <div class="input-wrap"><input id="esLugZ" type="text" inputmode="decimal" value="20"><span class="unit">m</span></div></div>
+    </div>
+    <div class="figure" id="esLugFig"></div>
+    <p class="final-result" id="esLugOut"></p>
+  </div>
+
+  <div class="calc" id="esPompCalc">
+    <h3>Essai de pompage : la droite de Jacob</h3>
+    <p class="method-note">Une ligne par lecture : temps depuis le début du pompage (min) et
+       rabattement (m) dans un piézomètre à la distance r.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="esPompSt">Lectures</label>
+        <textarea id="esPompSt" rows="5" spellcheck="false"></textarea></div>
+      <div class="field"><label for="esPompQ">Débit pompé Q</label>
+        <div class="input-wrap"><input id="esPompQ" type="text" inputmode="decimal" value="36"><span class="unit">m³/h</span></div></div>
+      <div class="field"><label for="esPompR">Distance du piézomètre r</label>
+        <div class="input-wrap"><input id="esPompR" type="text" inputmode="decimal" value="20"><span class="unit">m</span></div></div>
+      <div class="field"><label for="esPompE">Épaisseur de l'aquifère</label>
+        <div class="input-wrap"><input id="esPompE" type="text" inputmode="decimal" value="10"><span class="unit">m</span></div></div>
+    </div>
+    <div class="figure" id="esPompFig"></div>
+    <p class="final-result" id="esPompOut"></p>
+  </div>
+
+  <h3>La géophysique</h3>
+  <p>Les méthodes géophysiques mesurent une propriété physique du terrain sur de grands
+     volumes, sans forage, ou entre forages : vitesse de propagation des ondes, résistivité
+     électrique, permittivité. Elles ne remplacent pas les sondages — elles les relient.</p>
+  <ul>
+    <li>la <strong>sismique réfraction</strong> : on frappe le sol et l'on note l'arrivée de
+        l'onde sur une ligne de géophones. Au-delà d'une distance critique, l'onde qui a
+        voyagé dans la couche profonde, plus rapide, arrive la première ; l'hodochrone
+        (temps d'arrivée en fonction de la distance) se casse, et les deux pentes donnent
+        les vitesses, la cassure l'épaisseur de la couche superficielle. Elle ne voit pas une
+        couche lente sous une couche rapide ;</li>
+    <li>les <strong>ondes de surface</strong> (MASW) et les essais entre forages (cross-hole)
+        mesurent la vitesse des ondes de cisaillement V<sub>s</sub>, d'où le module de
+        cisaillement aux petites déformations G<sub>0</sub> = ρV<sub>s</sub>², et la
+        <strong>classe de sol sismique</strong> de l'Eurocode 8 par la vitesse moyenne sur
+        30 m, V<sub>s,30</sub> = 30/Σ(h<sub>i</sub>/V<sub>s,i</sub>) (chapitre 15) ;</li>
+    <li>les <strong>méthodes électriques</strong> et le <strong>radar</strong> repèrent les
+        contrastes : argile et eau salée conductrices, cavités, remblais, limites de
+        couches.</li>
+  </ul>
+
+  <div class="calc" id="esRefCalc">
+    <h3>Sismique réfraction à deux couches</h3>
+    <p class="method-note">Une ligne par géophone : distance à l'ébranlement (m) et temps de
+       première arrivée (ms).</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="esRefPts">Premières arrivées</label>
+        <textarea id="esRefPts" rows="5" spellcheck="false">5 10.1
+10 19.8
+15 30.2
+20 39.9
+25 44.2
+30 46.8
+40 51.9
+50 56.8
+60 62.1</textarea></div>
+      <div class="field"><label for="esRefN">Géophones de la première droite</label>
+        <div class="input-wrap"><input id="esRefN" type="text" inputmode="numeric" value="4"><span class="unit">premiers</span></div></div>
+    </div>
+    <div class="figure" id="esRefFig"></div>
+    <p class="final-result" id="esRefOut"></p>
+  </div>
+
+  <div class="calc" id="esVsCalc">
+    <h3>V<sub>s,30</sub> et classe de sol sismique</h3>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="esVsCouches">Couches : épaisseur (m) et V<sub>s</sub> (m/s), de haut en bas</label>
+        <textarea id="esVsCouches" rows="4" spellcheck="false">4 160
+8 280
+12 420
+20 750</textarea></div>
+    </div>
+    <p class="final-result" id="esVsOut"></p>
+  </div>
+
+  <h3>Des essais au projet</h3>
+  <p>Aucun essai ne suffit seul ; chacun répond à une question. Le tableau résume ce que le
+     projeteur tire de chacun, et où ce résultat entre dans les calculs de ce cours.</p>
+  <div class="table-large"><table class="resultats"><thead><tr><th>Essai</th><th>Terrains</th><th>Ce qu'on en tire</th><th>Où cela sert</th></tr></thead>
+    <tbody>
+      <tr><td>Pressiomètre Ménard</td><td class="motif">tous, y compris roches tendres</td><td class="motif">E<sub>M</sub>, p<sub>f</sub>*, p<sub>l</sub>*</td><td class="motif">portance et tassement des semelles, pieux, effort transversal (ch. 3, 6, 9, 11, 14)</td></tr>
+      <tr><td>Pénétromètre statique, piézocône</td><td class="motif">sols fins, sables ; refus dans les graves</td><td class="motif">q<sub>c</sub>, R<sub>f</sub>, I<sub>c</sub>, c<sub>u</sub></td><td class="motif">stratigraphie ; k<sub>c</sub>·q<sub>ce</sub> (ch. 6), q<sub>s</sub>(q<sub>c</sub>) (ch. 11)</td></tr>
+      <tr><td>Pénétromètre dynamique</td><td class="motif">tous, y compris grossiers</td><td class="motif">q<sub>d</sub>, indice de résistance</td><td class="motif">reconnaissance, refus de battage, contrôle de compactage</td></tr>
+      <tr><td>SPT</td><td class="motif">sables, graves fines</td><td class="motif">N, (N<sub>1</sub>)<sub>60</sub>, échantillon</td><td class="motif">identification, liquéfaction, méthodes étrangères</td></tr>
+      <tr><td>Dilatomètre plat</td><td class="motif">argiles, limons, sables</td><td class="motif">I<sub>D</sub>, K<sub>D</sub>, M, c<sub>u</sub>, φ'</td><td class="motif">tassements, états de contraintes</td></tr>
+      <tr><td>Scissomètre</td><td class="motif">argiles molles à fermes</td><td class="motif">c<sub>u</sub>, sensibilité</td><td class="motif">stabilité à court terme, portance non drainée (ch. 7)</td></tr>
+      <tr><td>Plaque</td><td class="motif">plates-formes, couches de surface</td><td class="motif">E<sub>V2</sub>, E<sub>V2</sub>/E<sub>V1</sub></td><td class="motif">réception des plates-formes, dallages</td></tr>
+      <tr><td>Chargement de pieu</td><td class="motif">tous</td><td class="motif">charge de fluage, résistance mesurée</td><td class="motif">validation de la portance (ch. 12)</td></tr>
+      <tr><td>Lefranc, Lugeon, pompage</td><td class="motif">sous la nappe ; rocher (Lugeon)</td><td class="motif">k, T, S</td><td class="motif">rabattements, fouilles, consolidation</td></tr>
+      <tr><td>Géophysique</td><td class="motif">tous</td><td class="motif">vitesses, résistivités, contrastes</td><td class="motif">continuité entre sondages, classe sismique (ch. 15)</td></tr>
+    </tbody></table></div>
+  <p class="method-note">Les corrélations d'un essai à l'autre — q<sub>c</sub> sur p<sub>l</sub>*,
+     N sur p<sub>l</sub>* — existent, mais varient du simple au double d'un sol à l'autre et
+     d'un site à l'autre. Elles servent à vérifier la cohérence d'une campagne, jamais à
+     remplacer l'essai qu'une méthode de calcul demande.</p>
+
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Chaque essai en place mesure une réponse du sol, jamais directement un paramètre de
+       calcul : il faut connaître ce qu'il mesure, les corrections qu'il appelle (énergie,
+       pression interstitielle, raideur de l'appareil) et le domaine de ses corrélations. Une
+       campagne équilibrée croise des essais continus et bon marché (pénétromètre, paramètres
+       de forage) avec des essais ponctuels qui donnent les paramètres des méthodes de calcul
+       (pressiomètre, essais d'eau, laboratoire).</p>
+  </div>
+</section>
+
 <!-- ══════════════════════════ CHAPITRE 3 ══════════════════════════ -->
 <section id="ch3" class="card">
   <h2>3 · L'essai pressiométrique, du relevé au profil</h2>
@@ -2075,6 +2616,7 @@ marquerSectionLue();
 <script type="module" src="src/impression.js"></script>
 <script type="module" src="src/socle.js"></script>
 <script type="module" src="src/cours-ch1.js"></script>
+<script type="module" src="src/cours-ch2.js"></script>
 <script type="module" src="src/cours-ch3.js"></script>
 <script type="module" src="src/cours-ch4.js"></script>
 <script type="module" src="src/cours-ch5.js"></script>
