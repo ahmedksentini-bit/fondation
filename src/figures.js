@@ -1088,3 +1088,39 @@ export function figureContraintes({ B, V, e, qmax, qmin, Bc, qref = null, meyerh
     },
   });
 }
+
+/**
+ * Coupe d'un remblai sur un multicouche (bureau de calcul) : remblai
+ * trapézoïdal à l'échelle, couches depuis le terrain naturel, nappe dans les
+ * champs libres, drains verticaux jusqu'à zDrains (représentés, pas à
+ * l'échelle de leur espacement). couches : [{ z0, z1, sol, etiquette }].
+ */
+export function coupeRemblai({ H, largeurCrete, fruit, couches, zw = null, zDrains = null, largeur = 560, hauteur = 300 }) {
+  const zBas = Math.max(...couches.map((c) => c.z1));
+  const demi = largeurCrete / 2 + fruit * H, marge = Math.max(3, 0.2 * demi);
+  const k = Math.min((largeur - 24) / (2 * (demi + marge)), (hauteur - 36) / (H + zBas));
+  // Coupe à l'échelle : la hauteur de la figure suit celle du profil.
+  return svg({
+    largeur, hauteur: Math.min(hauteur, Math.ceil(36 + (H + zBas) * k)), titre: "Coupe du remblai et du sol", contenu: (id) => {
+      const xc = largeur / 2, yT = 28 + H * k, X = (x) => xc + x * k, Z = (z) => yT + z * k;
+      const xg = X(-(demi + marge)), xd = X(demi + marge);
+      let s = "";
+      for (const c of couches) s += couche(id, { x: xg, y: Z(c.z0), w: xd - xg, h: (c.z1 - c.z0) * k, sol: c.sol, etiquette: c.etiquette, cote: "droite" });
+      const pts = [[X(-demi), yT], [X(-largeurCrete / 2), yT - H * k], [X(largeurCrete / 2), yT - H * k], [X(demi), yT]];
+      const d = `${pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("")}Z`;
+      s += `<path d="${d}" fill="${SOLS.remblai.fond}"/><path d="${d}" fill="url(#${id}-remblai)"/><path d="${d}" fill="none" stroke="${COULEURS.trait}" stroke-width="1.5"/>`;
+      if (zDrains > 0) {
+        const zD = Math.min(zDrains, zBas), n = Math.max(4, Math.round((2 * demi * k) / 11));
+        for (let i = 1; i < n; i++) { const x = X(-demi + (2 * demi * i) / n); s += ligne(x, yT, x, Z(zD), "#1e293b", 0.8, 'opacity=".65"'); }
+      }
+      s += ligne(xg, yT, xd, yT, COULEURS.trait, 1.6);
+      if (zw !== null && zw < zBas) {
+        const y = Z(zw);
+        s += ligne(xg, y, X(-demi), y, COULEURS.eau, 1.3, 'stroke-dasharray="6 4"') + ligne(X(demi), y, xd, y, COULEURS.eau, 1.3, 'stroke-dasharray="6 4"');
+        s += `<path d="M${(xg + 14).toFixed(1)} ${(y - 1).toFixed(1)}l6-9h-12z" fill="${COULEURS.eau}"/>`;
+      }
+      s += texte(xc, 16, `crête ${fmt(largeurCrete, 3)} m · H = ${fmt(H, 3)} m · talus ${fmt(fruit, 2)}/1`, 'text-anchor="middle" class="halo" style="font-size:11.5px;font-weight:700"');
+      return s;
+    },
+  });
+}

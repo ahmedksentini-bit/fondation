@@ -1,4 +1,4 @@
-// Bureau de calcul : six modules dans une coque de logiciel. Les calculs sont
+// Bureau de calcul : sept modules dans une coque de logiciel. Les calculs sont
 // faits par src/bureau/semelle.js, src/bureau/pieu.js et les solveurs de
 // src/geotech ; ce fichier ne gère que la saisie, la sauvegarde, les figures
 // et l'impression de la note.
@@ -6,7 +6,7 @@
 import { justifierSemelle } from "./bureau/semelle.js";
 import { justifierPieu, combinaisonsPieu } from "./bureau/pieu.js";
 import { noteSemelle, notePieu } from "./bureau/notes.js";
-import { coupeSemelle, coupePieu, graphe, echantillon, COULEURS } from "./figures.js";
+import { coupeSemelle, coupePieu, coupeRemblai, graphe, echantillon, COULEURS } from "./figures.js";
 import { CLASSES_F62, CATEGORIES_EC7 } from "./geotech/sols.js";
 import { K_TAN_DELTA, lambdaCombarieu, muIsole, frottementNegatif, rayonInfluence, repartitionGroupe } from "./geotech/frottement-negatif.js";
 import { converseLabarre, efficaciteCoherentF62, efficaciteEC7, verifGroupeEC7, blocMonolithique } from "./geotech/groupes.js";
@@ -17,6 +17,7 @@ import { profilPressio } from "./figures.js";
 import { TUBE, AIR, SONDE, sondage, texteReleves, texteCouples } from "./pressio-exemples.js";
 import { lireTableau } from "./ui.js";
 import { couchesDepuisSondage, balayage, tauxMaximaux } from "./bureau/projet.js";
+import { etudierRemblai } from "./bureau/remblai.js";
 
 const app = document.getElementById("app");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -198,6 +199,66 @@ const MODULES = [
     ],
     calculer: calculerLateral,
   },
+  {
+    id: "remblai", groupe: "Sols compressibles", icone: "▱", titre: "Remblai sur sol compressible", sous: "tassement, consolidation, étapes, drains",
+    description: "Un remblai sur un multicouche compressible : tassement final sous l'axe et hauteur à mettre en œuvre, consolidation dans le temps par différences finies, drains verticaux compris, construction d'un seul jet ou par étapes réglées sur la stabilité à court terme, fluage et tassement résiduel après la mise en service.",
+    champs: [
+      ["Remblai", [
+        ["mode", "La hauteur saisie est", "choix", "finale", [["finale", "la cote finale visée"], ["mise", "la hauteur mise en œuvre"]]],
+        ["H", "Hauteur", "m", "4"], ["gamma", "γ du remblai", "kN/m³", "20"],
+        ["B", "Largeur en crête", "m", "24"], ["n", "Fruit des talus (H pour 1 V)", "", "2"],
+        ["zw", "Nappe sous le terrain naturel", "m", "0.5"],
+      ]],
+      ["Phasage et stabilité", [
+        ["construction", "Construction", "choix", "etapes", [["etapes", "par étapes réglées sur la stabilité"], ["continue", "d'un seul jet"]]],
+        ["montee", "Durée de montée d'une étape", "mois", "1"],
+        ["Uetape", "Consolidation atteinte entre deux étapes", "%", "70", (v) => v.construction === "etapes"],
+        ["F", "Coefficient de sécurité au poinçonnement", "", "1.5"], ["lambdaCu", "λcu = Δcu/Δσ'v", "", "0.25"],
+      ]],
+      ["Drains verticaux", [
+        ["drains", "Drains", "choix", "oui", [["oui", "drains verticaux"], ["non", "sans drains"]]],
+        ["esp", "Espacement", "m", "1.6", (v) => v.drains === "oui"],
+        ["maille", "Maille", "choix", "triangle", [["triangle", "triangulaire"], ["carre", "carrée"]], (v) => v.drains === "oui"],
+        ["dw", "Diamètre équivalent dw", "mm", "66", (v) => v.drains === "oui"],
+        ["sm", "Zone remaniée ds/dw", "", "2", (v) => v.drains === "oui"],
+        ["kr", "kh/ks (zone remaniée)", "", "2", (v) => v.drains === "oui"],
+        ["zd", "Profondeur des drains", "m", "9", (v) => v.drains === "oui"],
+      ]],
+      ["Service", [
+        ["tms", "Mise en service, depuis le début des travaux", "mois", "30"],
+        ["duree", "Période de service", "ans", "20"],
+        ["sadm", "Tassement résiduel admissible", "mm", "100"],
+        ["bas", "Base du profil", "choix", "drainante", [["drainante", "drainante"], ["impermeable", "imperméable"]]],
+      ]],
+    ],
+    couches: {
+      colonnes: [["base", "Base (m)", "nombre"], ["nom", "Description", "texte"], ["drainante", "Drainante", "choix", [["non", "non"], ["oui", "oui"]]],
+        ["gamma", "γ (kN/m³)", "nombre"], ["e0", "e0", "nombre"], ["Cc", "Cc", "nombre"], ["Cs", "Cs", "nombre"], ["pop", "POP (kPa)", "nombre"],
+        ["cv", "cv (m²/an)", "nombre"], ["ch", "ch (m²/an)", "nombre"], ["Cae", "Cαe", "nombre"], ["cu", "cu (kPa)", "nombre"]],
+      defaut: [
+        { base: "1.5", nom: "croûte argileuse", drainante: "non", gamma: "17.5", e0: "1.1", Cc: "0.35", Cs: "0.05", pop: "60", cv: "3", ch: "5", Cae: "0.008", cu: "35" },
+        { base: "9", nom: "argile molle", drainante: "non", gamma: "16", e0: "1.9", Cc: "0.8", Cs: "0.09", pop: "15", cv: "1.2", ch: "2.4", Cae: "0.03", cu: "16" },
+        { base: "11", nom: "sable", drainante: "oui", gamma: "20", e0: "", Cc: "", Cs: "", pop: "", cv: "", ch: "", Cae: "", cu: "" },
+        { base: "15", nom: "argile raide", drainante: "non", gamma: "19", e0: "0.8", Cc: "0.25", Cs: "0.04", pop: "200", cv: "4", ch: "4", Cae: "0.005", cu: "90" },
+      ],
+    },
+    calculer: calculerRemblai,
+    parametrique: {
+      aide: "Faire varier l'espacement des drains ou la date de mise en service, les autres données restant celles de la saisie : la courbe donne le rapport du tassement résiduel au tassement admissible, et celui du coefficient de sécurité requis au coefficient obtenu ; sous 1, le critère est tenu.",
+      ylabel: "rapport au critère",
+      series: [{ ref: "tas", nom: "tassement résiduel / admissible", couleur: COULEURS.f62 }, { ref: "stab", nom: "F requis / F obtenu", couleur: COULEURS.ec7 }],
+      variables: [
+        { id: "esp", champ: "esp", nom: "Espacement des drains", court: "l'espacement des drains", unite: "m", sens: "max", fixe: { drains: "oui" }, plage: () => [0.8, 4, 0.1] },
+        { id: "tms", champ: "tms", nom: "Date de mise en service", court: "la date de mise en service", unite: "mois", plage: (v) => [3, Math.max(36, Math.round(nombre(v.tms, 18) * 2)), 3] },
+      ],
+      evaluer: (v) => {
+        const d = donneesRemblai(v), r = etudierRemblai(d);
+        // Une étape réglée sur la stabilité donne F = F requis exactement : l'arrondi ne doit pas la faire échouer.
+        const stab = r.stabilite.verifiee && r.stabilite.F > 0 ? d.F / r.stabilite.F : 0;
+        return { tas: r.service.residuel / Math.max(d.sAdmissible, 1e-9), stab: stab <= 1 + 1e-9 ? Math.min(stab, 1) : stab };
+      },
+    },
+  },
 ];
 
 // ─────────────────────────── État et sauvegarde ───────────────────────────
@@ -310,31 +371,34 @@ function lancerEtude(m) {
   const sortie = app.querySelector("#etOut");
   sortie.hidden = false;
   if (!(max > min && pas > 0)) { sortie.innerHTML = "Renseigner une plage croissante et un pas positif."; return; }
-  const { points, minimal } = balayage((val) => p.evaluer({ ...v, [x.champ]: String(val) }), min, max, pas);
-  const fini = points.flatMap((q) => [q.F62, q.EC7]).filter(Number.isFinite);
+  const refs = p.series ?? [{ ref: "F62", nom: "Fascicule 62", couleur: COULEURS.f62 }, { ref: "EC7", nom: m.id === "pieu" ? "NF P94-262" : "NF P94-261", couleur: COULEURS.ec7 }];
+  const { points, minimal, maximal } = balayage((val) => p.evaluer({ ...v, ...(x.fixe ?? {}), [x.champ]: String(val) }), min, max, pas, refs.map((r) => r.ref));
+  const retenu = x.sens === "max" ? maximal : minimal;
+  const fini = points.flatMap((q) => refs.map((r) => q[r.ref])).filter(Number.isFinite);
   const yMax = Math.min(3, Math.max(1.4, ...fini) * 1.08);
   const courbe = (ref) => points.filter((q) => Number.isFinite(q[ref])).map((q) => [q.x, Math.min(q[ref], yMax)]);
   const actuel = nombre(v[x.champ]);
   app.querySelector("#etFig").innerHTML = graphe({
-    largeur: 560, hauteur: 290, xmin: min, xmax: max, ymin: 0, ymax: yMax, xlabel: `${x.nom} (${x.unite})`, ylabel: "taux de travail maximal",
+    largeur: 560, hauteur: 290, xmin: min, xmax: max, ymin: 0, ymax: yMax, xlabel: `${x.nom} (${x.unite})`, ylabel: p.ylabel ?? "taux de travail maximal",
     zones: [{ x0: min, x1: max, y0: 1, y1: yMax, couleur: COULEURS.rouge, opacite: 0.06, libelle: "non vérifié", position: "droite" }],
     series: [
-      { points: courbe("F62"), couleur: COULEURS.f62, epaisseur: 2.4, libelle: "Fascicule 62" },
-      { points: courbe("EC7"), couleur: COULEURS.ec7, epaisseur: 2.4, libelle: "NF P94-261/262" },
-      { points: [[min, 1], [max, 1]], couleur: COULEURS.rouge, tirets: "6 4", epaisseur: 1.4, libelle: "taux = 1" },
+      ...refs.map((r) => ({ points: courbe(r.ref), couleur: r.couleur, epaisseur: 2.4, libelle: p.series ? r.nom : r.ref === "F62" ? "Fascicule 62" : "NF P94-261/262" })),
+      { points: [[min, 1], [max, 1]], couleur: COULEURS.rouge, tirets: "6 4", epaisseur: 1.4, libelle: p.series ? "rapport = 1" : "taux = 1" },
     ],
-    marques: [
-      ...(minimal.EC7 !== null ? [{ x: minimal.EC7, y: 1, couleur: COULEURS.ec7, guides: true }] : []),
-      ...(minimal.F62 !== null ? [{ x: minimal.F62, y: 1, couleur: COULEURS.f62, guides: true }] : []),
-    ],
+    marques: [...refs].reverse().filter((r) => retenu[r.ref] !== null).map((r) => ({ x: retenu[r.ref], y: 1, couleur: r.couleur, guides: true })),
     textes: Number.isFinite(actuel) && actuel >= min && actuel <= max ? [{ x: actuel, y: yMax * 0.92, texte: "valeur du projet", couleur: COULEURS.discret }] : [],
   });
-  const dire = (ref, nom) => (minimal[ref] === null ? `${nom} : aucune valeur de la plage ne vérifie tout`
-    : minimal[ref] <= min + 1e-9 ? `${nom} : tout est vérifié dès ${fd(min, 2)} ${x.unite}, début de la plage`
-      : `${nom} : ${fd(minimal[ref], 2)} ${x.unite}`);
-  sortie.innerHTML = `Plus petite valeur de ${esc(x.court)} qui satisfait toutes les vérifications —
-    <strong>${dire("EC7", m.id === "pieu" ? "NF P94-262" : "NF P94-261")}</strong> · <strong>${dire("F62", "Fascicule 62")}</strong>
-    <small>Taux de travail maximal de chaque référentiel sur l'ensemble des vérifications et des combinaisons ; les autres données sont celles de la saisie.</small>`;
+  const dire = (ref, nom) => (retenu[ref] === null ? `${nom} : aucune valeur de la plage ne convient`
+    : x.sens === "max" ? (retenu[ref] >= max - 1e-9 ? `${nom} : tenu sur toute la plage, jusqu'à ${fd(max, 2)} ${x.unite}` : `${nom} : ${fd(retenu[ref], 2)} ${x.unite}`)
+      : retenu[ref] <= min + 1e-9 ? `${nom} : tout est vérifié dès ${fd(min, 2)} ${x.unite}, début de la plage`
+        : `${nom} : ${fd(retenu[ref], 2)} ${x.unite}`);
+  sortie.innerHTML = p.series
+    ? `${x.sens === "max" ? "Plus grande" : "Plus petite"} valeur de ${esc(x.court)} qui tient chaque critère —
+      ${p.series.map((r) => `<strong>${dire(r.ref, r.nom)}</strong>`).join(" · ")}
+      <small>Rapports aux critères du module ; les autres données sont celles de la saisie.</small>`
+    : `Plus petite valeur de ${esc(x.court)} qui satisfait toutes les vérifications —
+      <strong>${dire("EC7", m.id === "pieu" ? "NF P94-262" : "NF P94-261")}</strong> · <strong>${dire("F62", "Fascicule 62")}</strong>
+      <small>Taux de travail maximal de chaque référentiel sur l'ensemble des vérifications et des combinaisons ; les autres données sont celles de la saisie.</small>`;
 }
 
 // ─────────────────────────── Projet et tableau de bord ────────────────────
@@ -870,6 +934,146 @@ function calculerLateral(v) {
     <p class="formula">y<sub>0</sub> = ${fd(r.y0 * 1000, 2)} mm · M<sub>max</sub> = ${f(Math.abs(r.MMax), 4)} kN·m à ${fd(r.zMMax, 2)} m · ${r.plastifies} nœud(s) au palier</p>
     <p>Contrôle par la solution du pieu long en sol homogène (couche 1, sans palier) : y<sub>0</sub> = ${fd(an.y0 * 1000, 2)} mm, M<sub>max</sub> = ${f(an.MMax, 4)} kN·m, l<sub>0</sub> = ${fd(an.l0, 2)} m.</p>`;
   return { figure, synthese, note, verdict: null, etat: `y0 = ${fd(r.y0 * 1000, 1)} mm · Mmax = ${f(Math.abs(r.MMax), 3)} kN·m` };
+}
+
+// ─────────────────────────── Remblai sur sol compressible ─────────────────
+function donneesRemblai(v) {
+  const couches = [];
+  let z = 0;
+  for (const c of v.couches) {
+    const base = nombre(c.base);
+    if (!(base > z)) continue;
+    const x = { z0: z, z1: base, nom: String(c.nom ?? "").trim(), drainante: c.drainante === "oui" };
+    for (const k of ["gamma", "e0", "Cc", "Cs", "pop", "cv", "ch", "Cae", "cu"]) x[k] = nombre(c[k], 0);
+    if (!(x.gamma > 0)) throw new Error(`couche « ${x.nom || "sans nom"} » : renseigner γ`);
+    couches.push(x);
+    z = base;
+  }
+  if (!couches.length) throw new Error("aucune couche valide : les bases doivent croître");
+  const H = nombre(v.H), fruit = nombre(v.n, 2), gamma = nombre(v.gamma, 20);
+  if (!(H > 0 && fruit > 0 && gamma > 0)) throw new Error("renseigner la hauteur, le fruit des talus et γ du remblai");
+  const drains = v.drains === "oui" ? {
+    espacement: nombre(v.esp), maille: v.maille, dw: nombre(v.dw, 66) / 1000, s: Math.max(nombre(v.sm, 1), 1),
+    kRapport: Math.max(nombre(v.kr, 1), 1), profondeur: nombre(v.zd, Infinity),
+  } : null;
+  if (drains && !(drains.espacement > 0 && drains.dw > 0)) throw new Error("renseigner l'espacement et le diamètre des drains");
+  const tService = nombre(v.tms, 18) / 12, dureeService = nombre(v.duree, 20);
+  if (!(tService > 0 && dureeService > 0)) throw new Error("renseigner la date de mise en service et la période de service");
+  return {
+    H, mode: v.mode === "mise" ? "mise" : "finale", gamma, largeurCrete: Math.max(nombre(v.B, 0), 0), fruit, zw: Math.max(nombre(v.zw, 0), 0),
+    couches, basDrainant: v.bas !== "impermeable", construction: v.construction === "continue" ? "continue" : "etapes",
+    montee: Math.max(nombre(v.montee, 1), 0.05) / 12, Uetape: Math.min(Math.max(nombre(v.Uetape, 70), 10), 99) / 100,
+    F: nombre(v.F, 1.5), lambdaCu: nombre(v.lambdaCu, 0.25), drains, tService, dureeService, sAdmissible: nombre(v.sadm, 100),
+  };
+}
+
+const solRemblai = (c) => (c.drainante || !(c.Cc > 0) ? "sable" : /tourbe/i.test(c.nom) ? "tourbe" : /limon/i.test(c.nom) ? "limon" : "argile");
+const mois = (ans) => `${f(ans * 12, 3)} mois`;
+const date = (ans) => (ans < 2 ? mois(ans) : `${f(ans, 3)} ans`);
+
+function calculerRemblai(v) {
+  const d = donneesRemblai(v), r = etudierRemblai(d);
+  const zBas = Math.max(...d.couches.map((c) => c.z1));
+  const drainante = (c) => c.drainante || !(c.Cc > 0);
+  const coupe = coupeRemblai({
+    H: r.H, largeurCrete: d.largeurCrete, fruit: d.fruit, zw: d.zw, zDrains: d.drains ? Math.min(d.drains.profondeur, zBas) : null,
+    couches: d.couches.map((c) => ({ z0: c.z0, z1: c.z1, sol: solRemblai(c), etiquette: `${c.nom || "couche"}${drainante(c) ? " · drainante" : ` · Cc ${fd(c.Cc, 2)} · cv ${fd(c.cv, 1)} m²/an`}` })),
+  });
+  const tCourt = Math.max(d.tService * 1.3, (r.finTravaux ?? d.tService) * 1.15);
+  const court = r.courbe.filter((p) => p.t <= tCourt);
+  const sMax = Math.max(...r.courbe.map((p) => p.stot), r.final.centre) * 1.1;
+  const gH = graphe({
+    largeur: 560, hauteur: 200, xmin: 0, xmax: tCourt * 12, ymin: 0, ymax: r.H * 1.15,
+    xlabel: "temps depuis le début des travaux (mois)", ylabel: "hauteur (m)",
+    series: [{ points: court.map((p) => [p.t * 12, p.H]), couleur: COULEURS.f62, epaisseur: 2.4, libelle: d.construction === "etapes" ? `hauteur de remblai (${r.etapes.length} étape${r.etapes.length > 1 ? "s" : ""})` : "hauteur de remblai" }],
+    marques: [{ x: d.tService * 12, y: r.H, couleur: COULEURS.bleu, guides: true, libelle: "mise en service" }],
+  });
+  const gS = graphe({
+    largeur: 560, hauteur: 240, xmin: 0, xmax: tCourt * 12, ymin: 0, ymax: sMax, inverserY: true,
+    xlabel: "temps depuis le début des travaux (mois)", ylabel: "tassement sous l'axe (mm)",
+    series: [
+      { points: court.map((p) => [p.t * 12, p.stot]), couleur: COULEURS.encre, epaisseur: 2.4, libelle: "tassement" },
+      { points: [[0, r.final.centre], [tCourt * 12, r.final.centre]], couleur: COULEURS.discret, tirets: "5 4", libelle: "tassement final de consolidation" },
+    ],
+    marques: [{ x: d.tService * 12, y: r.service.s, couleur: COULEURS.bleu, guides: true }],
+  });
+  const long = r.courbe.filter((p) => p.t >= 0.01);
+  const gL = graphe({
+    largeur: 560, hauteur: 250, xmin: 0.01, xmax: r.service.tFin, logX: true, ymin: 0, ymax: sMax, inverserY: true,
+    xlabel: "temps (ans, échelle logarithmique)", ylabel: "tassement sous l'axe (mm)",
+    zones: [{ x0: d.tService, x1: r.service.tFin, y0: 0, y1: sMax, couleur: COULEURS.rouge, opacite: 0.05, libelle: "service", position: "droite" }],
+    series: [
+      { points: long.map((p) => [p.t, p.s]), couleur: COULEURS.bleu, tirets: "6 4", libelle: "consolidation primaire" },
+      { points: long.map((p) => [p.t, p.stot]), couleur: COULEURS.encre, epaisseur: 2.4, libelle: "primaire + fluage" },
+    ],
+    marques: [{ x: d.tService, y: r.service.s, couleur: COULEURS.bleu, guides: true }],
+  });
+  const figure = coupe + gH + gS + gL;
+
+  const stab = r.stabilite;
+  const okStab = stab.verifiee ? Boolean(stab.ok) && !r.bloque : null;
+  const verdict = r.service.ok && okStab !== false;
+  const synthese = `<table class="resultats"><thead><tr><th>Grandeur</th><th class="num">Valeur</th></tr></thead><tbody>
+      <tr><td>Hauteur mise en œuvre${d.mode === "finale" ? ` (plateforme finale à ${fd(d.H, 2)} m)` : ""}</td><td class="n">${fd(r.H, 2)} m</td></tr>
+      <tr><td>Tassement final de consolidation : axe · bord de crête · pied</td><td class="n">${fd(r.final.centre, 0)} · ${fd(r.final.bord, 0)} · ${fd(r.final.pied, 0)} mm</td></tr>
+      <tr><td>Fin des travaux${d.construction === "etapes" ? ` (${r.etapes.length} étape${r.etapes.length > 1 ? "s" : ""})` : ""}</td><td class="n">${r.finTravaux !== null ? mois(r.finTravaux) : "non atteinte"}</td></tr>
+      <tr><td>Mise en service : tassement · degré de consolidation</td><td class="n">${fd(r.service.s, 0)} mm · ${fd(100 * r.service.U, 1)} %</td></tr>
+      <tr><td>Tassement résiduel sur ${f(d.dureeService, 3)} ans (fluage compris)</td><td class="n">${fd(r.service.residuel, 0)} mm ${pastille(r.service.ok)}</td></tr>
+      <tr><td>Stabilité à court terme : F obtenu / F requis</td><td class="n">${stab.verifiee ? `${fd(stab.F, 2)} / ${fd(d.F, 2)} ${pastille(okStab)}` : "c<sub>u</sub> non renseignée"}</td></tr>
+    </tbody></table>
+    <p class="final-result bureau-verdict ${verdict ? "ok" : "ko"}">${verdict ? "Remblai vérifié" : "Remblai non vérifié"} : tassement résiduel ${fd(r.service.residuel, 0)} mm pour ${fd(d.sAdmissible, 0)} mm admissibles${stab.verifiee ? `, F = ${fd(stab.F, 2)}` : ""}${r.bloque ? " ; la hauteur visée n'est pas atteinte par étapes" : ""}.</p>`;
+
+  const lignesCouches = r.parCouche.map((p) => `<tr><td>${esc(p.couche.nom || "—")}</td><td class="n">${fd(p.couche.z0, 2)} – ${fd(p.couche.z1, 2)}</td>
+      <td class="n">${p.drainante ? "drainante" : `${fd(p.couche.e0, 2)} · ${fd(p.couche.Cc, 2)} · ${fd(p.couche.Cs, 3)}`}</td>
+      <td class="n">${fd(p.svp, 1)}</td><td class="n">${p.drainante ? "—" : fd(p.sp, 1)}</td><td class="n">${fd(p.ds, 1)}</td><td class="n">${p.drainante ? "—" : fd(p.s, 0)}</td></tr>`).join("");
+  const reperes = [[r.finTravaux, "fin des travaux"], [d.tService, "mise en service"], [r.service.tFin, "fin de la période de service"], [0.5, ""], [1, ""], [2, ""], [5, ""], [10, ""]]
+    .filter(([x]) => x !== null && x > 0 && x <= r.service.tFin + 1e-9);
+  const vus = new Set(), instants = [];
+  for (const [x, nom] of reperes) { const k = x.toFixed(6); if (!vus.has(k)) { vus.add(k); instants.push([x, nom]); } }
+  instants.sort((a, b) => a[0] - b[0]);
+  const lire = (x) => r.courbe.find((p) => p.t >= x - 1e-9) ?? r.courbe.at(-1);
+  const lignesTemps = instants.map(([x, nom]) => { const p = lire(x); return `<tr><td>${nom || "—"}</td><td class="n">${date(x)}</td><td class="n">${fd(p.H, 2)}</td><td class="n">${fd(p.s, 0)}</td><td class="n">${fd(p.sf, 0)}</td><td class="n">${fd(100 * p.U, 1)} %</td></tr>`; }).join("");
+  const lignesEtapes = r.etapes.map((e) => `<tr><td>${e.n}</td><td class="n">${mois(e.t0)} → ${mois(e.t1)}</td><td class="n">${fd(e.H0, 2)} → ${fd(e.H1, 2)} m</td>
+      <td class="n">${Number.isFinite(e.cu) ? `${f(e.cu, 3)} kPa` : "—"}</td><td class="n">${e.F !== null ? fd(e.F, 2) : "—"}</td></tr>`).join("");
+  const uMax = Math.max(1, ...r.isochrones.flatMap((i) => i.points.map((p) => p.u)));
+  const iso = r.isochrones.length ? graphe({
+    largeur: 560, hauteur: 260, xmin: 0, xmax: uMax * 1.1, ymin: 0, ymax: zBas, inverserY: true,
+    xlabel: "surpression interstitielle u (kPa)", ylabel: "profondeur sous le TN (m)",
+    series: r.isochrones.map((i, k) => ({ points: i.points.map((p) => [p.u, p.z]), couleur: [COULEURS.effort, COULEURS.bleu, COULEURS.discret][k], epaisseur: 2, libelle: `${i.nom} (${date(i.t)})` })),
+  }) : "";
+  const note = `
+    <h3>1 · Données</h3>
+    <p>Remblai ${d.mode === "finale" ? `de cote finale ${fd(d.H, 2)} m, soit ${fd(r.H, 2)} m mis en œuvre` : `de ${fd(r.H, 2)} m`} (γ = ${f(d.gamma, 3)} kN/m³), crête de ${fd(d.largeurCrete, 1)} m, talus à ${fd(d.fruit, 1)} pour 1 ;
+       nappe à ${fd(d.zw, 2)} m sous le terrain naturel ; base du profil ${d.basDrainant ? "drainante" : "imperméable"}.
+       ${d.drains ? `Drains verticaux en maille ${d.drains.maille === "carre" ? "carrée" : "triangulaire"} de ${fd(d.drains.espacement, 2)} m (d<sub>w</sub> = ${f(d.drains.dw * 1000, 3)} mm, d<sub>s</sub>/d<sub>w</sub> = ${fd(d.drains.s, 1)}, k<sub>h</sub>/k<sub>s</sub> = ${fd(d.drains.kRapport, 1)}) jusqu'à ${fd(Math.min(d.drains.profondeur, zBas), 2)} m.` : "Sans drains verticaux."}
+       Mise en service ${mois(d.tService)} après le début des travaux ; période de service ${f(d.dureeService, 3)} ans ; tassement résiduel admissible ${f(d.sAdmissible, 3)} mm.</p>
+    <div class="table-large"><table class="resultats"><thead><tr><th>Couche</th><th class="num">z (m)</th><th class="num">γ</th><th class="num">e<sub>0</sub> · C<sub>c</sub> · C<sub>s</sub></th><th class="num">POP</th><th class="num">c<sub>v</sub> · c<sub>h</sub> (m²/an)</th><th class="num">C<sub>αe</sub></th><th class="num">c<sub>u</sub> (kPa)</th></tr></thead><tbody>
+      ${d.couches.map((c) => `<tr><td>${esc(c.nom || "—")}</td><td class="n">${fd(c.z0, 2)} – ${fd(c.z1, 2)}</td><td class="n">${f(c.gamma, 3)}</td>
+        <td class="n">${drainante(c) ? "drainante" : `${fd(c.e0, 2)} · ${fd(c.Cc, 2)} · ${fd(c.Cs, 3)}`}</td><td class="n">${drainante(c) ? "—" : f(c.pop, 3)}</td>
+        <td class="n">${drainante(c) ? "—" : `${f(c.cv, 3)} · ${f(c.ch > 0 ? c.ch : c.cv, 3)}`}</td><td class="n">${drainante(c) ? "—" : f(c.Cae, 3)}</td><td class="n">${c.cu > 0 ? f(c.cu, 3) : "—"}</td></tr>`).join("")}
+    </tbody></table></div>
+    <h3>2 · Contraintes et tassement final</h3>
+    <p>Supplément de contrainte sous l'axe par la solution de Flamant intégrée sur le profil trapézoïdal du remblai (Osterberg) ; tassement de consolidation par tranches de 0,2 m au plus,
+       C<sub>s</sub> jusqu'à σ'<sub>p</sub> = σ'<sub>v0</sub> + POP, C<sub>c</sub> au-delà <span class="ref">[261 J.4.2.3 ; F62 F.2 § 2.3]</span>. La part du remblai enfoncée sous la nappe est déjaugée :
+       charge en crête ${f(r.final.q, 4)} kPa${r.final.dejaugeage > 0 ? `, soit γ H − ${f(r.final.dejaugeage, 3)} kPa` : ""}.</p>
+    <div class="table-large"><table class="resultats"><thead><tr><th>Couche</th><th class="num">z (m)</th><th class="num">e<sub>0</sub> · C<sub>c</sub> · C<sub>s</sub></th><th class="num">σ'<sub>v0</sub> au milieu (kPa)</th><th class="num">σ'<sub>p</sub> (kPa)</th><th class="num">Δσ au milieu (kPa)</th><th class="num">s (mm)</th></tr></thead><tbody>${lignesCouches}</tbody></table></div>
+    <p class="formula">s<sub>c</sub> = ${fd(r.final.centre, 0)} mm sous l'axe · ${fd(r.final.bord, 0)} mm sous le bord de la crête · ${fd(r.final.pied, 0)} mm sous le pied des talus</p>
+    <h3>3 · Consolidation dans le temps</h3>
+    <p>Consolidation verticale du multicouche par différences finies (schéma implicite), m<sub>v</sub> de chaque tranche tiré de sa courbe œdométrique sur l'intervalle de contrainte final${d.drains ? ` ; drainage radial vers les drains selon Barron et Hansbo, D<sub>e</sub> = ${fd(r.De, 2)} m, F = ${fd(r.F, 2)}` : ""} ;
+       les couches sans C<sub>c</sub> sont drainantes. À chaque instant, chaque tranche tasse selon sa courbe œdométrique sous sa contrainte effective du moment ; la charge suit le phasage et le déjaugeage.</p>
+    <div class="table-large"><table class="resultats"><thead><tr><th>Instant</th><th class="num">t</th><th class="num">H (m)</th><th class="num">s<sub>c</sub> (mm)</th><th class="num">s<sub>f</sub> (mm)</th><th class="num">U</th></tr></thead><tbody>${lignesTemps}</tbody></table></div>
+    ${iso ? `<div class="software-diagram">${iso}</div>` : ""}
+    <h3>4 · Phasage et stabilité à court terme</h3>
+    <p>${d.construction === "etapes" ? `Chaque étape monte en ${mois(d.montee)} jusqu'à H = (π + 2) c<sub>u</sub>/(γ F), c<sub>u</sub> étant celle de la couche la plus faible, accrue de λ<sub>cu</sub> Δσ'<sub>v</sub> (λ<sub>cu</sub> = ${fd(d.lambdaCu, 2)}) ; l'étape suivante attend U = ${fd(100 * d.Uetape, 0)} %.` : `Remblai monté d'un seul jet en ${mois(d.montee)} ; la stabilité se juge à la fin des travaux, avec c<sub>u</sub> accrue de λ<sub>cu</sub> Δσ'<sub>v</sub> (λ<sub>cu</sub> = ${fd(d.lambdaCu, 2)}).`}
+       C'est un prédimensionnement : la stabilité se vérifie ensuite par un calcul le long de surfaces de rupture <span class="ref">[NF EN 1997-1 § 11 et § 12]</span>.</p>
+    ${lignesEtapes ? `<div class="table-large"><table class="resultats"><thead><tr><th>Étape</th><th class="num">Période</th><th class="num">Hauteur</th><th class="num">c<sub>u</sub> la plus faible</th><th class="num">F</th></tr></thead><tbody>${lignesEtapes}</tbody></table></div>` : ""}
+    ${!stab.verifiee ? "<p>Aucune cohésion non drainée renseignée : la stabilité à court terme n'est pas évaluée.</p>" : d.construction === "continue" ? `<p class="formula">F = (π + 2) c<sub>u</sub>/(γ H) = ${fd(stab.F, 2)} ${pastille(okStab)}</p>` : ""}
+    ${r.bloque ? '<p class="final-result bureau-verdict ko">Hauteur visée non atteinte : la consolidation ne renforce plus assez le sol. Il faut des banquettes, un renforcement, un allègement ou des drains plus serrés.</p>' : ""}
+    <h3>5 · Fluage et tassement résiduel</h3>
+    <p>${r.debutFluage !== null ? `Fluage à partir de t<sub>p</sub> = ${date(r.debutFluage)} (U = 95 % après la fin des travaux) : ${fd(r.penteFluage, 0)} mm par décade de temps <span class="ref">[261 J.4.2.4]</span>.` : "La consolidation primaire n'atteint pas 95 % pendant la période étudiée : le fluage n'est pas compté ; le tassement résiduel vient de la consolidation."}
+       Tassement à la mise en service ${fd(r.service.s, 0)} mm ; au bout de ${f(d.dureeService, 3)} ans de service, ${fd(r.service.sFin, 0)} mm.</p>
+    <p class="formula">tassement résiduel = ${fd(r.service.sFin, 0)} − ${fd(r.service.s, 0)} = ${fd(r.service.residuel, 0)} mm ${r.service.ok ? "≤" : ">"} ${fd(d.sAdmissible, 0)} mm ${pastille(r.service.ok)}</p>`;
+  return { figure, synthese, note, verdict, etat: `s∞ = ${fd(r.final.centre, 0)} mm · résiduel ${fd(r.service.residuel, 0)} mm` };
 }
 
 rendre();

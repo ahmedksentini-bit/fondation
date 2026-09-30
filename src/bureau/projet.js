@@ -50,12 +50,12 @@ export function couchesDepuisSondage(couches, essais) {
  * impossible). Renvoie les points et, pour chaque référentiel, la plus petite
  * valeur qui vérifie tout (taux ≤ 1), interpolée entre deux points du balayage.
  */
-export function balayage(evaluer, min, max, pas) {
+export function balayage(evaluer, min, max, pas, refs = ["F62", "EC7"]) {
   const n = Math.min(400, Math.max(2, Math.round((max - min) / pas) + 1));
   const points = Array.from({ length: n }, (_, i) => {
     const x = min + ((max - min) * i) / (n - 1);
     let t;
-    try { t = evaluer(x); } catch { t = { F62: Infinity, EC7: Infinity }; }
+    try { t = evaluer(x); } catch { t = Object.fromEntries(refs.map((r) => [r, Infinity])); }
     return { x, ...t };
   });
   const premier = (ref) => {
@@ -68,7 +68,17 @@ export function balayage(evaluer, min, max, pas) {
     }
     return null;
   };
-  return { points, minimal: { F62: premier("F62"), EC7: premier("EC7") } };
+  // Plus grande valeur qui vérifie (critère qui se dégrade quand x croît : espacement de drains…).
+  const dernier = (ref) => {
+    for (let i = points.length - 1; i >= 0; i--) {
+      if (!(points[i][ref] <= 1)) continue;
+      if (i === points.length - 1) return points[i].x;
+      const a = points[i], b = points[i + 1];
+      return Number.isFinite(b[ref]) ? a.x + ((1 - a[ref]) / (b[ref] - a[ref])) * (b.x - a.x) : a.x;
+    }
+    return null;
+  };
+  return { points, minimal: Object.fromEntries(refs.map((r) => [r, premier(r)])), maximal: Object.fromEntries(refs.map((r) => [r, dernier(r)])) };
 }
 
 /** Taux de travail maximal par référentiel d'une liste de vérifications [{ ref, taux, ok }]. */

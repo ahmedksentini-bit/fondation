@@ -15,9 +15,9 @@ d'hydrologie.
 | Ressource | Fichier | Rôle |
 |---|---|---|
 | Accueil | `index.html` | ressources, parties, chapitres, banques d'exercices (3 modes) |
-| Cours interactif | `cours.html` | 15 chapitres, une quarantaine de schémas explicatifs (dont les appareils d'essai), 49 calculateurs à curseurs de calcul en direct, dont l'assistant de dépouillement pressiométrique |
-| Exerciseur | `exerciseur.html` | 96 modèles d'exercices à données tirées au hasard, corrigés pas à pas |
-| Bureau de calcul | `bureau.html` | projet et tableau de bord, sondage pressiométrique, semelle, pieu, frottement négatif, groupe, effort transversal — étapes numérotées, étude paramétrique, note de calcul avec cartouche |
+| Cours interactif | `cours.html` | 16 chapitres, dont les sols compressibles et les remblais ; une cinquantaine de schémas explicatifs (dont les appareils d'essai), 55 calculateurs à curseurs de calcul en direct, dont l'assistant de dépouillement pressiométrique |
+| Exerciseur | `exerciseur.html` | 105 modèles d'exercices à données tirées au hasard, corrigés pas à pas |
+| Bureau de calcul | `bureau.html` | projet et tableau de bord, sondage pressiométrique, semelle, pieu, frottement négatif, groupe, effort transversal, remblai sur sol compressible (consolidation multicouche, drains, étapes, tassement résiduel) — étapes numérotées, étude paramétrique, note de calcul avec cartouche |
 | Polycopié | `polycopie/fondations-polycopie.pdf` | le cours complet, produit à partir de `cours.html` |
 
 ## Déploiement — Cloudflare Pages
@@ -50,6 +50,7 @@ src/geotech/        solveurs purs et testés (aucun accès au DOM)
   superficielles.js   excentrement, ple*, qce, De, kp, kc, iδ, iβ, portance, glissement
   cphi.js             méthode c–φ (EN 1997-1 annexe D, NF P94-261 annexe F)
   tassements.js       Ménard, Schmertmann, Giroud, œdomètre, module de réaction
+  consolidation.js    Terzaghi, drains (Barron–Hansbo, Carrillo), Osterberg, fluage, étapes, Asaoka, multicouche
   pieux.js            portance F62 (C.3, C.4) et NF P94-262 (F, G), ξ, pieu modèle
   frottement-negatif.js, groupes.js, lateral.js, tassement-pieu.js
 src/cours-chN.js    calculateurs du chapitre N du cours
@@ -57,7 +58,7 @@ src/pressio-exemples.js, src/essais-exemples.js  jeux d'essais fabriqués pour l
 src/exos/           modèles d'exercices paramétrés (un fichier par chapitre)
 src/exercices.js    rendu des exercices : apprentissage, entraînement, examen
 src/exerciseur.js   tirages aléatoires reproductibles (#ch6/ch6-ple/123456)
-src/bureau/         justification complète d'une semelle et d'un pieu, notes de calcul, projet (sondage → couches, étude paramétrique)
+src/bureau/         justification complète d'une semelle, d'un pieu et d'un remblai, notes de calcul, projet (sondage → couches, étude paramétrique)
 src/figures.js      figures SVG (coupes, diagrammes, graphes) communes à tout le site
 src/schemas-essais.js, src/schemas-cours.js  schémas des appareils d'essai et schémas explicatifs du cours
 src/cours-schemas.js  pose chaque schéma dans sa <figure data-schema>
