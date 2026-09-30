@@ -1,0 +1,471 @@
+{
+ "chapitre": "ch16",
+ "exercices": [
+  {
+   "id": "ch16-oedo",
+   "titre": "Tassement d'une argile sous un remblai large",
+   "difficulte": 2,
+   "graine": 2455755877,
+   "enonce": "Un remblai de 3,5 m (γ = 20,0 kN/m³), très large devant l'épaisseur compressible, est construit sur 9,0 m d'argile molle saturée (γ = 16,0 kN/m³, nappe au terrain naturel, γw = 10 kN/m³) : e0 = 2,35, Cc = 0,87, Cs = 0,087, σ'p = σ'v0 + 30 kPa. On traite la couche en une seule tranche, repérée à mi-épaisseur.",
+   "donnees": [
+    {
+     "label": "Remblai",
+     "valeur": "3,5 m · γ = 20,0 kN/m³"
+    },
+    {
+     "label": "Argile",
+     "valeur": "9,0 m · γ = 16,0 kN/m³"
+    },
+    {
+     "label": "e0 · Cc · Cs",
+     "valeur": "2,35 · 0,87 · 0,087"
+    },
+    {
+     "label": "POP",
+     "valeur": "30 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "σ'v0 au milieu de la couche ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 27,
+     "explication": "σ'v0 = (γ − γw) H/2 = 6,0 × 4,50 = 27 kPa ; σ'p = 57 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Supplément de contrainte Δσ ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 70,
+     "explication": "Remblai large : Δσ = γ h = 20,0 × 3,5 = 70 kPa dans toute la couche.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Tassement de consolidation ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 615.527,
+     "explication": "σ'vf = 97 kPa > σ'p : s = H/(1 + e0) [Cs lg(σ'p/σ'v0) + Cc lg(σ'vf/σ'p)] = 9,0/3,35 × [0,087 × 0,3245 + 0,87 × 0,2309] = 616 mm.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Découpée en tranches plus fines, la couche tasserait…",
+     "type": "choix",
+     "options": [
+      "moins",
+      "autant",
+      "davantage"
+     ],
+     "reponse": 2,
+     "explication": "Les tranches du haut, peu contraintes au départ, ont un rapport σ'vf/σ'v0 plus grand : une seule tranche sous-estime le tassement d'une couche épaisse."
+    }
+   ]
+  },
+  {
+   "id": "ch16-temps",
+   "titre": "Durée de la consolidation",
+   "difficulte": 1,
+   "graine": 1581288003,
+   "enonce": "Une couche d'argile de 7 m est drainée par un sable au-dessus et au-dessous ; cv = 2,7 m²/an.",
+   "donnees": [
+    {
+     "label": "H",
+     "valeur": "7 m"
+    },
+    {
+     "label": "Drainage",
+     "valeur": "double"
+    },
+    {
+     "label": "cv",
+     "valeur": "2,7 m²/an"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Longueur de drainage Hd ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 3.5,
+     "explication": "Drainage double : Hd = H/2 = 3,5 m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Temps t50 ?",
+     "type": "nombre",
+     "unite": "ans",
+     "reponse": 0.892575,
+     "explication": "t50 = 0,197 Hd²/cv = 0,197 × 12,25/2,7 = 0,89 ans.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Temps t90 ?",
+     "type": "nombre",
+     "unite": "ans",
+     "reponse": 3.84779,
+     "explication": "t90 = 0,848 Hd²/cv = 3,85 ans.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Et si la couche était drainée d'un seul côté ?",
+     "type": "nombre",
+     "unite": "ans",
+     "reponse": 15.3912,
+     "explication": "Hd double : le temps est multiplié par quatre, t90 = 15,39 ans.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch16-degre",
+   "titre": "Tassement au bout de quelques années",
+   "difficulte": 2,
+   "graine": 3725730385,
+   "enonce": "Sous un remblai, 14 m d'argile drainée des deux côtés doivent tasser de sc = 910 mm en fin de consolidation primaire ; cv = 2,6 m²/an. On suppose le remblai mis en place d'un coup.",
+   "donnees": [
+    {
+     "label": "H · Hd",
+     "valeur": "14 m · 7,0 m"
+    },
+    {
+     "label": "cv",
+     "valeur": "2,6 m²/an"
+    },
+    {
+     "label": "sc",
+     "valeur": "910 mm"
+    },
+    {
+     "label": "t",
+     "valeur": "1,0 an"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Facteur temps Tv ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.0530612,
+     "explication": "Tv = cv t/Hd² = 2,6 × 1,0/49,00 = 0,0531.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Degré de consolidation U ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 25.9922,
+     "explication": "U < 60 % : U ≈ 2 √(Tv/π) = 26,0 %.",
+     "tolerance": 1.5
+    },
+    {
+     "texte": "Tassement atteint à t ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 236.529,
+     "explication": "s = U sc = 0,260 × 910 = 237 mm.",
+     "toleranceRel": 0.03
+    }
+   ]
+  },
+  {
+   "id": "ch16-fluage",
+   "titre": "Fluage d'une argile organique",
+   "difficulte": 2,
+   "graine": 2598491952,
+   "enonce": "Une couche d'argile organique de 3,5 m (e0 = 2,3, Cc = 1,35) achève sa consolidation primaire au bout de tp = 2 ans. On admet Cαe/Cc = 0,05 (Mesri).",
+   "donnees": [
+    {
+     "label": "H · e0",
+     "valeur": "3,5 m · 2,3"
+    },
+    {
+     "label": "Cc",
+     "valeur": "1,35"
+    },
+    {
+     "label": "Cαe/Cc",
+     "valeur": "0,05"
+    },
+    {
+     "label": "tp",
+     "valeur": "2 ans"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Indice de fluage Cαe ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.0675,
+     "explication": "Cαe = 0,05 × 1,35 = 0,0675.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Fluage par décade de temps ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 71.5909,
+     "explication": "H Cαe/(1 + e0) = 3,5 × 0,0675/3,3 = 71,6 mm par décade.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Fluage entre tp et 20 ans ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 71.5909,
+     "explication": "sf = H Cαe/(1 + e0) lg(t/tp) = 71,6 × lg(20/2) = 71,6 mm.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch16-drains",
+   "titre": "Drains verticaux en maille triangulaire",
+   "difficulte": 3,
+   "graine": 172330919,
+   "enonce": "Des drains en bande (dw = 66 mm) sont foncés en maille triangulaire d'espacement s = 1,1 m dans 9 m d'argile drainée des deux côtés : cv = 4,50 m²/an, ch = 4,5 m²/an. On néglige le remaniement. Que vaut la consolidation au bout de 6 mois ?",
+   "donnees": [
+    {
+     "label": "s · maille",
+     "valeur": "1,1 m · triangulaire"
+    },
+    {
+     "label": "dw",
+     "valeur": "66 mm"
+    },
+    {
+     "label": "cv · ch",
+     "valeur": "4,50 · 4,5 m²/an"
+    },
+    {
+     "label": "H · t",
+     "valeur": "9 m · 6 mois"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Diamètre d'influence De ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.15508,
+     "explication": "De = 1,05 s = 1,155 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Facteur F = ln n − 0,75 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2.11227,
+     "explication": "n = De/dw = 17,5 ; F = ln 17,5 − 0,75 = 2,112.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Degré de consolidation radiale Uh ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 99.8317,
+     "explication": "Th = ch t/De² = 1,6864 ; Uh = 1 − exp(−8 Th/F) = 99,8 %.",
+     "tolerance": 1.5
+    },
+    {
+     "texte": "Degré combiné U ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 99.895,
+     "explication": "Uv = 37,6 % (Tv = 0,1111) ; 1 − U = (1 − Uv)(1 − Uh) ⇒ U = 99,9 %.",
+     "tolerance": 1.5
+    }
+   ]
+  },
+  {
+   "id": "ch16-etapes",
+   "titre": "Hauteur admissible et construction par étapes",
+   "difficulte": 2,
+   "graine": 2698726256,
+   "enonce": "Un remblai large (γ = 18,0 kN/m³) est construit sur une argile molle épaisse de cohésion non drainée cu = 22 kPa. On vise F = 1,5 vis-à-vis du poinçonnement, Hmax = (π + 2) cu/(γ F). Entre deux étapes, on attend U = 70 %, et Δcu = 0,30 U Δσ'v avec Δσ'v ≈ γ H.",
+   "donnees": [
+    {
+     "label": "cu",
+     "valeur": "22 kPa"
+    },
+    {
+     "label": "γ · F",
+     "valeur": "18,0 kN/m³ · 1,5"
+    },
+    {
+     "label": "λcu · U",
+     "valeur": "0,30 · 70 %"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Hauteur de la première étape H1 ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 4.18945,
+     "explication": "H1 = (π + 2) × 22/(18,0 × 1,5) = 4,19 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Cohésion après consolidation sous H1 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 37.8361,
+     "explication": "cu = 22 + 0,30 × 0,70 × 18,0 × 4,19 = 37,8 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Hauteur atteinte à la deuxième étape H2 ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 7.20511,
+     "explication": "H2 = (π + 2) × 37,8/(18,0 × 1,5) = 7,21 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Hauteur limite H∞ des étapes successives ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 14.9529,
+     "explication": "k = (π + 2) λcu U/F = 0,720 ; H∞ = H1/(1 − k) = 14,95 m : plus haut, il faut des banquettes, un renforcement ou un remblai allégé.",
+     "toleranceRel": 0.015
+    }
+   ]
+  },
+  {
+   "id": "ch16-asaoka",
+   "titre": "Tassement final par la méthode d'Asaoka",
+   "difficulte": 2,
+   "graine": 2500351168,
+   "enonce": "Après la fin de la construction d'un remblai, un tassomètre a donné, tous les 60 jours : 395 ; 445 ; 485 ; 518 ; 546 ; 568 mm.",
+   "donnees": [
+    {
+     "label": "Pas de lecture",
+     "valeur": "60 jours"
+    },
+    {
+     "label": "Lectures",
+     "valeur": "395 · 445 · 485 · 518 · 546 · 568 mm"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Pente β1 de la droite s(i) = β0 + β1 s(i−1) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.818368,
+     "explication": "Régression sur les couples (s(i−1), s(i)) ; ici les accroissements successifs décroissent dans le rapport ≈ 0,818.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Tassement final s∞ = β0/(1 − β1) ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 668.295,
+     "explication": "β0 = 121,4 mm ; s∞ = 121,4/(1 − 0,818) = 668,3 mm.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Tassement restant après la dernière lecture ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 100.295,
+     "explication": "668,3 − 568 = 100 mm.",
+     "toleranceRel": 0.05
+    }
+   ]
+  },
+  {
+   "id": "ch16-surcharge",
+   "titre": "Quand retirer une surcharge temporaire ?",
+   "difficulte": 3,
+   "graine": 3464464038,
+   "enonce": "L'ouvrage appliquera qf = 45 kPa sur 11 m d'argile drainée des deux côtés (cv = 2,3 m²/an). Pour accélérer, on ajoute une surcharge temporaire qs = 35 kPa, retirée quand le tassement atteint le tassement final sous qf seule. On admet, pour simplifier, que le tassement final est proportionnel à la charge.",
+   "donnees": [
+    {
+     "label": "qf · qs",
+     "valeur": "45 · 35 kPa"
+    },
+    {
+     "label": "H · cv",
+     "valeur": "11 m · 2,3 m²/an"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Degré de consolidation à atteindre sous qf + qs ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 56.25,
+     "explication": "U (qf + qs) = qf ⇒ U = qf/(qf + qs) = 56,3 %.",
+     "tolerance": 1
+    },
+    {
+     "texte": "Temps de retrait de la surcharge ts ?",
+     "type": "nombre",
+     "unite": "ans",
+     "reponse": 3.29127,
+     "explication": "Tv(U = 56,3 %) = 0,250 ; ts = Tv Hd²/cv = 3,29 ans.",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Pour comparaison : t90 sans surcharge ?",
+     "type": "nombre",
+     "unite": "ans",
+     "reponse": 11.1542,
+     "explication": "t90 = 0,848 × 30,25/2,3 = 11,15 ans — la surcharge fait gagner 7,9 ans.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch16-mise",
+   "titre": "Hauteur de remblai à mettre en œuvre",
+   "difficulte": 3,
+   "graine": 1223625854,
+   "enonce": "On veut une plateforme à 3,5 m au-dessus du terrain naturel, sur une argile molle dont la nappe affleure. Un calcul œdométrique donne un tassement final de 0,80 m sous la charge γ Hf (γ = 21,0 kN/m³) ; on admet le tassement proportionnel à la charge. La part du remblai enfoncée sous la nappe est déjaugée (γw = 10 kN/m³).",
+   "donnees": [
+    {
+     "label": "Hf · γ",
+     "valeur": "3,5 m · 21,0 kN/m³"
+    },
+    {
+     "label": "Tassement sous γ Hf",
+     "valeur": "0,80 m"
+    },
+    {
+     "label": "Nappe",
+     "valeur": "au terrain naturel"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Tassement final s ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.90881,
+     "explication": "s = c (γ (Hf + s) − γw s), c = 0,80/(21,0 × 3,5) m/kPa ⇒ s = c γ Hf/(1 − c (γ − γw)) = 0,909 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Hauteur à mettre en œuvre H ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 4.40881,
+     "explication": "H = Hf + s = 3,5 + 0,909 = 4,41 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Et si la nappe était profonde (pas de déjaugeage) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 4.53704,
+     "explication": "s = c γ Hf/(1 − c γ) = 1,037 m ⇒ H = 4,54 m : le déjaugeage économise 12,8 cm de remblai.",
+     "toleranceRel": 0.01
+    }
+   ]
+  }
+ ]
+}

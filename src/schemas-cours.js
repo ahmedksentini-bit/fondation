@@ -6,6 +6,7 @@
 
 import { svg, couche, ligne, texte, cote, fleche, COULEURS, fmt, pasJoli } from "./figures.js";
 import { CLASSES_F62 } from "./geotech/sols.js";
+import { degreConsolidation, surpressionRelative, facteurTemps } from "./geotech/consolidation.js";
 
 const TRAIT = COULEURS.betonTrait, EAU = COULEURS.eau;
 const r1 = (x) => x.toFixed(1);
@@ -22,7 +23,7 @@ const poly = (pts) => pts.map(([x, y], i) => `${i ? "L" : "M"}${r1(x)} ${r1(y)}`
 const beton = (id, x, y, w, h) => rect(x, y, w, h, COULEURS.beton, COULEURS.betonTrait, 1.3) + `<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}" fill="url(#${id}-beton)" opacity=".5"/>`;
 /** Motif de sol dans un polygone quelconque. */
 const zoneSol = (id, pts, sol) => {
-  const couleurs = { remblai: "#eadfd2", limon: "#e8dcc3", argile: "#dccab0", sable: "#f3e5ae", marne: "#cfd8c7", roche: "#b8bec7", tourbe: "#8d7a64" };
+  const couleurs = { remblai: "#eadfd2", limon: "#e8dcc3", argile: "#dccab0", sable: "#f3e5ae", grave: "#e3d3a0", marne: "#cfd8c7", roche: "#b8bec7", tourbe: "#8d7a64" };
   const motif = { limon: "argile", tourbe: "argile" }[sol] ?? sol;
   return `<path d="${poly(pts)}Z" fill="${couleurs[sol]}"/><path d="${poly(pts)}Z" fill="url(#${id}-${motif})"/>`;
 };
@@ -1041,6 +1042,435 @@ export function schemaSeisme({ largeur = 640, hauteur = 300 } = {}) {
       s += etiqs(xt, 112, ["2. glissement : NEd tanδ / γM", "et butée frontale sous conditions"], { taille: 10.5 });
       s += etiqs(xt, 158, ["3. pertes de résistance cycliques :", "liquéfaction des sables saturés,", "argiles sensibles"], { taille: 10.5 });
       s += etiqs(xt, 222, ["N̄ = γRd NEd / Nmax", "M̄ = γRd MEd / (B Nmax)"], { taille: 10.5, gras: false });
+      return s;
+    },
+  });
+}
+
+// ─────────────────── Chapitre 16 : sols compressibles et remblais ─────────────
+
+/** Ressort vertical en zigzag entre y0 et y1, centré en x. */
+const ressort = (x, y0, y1, n = 7, a = 9) => {
+  const h = (y1 - y0) / n;
+  let d = `M${r1(x)} ${r1(y0)}`;
+  for (let i = 0; i < n; i++) d += `L${r1(x + (i % 2 ? -a : a))} ${r1(y0 + (i + 0.5) * h)}`;
+  return `${d}L${r1(x)} ${r1(y1)}`;
+};
+
+/** L'analogie de Terzaghi : piston, ressort (le squelette), eau et orifice (la perméabilité), à trois instants. */
+export function schemaAnalogieTerzaghi({ largeur = 640, hauteur = 300 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Analogie de Terzaghi : l'eau cède peu à peu la charge au squelette", contenu: (id) => {
+      const etats = [
+        { t: "t = 0", sous: "l'eau porte toute la charge", u: 1, yP: 92, fuite: false },
+        { t: "0 < t < ∞", sous: "l'eau s'échappe par l'orifice", u: 0.45, yP: 104, fuite: true },
+        { t: "t → ∞", sous: "le ressort porte tout", u: 0, yP: 116, fuite: false },
+      ];
+      const w = 196, yF = 206;
+      let s = "";
+      etats.forEach((e, i) => {
+        const x0 = 16 + i * (w + 14), xc = x0 + w / 2, xg = xc - 44, xd = xc + 44;
+        s += etiq(xc, 20, e.t, { ancre: "middle", taille: 12.5 });
+        s += etiq(xc, 36, e.sous, { ancre: "middle", taille: 10.5, gras: false });
+        s += rect(xg, e.yP + 10, 88, yF - e.yP - 10, COULEURS.eauFond, "none", 0);
+        s += chemin(`M${xg} 60L${xg} ${yF}L${xd} ${yF}L${xd} 60`, "none", COULEURS.trait, 2);
+        s += chemin(ressort(xc - 14, e.yP + 10, yF, 7, 9), "none", COULEURS.f62, 1.8);
+        s += rect(xg + 1, e.yP, 86, 10, COULEURS.beton, COULEURS.betonTrait, 1.2);
+        s += rect(xc + 20, e.yP, 6, 10, e.fuite ? COULEURS.eauFond : "#fff", COULEURS.betonTrait, 0.8);
+        if (e.fuite) s += fleche(id, xc + 23, e.yP - 2, xc + 23, e.yP - 22, { type: "bleu", ep: 1.8 });
+        s += fleche(id, xc - 14, 46, xc - 14, e.yP - 2, { ep: 2.4 });
+        s += etiq(xc - 22, 62, "Δσ", { ancre: "end", taille: 11.5, couleur: COULEURS.effort });
+        // Parts de la charge portées par l'eau et par le squelette.
+        const lb = 100, xb = x0 + 44;
+        s += etiq(x0 + 36, yF + 26, "u", { ancre: "end", taille: 11.5, couleur: EAU });
+        s += rect(xb, yF + 16, lb, 12, "#f1f5f9", COULEURS.grille, 0.8) + (e.u > 0 ? rect(xb, yF + 16, lb * e.u, 12, EAU, "none", 0) : "");
+        s += etiq(xb + lb + 6, yF + 26, `${Math.round(e.u * 100)} %`, { taille: 10.5, gras: false });
+        s += etiq(x0 + 36, yF + 48, "σ'", { ancre: "end", taille: 11.5, couleur: COULEURS.f62 });
+        s += rect(xb, yF + 38, lb, 12, "#f1f5f9", COULEURS.grille, 0.8) + (e.u < 1 ? rect(xb, yF + 38, lb * (1 - e.u), 12, COULEURS.f62, "none", 0) : "");
+        s += etiq(xb + lb + 6, yF + 48, `${Math.round((1 - e.u) * 100)} %`, { taille: 10.5, gras: false });
+      });
+      s += etiq(largeur / 2, hauteur - 12, "ressort : squelette du sol · eau : eau interstitielle · orifice : perméabilité", { ancre: "middle", taille: 10.5, gras: false });
+      return s;
+    },
+  });
+}
+
+/** Les trois composantes du tassement d'un sol fin saturé en fonction du logarithme du temps. */
+export function schemaComposantesTassement({ largeur = 640, hauteur = 290 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Tassement immédiat, de consolidation et de fluage", contenu: () => {
+      const xg = 84, xd = largeur - 24, yH = 44, yB = 244;
+      const X = (lg) => xg + ((lg + 3) / 5) * (xd - xg);
+      const si = 18, sc = 112, pente = 24;
+      const Y = (lg) => yH + si + sc * degreConsolidation(1.97 * 10 ** lg) + pente * Math.max(0, lg);
+      let s = "";
+      s += ligne(xg, yH, xd, yH, COULEURS.trait, 1.3) + ligne(xg, yH, xg, yB, COULEURS.trait, 1.3);
+      s += etiq(xd, yH - 10, "temps (échelle logarithmique)", { ancre: "end", taille: 10.5, gras: false });
+      s += `<text transform="translate(${xg - 62} ${(yH + yB) / 2}) rotate(-90)" text-anchor="middle" style="font-size:10.5px">tassement</text>`;
+      s += ligne(xg, yH + si, xd, yH + si, COULEURS.grille, 1, 'stroke-dasharray="4 3"');
+      s += ligne(xg, yH + si + sc, xd, yH + si + sc, COULEURS.grille, 1, 'stroke-dasharray="4 3"');
+      s += etiq(xg - 6, yH + si + 4, "si", { ancre: "end", taille: 11, couleur: COULEURS.violet });
+      s += etiq(xg - 6, yH + si + sc + 4, "si + sc", { ancre: "end", taille: 11, couleur: COULEURS.bleu });
+      s += ligne(X(0), yH, X(0), yB, COULEURS.discret, 1, 'stroke-dasharray="3 3"');
+      s += etiq(X(0), yB + 16, "tp : fin de la consolidation primaire", { ancre: "middle", taille: 10.5, couleur: COULEURS.discret });
+      const prim = [[xg, yH + si]], flu = [];
+      for (let lg = -3; lg <= 0.0001; lg += 0.05) prim.push([X(lg), Y(lg)]);
+      for (let lg = 0; lg <= 2.0001; lg += 0.05) flu.push([X(lg), Y(lg)]);
+      s += chemin(poly([[xg, yH], [xg, yH + si]]), "none", COULEURS.violet, 3);
+      s += chemin(poly(prim), "none", COULEURS.bleu, 2.6) + chemin(poly(flu), "none", COULEURS.f62, 2.6);
+      s += etiq(X(0.35), 172, "fluage : pente Cαe par décade", { taille: 10.5, couleur: COULEURS.f62 });
+      const legende = [
+        [COULEURS.violet, "si : immédiat, à volume constant (non drainé)"],
+        [COULEURS.bleu, "sc : consolidation primaire, l'eau s'évacue"],
+        [COULEURS.f62, "sf : fluage, le squelette flue à σ' constant"],
+      ];
+      legende.forEach(([c, t], k) => { s += ligne(xg + 14, 196 + 18 * k, xg + 34, 196 + 18 * k, c, 3) + etiq(xg + 40, 200 + 18 * k, t, { taille: 10.5, gras: false }); });
+      return s;
+    },
+  });
+}
+
+/** Drainage double et drainage simple : longueur de drainage et isochrones de surpression aux mêmes instants. */
+export function schemaDrainage({ largeur = 640, hauteur = 316 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Drainage double et drainage simple", contenu: (id) => {
+      const yS = 44, yA = 62, yB = 222, yF = 240, H = yB - yA, w = 296;
+      const teintes = [COULEURS.bleu, COULEURS.violet, COULEURS.f62];
+      let s = "";
+      const panneau = (x0, double) => {
+        s += couche(id, { x: x0, y: yS, w, h: yA - yS, sol: "sable" });
+        s += couche(id, { x: x0, y: yA, w, h: H, sol: "argile" });
+        s += couche(id, { x: x0, y: yB, w, h: yF - yB, sol: double ? "sable" : "marne" });
+        s += ligne(x0, yA, x0 + w, yA, COULEURS.trait, 1) + ligne(x0, yB, x0 + w, yB, COULEURS.trait, 1);
+        s += etiq(x0 + w / 2, 22, double ? "Drainage double : Hd = H/2" : "Drainage simple : Hd = H", { ancre: "middle", taille: 12 });
+        s += etiq(x0 + w - 6, yS + 13, "sable drainant", { ancre: "end", taille: 10, gras: false });
+        s += etiq(x0 + w - 6, yB + 13, double ? "sable drainant" : "substratum imperméable", { ancre: "end", taille: 10, gras: false });
+        s += cote(id, x0 + 14, yA, x0 + 14, yB, "") + etiq(x0 + 20, yA + H / 2 + 4, "H", { taille: 11.5, couleur: COULEURS.cote });
+        const yHd = double ? yA + H / 2 : yB;
+        s += cote(id, x0 + 44, yA, x0 + 44, yHd, "") + etiq(x0 + 50, (yA + yHd) / 2 + 4, "Hd", { taille: 11.5, couleur: COULEURS.cote });
+        s += fleche(id, x0 + 90, yA + 42, x0 + 90, yA + 6, { type: "bleu", ep: 2 });
+        if (double) s += fleche(id, x0 + 90, yB - 42, x0 + 90, yB - 6, { type: "bleu", ep: 2 });
+        // Isochrones aux mêmes instants : Tv quatre fois plus grand quand Hd est deux fois plus court.
+        const xu = x0 + 122, lu = 150;
+        s += ligne(xu, yA, xu, yB, COULEURS.trait, 0.9) + ligne(xu + lu, yA, xu + lu, yB, EAU, 1.1, 'stroke-dasharray="4 3"');
+        s += etiq(xu, yA + H + 32, "u = 0", { ancre: "middle", taille: 10, gras: false });
+        s += etiq(xu + lu, yA + H + 32, "u0", { ancre: "middle", taille: 10.5, couleur: EAU });
+        [0.02, 0.08, 0.3].forEach((Tv1, k) => {
+          const Tv = double ? 4 * Tv1 : Tv1, pts = [];
+          for (let i = 0; i <= 80; i++) { const f = i / 80; pts.push([xu + lu * surpressionRelative(Tv, double ? 2 * f : f), yA + f * H]); }
+          s += chemin(poly(pts), "none", teintes[k], 2);
+        });
+      };
+      panneau(12, true);
+      panneau(largeur - 12 - w, false);
+      const yl = hauteur - 30;
+      ["t1", "t2", "t3"].forEach((t, k) => { s += ligne(150 + 64 * k, yl - 4, 172 + 64 * k, yl - 4, teintes[k], 3) + etiq(178 + 64 * k, yl, t, { taille: 11, couleur: teintes[k] }); });
+      s += etiq(348, yl, "isochrones de u aux mêmes instants", { taille: 10.5, gras: false });
+      s += etiq(largeur / 2, hauteur - 10, "Hd deux fois plus long : quatre fois plus de temps pour le même degré de consolidation", { ancre: "middle", taille: 10.5, gras: false });
+      return s;
+    },
+  });
+}
+
+/** Dépouillement d'un palier œdométrique : constructions de Casagrande (lg t) et de Taylor (√t). */
+export function schemaCasagrandeTaylor({ largeur = 640, hauteur = 312 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Coefficient de consolidation : constructions de Casagrande et de Taylor", contenu: () => {
+      const yH = 46, yB = 254;
+      let s = "";
+      // Casagrande : tassement du palier en fonction de lg t (t de 0,1 à 1000 min).
+      {
+        const xg = 44, xd = 300, lg0 = -1, lg1 = 3, d0 = yH + 26, d100 = yB - 64, Ca = 13, lgp = Math.log10(30 * 1.13);
+        const X = (lg) => xg + ((lg - lg0) / (lg1 - lg0)) * (xd - xg);
+        const Y = (lg) => d0 + (d100 - d0) * degreConsolidation(10 ** lg / 30) + Ca * Math.max(0, lg - lgp);
+        s += ligne(xg, yH, xd, yH, COULEURS.trait, 1.2) + ligne(xg, yH, xg, yB, COULEURS.trait, 1.2);
+        s += etiq((xg + xd) / 2, 22, "Casagrande : tassement – lg t", { ancre: "middle", taille: 12 });
+        s += etiq(xd, yH - 8, "lg t", { ancre: "end", taille: 10.5, gras: false });
+        const pts = [];
+        for (let lg = lg0; lg <= lg1 + 1e-9; lg += 0.02) pts.push([X(lg), Y(lg)]);
+        s += chemin(poly(pts), "none", COULEURS.encre, 2.2);
+        // Tangente au point d'inflexion et droite de fluage : leur intersection donne d100.
+        let lgI = lg0, m = 0;
+        for (let lg = lg0; lg <= lg1; lg += 0.01) { const p = (Y(lg + 0.005) - Y(lg - 0.005)) / 0.01; if (p > m) { m = p; lgI = lg; } }
+        const YI = Y(lgI), Yf = Y(lg1);
+        const lgX = (Yf - Ca * lg1 - YI + m * lgI) / (m - Ca), dC100 = YI + m * (lgX - lgI);
+        s += ligne(X(lgI - 0.55), YI - 0.55 * m, X(lgX + 0.3), YI + (lgX + 0.3 - lgI) * m, COULEURS.violet, 1.1, 'stroke-dasharray="5 3"');
+        s += ligne(X(lgX - 0.6), Yf - Ca * (lg1 - lgX + 0.6), X(lg1), Yf, COULEURS.violet, 1.1, 'stroke-dasharray="5 3"');
+        // d0 : la parabole du début ; entre t1 et 4 t1, le tassement double.
+        const l1 = -0.5, l4 = l1 + Math.log10(4), dC0 = Y(l1) - (Y(l4) - Y(l1));
+        s += ligne(xg, dC0, X(l4), dC0, COULEURS.bleu, 1, 'stroke-dasharray="4 3"');
+        s += ligne(X(l1), dC0, X(l1), Y(l1), COULEURS.bleu, 1.4) + ligne(X(l4), Y(l1), X(l4), Y(l4), COULEURS.bleu, 1.4);
+        s += ligne(X(l1), Y(l1), X(l4), Y(l1), COULEURS.bleu, 0.8, 'stroke-dasharray="2 2"');
+        s += ligne(X(l1), yB, X(l1), Y(l1), COULEURS.grille, 1) + ligne(X(l4), yB, X(l4), Y(l4), COULEURS.grille, 1);
+        s += ligne(xg, dC100, X(lgX), dC100, COULEURS.violet, 1, 'stroke-dasharray="4 3"');
+        const dC50 = (dC0 + dC100) / 2;
+        let a = lg0, b = lg1;
+        for (let k = 0; k < 60; k++) { const mi = (a + b) / 2; if (Y(mi) < dC50) a = mi; else b = mi; }
+        s += ligne(xg, dC50, X(a), dC50, COULEURS.effort, 1.1, 'stroke-dasharray="4 3"') + ligne(X(a), dC50, X(a), yB, COULEURS.effort, 1.1, 'stroke-dasharray="4 3"');
+        s += `<circle cx="${r1(X(a))}" cy="${r1(dC50)}" r="3.2" fill="${COULEURS.effort}"/><circle cx="${r1(X(lgX))}" cy="${r1(dC100)}" r="3.2" fill="${COULEURS.violet}"/>`;
+        s += etiq(xg - 5, dC0 + 4, "d0", { ancre: "end", taille: 10.5, couleur: COULEURS.bleu });
+        s += etiq(xg - 5, dC50 + 4, "d50", { ancre: "end", taille: 10.5, couleur: COULEURS.effort });
+        s += etiq(xg - 5, dC100 + 4, "d100", { ancre: "end", taille: 10.5, couleur: COULEURS.violet });
+        s += etiq(X(l1), yB + 15, "t1", { ancre: "middle", taille: 10.5, gras: false });
+        s += etiq(X(l4), yB + 15, "4 t1", { ancre: "middle", taille: 10.5, gras: false });
+        s += etiq(X(a), yB + 15, "t50", { ancre: "middle", taille: 10.5, couleur: COULEURS.effort });
+        s += etiq(X(1.9), dC100 - 8, "fluage", { ancre: "middle", taille: 10, gras: false, couleur: COULEURS.violet });
+        s += etiq((xg + xd) / 2, hauteur - 12, "cv = 0,197 Hd² / t50", { ancre: "middle", taille: 11.5 });
+      }
+      // Taylor : tassement en fonction de √t ; la droite aux abscisses × 1,15 coupe la courbe à U = 90 %.
+      {
+        const xg = 366, xd = largeur - 20, d0 = yH + 26, d100 = yB - 40, rmax = 1.15;
+        const X = (r) => xg + (r / rmax) * (xd - xg), Y = (r) => d0 + (d100 - d0) * degreConsolidation(r * r);
+        s += ligne(xg, yH, xd, yH, COULEURS.trait, 1.2) + ligne(xg, yH, xg, yB, COULEURS.trait, 1.2);
+        s += etiq((xg + xd) / 2, 22, "Taylor : tassement – √t", { ancre: "middle", taille: 12 });
+        s += etiq(xd, yH - 8, "√t", { ancre: "end", taille: 10.5, gras: false });
+        const pts = [];
+        for (let r = 0; r <= rmax + 1e-9; r += 0.01) pts.push([X(r), Y(r)]);
+        s += chemin(poly(pts), "none", COULEURS.encre, 2.2);
+        const k1 = (d100 - d0) * (2 / Math.sqrt(Math.PI)), rF = (d100 - d0 + 22) / k1, r2 = 0.921 * 1.08;
+        s += ligne(X(0), d0, X(rF), d0 + k1 * rF, COULEURS.bleu, 1.2, 'stroke-dasharray="5 3"');
+        s += ligne(X(0), d0, X(r2), d0 + (k1 / 1.15) * r2, COULEURS.violet, 1.2, 'stroke-dasharray="5 3"');
+        const r90 = Math.sqrt(0.848), y90 = Y(r90);
+        s += ligne(X(r90), y90, X(r90), yB, COULEURS.effort, 1.1, 'stroke-dasharray="4 3"');
+        s += `<circle cx="${r1(X(r90))}" cy="${r1(y90)}" r="3.2" fill="${COULEURS.effort}"/>`;
+        // Même ordonnée : abscisse a sur la première droite, 1,15 a sur la seconde.
+        const yc = d0 + 0.42 * (d100 - d0), ra = (yc - d0) / k1;
+        s += ligne(X(0), yc, X(ra * 1.15), yc, COULEURS.cote, 0.8, 'stroke-dasharray="2 2"');
+        s += `<circle cx="${r1(X(ra))}" cy="${r1(yc)}" r="2.6" fill="${COULEURS.bleu}"/><circle cx="${r1(X(ra * 1.15))}" cy="${r1(yc)}" r="2.6" fill="${COULEURS.violet}"/>`;
+        s += etiq(X(ra) - 4, yc - 6, "a", { ancre: "end", taille: 11, couleur: COULEURS.bleu });
+        s += etiq(X(ra * 1.15) + 5, yc + 14, "1,15 a", { taille: 11, couleur: COULEURS.violet });
+        s += etiq(xg - 5, d0 + 4, "d0", { ancre: "end", taille: 10.5, couleur: COULEURS.bleu });
+        s += etiq(X(r90), yB + 15, "√t90", { ancre: "middle", taille: 10.5, couleur: COULEURS.effort });
+        s += etiq(X(r90) + 8, y90 - 8, "U = 90 %", { taille: 10.5, couleur: COULEURS.effort });
+        s += etiq((xg + xd) / 2, hauteur - 12, "cv = 0,848 Hd² / t90", { ancre: "middle", taille: 11.5 });
+      }
+      return s;
+    },
+  });
+}
+
+/** Un remblai sur sol mou : cuvette de tassement, soulèvement au pied, déplacements, et les appareils de suivi. */
+export function schemaRemblaiInstrumente({ largeur = 640, hauteur = 330 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Remblai sur sol compressible instrumenté", contenu: (id) => {
+      const yT = 156, yC = 76, yA = 266, xgp = 122, xgc = 242, xdc = 402, xdp = 522;
+      let s = "";
+      s += couche(id, { x: 12, y: yT, w: largeur - 24, h: yA - yT, sol: "argile" });
+      s += couche(id, { x: 12, y: yA, w: largeur - 24, h: hauteur - 8 - yA, sol: "sable" });
+      s += zoneSol(id, [[xgp, yT], [xgc, yC], [xdc, yC], [xdp, yT]], "remblai");
+      s += chemin(poly([[xgp, yT], [xgc, yC], [xdc, yC], [xdp, yT]]), "none", COULEURS.trait, 1.6);
+      // Couche drainante à la base du remblai.
+      s += zoneSol(id, [[xgp + 9, yT - 6], [xdp - 9, yT - 6], [xdp, yT], [xgp, yT]], "sable");
+      s += ligne(12, yT, largeur - 12, yT, COULEURS.trait, 1.4) + ligne(12, yA, largeur - 12, yA, COULEURS.trait, 1);
+      // Cuvette de tassement et bourrelet au pied.
+      const cuvette = [];
+      for (let x = xgp; x <= xdp; x += 6) cuvette.push([x, yT + 16 * Math.sin((Math.PI * (x - xgp)) / (xdp - xgp)) ** 2]);
+      s += chemin(poly(cuvette), "none", COULEURS.effort, 1.6, 'stroke-dasharray="6 3"');
+      s += chemin(`M${xgp - 42} ${yT}Q${xgp - 22} ${yT - 9} ${xgp - 2} ${yT}`, "none", COULEURS.effort, 1.6, 'stroke-dasharray="6 3"');
+      s += fleche(id, 456, 206, 492, 206, { ep: 1.8 }) + fleche(id, 188, 206, 152, 206, { ep: 1.8 });
+      // Nappe à fleur du terrain naturel, en champ libre.
+      s += ligne(12, yT + 6, xgp - 44, yT + 6, EAU, 1.2, 'stroke-dasharray="6 4"') + `<path d="M${xgp - 56} ${yT + 5}l6-9h-12z" fill="${EAU}"/>`;
+      // Tassomètre : plaque au terrain naturel, tige jusqu'au-dessus de la crête.
+      s += rect(352, yT - 4, 24, 4, "#475569", "none", 0) + ligne(364, yT - 4, 364, 58, "#475569", 2);
+      // Piézomètre dans l'argile, sous le remblai.
+      s += `<circle cx="282" cy="214" r="4.5" fill="#fff" stroke="${EAU}" stroke-width="2"/>` + ligne(282, 210, 282, yT, EAU, 1.2, 'stroke-dasharray="3 2"');
+      // Inclinomètre au pied, ancré dans le sable ; tubage déformé par le sol qui s'échappe.
+      s += ligne(570, yT - 12, 570, 304, "#475569", 2.4);
+      s += chemin(`M570 ${yT - 12}L570 ${yT + 6}Q598 214 570 ${yA}L570 304`, "none", COULEURS.effort, 1.6, 'stroke-dasharray="5 3"');
+      // Libellés.
+      s += etiq(322, 124, "remblai", { ancre: "middle", taille: 11.5 });
+      s += etiq(372, 56, "tassomètre", { taille: 10.5 });
+      s += etiq(292, 218, "piézomètre", { taille: 10.5, couleur: EAU });
+      s += etiqs(578, 124, ["inclino-", "mètre"], { taille: 10.5 });
+      s += etiq(18, 108, "couche drainante", { taille: 10.5 }) + ligne(106, 112, 150, 148, COULEURS.trait, 0.8);
+      s += etiq(18, 140, "soulèvement au pied", { taille: 10.5, couleur: COULEURS.effort });
+      s += etiq(18, 180, "nappe", { taille: 10.5, couleur: EAU });
+      s += etiq(322, 194, "cuvette de tassement", { ancre: "middle", taille: 10.5, couleur: COULEURS.effort });
+      s += etiq(474, 226, "déplacements latéraux", { ancre: "middle", taille: 10.5, couleur: COULEURS.effort });
+      s += etiq(18, yA - 10, "argile molle", { taille: 10.5 }) + etiq(18, yA + 24, "sable", { taille: 10.5 });
+      return s;
+    },
+  });
+}
+
+/** Drains verticaux : maillages triangulaire et carré, cylindre d'influence, zone remaniée, écoulement radial. */
+export function schemaDrainsVerticaux({ largeur = 640, hauteur = 300 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Drains verticaux : maillages et cylindre d'influence", contenu: (id) => {
+      const esp = 44, rp = 3.4;
+      let s = "";
+      const drain = (x, y) => `<circle cx="${r1(x)}" cy="${r1(y)}" r="${rp}" fill="${COULEURS.encre}"/>`;
+      // Maille triangulaire.
+      const xt = 34, yt = 66, dy = (esp * Math.sqrt(3)) / 2;
+      const xc = xt + esp + esp / 2, yc = yt + dy, R = esp / Math.sqrt(3);
+      s += chemin(`${poly([0, 1, 2, 3, 4, 5].map((k) => [xc + R * Math.cos(Math.PI / 6 + (k * Math.PI) / 3), yc + R * Math.sin(Math.PI / 6 + (k * Math.PI) / 3)]))}Z`, "#e0f2fe", COULEURS.bleu, 1.1, 'stroke-dasharray="4 2"');
+      s += `<circle cx="${r1(xc)}" cy="${r1(yc)}" r="${r1(0.525 * esp)}" fill="none" stroke="${COULEURS.violet}" stroke-width="1.4"/>`;
+      for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) s += drain(xt + j * esp + (i % 2) * (esp / 2), yt + i * dy);
+      s += cote(id, xt, yt - 16, xt + esp, yt - 16, "") + etiq(xt + esp / 2, yt - 22, "s", { ancre: "middle", taille: 11.5, couleur: COULEURS.cote });
+      s += etiq(110, 22, "Maille triangulaire", { ancre: "middle", taille: 12 });
+      s += etiq(110, 222, "De = 1,05 s", { ancre: "middle", taille: 11.5, couleur: COULEURS.violet });
+      // Maille carrée.
+      const xq = 238, yq = 66, xcq = xq + esp, ycq = yq + esp;
+      s += rect(xcq - esp / 2, ycq - esp / 2, esp, esp, "#e0f2fe", COULEURS.bleu, 1.1, 'stroke-dasharray="4 2"');
+      s += `<circle cx="${r1(xcq)}" cy="${r1(ycq)}" r="${r1(0.564 * esp)}" fill="none" stroke="${COULEURS.violet}" stroke-width="1.4"/>`;
+      for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) s += drain(xq + j * esp, yq + i * esp);
+      s += cote(id, xq, yq - 16, xq + esp, yq - 16, "") + etiq(xq + esp / 2, yq - 22, "s", { ancre: "middle", taille: 11.5, couleur: COULEURS.cote });
+      s += etiq(xq + esp, 22, "Maille carrée", { ancre: "middle", taille: 12 });
+      s += etiq(xq + esp, 222, "De = 1,13 s", { ancre: "middle", taille: 11.5, couleur: COULEURS.violet });
+      // Une cellule en coupe : drain, zone remaniée, écoulement radial vers le drain.
+      const x0 = 400, x1 = largeur - 16, xm = (x0 + x1) / 2, yH = 58, yB = 236;
+      s += etiq(xm, 22, "Une cellule en coupe", { ancre: "middle", taille: 12 });
+      s += couche(id, { x: x0, y: 42, w: x1 - x0, h: yH - 42, sol: "sable" });
+      s += couche(id, { x: x0, y: yH, w: x1 - x0, h: yB - yH, sol: "argile" });
+      s += rect(xm - 20, yH, 40, yB - yH, "#cbd5e1", "none", 0, 'opacity=".55"');
+      s += ligne(xm - 20, yH, xm - 20, yB, COULEURS.discret, 0.9, 'stroke-dasharray="3 2"') + ligne(xm + 20, yH, xm + 20, yB, COULEURS.discret, 0.9, 'stroke-dasharray="3 2"');
+      s += rect(xm - 3, yH, 6, yB - yH, "#1e293b", "none", 0);
+      s += ligne(x0, yH, x1, yH, COULEURS.trait, 1) + ligne(x0, yH, x0, yB, COULEURS.trait, 1, 'stroke-dasharray="5 3"') + ligne(x1, yH, x1, yB, COULEURS.trait, 1, 'stroke-dasharray="5 3"');
+      for (const y of [150, 200]) s += fleche(id, x0 + 14, y, xm - 26, y, { type: "bleu", ep: 1.8 }) + fleche(id, x1 - 14, y, xm + 26, y, { type: "bleu", ep: 1.8 });
+      s += fleche(id, xm, 110, xm, yH - 4, { type: "bleu", ep: 1.8 });
+      s += etiq(x0 + 8, 54, "tapis drainant", { taille: 10, gras: false });
+      s += etiq(xm + 26, 82, "drain dw", { taille: 10.5 });
+      s += etiq(xm + 26, 100, "zone remaniée ds", { taille: 10.5, couleur: COULEURS.discret });
+      s += etiq(x0 + 8, 138, "écoulement radial", { taille: 10.5, couleur: COULEURS.bleu });
+      s += etiq(x0 + 8, yB - 8, "argile", { taille: 10.5, gras: false });
+      s += cote(id, x0, yB + 14, x1, yB + 14, "") + etiq(xm, yB + 30, "De", { ancre: "middle", taille: 11.5, couleur: COULEURS.cote });
+      s += etiq(largeur / 2, hauteur - 10, "chaque drain draine le cylindre de sol de même aire que sa maille", { ancre: "middle", taille: 10.5, gras: false });
+      return s;
+    },
+  });
+}
+
+/** Préchargement avec surcharge temporaire : charges et tassements en fonction du temps. */
+export function schemaSurcharge({ largeur = 640, hauteur = 318 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Préchargement et surcharge temporaire", contenu: () => {
+      const xg = 76, xd = largeur - 24, X = (f) => xg + f * (xd - xg);
+      const yq0 = 126, yqf = 92, yqs = 54, ys0 = 160, ysf = 252, k = 1.6;
+      const ts = facteurTemps(1 / k) / 1.2;
+      let s = "";
+      s += ligne(xg, 36, xg, yq0, COULEURS.trait, 1.2) + ligne(xg, yq0, xd, yq0, COULEURS.trait, 1.2);
+      s += ligne(xg, ys0, xg, ysf + 18, COULEURS.trait, 1.2) + ligne(xg, ys0, xd, ys0, COULEURS.trait, 1.2);
+      s += etiq(xg - 8, 46, "charge", { ancre: "end", taille: 10.5, gras: false });
+      s += etiq(xg - 8, ys0 + 16, "tassement", { ancre: "end", taille: 10.5, gras: false });
+      s += etiq(xd, yq0 + 16, "temps", { ancre: "end", taille: 10.5, gras: false });
+      s += chemin(poly([[X(0), yq0], [X(0.02), yqf], [X(1), yqf]]), "none", COULEURS.discret, 2, 'stroke-dasharray="6 4"');
+      s += chemin(poly([[X(0), yq0], [X(0.03), yqs], [X(ts), yqs], [X(ts), yqf], [X(1), yqf]]), "none", COULEURS.effort, 2.2);
+      s += etiq(X(0.05), yqs - 8, "qf + qs", { taille: 10.5, couleur: COULEURS.effort });
+      s += etiq(X(0.05), yqs + 18, "surcharge qs", { taille: 10.5, gras: false, couleur: COULEURS.effort });
+      s += etiq(X(0.62), yqf - 8, "qf : l'ouvrage seul", { taille: 10.5, couleur: COULEURS.discret });
+      s += ligne(X(ts), 36, X(ts), ysf + 18, COULEURS.violet, 1, 'stroke-dasharray="3 3"');
+      s += etiq(X(ts) + 6, 40, "ts : on retire la surcharge", { taille: 10.5, couleur: COULEURS.violet });
+      const sans = [], avec = [];
+      for (let f = 0; f <= 1.0001; f += 0.01) {
+        const U = degreConsolidation(1.2 * f);
+        sans.push([X(f), ys0 + (ysf - ys0) * U]);
+        avec.push([X(f), ys0 + (ysf - ys0) * (f <= ts ? k * U : 1)]);
+      }
+      s += ligne(xg, ysf, xd, ysf, COULEURS.grille, 1, 'stroke-dasharray="4 3"');
+      s += etiq(xg - 8, ysf + 4, "sf", { ancre: "end", taille: 11, couleur: COULEURS.encre });
+      s += chemin(poly(sans), "none", COULEURS.discret, 2, 'stroke-dasharray="6 4"') + chemin(poly(avec), "none", COULEURS.effort, 2.4);
+      s += etiq(X(0.5), 212, "sans surcharge : sf n'est approché que bien plus tard", { taille: 10.5, couleur: COULEURS.discret });
+      s += etiq(X(ts) + 6, ysf + 16, "avec surcharge : sf atteint à ts", { taille: 10.5, couleur: COULEURS.effort });
+      s += etiq(largeur / 2, hauteur - 10, "la surcharge retirée, le sol est surconsolidé sous qf : il ne tasse plus guère", { ancre: "middle", taille: 10.5, gras: false });
+      return s;
+    },
+  });
+}
+
+/** Stabilité à court terme d'un remblai sur argile molle : cercle de rupture, banquette, hauteur admissible. */
+export function schemaStabiliteRemblai({ largeur = 640, hauteur = 300 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Stabilité d'un remblai sur sol mou", contenu: (id) => {
+      const yT = 150, yC = 80, yA = 250, xgp = 110, xgc = 220, xdc = 380, xdp = 490;
+      let s = "";
+      s += couche(id, { x: 12, y: yT, w: largeur - 24, h: yA - yT, sol: "argile" });
+      s += couche(id, { x: 12, y: yA, w: largeur - 24, h: hauteur - 8 - yA, sol: "sable" });
+      s += zoneSol(id, [[xgp, yT], [xgc, yC], [xdc, yC], [xdp, yT]], "remblai");
+      const xB = xdc + ((130 - yC) / (yT - yC)) * (xdp - xdc);
+      s += zoneSol(id, [[xB, 130], [566, 130], [598, yT], [xdp, yT]], "remblai");
+      s += chemin(poly([[xgp, yT], [xgc, yC], [xdc, yC], [xdp, yT]]), "none", COULEURS.trait, 1.6);
+      s += chemin(poly([[xB, 130], [566, 130], [598, yT]]), "none", COULEURS.trait, 1.4, 'stroke-dasharray="5 3"');
+      s += ligne(12, yT, largeur - 12, yT, COULEURS.trait, 1.4) + ligne(12, yA, largeur - 12, yA, COULEURS.trait, 1);
+      // Cercle de rupture : centre (190 ; 20), passe au pied gauche et sur la crête.
+      const cx = 190, cy = 20, R = Math.hypot(xgp - 50 - cx, yT - cy), xs = cx + Math.sqrt(R * R - (yC - cy) ** 2);
+      s += `<path d="M${xgp - 50} ${yT}A${r1(R)} ${r1(R)} 0 0 0 ${r1(xs)} ${yC}" fill="none" stroke="${COULEURS.effort}" stroke-width="2" stroke-dasharray="7 4"/>`;
+      s += fleche(id, 250, 112, 214, 124, { ep: 2 });
+      s += etiq(300, 118, "remblai", { ancre: "middle", taille: 11.5 });
+      s += etiq(20, 238, "surface de rupture : cu le long du cercle", { taille: 10.5, couleur: COULEURS.effort });
+      s += etiq(582, 122, "banquette", { ancre: "middle", taille: 10.5 });
+      s += etiq(largeur - 16, 36, "Hmax ≈ (π + 2) cu / (γ F)", { ancre: "end", taille: 12 });
+      s += etiq(largeur - 16, 54, "plus haut : étapes, banquettes, renforcement", { ancre: "end", taille: 10.5, gras: false });
+      s += etiq(440, 214, "argile molle (cu)", { taille: 10.5 });
+      s += etiq(560, yA + 26, "sable", { taille: 10.5 });
+      return s;
+    },
+  });
+}
+
+/** Cinq façons de construire sur un sol mou : drains et préchargement, colonnes, inclusions, allègement, substitution. */
+export function schemaAmelioration({ largeur = 640, hauteur = 250 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Techniques de construction sur sols compressibles", contenu: (id) => {
+      const w = 116, yT = 110, yM = 186, yF = 204;
+      const titres = [["drains verticaux", "et préchargement"], ["colonnes", "ballastées"], ["inclusions rigides", "et plateforme"], ["remblai", "allégé (PSE)"], ["purge et", "substitution"]];
+      let s = "";
+      titres.forEach((t, i) => {
+        const x = 12 + i * (w + 9), rem = [[x + 8, yT], [x + 34, 70], [x + 82, 70], [x + 108, yT]];
+        s += couche(id, { x, y: yT, w, h: yM - yT, sol: "argile" }) + couche(id, { x, y: yM, w, h: yF - yM, sol: "sable" });
+        if (i === 4) {
+          s += zoneSol(id, [[x + 4, yT], [x + 112, yT], [x + 96, yM], [x + 20, yM]], "sable");
+          s += chemin(poly([[x + 4, yT], [x + 20, yM], [x + 96, yM], [x + 112, yT]]), "none", COULEURS.trait, 1.1, 'stroke-dasharray="4 2"');
+        }
+        s += zoneSol(id, rem, "remblai") + chemin(poly(rem), "none", COULEURS.trait, 1.3);
+        if (i === 0) {
+          for (let k = 0; k < 6; k++) s += ligne(x + 16 + 17 * k, yT, x + 16 + 17 * k, yM - 2, "#1e293b", 1.4);
+          s += chemin(poly([[x + 34, 70], [x + 42, 50], [x + 74, 50], [x + 82, 70]]), "#fee2e2", COULEURS.effort, 1.2, 'stroke-dasharray="4 2"');
+        }
+        if (i === 1) for (let k = 0; k < 4; k++) s += `<rect x="${x + 18 + 24 * k}" y="${yT}" width="9" height="${yM - yT}" fill="#e3d3a0" stroke="#7c6a3a" stroke-width=".8"/><rect x="${x + 18 + 24 * k}" y="${yT}" width="9" height="${yM - yT}" fill="url(#${id}-grave)"/>`;
+        if (i === 2) {
+          for (let k = 0; k < 5; k++) s += beton(id, x + 16 + 20 * k, yT, 5, yF - yT - 6);
+          s += zoneSol(id, [[x + 8, yT - 8], [x + 108, yT - 8], [x + 108, yT], [x + 8, yT]], "grave");
+          s += ligne(x + 8, yT - 4, x + 108, yT - 4, COULEURS.violet, 1.6);
+        }
+        if (i === 3) for (let r = 0; r < 3; r++) for (let c = 0; c < 4 - r; c++) s += rect(x + 30 + r * 7 + c * 14, yT - 12 - r * 11, 13, 10, "#fff", "#94a3b8", 0.8);
+        s += ligne(x, yT, x + w, yT, COULEURS.trait, 1.1);
+        s += etiqs(x + w / 2, 222, t, { ancre: "middle", taille: 10.5 });
+      });
+      s += etiq(12, 26, "Une même argile molle, cinq parades :", { taille: 11 });
+      return s;
+    },
+  });
+}
+
+/** Remblai d'accès contre une culée sur pieux : tassement, marche, dalle de transition, efforts parasites sur les pieux. */
+export function schemaRemblaiContigu({ largeur = 640, hauteur = 320 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Remblai d'accès contre une culée sur pieux", contenu: (id) => {
+      const yT = 150, yA = 250, yR = 70;
+      let s = "";
+      s += couche(id, { x: 12, y: yT, w: largeur - 24, h: yA - yT, sol: "argile" });
+      s += couche(id, { x: 12, y: yA, w: largeur - 24, h: hauteur - 8 - yA, sol: "sable" });
+      s += zoneSol(id, [[20, yT], [120, yR], [440, yR], [440, yT]], "remblai");
+      s += chemin(poly([[20, yT], [120, yR], [440, yR]]), "none", COULEURS.trait, 1.6);
+      s += ligne(12, yT, largeur - 12, yT, COULEURS.trait, 1.4) + ligne(12, yA, largeur - 12, yA, COULEURS.trait, 1);
+      // Culée : mur, semelle sur deux pieux ancrés dans le sable ; tablier.
+      s += beton(id, 440, 60, 18, yT - 60) + beton(id, 424, yT - 4, 100, 16);
+      for (const x of [446, 500]) s += beton(id, x - 7, yT + 12, 14, 292 - yT - 12);
+      s += beton(id, 458, 56, largeur - 12 - 458, 12);
+      // Dalle de transition, appuyée sur la culée.
+      s += `<path d="M372 ${yR + 12}L440 ${yR + 6}L440 ${yR + 12}L372 ${yR + 18}Z" fill="${COULEURS.beton}" stroke="${COULEURS.betonTrait}" stroke-width="1.1"/>`;
+      // Profil du remblai après tassement : une marche se forme contre la culée.
+      s += chemin(poly([[120, yR + 20], [370, yR + 18], [440, yR + 4]]), "none", COULEURS.effort, 1.5, 'stroke-dasharray="6 3"');
+      for (const y of [168, 196, 224]) s += fleche(id, 430, y - 10, 430, y + 10, { ep: 1.6 }) + fleche(id, 516, y - 10, 516, y + 10, { ep: 1.6 });
+      for (const y of [178, 214]) s += fleche(id, 380, y, 424, y, { ep: 1.8 });
+      s += etiq(200, 126, "remblai d'accès", { ancre: "middle", taille: 11.5 });
+      s += etiq(220, 56, "dalle de transition", { taille: 10.5 }) + ligne(326, 60, 380, 80, COULEURS.trait, 0.8);
+      s += etiq(300, 102, "profil tassé", { taille: 10.5, couleur: COULEURS.effort });
+      s += etiq(552, 50, "tablier", { taille: 10.5 });
+      s += etiq(478, 110, "culée sur pieux", { taille: 10.5 });
+      s += etiqs(530, 190, ["frottement", "négatif (ch. 13)"], { taille: 10.5, couleur: COULEURS.effort });
+      s += etiqs(372, 196, ["poussée", "latérale (ch. 14)"], { ancre: "end", taille: 10.5, couleur: COULEURS.effort });
+      s += etiq(20, yA - 10, "argile molle", { taille: 10.5 }) + etiq(20, yA + 26, "sable", { taille: 10.5 });
       return s;
     },
   });

@@ -2119,7 +2119,7 @@
   <p>Δσ'<sub>v</sub>(z) se calcule par Boussinesq sous l'axe, avec la surcharge nette q' − q'<sub>0</sub>
      <span class="ref">[F62 F.2 § 2.3]</span>. Le fascicule applique en outre le coefficient μ de Bjerrum et
      Skempton, fonction du paramètre A de pression interstitielle et en général inférieur à 1 ;
-     la norme renvoie à son annexe J.4.</p>
+     la norme renvoie à son annexe J.4. Le déroulement de la consolidation dans le temps, le fluage et les remblais sur sols compressibles font l'objet du chapitre 16.</p>
 
   <div class="calc" id="calcOedo">
     <h3>Consolidation d'une couche d'argile sous une semelle</h3>
@@ -2445,7 +2445,7 @@
   <h2>13 · Frottement négatif et groupes de pieux</h2>
 
   <h3>Quand le sol tire le pieu vers le bas</h3>
-  <p>Un remblai posé sur une argile molle fait tasser l'argile pendant des années. Un pieu qui la
+  <p>Un remblai posé sur une argile molle fait tasser l'argile pendant des années (chapitre 16). Un pieu qui la
      traverse pour s'ancrer plus bas tasse beaucoup moins : le sol glisse le long du fût et
      l'<strong>entraîne</strong>. Le frottement change de sens — il devient une charge, le
      <strong>frottement négatif</strong>. Il est maximal à long terme, et n'agit que tant que le sol
@@ -2732,6 +2732,352 @@
     <a class="secondary" href="exerciseur.html#ch15">Exerciseur</a></div>
 </section>
 
+<!-- ══════════════════════════ CHAPITRE 16 ══════════════════════════ -->
+<section id="ch16" class="card">
+  <h2>16 · Sols compressibles : consolidation et remblais</h2>
+
+  <h3>Pourquoi une argile tasse lentement</h3>
+  <p>Sous une charge, un sable tasse presque aussitôt : l'eau s'en échappe à mesure que la charge monte.
+     Une argile saturée est des milliers de fois moins perméable (k de 10<sup>−9</sup> à 10<sup>−11</sup> m/s) :
+     au premier instant, l'eau ne peut pas partir, et c'est elle qui reprend le supplément de contrainte, sous
+     forme d'une <strong>surpression interstitielle</strong> Δu = Δσ. Le squelette ne se comprime qu'au rythme
+     où cette eau s'évacue vers les couches drainantes, et sa contrainte effective σ' = σ − u augmente
+     d'autant. C'est la <strong>consolidation</strong> : des mois, des années, parfois des décennies sous un
+     remblai posé sur une vase.</p>
+  <figure class="figure-cours" data-schema="schemaAnalogieTerzaghi"><figcaption>L'analogie de Terzaghi. Le piston chargé repose sur un ressort — le squelette — noyé dans l'eau ; seul un petit orifice, la perméabilité, laisse l'eau sortir. Au premier instant, l'eau incompressible porte toute la charge ; à la fin, le ressort la porte seul. La durée du transfert dépend de l'orifice et du chemin que l'eau doit parcourir.</figcaption></figure>
+  <p>Le tassement d'un sol fin saturé additionne trois termes <span class="ref">[261 formule J.4.2.1 ; NF EN 1997-1 6.6.2]</span> :</p>
+  <ul>
+    <li><strong>s<sub>i</sub>, le tassement immédiat</strong> : au chargement, le sol se déforme à volume constant
+        (comportement non drainé) ; il s'enfonce sous la charge en s'écartant latéralement. Faible sous un remblai
+        large, il compte davantage sous une semelle étroite ;</li>
+    <li><strong>s<sub>c</sub>, le tassement de consolidation</strong>, ou primaire : il accompagne l'expulsion de
+        l'eau ; c'est en général le plus grand, et le seul qui dépende de la perméabilité et de la distance à
+        parcourir jusqu'à une couche drainante ;</li>
+    <li><strong>s<sub>f</sub>, le tassement de fluage</strong>, ou compression secondaire : la surpression dissipée,
+        le squelette continue de se déformer à contrainte effective constante, proportionnellement au logarithme
+        du temps. Négligeable dans une argile raide, il devient important dans les argiles organiques, les vases
+        et les tourbes.</li>
+  </ul>
+  <figure class="figure-cours" data-schema="schemaComposantesTassement"><figcaption>Le tassement en fonction du logarithme du temps : un saut immédiat s<sub>i</sub>, la consolidation primaire s<sub>c</sub> en forme de S, puis le fluage s<sub>f</sub>, une droite de pente constante par décade de temps après la fin de la consolidation primaire t<sub>p</sub>.</figcaption></figure>
+  <p>Le chapitre 9 a calculé le tassement de consolidation d'une argile sous une semelle. On va plus loin ici :
+     la durée de la consolidation, le fluage, et les ouvrages pour lesquels les sols compressibles posent le plus
+     de problèmes, les <strong>remblais</strong> — routes, voies ferrées, plateformes, remblais d'accès aux ponts.
+     La référence française de ces études est le guide technique Sétra–LCPC « Étude et réalisation des remblais sur
+     sols compressibles » (2000) ; l'Eurocode 7 consacre sa section 12 aux remblais <span class="ref">[NF EN 1997-1 § 12]</span>.</p>
+
+  <h3>La compressibilité, lue sur la courbe œdométrique</h3>
+  <p>L'essai œdométrique (chapitre 1) charge par paliers une éprouvette intacte, confinée latéralement et drainée
+     sur ses deux faces. La courbe de l'indice des vides en fonction du logarithme de la contrainte effective montre
+     une branche de <strong>recompression</strong>, de pente C<sub>s</sub>, jusqu'à la <strong>contrainte de
+     préconsolidation</strong> σ'<sub>p</sub>, puis la <strong>branche vierge</strong>, de pente C<sub>c</sub>, bien
+     plus raide. Le rapport de surconsolidation OCR = σ'<sub>p</sub>/σ'<sub>v0</sub> dit si le sol a déjà porté
+     plus qu'aujourd'hui. Dans une argile molle, une croûte desséchée ou le vieillissement donnent souvent un écart
+     à peu près constant avec la profondeur : σ'<sub>p</sub> = σ'<sub>v0</sub> + POP, de l'ordre de 10 à 40 kPa.</p>
+  <p>Chaque tranche d'épaisseur H tasse de <span class="ref">[261 J.4.2.3 ; F62 F.2 § 2.3]</span> :</p>
+  <p class="formula">σ'<sub>vf</sub> ≤ σ'<sub>p</sub> : s<sub>c</sub> = H C<sub>s</sub>/(1 + e<sub>0</sub>) · lg(σ'<sub>vf</sub>/σ'<sub>v0</sub>)</p>
+  <p class="formula">σ'<sub>vf</sub> &gt; σ'<sub>p</sub> : s<sub>c</sub> = H/(1 + e<sub>0</sub>) · [C<sub>s</sub> lg(σ'<sub>p</sub>/σ'<sub>v0</sub>) + C<sub>c</sub> lg(σ'<sub>vf</sub>/σ'<sub>p</sub>)]</p>
+  <p>avec σ'<sub>vf</sub> = σ'<sub>v0</sub> + Δσ'<sub>v</sub>. On découpe la couche en tranches, parce que
+     σ'<sub>v0</sub>, σ'<sub>p</sub> et Δσ varient avec la profondeur : les tranches du haut, peu contraintes au
+     départ, tassent le plus. Tant que σ'<sub>vf</sub> reste sous σ'<sub>p</sub>, le tassement reste faible ; dès
+     qu'on la dépasse, il change d'échelle. C'est pourquoi σ'<sub>p</sub> est le paramètre le plus important d'une
+     étude de remblai sur sol mou.</p>
+  <div class="table-large"><table class="resultats"><thead><tr><th>Grandeur</th><th>Ordre de grandeur, corrélation</th><th>Remarque</th></tr></thead><tbody>
+    <tr><td>C<sub>c</sub></td><td>≈ 0,009 (w<sub>L</sub> − 10), w<sub>L</sub> en %</td><td>Skempton ; argiles normalement consolidées peu sensibles, pour une première estimation</td></tr>
+    <tr><td>C<sub>c</sub>/(1 + e<sub>0</sub>)</td><td>0,1 à 0,4 dans les argiles molles</td><td>déformation par décade de contrainte sur la branche vierge : 0,2, c'est 20 % de la couche</td></tr>
+    <tr><td>C<sub>s</sub></td><td>C<sub>c</sub>/10 à C<sub>c</sub>/5</td><td>recompression et déchargement</td></tr>
+    <tr><td>C<sub>αe</sub>/C<sub>c</sub></td><td>0,04 ± 0,01 · 0,05 ± 0,01 · 0,06 ± 0,01</td><td>argiles et limons inorganiques · sols organiques · tourbes (Mesri)</td></tr>
+    <tr><td>c<sub>v</sub></td><td>0,3 à 3 m²/an dans les argiles molles</td><td>1 m²/an ≈ 3,2·10<sup>−8</sup> m²/s ; bien plus grand en recompression</td></tr>
+    <tr><td>c<sub>h</sub>/c<sub>v</sub></td><td>1 à 2, jusqu'à 5 et plus</td><td>les valeurs fortes dans les argiles litées ou à lentilles de sable</td></tr>
+  </tbody></table></div>
+  <div class="piege"><strong>Piège fréquent : un échantillon remanié</strong>
+    <p>Le remaniement arrondit la courbe œdométrique : σ'<sub>p</sub> et C<sub>c</sub> sortent trop faibles, et le
+       tassement calculé est faux dans les deux sens — trop fort sous les petites charges, trop faible au-delà de
+       σ'<sub>p</sub>. L'œdomètre exige des échantillons de classe de qualité 1, prélevés au carottier à piston
+       stationnaire (chapitre 2), et un chargement poussé bien au-delà de σ'<sub>vf</sub>.</p></div>
+
+  <h3>Ce qu'un remblai apporte au sol</h3>
+  <p>Un remblai est une charge souple en forme de trapèze : q = γ H sous la crête, qui décroît linéairement le long
+     des talus. En intégrant la solution élastique d'une charge linéique (Flamant, en déformation plane) sur ce
+     profil, on obtient la contrainte en tout point ; sous l'axe, c'est la formule d'<strong>Osterberg</strong> (1957) :</p>
+  <p class="formula">Δσ<sub>z</sub> = (2q/π) [((a + b)/a)(α<sub>1</sub> + α<sub>2</sub>) − (b/a) α<sub>2</sub>]
+     &nbsp;·&nbsp; α<sub>2</sub> = arctan(b/z) &nbsp;·&nbsp; α<sub>1</sub> = arctan((a + b)/z) − α<sub>2</sub></p>
+  <p>b est la demi-largeur en crête et a la largeur horizontale d'un talus. Sous un remblai large devant l'épaisseur
+     compressible, Δσ ≈ q dans toute la couche : c'est le cas courant des remblais routiers sur vase, et le calcul
+     œdométrique y est le plus fiable, car la déformation y est vraiment verticale. Sous le bord de la crête et sous
+     les talus, la charge est moindre et le sol se déplace aussi latéralement : le tassement y est plus faible, et la
+     plateforme se creuse en cuvette.</p>
+
+  <div class="calc" id="calcRemblai">
+    <h3>Tassement final d'un remblai sur une couche d'argile</h3>
+    <div class="data-grid">
+      <div class="field"><label for="rbMode">La hauteur saisie est…</label><div class="input-wrap"><select id="rbMode">
+        <option value="mise" selected>la hauteur mise en œuvre</option><option value="finale">la cote finale visée au-dessus du TN</option></select></div></div>
+      <div class="field"><label for="rbH">Hauteur H</label><div class="input-wrap"><input id="rbH" type="text" inputmode="decimal" value="3" data-curseur="0.5 10 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="rbG">γ du remblai</label><div class="input-wrap"><input id="rbG" type="text" inputmode="decimal" value="20" data-curseur="14 23 0.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="rbB">Largeur en crête</label><div class="input-wrap"><input id="rbB" type="text" inputmode="decimal" value="14" data-curseur="2 60 1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="rbN">Fruit des talus (H pour 1 V)</label><div class="input-wrap"><input id="rbN" type="text" inputmode="decimal" value="2" data-curseur="1 4 0.5"><span class="unit">—</span></div></div>
+      <div class="field"><label for="rbHa">Épaisseur d'argile</label><div class="input-wrap"><input id="rbHa" type="text" inputmode="decimal" value="10" data-curseur="1 30 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="rbZw">Nappe sous le terrain naturel</label><div class="input-wrap"><input id="rbZw" type="text" inputmode="decimal" value="0.5" data-curseur="0 5 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="rbGa">γ de l'argile</label><div class="input-wrap"><input id="rbGa" type="text" inputmode="decimal" value="16" data-curseur="12 21 0.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="rbE0">e<sub>0</sub></label><div class="input-wrap"><input id="rbE0" type="text" inputmode="decimal" value="1.6" data-curseur="0.4 5 0.05"><span class="unit">—</span></div></div>
+      <div class="field"><label for="rbCc">C<sub>c</sub></label><div class="input-wrap"><input id="rbCc" type="text" inputmode="decimal" value="0.6" data-curseur="0.05 3 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="rbCs">C<sub>s</sub></label><div class="input-wrap"><input id="rbCs" type="text" inputmode="decimal" value="0.06" data-curseur="0 0.5 0.005"><span class="unit">—</span></div></div>
+      <div class="field"><label for="rbPop">POP = σ'<sub>p</sub> − σ'<sub>v0</sub></label><div class="input-wrap"><input id="rbPop" type="text" inputmode="decimal" value="20" data-curseur="0 150 1"><span class="unit">kPa</span></div></div>
+    </div>
+    <div class="figure" id="rbFig"></div>
+    <div id="rbOut"></div>
+  </div>
+  <div class="piege"><strong>Piège fréquent : oublier que le remblai s'enfonce</strong>
+    <p>Pour livrer une plateforme à une cote donnée, il faut mettre en place la hauteur finale plus le tassement. Et
+       la partie du remblai qui s'enfonce sous la nappe est déjaugée : elle ne pèse plus que γ − γ<sub>w</sub>. Les
+       deux effets se compensent en partie, d'où un petit calcul par itérations — le mode « cote finale visée » du
+       calculateur.</p></div>
+
+  <h3>La consolidation dans le temps</h3>
+  <p>Terzaghi (1943) suppose un écoulement et une déformation verticaux, un sol homogène et une compressibilité
+     constante pendant le chargement. La surpression u(z, t) obéit alors à une équation de diffusion :</p>
+  <p class="formula">∂u/∂t = c<sub>v</sub> ∂²u/∂z² &nbsp;·&nbsp; c<sub>v</sub> = k/(m<sub>v</sub> γ<sub>w</sub>) &nbsp;·&nbsp; T<sub>v</sub> = c<sub>v</sub> t/H<sub>d</sub>²</p>
+  <p>c<sub>v</sub> est le <strong>coefficient de consolidation</strong>, m<sub>v</sub> le coefficient de
+     compressibilité, T<sub>v</sub> le facteur temps et H<sub>d</sub> la <strong>longueur de drainage</strong> : le
+     plus long chemin que l'eau doit parcourir, soit l'épaisseur entière si la couche ne se draine que d'un côté, la
+     moitié si elle se draine des deux. Le degré de consolidation moyen U = s(t)/s<sub>c</sub> ne dépend que de
+     T<sub>v</sub> :</p>
+  <p class="formula">U = 1 − Σ 2/M² · exp(−M² T<sub>v</sub>), M = π(2m + 1)/2 &nbsp;;&nbsp; U ≈ 2 √(T<sub>v</sub>/π) tant que U &lt; 60 %</p>
+  <div class="table-large"><table class="resultats"><thead><tr><th>U</th><th class="num">10 %</th><th class="num">20 %</th><th class="num">30 %</th><th class="num">40 %</th><th class="num">50 %</th><th class="num">60 %</th><th class="num">70 %</th><th class="num">80 %</th><th class="num">90 %</th><th class="num">95 %</th></tr></thead>
+    <tbody><tr><td>T<sub>v</sub></td><td class="n">0,008</td><td class="n">0,031</td><td class="n">0,071</td><td class="n">0,126</td><td class="n">0,197</td><td class="n">0,287</td><td class="n">0,403</td><td class="n">0,567</td><td class="n">0,848</td><td class="n">1,129</td></tr></tbody></table></div>
+  <figure class="figure-cours" data-schema="schemaDrainage"><figcaption>Isochrones de la surpression aux mêmes instants dans une même argile. Drainée des deux côtés, la couche se consolide par ses deux faces et la surpression reste symétrique ; drainée d'un seul côté, l'eau doit tout traverser : H<sub>d</sub> double et le temps quadruple.</figcaption></figure>
+  <p>Deux conséquences pratiques. Le temps varie comme le <strong>carré</strong> de la longueur de drainage : une
+     couche deux fois plus épaisse met quatre fois plus de temps, et une lentille de sable continue au milieu d'une
+     argile divise ce temps par quatre — à condition d'être vraiment continue et de pouvoir évacuer son eau. Et
+     l'ordre de grandeur se retient : 90 % de la consolidation demandent T<sub>v</sub> ≈ 0,85, soit, pour 10 m d'argile
+     drainée des deux côtés avec c<sub>v</sub> = 1 m²/an, t = 0,85 × 5²/1 ≈ 21 ans.</p>
+  <p>Le <strong>fluage</strong> prend le relais après la fin de la consolidation primaire t<sub>p</sub>
+     <span class="ref">[261 J.4.2.4]</span> :</p>
+  <p class="formula">s<sub>f</sub> = H C<sub>αe</sub>/(1 + e<sub>0</sub>) · lg(t/t<sub>p</sub>)</p>
+  <p>Chaque décade de temps ajoute le même tassement : de 1 à 10 ans autant que de 10 à 100 ans. Quant à la
+     construction, elle n'est pas instantanée ; Terzaghi proposait de lire la courbe instantanée au temps t/2 pendant
+     la montée de la charge, en la multipliant par la fraction de charge appliquée, puis au temps t − t<sub>c</sub>/2
+     une fois la charge en place.</p>
+
+  <div class="calc" id="calcConsolidation">
+    <h3>Consolidation dans le temps : degré, isochrones et tassement</h3>
+    <div class="data-grid">
+      <div class="field"><label for="ctH">Épaisseur de la couche</label><div class="input-wrap"><input id="ctH" type="text" inputmode="decimal" value="8" data-curseur="1 30 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="ctDrain">Drainage</label><div class="input-wrap"><select id="ctDrain">
+        <option value="double" selected>double (haut et bas)</option><option value="simple">simple (haut seulement)</option></select></div></div>
+      <div class="field"><label for="ctCv">c<sub>v</sub></label><div class="input-wrap"><input id="ctCv" type="text" inputmode="decimal" value="1.5" data-curseur="0.1 20 0.1"><span class="unit">m²/an</span></div></div>
+      <div class="field"><label for="ctS">Tassement de consolidation final s<sub>c</sub></label><div class="input-wrap"><input id="ctS" type="text" inputmode="decimal" value="600" data-curseur="10 3000 10"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="ctT">Temps t</label><div class="input-wrap"><input id="ctT" type="text" inputmode="decimal" value="2" data-curseur="0.05 50 0.05"><span class="unit">ans</span></div></div>
+      <div class="field"><label for="ctTc">Durée de construction</label><div class="input-wrap"><input id="ctTc" type="text" inputmode="decimal" value="0.25" data-curseur="0 3 0.05"><span class="unit">ans</span></div></div>
+      <div class="field"><label for="ctCa">C<sub>αe</sub></label><div class="input-wrap"><input id="ctCa" type="text" inputmode="decimal" value="0.024" data-curseur="0 0.1 0.001"><span class="unit">—</span></div></div>
+      <div class="field"><label for="ctE0">e<sub>0</sub></label><div class="input-wrap"><input id="ctE0" type="text" inputmode="decimal" value="1.6" data-curseur="0.4 5 0.05"><span class="unit">—</span></div></div>
+    </div>
+    <div class="figure" id="ctFig"></div>
+    <div id="ctOut"></div>
+  </div>
+
+  <h3>Mesurer c<sub>v</sub> et c<sub>h</sub></h3>
+  <p>À l'œdomètre, chaque palier donne la courbe de consolidation de l'éprouvette, que l'on dépouille par l'une de deux
+     constructions graphiques. <strong>Casagrande</strong> trace le tassement en fonction de lg t : la tangente au point
+     d'inflexion et la droite de fluage se coupent en d<sub>100</sub> ; d<sub>0</sub> se déduit du début parabolique
+     de la courbe ; t<sub>50</sub> correspond à d<sub>50</sub> = (d<sub>0</sub> + d<sub>100</sub>)/2.
+     <strong>Taylor</strong> trace le tassement en fonction de √t : le début est une droite, et la droite dont les
+     abscisses sont 1,15 fois plus grandes recoupe la courbe à 90 % de consolidation.</p>
+  <figure class="figure-cours" data-schema="schemaCasagrandeTaylor"><figcaption>Les deux constructions du dépouillement d'un palier œdométrique. Casagrande (à gauche) repère d<sub>0</sub> grâce au début parabolique de la courbe — entre t<sub>1</sub> et 4 t<sub>1</sub>, le tassement double — et d<sub>100</sub> à l'intersection de la tangente d'inflexion et de la droite de fluage. Taylor (à droite) lit t<sub>90</sub> sur la droite aux abscisses multipliées par 1,15.</figcaption></figure>
+  <p>Au <strong>piézocône</strong> (chapitre 2), on arrête le fonçage et l'on suit la dissipation de la surpression
+     créée par la pointe. Le temps t<sub>50</sub> de demi-dissipation donne un coefficient <em>horizontal</em> (Teh et
+     Houlsby, 1991) :</p>
+  <p class="formula">c<sub>h</sub> = T*<sub>50</sub> r<sub>0</sub>² √I<sub>r</sub> / t<sub>50</sub> &nbsp;·&nbsp; T*<sub>50</sub> = 0,245 (filtre u<sub>2</sub>) &nbsp;·&nbsp; I<sub>r</sub> = G/c<sub>u</sub></p>
+  <p>r<sub>0</sub> est le rayon du cône (17,8 mm pour 10 cm², 21,9 mm pour 15 cm²) et I<sub>r</sub> l'indice de
+     rigidité, entre 50 et 500. Autour du cône, le sol se consolide surtout en recompression : pour la branche vierge,
+     on réduit souvent c<sub>h</sub> dans le rapport C<sub>s</sub>/C<sub>c</sub> (Baligh et Levadoux, 1986). Les deux
+     mesures se complètent. L'éprouvette, de quelques centimètres, ignore les lentilles sableuses qui accélèrent la
+     consolidation en place ; le piézocône les voit, mais dans un sol perturbé. La vraie valeur vient souvent du
+     chantier lui-même, par la méthode d'Asaoka décrite plus loin.</p>
+  <div class="calc" id="calcCv">
+    <h3>c<sub>v</sub> à l'œdomètre, c<sub>h</sub> au piézocône</h3>
+    <div class="data-grid">
+      <div class="field"><label for="cvHe">Hauteur de l'éprouvette (drainée des deux côtés)</label><div class="input-wrap"><input id="cvHe" type="text" inputmode="decimal" value="20" data-curseur="5 50 0.5"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="cvT50">t<sub>50</sub> (Casagrande)</label><div class="input-wrap"><input id="cvT50" type="text" inputmode="decimal" value="6" data-curseur="0.1 300 0.1"><span class="unit">min</span></div></div>
+      <div class="field"><label for="cvT90">t<sub>90</sub> (Taylor)</label><div class="input-wrap"><input id="cvT90" type="text" inputmode="decimal" value="26" data-curseur="0.1 1000 0.1"><span class="unit">min</span></div></div>
+      <div class="field"><label for="cvCone">Cône du piézocône</label><div class="input-wrap"><select id="cvCone">
+        <option value="17.84" selected>10 cm² (r₀ = 17,8 mm)</option><option value="21.85">15 cm² (r₀ = 21,9 mm)</option></select></div></div>
+      <div class="field"><label for="cvT50p">t<sub>50</sub> de dissipation</label><div class="input-wrap"><input id="cvT50p" type="text" inputmode="decimal" value="900" data-curseur="10 20000 10"><span class="unit">s</span></div></div>
+      <div class="field"><label for="cvIr">Indice de rigidité I<sub>r</sub></label><div class="input-wrap"><input id="cvIr" type="text" inputmode="decimal" value="100" data-curseur="10 500 5"><span class="unit">—</span></div></div>
+      <div class="field"><label for="cvRap">C<sub>s</sub>/C<sub>c</sub></label><div class="input-wrap"><input id="cvRap" type="text" inputmode="decimal" value="0.12" data-curseur="0.05 0.5 0.01"><span class="unit">—</span></div></div>
+    </div>
+    <div id="cvOut"></div>
+  </div>
+
+  <h3>Accélérer : préchargement et drains verticaux</h3>
+  <p>Attendre vingt ans n'est pas une option pour une route. On dispose de deux leviers, souvent combinés. Le
+     <strong>préchargement</strong> consiste à construire le remblai longtemps avant l'ouvrage, pour que la
+     consolidation se fasse avant la mise en service. Une <strong>surcharge temporaire</strong> q<sub>s</sub>, ajoutée
+     puis retirée, fait atteindre plus tôt le tassement final de l'ouvrage : sous q<sub>f</sub> + q<sub>s</sub>, le
+     tassement final est plus grand, et l'on retire la surcharge quand le tassement atteint celui que q<sub>f</sub>
+     seule aurait produit. Le sol, alors surconsolidé sous q<sub>f</sub>, ne tasse presque plus.</p>
+  <figure class="figure-cours" data-schema="schemaSurcharge"><figcaption>Préchargement avec surcharge temporaire. Sous q<sub>f</sub> + q<sub>s</sub>, le sol tasse plus vite vers une valeur plus grande ; on retire la surcharge à t<sub>s</sub>, quand le tassement final de l'ouvrage seul est atteint. Sans surcharge, il faudrait attendre bien plus longtemps pour en approcher.</figcaption></figure>
+  <p>Les <strong>drains verticaux</strong> raccourcissent le chemin de l'eau : au lieu de remonter sur plusieurs mètres,
+     elle n'a plus qu'à parcourir horizontalement la demi-distance entre drains, et c<sub>h</sub> dépasse souvent
+     c<sub>v</sub>. Ce sont aujourd'hui des bandes préfabriquées — une âme plastique rainurée sous un filtre
+     géotextile, de l'ordre de 100 × 4 mm —, foncées par un mandrin tous les 1 à 3 m, jusqu'à 30 ou 40 m de
+     profondeur. Chaque drain draine un cylindre de sol de diamètre D<sub>e</sub> ; la théorie de Barron (1948),
+     complétée par Hansbo (1981) pour la zone remaniée par le mandrin, donne :</p>
+  <p class="formula">U<sub>h</sub> = 1 − exp(−8 T<sub>h</sub>/F) &nbsp;·&nbsp; T<sub>h</sub> = c<sub>h</sub> t/D<sub>e</sub>² &nbsp;·&nbsp; F = ln(n/s) + (k<sub>h</sub>/k<sub>s</sub>) ln s − 0,75</p>
+  <p>avec n = D<sub>e</sub>/d<sub>w</sub>, s = d<sub>s</sub>/d<sub>w</sub>, et k<sub>h</sub>/k<sub>s</sub> le rapport
+     des perméabilités du sol intact et du sol remanié ; pour une bande a × b, d<sub>w</sub> = 2 (a + b)/π, soit
+     66 mm pour 100 × 4 mm. D<sub>e</sub> vaut 1,05 s en maille triangulaire, 1,13 s en maille carrée. Les drainages
+     vertical et radial se combinent (Carrillo, 1942) : 1 − U = (1 − U<sub>v</sub>)(1 − U<sub>h</sub>).</p>
+  <figure class="figure-cours" data-schema="schemaDrainsVerticaux"><figcaption>Chaque drain draine le cylindre de sol dont l'aire égale celle de sa maille : D<sub>e</sub> = 1,05 s en maille triangulaire, 1,13 s en maille carrée. En coupe, l'eau converge horizontalement vers le drain à travers la zone remaniée par le mandrin, puis remonte vers le tapis drainant.</figcaption></figure>
+  <div class="calc" id="calcDrains">
+    <h3>Drains verticaux : degré de consolidation et espacement</h3>
+    <div class="data-grid">
+      <div class="field"><label for="drH">Épaisseur d'argile</label><div class="input-wrap"><input id="drH" type="text" inputmode="decimal" value="10" data-curseur="2 40 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="drDrain">Drainage vertical</label><div class="input-wrap"><select id="drDrain">
+        <option value="double" selected>double</option><option value="simple">simple</option></select></div></div>
+      <div class="field"><label for="drCv">c<sub>v</sub></label><div class="input-wrap"><input id="drCv" type="text" inputmode="decimal" value="1" data-curseur="0.1 10 0.1"><span class="unit">m²/an</span></div></div>
+      <div class="field"><label for="drCh">c<sub>h</sub></label><div class="input-wrap"><input id="drCh" type="text" inputmode="decimal" value="2" data-curseur="0.1 20 0.1"><span class="unit">m²/an</span></div></div>
+      <div class="field"><label for="drMaille">Maille</label><div class="input-wrap"><select id="drMaille">
+        <option value="triangle" selected>triangulaire</option><option value="carre">carrée</option></select></div></div>
+      <div class="field"><label for="drS">Espacement s</label><div class="input-wrap"><input id="drS" type="text" inputmode="decimal" value="1.5" data-curseur="0.6 5 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="drDw">Diamètre équivalent d<sub>w</sub></label><div class="input-wrap"><input id="drDw" type="text" inputmode="decimal" value="66" data-curseur="30 150 1"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="drSm">Zone remaniée d<sub>s</sub>/d<sub>w</sub></label><div class="input-wrap"><input id="drSm" type="text" inputmode="decimal" value="2" data-curseur="1 6 0.1"><span class="unit">—</span></div></div>
+      <div class="field"><label for="drK">k<sub>h</sub>/k<sub>s</sub></label><div class="input-wrap"><input id="drK" type="text" inputmode="decimal" value="2" data-curseur="1 10 0.5"><span class="unit">—</span></div></div>
+      <div class="field"><label for="drT">Délai disponible</label><div class="input-wrap"><input id="drT" type="text" inputmode="decimal" value="0.5" data-curseur="0.05 5 0.05"><span class="unit">ans</span></div></div>
+      <div class="field"><label for="drU">Degré visé</label><div class="input-wrap"><input id="drU" type="text" inputmode="decimal" value="90" data-curseur="50 99 1"><span class="unit">%</span></div></div>
+    </div>
+    <div class="figure" id="drFig"></div>
+    <div id="drOut"></div>
+  </div>
+  <div class="a-retenir"><strong>Ce que les drains changent, et ce qu'ils ne changent pas</strong>
+    <p>Les drains accélèrent la consolidation primaire : ils ne réduisent ni le tassement final ni le fluage, et
+       n'apportent rien si la charge ne dépasse pas σ'<sub>p</sub>. Leur efficacité dépend de la zone remaniée — un
+       facteur 2 sur le temps n'a rien d'exceptionnel — et de leur capacité d'écoulement ; il faut aussi que l'eau
+       puisse sortir par un tapis drainant sous le remblai.</p></div>
+
+  <h3>Stabilité : construire par étapes</h3>
+  <p>Un remblai sur argile molle peut rompre avant même d'avoir tassé. Le moment critique est la fin de la construction :
+     la charge est là, la surpression aussi, et le sol ne résiste que par sa cohésion non drainée c<sub>u</sub>
+     (chapitre 7). Pour un remblai large sur une couche épaisse, la rupture par poinçonnement donne une hauteur limite
+     de l'ordre de :</p>
+  <p class="formula">H<sub>max</sub> ≈ (π + 2) c<sub>u</sub> / (γ F)</p>
+  <p>soit, avec c<sub>u</sub> = 15 kPa, γ = 20 kN/m³ et F = 1,5, environ 2,6 m. Au-delà, la consolidation vient au
+     secours : sous la charge, la contrainte effective augmente, et c<sub>u</sub> avec elle — dans une argile
+     normalement consolidée, de Δc<sub>u</sub> ≈ λ<sub>cu</sub> U Δσ'<sub>v</sub>, λ<sub>cu</sub> valant de 0,2 à
+     0,3. On monte donc par <strong>étapes</strong>, en attendant entre deux que la consolidation ait assez renforcé le
+     sol ; les drains raccourcissent ces attentes, et des banquettes latérales ou une nappe de renforcement
+     géosynthétique à la base augmentent la hauteur admissible.</p>
+  <figure class="figure-cours" data-schema="schemaStabiliteRemblai"><figcaption>Rupture à court terme d'un remblai sur argile molle : le cercle traverse l'argile, où seule la cohésion non drainée c<sub>u</sub> résiste. Une banquette au pied charge la partie du cercle qui remonte et augmente la hauteur admissible.</figcaption></figure>
+  <p>La formule n'est qu'un prédimensionnement. La vérification se fait par des calculs de stabilité le long de surfaces
+     de rupture circulaires ou quelconques, en contraintes totales à court terme, avec le profil de c<sub>u</sub> mesuré
+     au scissomètre ou au piézocône et corrigé (chapitre 2) : c'est la stabilité générale de l'Eurocode 7
+     <span class="ref">[NF EN 1997-1 § 11 et § 12]</span>. Les étapes successives tendent vers une hauteur limite
+     H<sub>∞</sub> = H<sub>1</sub>/(1 − k), avec k = (π + 2) λ<sub>cu</sub> U/F : à ce degré de consolidation, un remblai
+     plus haut que H<sub>∞</sub> ne peut pas être construit par étapes.</p>
+  <div class="calc" id="calcEtapes">
+    <h3>Construction par étapes : hauteurs, attentes et durée</h3>
+    <div class="data-grid">
+      <div class="field"><label for="epCu">c<sub>u</sub> initiale</label><div class="input-wrap"><input id="epCu" type="text" inputmode="decimal" value="15" data-curseur="5 60 0.5"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="epG">γ du remblai</label><div class="input-wrap"><input id="epG" type="text" inputmode="decimal" value="20" data-curseur="14 23 0.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="epF">Coefficient de sécurité F</label><div class="input-wrap"><input id="epF" type="text" inputmode="decimal" value="1.5" data-curseur="1.1 2 0.05"><span class="unit">—</span></div></div>
+      <div class="field"><label for="epL">λ<sub>cu</sub> = Δc<sub>u</sub>/Δσ'<sub>v</sub></label><div class="input-wrap"><input id="epL" type="text" inputmode="decimal" value="0.25" data-curseur="0.1 0.4 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="epU">Degré de consolidation entre étapes</label><div class="input-wrap"><input id="epU" type="text" inputmode="decimal" value="70" data-curseur="30 95 1"><span class="unit">%</span></div></div>
+      <div class="field"><label for="epHf">Hauteur finale</label><div class="input-wrap"><input id="epHf" type="text" inputmode="decimal" value="5" data-curseur="1 12 0.1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="epHa">Épaisseur d'argile</label><div class="input-wrap"><input id="epHa" type="text" inputmode="decimal" value="8" data-curseur="1 30 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="epDrain">Drainage vertical</label><div class="input-wrap"><select id="epDrain">
+        <option value="double" selected>double</option><option value="simple">simple</option></select></div></div>
+      <div class="field"><label for="epCv">c<sub>v</sub></label><div class="input-wrap"><input id="epCv" type="text" inputmode="decimal" value="1" data-curseur="0.1 10 0.1"><span class="unit">m²/an</span></div></div>
+      <div class="field"><label for="epS">Drains : espacement (0 : sans)</label><div class="input-wrap"><input id="epS" type="text" inputmode="decimal" value="1.5" data-curseur="0 4 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="epCh">c<sub>h</sub></label><div class="input-wrap"><input id="epCh" type="text" inputmode="decimal" value="2" data-curseur="0.1 20 0.1"><span class="unit">m²/an</span></div></div>
+      <div class="field"><label for="epMontee">Durée de montée d'une étape</label><div class="input-wrap"><input id="epMontee" type="text" inputmode="decimal" value="1" data-curseur="0.25 6 0.25"><span class="unit">mois</span></div></div>
+    </div>
+    <div class="figure" id="epFig"></div>
+    <div id="epOut"></div>
+  </div>
+
+  <h3>Suivre le remblai et prévoir le tassement final</h3>
+  <p>Sur sol compressible, le calcul ne suffit pas : les paramètres sont incertains, les couches hétérogènes, et
+     l'Eurocode 7 y recommande la <strong>méthode observationnelle</strong> <span class="ref">[NF EN 1997-1 2.7]</span> :
+     on prévoit, on mesure, on adapte. Les appareils classiques sont les tassomètres (plaques posées sous le remblai),
+     les piézomètres (la dissipation de la surpression dit où en est la consolidation), les inclinomètres au pied (un
+     déplacement latéral qui s'accélère annonce une rupture) et les repères topographiques.</p>
+  <figure class="figure-cours" data-schema="schemaRemblaiInstrumente"><figcaption>Un remblai sur argile molle et ses appareils de suivi. Le sol tasse en cuvette sous le remblai, se soulève au pied et se déplace latéralement ; le tassomètre suit le tassement, le piézomètre la dissipation de la surpression, l'inclinomètre les déplacements sous le talus.</figcaption></figure>
+  <p>La méthode d'<strong>Asaoka</strong> (1978) extrapole le tassement final à partir des mesures. On relève les
+     tassements à pas de temps constant Δt ; les points (s<sub>i−1</sub>, s<sub>i</sub>) s'alignent sur une droite
+     s<sub>i</sub> = β<sub>0</sub> + β<sub>1</sub> s<sub>i−1</sub>, qui coupe la bissectrice au tassement final
+     s<sub>∞</sub> = β<sub>0</sub>/(1 − β<sub>1</sub>). La pente β<sub>1</sub> donne en prime le coefficient de
+     consolidation réel du site — Asaoka écrivait 5/12 là où le premier terme de la solution de Terzaghi donne 4/π²,
+     à 3 % près :</p>
+  <p class="formula">c<sub>v</sub> = −4 H<sub>d</sub>² ln β<sub>1</sub> / (π² Δt) &nbsp;;&nbsp; avec des drains : c<sub>h</sub> = −D<sub>e</sub>² F ln β<sub>1</sub> / (8 Δt)</p>
+  <div class="calc" id="calcAsaoka">
+    <h3>Méthode d'Asaoka : le tassement final à partir des mesures</h3>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="asMesures">Mesures : une ligne par lecture, t (jours) et s (mm)</label>
+        <textarea id="asMesures" rows="6" spellcheck="false">0 0
+15 30
+30 75
+45 140
+60 210
+90 306
+120 381
+150 452
+180 505
+210 556
+240 594
+270 631
+300 657
+330 686
+360 703
+390 723
+420 736</textarea></div>
+      <div class="field"><label for="asPas">Pas de temps Δt</label><div class="input-wrap"><input id="asPas" type="text" inputmode="decimal" value="30" data-curseur="5 120 1"><span class="unit">jours</span></div></div>
+      <div class="field"><label for="asDebut">Début de l'analyse (fin de construction)</label><div class="input-wrap"><input id="asDebut" type="text" inputmode="decimal" value="60" data-curseur="0 600 5"><span class="unit">jours</span></div></div>
+      <div class="field"><label for="asHd">Longueur de drainage H<sub>d</sub></label><div class="input-wrap"><input id="asHd" type="text" inputmode="decimal" value="4" data-curseur="0.5 20 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="asS">Drains : espacement en maille triangulaire (0 : sans)</label><div class="input-wrap"><input id="asS" type="text" inputmode="decimal" value="1.5" data-curseur="0 4 0.05"><span class="unit">m</span></div></div>
+    </div>
+    <div class="figure" id="asFig"></div>
+    <div id="asOut"></div>
+  </div>
+
+  <h3>Les autres parades</h3>
+  <figure class="figure-cours" data-schema="schemaAmelioration"><figcaption>Cinq façons de construire sur une même argile molle : drains et préchargement pour consolider avant la mise en service ; colonnes ballastées et inclusions rigides pour reporter la charge ; allègement pour la réduire ; purge et substitution pour supprimer le sol mou.</figcaption></figure>
+  <ul>
+    <li><strong>Colonnes ballastées</strong> : des colonnes de grave compactée mises en place au vibreur ; elles portent
+        une part de la charge, réduisent le tassement et drainent le sol autour. Dans les sols très mous, l'étreinte
+        latérale du sol peut leur manquer ;</li>
+    <li><strong>Inclusions rigides</strong> : des pieux sans liaison avec l'ouvrage, sous un matelas granulaire de
+        répartition, souvent armé ; la charge se reporte sur les inclusions par effet de voûte et par frottement, et le
+        tassement devient celui des couches profondes. Leur dimensionnement suit les recommandations ASIRI (IREX, 2012) ;</li>
+    <li><strong>Remblais allégés</strong> : polystyrène expansé (PSE, 0,2 à 0,3 kN/m³), granulats d'argile expansée… Moins
+        de charge, donc moins de tassement et plus de stabilité ;</li>
+    <li><strong>Purge et substitution</strong> : on retire le sol mou et on le remplace par un bon matériau — radical,
+        mais limité à quelques mètres d'épaisseur ;</li>
+    <li><strong>Consolidation sous vide</strong> : une membrane étanche et des pompes mettent le sol en dépression, de
+        60 à 80 kPa ; cette charge ne crée aucun risque de rupture, puisque la dépression attire le sol vers
+        l'intérieur au lieu de le pousser au-dehors.</li>
+  </ul>
+
+  <h3>Remblais et fondations voisines</h3>
+  <p>Un remblai sur sol mou n'agit pas seulement sur lui-même. Il fait tasser le sol autour des pieux qui le traversent
+     ou le bordent — c'est le <strong>frottement négatif</strong> du chapitre 13 —, et, s'il est dissymétrique, il
+     pousse latéralement le sol et les pieux d'une culée voisine : le chapitre 14 traite ces <strong>poussées
+     latérales</strong> par le déplacement libre du sol g(z). Au contact d'un ouvrage fondé profondément, qui ne tasse
+     pas, le remblai continue de descendre : une marche se forme à l'entrée du pont, que la <strong>dalle de
+     transition</strong> étale sur quelques mètres. La bonne pratique est de construire le remblai d'accès — voire de le
+     précharger — <em>avant</em> la culée et ses pieux : une grande part des tassements, et donc du frottement négatif,
+     est alors acquise avant que les pieux n'existent (voir aussi la note d'information Sétra n° 34 de 2012,
+     « Construire des remblais contigus aux ouvrages d'art »).</p>
+  <figure class="figure-cours" data-schema="schemaRemblaiContigu"><figcaption>Remblai d'accès contre une culée sur pieux. Le remblai tasse, la culée non : une marche se forme, que la dalle de transition adoucit. Dans l'argile, le sol entraîne les pieux vers le bas (frottement négatif) et les pousse latéralement.</figcaption></figure>
+  <div class="a-retenir"><strong>L'essentiel du chapitre</strong>
+    <p>Le tassement final se calcule à l'œdomètre, tranche par tranche, et dépend avant tout de σ'<sub>p</sub>. Sa durée
+       varie comme le carré de la longueur de drainage : les drains la raccourcissent, ils ne réduisent pas le tassement.
+       La stabilité à court terme limite la hauteur de chaque étape ; la consolidation l'augmente. Et sur ces sols, on ne
+       conclut qu'après avoir mesuré.</p></div>
+
+  <div class="actions"><a class="primary" href="index.html#ch16">Exercices du chapitre</a>
+    <a class="secondary" href="exerciseur.html#ch16">Exerciseur</a></div>
+</section>
+
 <!-- SUITE-DES-CHAPITRES -->
 
 </div>
@@ -2799,5 +3145,6 @@ marquerSectionLue();
 <script type="module" src="src/cours-ch13.js"></script>
 <script type="module" src="src/cours-ch14.js"></script>
 <script type="module" src="src/cours-ch15.js"></script>
+<script type="module" src="src/cours-ch16.js"></script>
 <script type="module" src="src/tableaux.js"></script>
 </body></html>

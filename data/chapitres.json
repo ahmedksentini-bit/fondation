@@ -24,7 +24,7 @@
     {
       "id": "D",
       "titre": "Compléments",
-      "resume": "Situations sismiques : la portance d'une semelle selon l'annexe F de l'Eurocode 8."
+      "resume": "Situations sismiques : la portance d'une semelle selon l'annexe F de l'Eurocode 8. Sols compressibles : consolidation, fluage et remblais sur sols mous — drains, préchargement, étapes et suivi."
     }
   ],
   "chapitres": [
@@ -309,6 +309,27 @@
         "glissement sous séisme"
       ],
       "exercices": 4,
+      "cours": true
+    },
+    {
+      "id": "ch16",
+      "number": 16,
+      "partie": "D",
+      "title": "Sols compressibles : consolidation et remblais",
+      "description": "Tassement de consolidation et fluage, consolidation dans le temps, cv et ch, remblais sur sols mous : contraintes, hauteur à mettre en œuvre, drains verticaux et préchargement, construction par étapes, suivi et méthode d'Asaoka.",
+      "notions": [
+        "si, sc, sf",
+        "σ'p, OCR, POP ; Cc, Cs",
+        "Osterberg sous un remblai",
+        "Tv = cv t/Hd², U(Tv)",
+        "fluage Cαe",
+        "Casagrande, Taylor, piézocône",
+        "drains : Barron–Hansbo, Carrillo",
+        "surcharge temporaire",
+        "Hmax = (π + 2) cu/(γ F), étapes",
+        "Asaoka, méthode observationnelle"
+      ],
+      "exercices": 9,
       "cours": true
     }
   ]
