@@ -69,13 +69,13 @@ def sommaire_html(chapitres, parties, pages, date):
     return f"""<!doctype html><html lang="fr"><head><meta charset="UTF-8"><style>
       @page {{ size: A4; margin: 22mm 20mm; }}
       body {{ font-family: Inter, -apple-system, "Segoe UI", sans-serif; color: #0f172a; }}
-      h1 {{ font-size: 24pt; margin: 0 0 8mm; color: #075985; }}
-      h2 {{ font-size: 12pt; margin: 8mm 0 2mm; color: #075985; text-transform: uppercase; letter-spacing: .06em; }}
-      .l {{ display: flex; align-items: baseline; gap: 4mm; padding: 2.2mm 0; border-bottom: .3mm dotted #94a3b8; font-size: 11.5pt; }}
+      h1 {{ font-size: 22pt; margin: 0 0 5mm; color: #075985; }}
+      h2 {{ font-size: 11pt; margin: 5mm 0 1.5mm; color: #075985; text-transform: uppercase; letter-spacing: .06em; }}
+      .l {{ display: flex; align-items: baseline; gap: 4mm; padding: 1.5mm 0; border-bottom: .3mm dotted #94a3b8; font-size: 11pt; }}
       .n {{ width: 8mm; font-weight: 800; color: #0891b2; }}
       .t {{ flex: 1; }}
       .p {{ font-weight: 800; font-variant-numeric: tabular-nums; }}
-      .note {{ margin-top: 12mm; color: #475569; font-size: 10pt; line-height: 1.5; }}
+      .note {{ margin-top: 7mm; color: #475569; font-size: 10pt; line-height: 1.5; }}
       .tag {{ display: inline-block; padding: .3mm 2mm; border-radius: 1.5mm; font-weight: 800; font-size: 8.5pt; }}
       .f62 {{ background: #fef3c7; color: #92400e; }} .ec7 {{ background: #ccfbf1; color: #115e59; }}
     </style></head><body>
@@ -122,16 +122,20 @@ def main():
         manquants = [c["id"] for c in chapitres if c["id"] not in debut]
         if manquants:
             print("Chapitres introuvables dans le PDF :", manquants)
-        # Sommaire : couverture (1 page) + sommaire (1 page) précèdent le cours.
+        # Sommaire : la couverture et le sommaire précèdent le cours. Si le sommaire
+        # change de nombre de pages, on renumérote et on le réimprime.
         decalage = 2
-        pages = {k: v + 1 + decalage for k, v in debut.items()}
         som_html = os.path.join(tmp, "sommaire.html")
-        open(som_html, "w", encoding="utf-8").write(sommaire_html(chapitres, plan["parties"], pages, date))
         som_pdf = os.path.join(tmp, "sommaire.pdf")
-        imprimer(nav, "file:///" + som_html.replace("\\", "/"), som_pdf, profil)
-        som = fitz.open(som_pdf)
-        if len(som) != 1:
-            print(f"Attention : le sommaire occupe {len(som)} pages ; les numéros sont décalés.")
+        for _ in range(3):
+            pages = {k: v + 1 + decalage for k, v in debut.items()}
+            open(som_html, "w", encoding="utf-8").write(sommaire_html(chapitres, plan["parties"], pages, date))
+            imprimer(nav, "file:///" + som_html.replace("\\", "/"), som_pdf, profil)
+            som = fitz.open(som_pdf)
+            if 1 + len(som) == decalage:
+                break
+            decalage = 1 + len(som)
+            som.close()
         # Assemblage
         doc = fitz.open()
         doc.insert_pdf(fitz.open(couv_pdf), from_page=0, to_page=0)
