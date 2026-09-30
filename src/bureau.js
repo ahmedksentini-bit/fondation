@@ -16,6 +16,7 @@ import { alphaMenard } from "./geotech/sols.js";
 import { profilPressio } from "./figures.js";
 import { TUBE, AIR, SONDE, sondage, texteReleves, texteCouples } from "./pressio-exemples.js";
 import { lireTableau } from "./ui.js";
+import { couchesDepuisSondage, balayage, tauxMaximaux } from "./bureau/projet.js";
 
 const app = document.getElementById("app");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -106,6 +107,14 @@ const MODULES = [
       ],
     },
     calculer: calculerSemelle,
+    parametrique: {
+      aide: "Faire varier une dimension, toutes les autres données restant celles de la saisie : la courbe donne, pour chaque référentiel, le plus grand taux de travail de toutes les vérifications ; le premier passage sous 1 est la plus petite dimension qui convient.",
+      variables: [
+        { id: "B", champ: "B", nom: "Largeur B", court: "B", unite: "m", plage: (v) => [Math.max(0.3, Math.round(nombre(v.B, 2) * 0.4 * 10) / 10), Math.round(nombre(v.B, 2) * 2 * 10) / 10, 0.1] },
+        { id: "D", champ: "D", nom: "Profondeur de la base D", court: "D", unite: "m", plage: (v) => [Math.max(nombre(v.h, 0.5), 0.3), Math.max(3, Math.round(nombre(v.D, 1) * 3 * 10) / 10), 0.1] },
+      ],
+      evaluer: (v) => tauxMaximaux(justifierSemelle(donneesSemelle(v)).synthese),
+    },
   },
   {
     id: "pieu", groupe: "Fondations profondes", icone: "▮", titre: "Pieu isolé", sous: "portance et justification axiale",
@@ -137,6 +146,14 @@ const MODULES = [
       ],
     },
     calculer: calculerPieu,
+    parametrique: {
+      aide: "Faire varier la longueur ou le diamètre du pieu, toutes les autres données restant celles de la saisie : la courbe donne le plus grand taux de travail des vérifications de chaque référentiel ; son passage sous 1 donne la plus petite dimension qui convient.",
+      variables: [
+        { id: "D", champ: "D", nom: "Longueur D", court: "D", unite: "m", plage: (v) => [Math.max(3, Math.round(nombre(v.D, 12) * 0.5)), Math.round(nombre(v.D, 12) * 1.5), 0.5] },
+        { id: "B", champ: "B", nom: "Diamètre B", court: "B", unite: "m", plage: (v) => [0.3, Math.max(1.5, Math.round(nombre(v.B, 0.8) * 2 * 10) / 10), 0.05] },
+      ],
+      evaluer: (v) => tauxMaximaux(verifsPieu(justifierPieu(donneesPieu(v)))),
+    },
   },
   {
     id: "frottement", groupe: "Fondations profondes", icone: "⇊", titre: "Frottement négatif", sous: "Combarieu, isolé et en groupe",
@@ -196,8 +213,15 @@ function lireEtat() {
 }
 function ecrireEtat() { try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch { /* navigation privée */ } }
 
+const aujourdhui = () => new Date().toISOString().slice(0, 10);
+const PROJET_DEFAUT = () => ({
+  affaire: "Étude de fondations", ouvrage: "", lieu: "", auteur: "", verificateur: "", indice: "A", date: aujourdhui(),
+  revisions: [{ indice: "A", date: aujourdhui(), objet: "Première émission" }],
+});
+
 const etat = lireEtat();
 for (const m of MODULES) etat.valeurs[m.id] = { ...valeursParDefaut(m), ...(etat.valeurs[m.id] ?? {}) };
+etat.projet = { ...PROJET_DEFAUT(), ...(etat.projet ?? {}) };
 
 function toast(texte) {
   const t = document.getElementById("toast");
@@ -206,43 +230,206 @@ function toast(texte) {
 }
 
 // ─────────────────────────── Rendu de la coque ────────────────────────────
-function rendre() {
-  const m = MODULES.find((x) => x.id === etat.module) ?? MODULES[0];
-  const v = etat.valeurs[m.id];
+/** Coque commune : la barre latérale (projet, puis modules par groupe) et le contenu. */
+function coque(actif, contenu) {
   const groupes = [...new Set(MODULES.map((x) => x.groupe))];
-  app.innerHTML = `
+  const bouton = (id, icone, titre, sous) => `<button class="software-module${id === actif ? " active" : ""}" data-module="${id}"><span class="module-icon">${icone}</span>
+    <span><strong>${esc(titre)}</strong><small>${esc(sous)}</small></span></button>`;
+  return `
   <div class="software-shell bureau">
     <aside class="software-sidebar">
       <div class="software-title"><span class="module-icon">⌗</span><div><p>BUREAU DE CALCUL</p><h1>Fondations</h1></div></div>
-      <nav>${groupes.map((g) => `<div class="software-group"><p>${esc(g)}</p>${MODULES.filter((x) => x.groupe === g).map((x) => `
-        <button class="software-module${x.id === m.id ? " active" : ""}" data-module="${x.id}"><span class="module-icon">${x.icone}</span>
-          <span><strong>${esc(x.titre)}</strong><small>${esc(x.sous)}</small></span></button>`).join("")}</div>`).join("")}</nav>
-      <button class="software-study" id="imprimer">Imprimer la note de calcul</button>
+      <nav><div class="software-group"><p>Projet</p>${bouton("projet", "▤", "Projet et tableau de bord", etat.projet.affaire || "cartouche, indices, état des modules")}</div>
+        ${groupes.map((g) => `<div class="software-group"><p>${esc(g)}</p>${MODULES.filter((x) => x.groupe === g).map((x) => bouton(x.id, x.icone, x.titre, x.sous)).join("")}</div>`).join("")}</nav>
+      <button class="software-study" id="imprimer">${actif === "projet" ? "Imprimer le tableau de bord" : "Imprimer la note de calcul"}</button>
     </aside>
-    <section class="software-main">
-      <div class="software-head"><div><p class="eyebrow">Fascicule 62 titre V · Eurocode 7</p><h2>${esc(m.titre)}</h2><p>${esc(m.description)}</p></div>
+    <section class="software-main">${contenu}</section>
+  </div>`;
+}
+
+/** Étapes d'un module : ses groupes de champs, ses couches, ses résultats et sa note. */
+const etapesDe = (m) => [
+  ...m.champs.map(([titre], i) => ({ titre, cible: `g${i}` })),
+  ...(m.couches ? [{ titre: "Couches de sol", cible: "gc" }] : []),
+  { titre: "Vérifications", cible: "resultats" }, { titre: "Note de calcul", cible: "note" },
+];
+
+function rendre() {
+  if (etat.module === "projet") return rendreProjet();
+  const m = MODULES.find((x) => x.id === etat.module) ?? MODULES[0];
+  const v = etat.valeurs[m.id];
+  const etapes = etapesDe(m);
+  app.innerHTML = coque(m.id, `
+      <div class="software-head"><div><p class="eyebrow">Fascicule 62 titre V · Eurocode 7 · ${esc(etat.projet.affaire)}</p><h2>${esc(m.titre)}</h2><p>${esc(m.description)}</p></div>
         <div class="bureau-actions">
           <button class="ghost" id="exporter">Exporter</button><button class="ghost" id="importer">Importer</button>
           <button class="ghost" id="reinit">Valeurs de départ</button></div></div>
+      <nav class="etapes" aria-label="Étapes du calcul">${etapes.map((e, i) => `<button type="button" data-cible="${e.cible}"><span class="num">${i + 1}</span>${esc(e.titre)}<span class="etat" data-etat="${e.cible}"></span></button>`).join("")}</nav>
       <div class="bureau-grid">
         <div class="software-panel bureau-saisie">
-          ${m.champs.map(([titre, champs]) => `<div class="bureau-groupe"><h3>${esc(titre)}</h3><div class="data-grid">
+          ${m.champs.map(([titre, champs], i) => `<div class="bureau-groupe" id="g${i}"><h3><span class="num">${i + 1}</span>${esc(titre)}</h3><div class="data-grid">
             ${champs.map((c) => champ(c, v)).join("")}</div></div>`).join("")}
-          ${m.couches ? `<div class="bureau-groupe"><h3>Couches de sol <small>(profondeur de la base de chaque couche, depuis le terrain après travaux)</small></h3>
+          ${m.couches ? `<div class="bureau-groupe" id="gc"><h3><span class="num">${m.champs.length + 1}</span>Couches de sol <small>(profondeur de la base de chaque couche, depuis le terrain après travaux)</small></h3>
             <div class="table-large"><table class="couches-table"><thead><tr>${m.couches.colonnes.map(([, t]) => `<th>${esc(t)}</th>`).join("")}<th></th></tr></thead>
             <tbody>${v.couches.map((c, i) => ligneCouche(m, c, i)).join("")}</tbody></table></div>
             <div class="actions"><button class="ghost" id="ajouterCouche">Ajouter une couche</button></div></div>` : ""}
         </div>
-        <div class="software-panel bureau-resultats">
+        <div class="software-panel bureau-resultats" id="resultats">
           <div class="software-diagram" id="figure"></div>
           <div id="synthese"></div>
+          ${m.parametrique ? blocEtude(m) : ""}
         </div>
       </div>
-      <section class="software-panel note-calcul" id="note"></section>
-    </section>
-  </div>`;
+      <section class="software-panel note-calcul" id="note"></section>`);
   brancher(m);
   calculer(m);
+}
+
+// ─────────────────────────── Étude paramétrique ───────────────────────────
+function blocEtude(m) {
+  const p = m.parametrique, v = etat.valeurs[m.id], x = p.variables[0];
+  const [a, b, pas] = x.plage(v);
+  return `<details class="etude" id="etude"><summary>Étude paramétrique</summary>
+    <p class="method-note">${esc(p.aide)}</p>
+    <div class="data-grid">
+      <div class="field"><label for="etVar">Variable</label><div class="input-wrap"><select id="etVar">${p.variables.map((y) => `<option value="${y.id}">${esc(y.nom)}</option>`).join("")}</select></div></div>
+      <div class="field"><label for="etMin">De</label><div class="input-wrap"><input id="etMin" type="text" inputmode="decimal" value="${a}"><span class="unit" data-unite>${esc(x.unite)}</span></div></div>
+      <div class="field"><label for="etMax">À</label><div class="input-wrap"><input id="etMax" type="text" inputmode="decimal" value="${b}"><span class="unit" data-unite>${esc(x.unite)}</span></div></div>
+      <div class="field"><label for="etPas">Pas</label><div class="input-wrap"><input id="etPas" type="text" inputmode="decimal" value="${pas}"><span class="unit" data-unite>${esc(x.unite)}</span></div></div>
+    </div>
+    <div class="actions"><button class="primary" id="etLancer">Tracer</button></div>
+    <div class="software-diagram" id="etFig"></div>
+    <p class="final-result" id="etOut" hidden></p>
+  </details>`;
+}
+
+function lancerEtude(m) {
+  const p = m.parametrique, v = etat.valeurs[m.id];
+  const x = p.variables.find((y) => y.id === app.querySelector("#etVar").value) ?? p.variables[0];
+  const min = nombre(app.querySelector("#etMin").value), max = nombre(app.querySelector("#etMax").value), pas = nombre(app.querySelector("#etPas").value);
+  const sortie = app.querySelector("#etOut");
+  sortie.hidden = false;
+  if (!(max > min && pas > 0)) { sortie.innerHTML = "Renseigner une plage croissante et un pas positif."; return; }
+  const { points, minimal } = balayage((val) => p.evaluer({ ...v, [x.champ]: String(val) }), min, max, pas);
+  const fini = points.flatMap((q) => [q.F62, q.EC7]).filter(Number.isFinite);
+  const yMax = Math.min(3, Math.max(1.4, ...fini) * 1.08);
+  const courbe = (ref) => points.filter((q) => Number.isFinite(q[ref])).map((q) => [q.x, Math.min(q[ref], yMax)]);
+  const actuel = nombre(v[x.champ]);
+  app.querySelector("#etFig").innerHTML = graphe({
+    largeur: 560, hauteur: 290, xmin: min, xmax: max, ymin: 0, ymax: yMax, xlabel: `${x.nom} (${x.unite})`, ylabel: "taux de travail maximal",
+    zones: [{ x0: min, x1: max, y0: 1, y1: yMax, couleur: COULEURS.rouge, opacite: 0.06, libelle: "non vérifié", position: "droite" }],
+    series: [
+      { points: courbe("F62"), couleur: COULEURS.f62, epaisseur: 2.4, libelle: "Fascicule 62" },
+      { points: courbe("EC7"), couleur: COULEURS.ec7, epaisseur: 2.4, libelle: "NF P94-261/262" },
+      { points: [[min, 1], [max, 1]], couleur: COULEURS.rouge, tirets: "6 4", epaisseur: 1.4, libelle: "taux = 1" },
+    ],
+    marques: [
+      ...(minimal.EC7 !== null ? [{ x: minimal.EC7, y: 1, couleur: COULEURS.ec7, guides: true }] : []),
+      ...(minimal.F62 !== null ? [{ x: minimal.F62, y: 1, couleur: COULEURS.f62, guides: true }] : []),
+    ],
+    textes: Number.isFinite(actuel) && actuel >= min && actuel <= max ? [{ x: actuel, y: yMax * 0.92, texte: "valeur du projet", couleur: COULEURS.discret }] : [],
+  });
+  const dire = (ref, nom) => (minimal[ref] === null ? `${nom} : aucune valeur de la plage ne vérifie tout`
+    : minimal[ref] <= min + 1e-9 ? `${nom} : tout est vérifié dès ${fd(min, 2)} ${x.unite}, début de la plage`
+      : `${nom} : ${fd(minimal[ref], 2)} ${x.unite}`);
+  sortie.innerHTML = `Plus petite valeur de ${esc(x.court)} qui satisfait toutes les vérifications —
+    <strong>${dire("EC7", m.id === "pieu" ? "NF P94-262" : "NF P94-261")}</strong> · <strong>${dire("F62", "Fascicule 62")}</strong>
+    <small>Taux de travail maximal de chaque référentiel sur l'ensemble des vérifications et des combinaisons ; les autres données sont celles de la saisie.</small>`;
+}
+
+// ─────────────────────────── Projet et tableau de bord ────────────────────
+function cartouche(titre) {
+  const p = etat.projet;
+  return `<table class="cartouche"><tbody>
+    <tr><th>Affaire</th><td colspan="3">${esc(p.affaire || "—")}</td><th>Indice</th><td>${esc(p.indice || "—")}</td></tr>
+    <tr><th>Ouvrage</th><td colspan="3">${esc(p.ouvrage || "—")}${p.lieu ? ` · ${esc(p.lieu)}` : ""}</td><th>Date</th><td>${esc(dateFr(p.date))}</td></tr>
+    <tr><th>Élément</th><td>${esc(titre)}</td><th>Établi par</th><td>${esc(p.auteur || "—")}</td><th>Vérifié par</th><td>${esc(p.verificateur || "—")}</td></tr>
+  </tbody></table>`;
+}
+const dateFr = (iso) => { const d = new Date(`${iso}T12:00:00`); return Number.isNaN(d.getTime()) ? String(iso ?? "") : d.toLocaleDateString("fr-FR"); };
+const historique = () => `<h3>Historique des indices</h3><table class="resultats"><thead><tr><th>Indice</th><th>Date</th><th>Objet</th></tr></thead><tbody>
+  ${etat.projet.revisions.map((r) => `<tr><td>${esc(r.indice)}</td><td>${esc(dateFr(r.date))}</td><td class="motif">${esc(r.objet)}</td></tr>`).join("")}</tbody></table>`;
+
+/** État de chaque module, calculé sur ses données du moment. */
+function tableauDeBord() {
+  return MODULES.map((m, i) => {
+    let r = null, motif = "";
+    try { r = m.calculer(etat.valeurs[m.id]); } catch (e) { motif = e.message; }
+    const verdict = r ? r.verdict : false;
+    const etat_ = r === null ? `<span class="verdict ko">✕ calcul impossible</span> <small>${esc(motif)}</small>`
+      : verdict === true ? `<span class="verdict ok">✓ vérifié</span>` : verdict === false ? `<span class="verdict ko">✕ non vérifié</span>`
+        : `<span class="verdict na">${esc(r.etat ?? "calcul sans vérification")}</span>`;
+    const taux = r?.taux ? `${Number.isFinite(r.taux.F62) ? fd(r.taux.F62, 2) : "—"} · ${Number.isFinite(r.taux.EC7) ? fd(r.taux.EC7, 2) : "—"}` : "—";
+    return `<tr><td>${i + 1}</td><td><strong>${esc(m.titre)}</strong><small>${esc(m.groupe)}</small></td><td>${etat_}</td><td class="n">${taux}</td>
+      <td><button class="ghost" data-module="${m.id}">Ouvrir</button></td></tr>`;
+  }).join("");
+}
+
+function rendreProjet() {
+  const p = etat.projet;
+  const champP = (id, label, type = "text") => `<div class="field"><label for="pj_${id}">${esc(label)}</label><div class="input-wrap">
+    <input id="pj_${id}" data-projet="${id}" type="${type}" value="${esc(p[id] ?? "")}"></div></div>`;
+  app.innerHTML = coque("projet", `
+      <div class="software-head"><div><p class="eyebrow">Projet</p><h2>${esc(p.affaire || "Projet")}</h2>
+        <p>Le cartouche figure en tête de chaque note de calcul. Le tableau de bord recalcule chaque module sur ses données et en donne l'état ;
+           le projet entier, cartouche compris, s'enregistre dans un seul fichier.</p></div>
+        <div class="bureau-actions">
+          <button class="ghost" id="projEnregistrer">Enregistrer le projet</button><button class="ghost" id="projOuvrir">Ouvrir un projet</button>
+          <button class="ghost" id="projNouveau">Nouveau projet</button></div></div>
+      <div class="bureau-grid">
+        <div class="software-panel bureau-saisie">
+          <div class="bureau-groupe"><h3><span class="num">1</span>Cartouche</h3><div class="data-grid">
+            ${champP("affaire", "Affaire")}${champP("ouvrage", "Ouvrage, élément")}${champP("lieu", "Lieu")}${champP("indice", "Indice")}
+            ${champP("auteur", "Établi par")}${champP("verificateur", "Vérifié par")}${champP("date", "Date", "date")}</div></div>
+          <div class="bureau-groupe"><h3><span class="num">2</span>Indices de révision</h3>
+            <div class="table-large"><table class="couches-table"><thead><tr><th>Indice</th><th>Date</th><th>Objet</th><th></th></tr></thead><tbody>
+              ${p.revisions.map((r, i) => `<tr><td><input data-rev="${i}" data-col="indice" value="${esc(r.indice)}" style="width:4em" aria-label="Indice ${i + 1}"></td>
+                <td><input data-rev="${i}" data-col="date" type="date" value="${esc(r.date)}" aria-label="Date de l'indice ${i + 1}"></td>
+                <td><input data-rev="${i}" data-col="objet" value="${esc(r.objet)}" style="width:16em" aria-label="Objet de l'indice ${i + 1}"></td>
+                <td><button data-suppr-rev="${i}" title="Supprimer l'indice" aria-label="Supprimer l'indice ${i + 1}">✕</button></td></tr>`).join("")}
+            </tbody></table></div>
+            <div class="actions"><button class="ghost" id="ajouterRev">Nouvel indice</button></div></div>
+        </div>
+        <div class="software-panel bureau-resultats">
+          <h3>Tableau de bord</h3>
+          <div class="table-large"><table class="resultats tableau-bord"><thead><tr><th>n°</th><th>Module</th><th>État</th><th class="num">Taux max F62 · EC7</th><th></th></tr></thead>
+            <tbody>${tableauDeBord()}</tbody></table></div>
+          <p class="method-note">Le taux de travail est le plus grand rapport action / résistance de toutes les vérifications et combinaisons du module.
+             « Valeurs de départ » d'un module rétablit l'exemple du cours.</p>
+          ${cartouche("dossier de calcul")}
+        </div>
+      </div>`);
+  app.querySelectorAll("[data-module]").forEach((b) => b.addEventListener("click", () => { etat.module = b.dataset.module; ecrireEtat(); rendre(); }));
+  app.querySelectorAll("[data-projet]").forEach((e) => e.addEventListener("input", () => { p[e.dataset.projet] = e.value; ecrireEtat(); }));
+  app.querySelectorAll("[data-projet]").forEach((e) => e.addEventListener("change", () => rendreProjet()));
+  app.querySelectorAll("[data-rev]").forEach((e) => e.addEventListener("input", () => { p.revisions[Number(e.dataset.rev)][e.dataset.col] = e.value; ecrireEtat(); }));
+  app.querySelectorAll("[data-suppr-rev]").forEach((b) => b.addEventListener("click", () => {
+    if (p.revisions.length <= 1) return toast("Il faut au moins un indice.");
+    p.revisions.splice(Number(b.dataset.supprRev), 1); ecrireEtat(); rendreProjet();
+  }));
+  app.querySelector("#ajouterRev").addEventListener("click", () => {
+    const der = p.revisions[p.revisions.length - 1];
+    const suivant = /^[A-Y]$/.test(der.indice) ? String.fromCharCode(der.indice.charCodeAt(0) + 1) : `${der.indice}+`;
+    p.revisions.push({ indice: suivant, date: aujourdhui(), objet: "" });
+    p.indice = suivant; ecrireEtat(); rendreProjet();
+  });
+  app.querySelector("#imprimer").addEventListener("click", () => window.print());
+  app.querySelector("#projEnregistrer").addEventListener("click", enregistrerProjet);
+  app.querySelector("#projOuvrir").addEventListener("click", () => document.getElementById("fichierImport").click());
+  app.querySelector("#projNouveau").addEventListener("click", () => {
+    if (!confirm("Commencer un nouveau projet ? Les données de tous les modules reviennent aux valeurs de départ.")) return;
+    for (const m of MODULES) etat.valeurs[m.id] = valeursParDefaut(m);
+    etat.projet = PROJET_DEFAUT(); ecrireEtat(); rendreProjet(); toast("Nouveau projet.");
+  });
+}
+
+function enregistrerProjet() {
+  const contenu = { format: "fondations-projet", version: 1, date: new Date().toISOString(), projet: etat.projet, module: etat.module, valeurs: etat.valeurs };
+  const blob = new Blob([JSON.stringify(contenu, null, 1)], { type: "application/json" });
+  const a = document.createElement("a");
+  const nom = (etat.projet.affaire || "projet").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase();
+  a.href = URL.createObjectURL(blob); a.download = `fondations-${nom || "projet"}.json`; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
 function champ([id, label, unite, , options, visible], v) {
@@ -304,6 +491,22 @@ function brancher(m) {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
   app.querySelector("#importer").addEventListener("click", () => document.getElementById("fichierImport").click());
+  app.querySelectorAll(".etapes [data-cible]").forEach((b) => b.addEventListener("click", () => {
+    const cible = document.getElementById(b.dataset.cible);
+    if (!cible) return;
+    if (cible.tagName === "DETAILS") cible.open = true;
+    cible.scrollIntoView({ behavior: "smooth", block: "start" });
+  }));
+  if (m.parametrique) {
+    const choix = app.querySelector("#etVar");
+    choix.addEventListener("change", () => {
+      const x = m.parametrique.variables.find((y) => y.id === choix.value);
+      const [a, b, pas] = x.plage(v);
+      app.querySelector("#etMin").value = a; app.querySelector("#etMax").value = b; app.querySelector("#etPas").value = pas;
+      app.querySelectorAll("[data-unite]").forEach((u) => { u.textContent = x.unite; });
+    });
+    app.querySelector("#etLancer").addEventListener("click", () => lancerEtude(m));
+  }
 }
 
 document.getElementById("fichierImport").addEventListener("change", async (e) => {
@@ -312,28 +515,68 @@ document.getElementById("fichierImport").addEventListener("change", async (e) =>
   if (!fichier) return;
   try {
     const d = JSON.parse(await fichier.text());
+    if (d.format === "fondations-projet") {
+      // Projet complet : cartouche, indices et données de tous les modules.
+      for (const m of MODULES) etat.valeurs[m.id] = { ...valeursParDefaut(m), ...(d.valeurs?.[m.id] ?? {}) };
+      etat.projet = { ...PROJET_DEFAUT(), ...(d.projet ?? {}) };
+      etat.module = "projet";
+      ecrireEtat(); rendre(); toast(`Projet « ${etat.projet.affaire} » ouvert.`);
+      return;
+    }
     const m = MODULES.find((x) => x.id === d.module);
     if (!m || typeof d.valeurs !== "object") throw new Error("fichier sans module reconnu");
     etat.module = m.id;
     etat.valeurs[m.id] = { ...valeursParDefaut(m), ...d.valeurs };
-    ecrireEtat(); rendre(); toast(`Projet « ${m.titre} » importé.`);
+    ecrireEtat(); rendre(); toast(`Module « ${m.titre} » importé.`);
   } catch (err) { toast(`Import impossible : ${err.message}`); }
 });
 
 function calculer(m) {
   const v = etat.valeurs[m.id];
   const zones = { figure: app.querySelector("#figure"), synthese: app.querySelector("#synthese"), note: app.querySelector("#note") };
+  const marquer = (cible, classe, texte) => {
+    const e = app.querySelector(`.etapes [data-etat="${cible}"]`);
+    if (!e) return;
+    e.className = `etat ${classe}`; e.textContent = texte;
+  };
   try {
     const r = m.calculer(v);
     zones.figure.innerHTML = r.figure ?? "";
     zones.synthese.innerHTML = r.synthese;
-    zones.note.innerHTML = `<h2>Note de calcul — ${esc(m.titre)}</h2><p class="method-note">Établie le ${new Date().toLocaleDateString("fr-FR")} avec le bureau de calcul du cours « Fondations des ouvrages ». Les valeurs sont celles de la saisie ci-dessus.</p>${r.note}`;
+    zones.note.innerHTML = `${cartouche(m.titre)}<h2>Note de calcul — ${esc(m.titre)}</h2>
+      <p class="method-note">Établie le ${new Date().toLocaleDateString("fr-FR")} avec le bureau de calcul du cours « Fondations des ouvrages ». Les valeurs sont celles de la saisie.</p>
+      ${r.note}${historique()}`;
+    for (const e of etapesDe(m)) marquer(e.cible, "ok", "✓");
+    if (r.verdict === false) marquer("resultats", "ko", "✕");
+    else if (r.verdict !== true) marquer("resultats", "na", "·");
+    app.querySelectorAll("[data-envoyer]").forEach((b) => b.addEventListener("click", () => envoyerSondage(v, b.dataset.envoyer)));
   } catch (e) {
     console.error(e);
     zones.figure.innerHTML = "";
     zones.synthese.innerHTML = `<p class="final-result bureau-verdict ko">Calcul impossible : ${esc(e.message)}</p>`;
     zones.note.innerHTML = "";
+    for (const x of etapesDe(m)) marquer(x.cible, "na", "");
+    marquer(/couche|essai/.test(e.message) && m.couches ? "gc" : "resultats", "ko", "!");
+    marquer("note", "na", "—");
   }
+}
+
+// ─────────────────────── Du sondage aux couches de calcul ─────────────────
+/** Envoie le sondage dépouillé vers la semelle ou le pieu : couches, pl*, EM, classes proposées. */
+function envoyerSondage(v, cible) {
+  const { couches, res } = depouillerSondage(v);
+  const essais = res.filter((e) => e.r.applicable).map((e) => ({ z: e.z, plNette: e.r.plNette, EM: e.r.EM }));
+  const lignes = couchesDepuisSondage(couches, essais);
+  const t = etat.valeurs[cible];
+  const txt = (x, d) => x.toFixed(d);
+  t.couches = lignes.map((c) => (cible === "semelle"
+    ? { base: String(c.z1), classe: c.classe, categorie: c.categorie, gamma: String(c.gamma), gammaSat: String(c.gammaSat), pl: txt(c.pl, 2), EM: txt(c.EM, 1) }
+    : { base: String(c.z1), classe: c.classe, categorie: c.categorie, pl: txt(c.pl, 2), qc: "", EM: txt(c.EM, 1) }));
+  if (cible === "semelle" && v.zw !== undefined) t.zw = v.zw;
+  if (cible === "pieu" && t.methode !== "pressio") t.methode = "pressio";
+  etat.module = cible; ecrireEtat(); rendre();
+  const estimees = lignes.filter((c) => c.estimee).length;
+  toast(`${lignes.length} couches importées : pl* moyenne géométrique, EM moyenne harmonique${estimees ? ` (${estimees} sans essai, à vérifier)` : ""}.`);
 }
 
 /** « argile A · pl* 0,70 » : assez court pour ne pas chevaucher la fondation. */
@@ -356,16 +599,20 @@ function couchesDe(v, cles) {
 }
 
 // ─────────────────────────── Calculs des modules ──────────────────────────
-function calculerSemelle(v) {
+function donneesSemelle(v) {
   const couches = couchesDe(v, ["gamma", "gammaSat", "pl", "EM"]).map((c) => ({ ...c, gammaSat: Number.isFinite(c.gammaSat) ? c.gammaSat : c.gamma }));
   if (couches.some((c) => !(c.gamma > 0 && c.pl > 0))) throw new Error("renseigner γ et pl* dans chaque couche");
-  const d = {
+  return {
     forme: v.forme, B: nombre(v.B), L: nombre(v.L), D: nombre(v.D), h: nombre(v.h), zw: nombre(v.zw, Infinity),
     comportement: v.comportement, phi: nombre(v.phi, 30), phiCrit: nombre(v.phiCrit, 30), c: nombre(v.c, 0), cu: nombre(v.cu, 0),
     prefabrique: v.prefabrique === "oui", alpha: nombre(v.alpha, 0.5), couches,
     G: { V: nombre(v.GV, 0), H: nombre(v.GH, 0), M: nombre(v.GM, 0) }, Q: { V: nombre(v.QV, 0), H: nombre(v.QH, 0), M: nombre(v.QM, 0) },
     psi: { psi0: nombre(v.psi0, 0.7), psi1: nombre(v.psi1, 0.5), psi2: nombre(v.psi2, 0.3) },
   };
+}
+
+function calculerSemelle(v) {
+  const d = donneesSemelle(v), couches = d.couches;
   const r = justifierSemelle(d);
   const elu = r.etats.EC7.find((x) => x.cle === "ELU");
   const figure = coupeSemelle({
@@ -373,10 +620,10 @@ function calculerSemelle(v) {
     hauteur: 300, profondeurVue: d.D + 2 * d.B, montrerHr: 1.5 * d.B,
     couches: couches.map((c) => ({ z0: c.z0, z1: c.z1, sol: c.classe, etiquette: c.z0 >= d.D - 1e-9 ? etiquetteCourte(c) : null })),
   });
-  return { figure, ...noteSemelle(r, d) };
+  return { figure, ...noteSemelle(r, d), verdict: r.verdict, taux: tauxMaximaux(r.synthese) };
 }
 
-function calculerPieu(v) {
+function donneesPieu(v) {
   const [type, cat] = String(v.type).split("|");
   const couches = couchesDe(v, ["pl", "qc", "EM"]);
   const d = {
@@ -386,6 +633,14 @@ function calculerPieu(v) {
   };
   const cle = d.methode === "pressio" ? "pl" : "qc";
   if (couches.some((c) => !(c[cle] > 0))) throw new Error(`renseigner ${cle === "pl" ? "pl*" : "qc"} dans chaque couche`);
+  return d;
+}
+
+/** Vérifications d'un pieu au format commun { ref, taux, ok }, portances inapplicables comprises. */
+const verifsPieu = (r) => [...r.verifs, ...(r.F62.applicable ? [] : [{ ref: "F62", taux: NaN, ok: false }]), ...(r.EC7.applicable ? [] : [{ ref: "EC7", taux: NaN, ok: false }])];
+
+function calculerPieu(v) {
+  const d = donneesPieu(v), couches = d.couches;
   const r = justifierPieu(d);
   const qs = r.EC7.applicable ? r.EC7.lignes : r.F62.applicable ? r.F62.lignes : [];
   const figure = coupePieu({
@@ -394,7 +649,8 @@ function calculerPieu(v) {
     zones: d.zf > 0 ? [{ z0: 0, z1: d.zf, couleur: COULEURS.rouge, libelle: "sans frottement" }] : [],
     profil: qs.length ? { libelle: `qs ${r.EC7.applicable ? "NF P94-262" : "F62"}`, unite: "kPa", valeurs: qs.map((l) => ({ z0: l.z0, z1: l.z1, v: l.qs })), etiquettes: true } : null,
   });
-  return { figure, ...notePieu(r, d) };
+  const verifs = verifsPieu(r);
+  return { figure, ...notePieu(r, d), verdict: verifs.every((x) => x.ok), taux: tauxMaximaux(verifs) };
 }
 
 function calculerFrottement(v) {
@@ -452,7 +708,7 @@ function calculerFrottement(v) {
     <h3>${grp ? 4 : 3} · Effort axial de calcul</h3>
     <p class="formula">F<sub>d</sub> = G'<sub>d</sub> + max(G<sub>sn,d</sub> ; Q'<sub>d</sub>) = ${f(1.35 * G + 1.5 * psi2 * Q, 5)} + max(${f(1.35 * Fdim, 4)} ; ${f(1.5 * (1 - psi2) * Q, 4)}) = ${f(c.ELU, 5)} kN (ELU)</p>
     <p>ELS caractéristique : ${f(c.ELS_car, 5)} kN · ELS quasi permanent : ${f(c.ELS_QP, 5)} kN. Le frottement positif est à retirer de la portance au-dessus du point neutre.</p>`;
-  return { figure, synthese, note };
+  return { figure, synthese, note, verdict: null, etat: `Fn = ${f(iso.Fn, 4)} kN (pieu isolé)` };
 }
 
 // ─────────────────────────── Sondage pressiométrique ─────────────────────
@@ -472,7 +728,7 @@ function lireEssais(texte) {
   return essais.filter((e) => Number.isFinite(e.z) && e.paliers.length);
 }
 
-function calculerSondage(v) {
+function depouillerSondage(v) {
   const convention = v.conv === "shg" ? "shg" : "norme";
   const hc = nombre(v.hc, 0), zw = nombre(v.zw, Infinity), K0 = nombre(v.K0, 0.5);
   const tube = calibrageAppareil(lireTableau(v.tube).filter((r) => r.length >= 2).map(([p, V]) => ({ p, V })), { pmin: nombre(v.pminTube, null), di: nombre(v.di, null), ls: nombre(v.ls, null) });
@@ -498,6 +754,11 @@ function calculerSondage(v) {
     const al = r.applicable && r.plNette > 0 ? alphaMenard(c.nature, r.EM, r.plNette) : null;
     return { ...e, r, c, al };
   });
+  return { convention, hc, zw, K0, tube, Vs, air, couches, res };
+}
+
+function calculerSondage(v) {
+  const { convention, hc, zw, K0, tube, Vs, air, couches, res } = depouillerSondage(v);
   const ok = res.filter((e) => e.r.applicable);
   const seuils = couches.map((c) => ({ z0: c.z0, z1: c.z1, valeurs: c.nature === "argile" ? [9, 16] : c.nature === "limon" ? [8, 14] : c.nature === "grave" ? [6, 10] : [7, 12] }));
   const figure = profilPressio({ couches, essais: ok.map((e) => ({ z: e.z, EM: e.r.EM, plNette: e.r.plNette, pfNette: e.r.pfNette })), seuils, largeur: 640, hauteur: 500 });
@@ -506,7 +767,11 @@ function calculerSondage(v) {
     ${res.map((e) => (e.r.applicable ? `<tr class="${e.r.avertissements.length ? "ko" : ""}"><td>${fd(e.z, 1)}</td><td class="n">${fd(e.r.EM, 1)}</td><td class="n">${fd(e.r.pfNette, 2)}</td><td class="n">${fd(e.r.plNette, 2)}${e.r.limite.extrapolee ? "<small>e</small>" : ""}</td>
       <td class="n">${fd(e.r.rapport, 1)}</td><td>${e.al ? fd(e.al.alpha, 2) : "—"}</td></tr>` : `<tr class="ko"><td>${fd(e.z, 1)}</td><td colspan="5">${esc(e.r.motif)}</td></tr>`)).join("")}
     </tbody></table>
-    <p class="method-note">MPa ; « e » : p<sub>l</sub> extrapolée. ${signales.length ? `${signales.length} essai(s) à relire (lignes marquées, détail dans la note).` : "Aucun essai signalé par les contrôles."}</p>`;
+    <p class="method-note">MPa ; « e » : p<sub>l</sub> extrapolée. ${signales.length ? `${signales.length} essai(s) à relire (lignes marquées, détail dans la note).` : "Aucun essai signalé par les contrôles."}</p>
+    <div class="actions envoi-sondage"><button class="secondary" data-envoyer="semelle">Calculer une semelle sur ce sondage</button>
+      <button class="secondary" data-envoyer="pieu">Calculer un pieu sur ce sondage</button></div>
+    <p class="method-note">Les couches passent au module choisi avec p<sub>l</sub>* (moyenne géométrique des essais de chaque couche),
+       E<sub>M</sub> (moyenne harmonique) et une classe F62 proposée — à relire avant de conclure.</p>`;
   const court = (m = "") => (m.startsWith("lue") ? "lue" : m.includes("hyperbolique") ? "hyperbole" : m.includes("trois derniers") ? "1/V, 3 derniers" : m.includes("inverse") ? "inverse du volume" : m);
   const ligneEssai = (e) => {
     const r = e.r;
@@ -531,7 +796,7 @@ function calculerSondage(v) {
     <h3>4 · Critique des essais</h3>
     ${signales.length ? `<ul>${signales.map((e) => `<li>z = ${fd(e.z, 1)} m : ${esc(e.r.applicable ? e.r.avertissements.join(" ; ") : e.r.motif)}</li>`).join("")}</ul>` : "<p>Aucune anomalie relevée par les contrôles automatiques (nombre de paliers, plage pseudo-élastique, V<sub>1</sub>, extrapolation de p<sub>l</sub>, rapport p<sub>l</sub>/p<sub>f</sub>).</p>"}
     <p class="method-note">Les valeurs de calcul (p<sub>le</sub>*, modules des tranches) se tirent de ce profil couche par couche, après élimination motivée des essais douteux.</p>`;
-  return { figure, synthese, note };
+  return { figure, synthese, note, verdict: signales.length ? null : true, etat: `${ok.length} essais dépouillés${signales.length ? `, ${signales.length} à relire` : ""}` };
 }
 
 function calculerGroupe(v) {
@@ -566,7 +831,7 @@ function calculerGroupe(v) {
     <p class="formula">F<sub>cg;d</sub> ≤ N (R<sub>b;d</sub> + C<sub>e</sub> R<sub>s;d</sub>) = ${N} × (${f(Rb, 4)} + ${fd(ec7, 3)} × ${f(Rs, 4)}) = ${f(vE.R, 5)} kN</p>
     <h3>4 · Bloc monolithique</h3>
     <p>Dimensions ${fd(bloc.L, 2)} m × ${fd(bloc.l, 2)} m, périmètre ${fd(bloc.perimetre, 2)} m, base ${fd(bloc.aire, 2)} m² : à justifier comme une fondation dont la base est au niveau des pointes, avec le frottement sur son périmètre.</p>`;
-  return { figure, synthese, note };
+  return { figure, synthese, note, verdict: F <= RF + 1e-9 && vE.ok, taux: { F62: F / RF, EC7: vE.taux } };
 }
 
 function calculerLateral(v) {
@@ -604,7 +869,7 @@ function calculerLateral(v) {
     <h3>3 · Résultats</h3>
     <p class="formula">y<sub>0</sub> = ${fd(r.y0 * 1000, 2)} mm · M<sub>max</sub> = ${f(Math.abs(r.MMax), 4)} kN·m à ${fd(r.zMMax, 2)} m · ${r.plastifies} nœud(s) au palier</p>
     <p>Contrôle par la solution du pieu long en sol homogène (couche 1, sans palier) : y<sub>0</sub> = ${fd(an.y0 * 1000, 2)} mm, M<sub>max</sub> = ${f(an.MMax, 4)} kN·m, l<sub>0</sub> = ${fd(an.l0, 2)} m.</p>`;
-  return { figure, synthese, note };
+  return { figure, synthese, note, verdict: null, etat: `y0 = ${fd(r.y0 * 1000, 1)} mm · Mmax = ${f(Math.abs(r.MMax), 3)} kN·m` };
 }
 
 rendre();

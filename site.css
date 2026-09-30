@@ -243,3 +243,26 @@ a.brand strong,a.brand small{text-decoration:none}
 .field .curseur:active{cursor:grabbing}
 .field .curseur.hors-plage{opacity:.4}
 @media print{.curseur{display:none}}
+
+/* Bureau de calcul : étapes numérotées, cartouche, étude paramétrique, tableau de bord. */
+.etapes{display:flex;flex-wrap:wrap;gap:7px;margin:-6px 0 14px}
+.etapes button{display:inline-flex;align-items:center;gap:6px;padding:6px 11px 6px 6px;border:1px solid #cbd5e1;border-radius:999px;background:#fff;color:#334155;font-size:12.5px;font-weight:750;cursor:pointer}
+.etapes button:hover,.etapes button:focus-visible{border-color:var(--cyan);color:#075985}
+.etapes .num,.bureau-groupe h3 .num{display:inline-grid;place-items:center;min-width:21px;height:21px;padding:0 4px;border-radius:999px;background:#e0f2fe;color:#075985;font-size:11px;font-weight:850}
+.bureau-groupe h3 .num{margin-right:8px;vertical-align:1px}
+.etapes .etat{min-width:10px;font-weight:900}
+.etapes .etat.ok{color:var(--good)}
+.etapes .etat.ko{color:var(--bad)}
+.etapes .etat.na{color:var(--muted)}
+.cartouche{width:100%;margin:0 0 14px;border-collapse:collapse;font-size:12.5px}
+.cartouche th,.cartouche td{padding:5px 8px;border:1px solid #94a3b8;text-align:left;vertical-align:top}
+.cartouche th{width:1%;white-space:nowrap;background:#f1f5f9;color:#334155;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+.etude{margin-top:16px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}
+.etude summary{font-weight:850;color:#075985;cursor:pointer}
+.etude .data-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:10px}
+@media(max-width:560px){.etude .data-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.etude .software-diagram{min-height:0;margin-top:10px}
+.envoi-sondage{margin-top:12px}
+.tableau-bord td small{display:block;color:var(--muted);font-size:11.5px}
+.tableau-bord td button{padding:6px 10px;font-size:12.5px}
+@media print{.etapes,.etude,.envoi-sondage{display:none!important}.cartouche th{background:#eee}}

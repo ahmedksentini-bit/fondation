@@ -80,3 +80,36 @@ test("pieu — mêmes valeurs que les solveurs, et pieu modèle cohérent", () =
   assert.ok(r.tassement.frankZhao.s > 0 && r.tassement.frankZhao.s < 0.05, "tassement Frank et Zhao plausible");
   assert.equal(r.verifs.length, 6);
 });
+
+test("bureau — un sondage dépouillé devient des couches de calcul", async () => {
+  const { couchesDepuisSondage, moyenneGeometrique, moyenneHarmonique } = await import("../src/bureau/projet.js");
+  const couchesS = [
+    { z0: 0, z1: 3, nature: "limon", sol: "limon", gamma: 18, gammaSat: 19 },
+    { z0: 3, z1: 8, nature: "sable", sol: "sable", gamma: 19, gammaSat: 20 },
+    { z0: 8, z1: 12, nature: "argile", sol: "marne", gamma: 20, gammaSat: 21 },
+    { z0: 12, z1: 15, nature: "sable", sol: "sable", gamma: 20, gammaSat: 21 },
+  ];
+  const essais = [{ z: 1, plNette: 0.4, EM: 4 }, { z: 2, plNette: 0.9, EM: 9 }, { z: 4, plNette: 1.2, EM: 12 }, { z: 6, plNette: 1.5, EM: 15 }, { z: 9, plNette: 2.4, EM: 40 }];
+  const r = couchesDepuisSondage(couchesS, essais);
+  proche(r[0].pl, moyenneGeometrique([0.4, 0.9]), 1e-12, "pl* : moyenne géométrique");
+  proche(r[0].EM, moyenneHarmonique([4, 9]), 1e-12, "EM : moyenne harmonique");
+  assert.equal(r[0].classe, "argile-A", "limon à pl* = 0,6 MPa : argile ou limon mou");
+  assert.equal(r[1].categorie, "sable");
+  assert.equal(r[2].classe, "marne-A", "la marne garde sa famille");
+  assert.equal(r[3].estimee, true, "une couche sans essai le signale");
+  proche(r[3].pl, 2.4, 1e-12, "elle reprend l'essai le plus proche");
+});
+
+test("bureau — l'étude paramétrique trouve la plus petite dimension qui vérifie", async () => {
+  const { balayage, tauxMaximaux } = await import("../src/bureau/projet.js");
+  const { minimal, points } = balayage((B) => ({ F62: 3 / B, EC7: 2.5 / B }), 1, 5, 0.5);
+  assert.equal(points.length, 9);
+  proche(minimal.F62, 3, 1e-9, "3/B ≤ 1 dès B = 3");
+  proche(minimal.EC7, 2.5, 1e-9, "2,5/B ≤ 1 dès B = 2,5 (interpolé)");
+  assert.equal(balayage(() => ({ F62: 2, EC7: 2 }), 1, 2, 0.5).minimal.F62, null, "aucune valeur ne vérifie");
+  assert.deepEqual(tauxMaximaux([{ ref: "F62", taux: 0.8, ok: true }, { ref: "EC7", taux: NaN, ok: false }, { ref: "F62", taux: 1.2, ok: false }]), { F62: 1.2, EC7: Infinity });
+  // Sur un vrai cas : la semelle de l'exemple Cerema se vérifie mieux quand elle s'élargit.
+  const d = (B) => ({ forme: "filante", B, D: 0.8, h: 0.5, couches, G: { V: 70, H: 8, M: 0 }, Q: { V: 25, H: 6, M: 0 } });
+  const t1 = tauxMaximaux(justifierSemelle(d(1.2)).synthese), t2 = tauxMaximaux(justifierSemelle(d(3)).synthese);
+  assert.ok(t2.EC7 < t1.EC7 && t2.F62 < t1.F62, "le taux de travail baisse quand B croît");
+});
