@@ -89,20 +89,44 @@ export function etalonnageSonde(points, { dz = 0, Vs = null, gammaW = GAMMA_W_ES
 // ───────────────────────────── Corrections ────────────────────────────────
 
 /**
+ * Deux jeux de conventions pour les corrections, qui ne diffèrent que de
+ * quelques dixièmes de cm³ ou de MPa :
+ *  · « norme » (NF P94-110-1, telle que la présente la littérature) :
+ *    V = Vr − a·pr, puis p = pr + ph − pe(V), pe lue au volume corrigé ;
+ *  · « shg » (logiciel Shg Ménard sur la plate-forme ELK) : p = pr + ph − pe(Vr),
+ *    pe lue au volume brut, puis V = Vr − a·p avec la pression corrigée ;
+ *    γ du liquide 10 kN/m³ ; pf à mi-chemin entre p2 et la cassure du fluage ;
+ *    pl extrapolée sur les trois derniers paliers.
+ */
+export const CONVENTIONS = {
+  norme: { nom: "NF P94-110-1", gammaW: GAMMA_W_ESSAI, peSurBrut: false, aSurCorrigee: false, pfMilieu: false, plTroisDerniers: false },
+  shg: { nom: "logiciel Shg Ménard (ELK)", gammaW: 10, peSurBrut: true, aSurCorrigee: true, pfMilieu: true, plTroisDerniers: true },
+};
+
+/**
  * Corrections d'un essai. paliers : [{ p (lecture CPV, MPa), V15?, V30, V60 }]
  * en cm³ lus au CPV. Renvoie la courbe corrigée dans l'ordre des paliers :
- * [{ n, pr, ph, pe, p, V, V30, fluage }], avec V = Vr60 − a·pr (lecture de
- * pression, pas pression corrigée) et p = pr + ph − pe(V) (pe au volume corrigé).
+ * [{ n, pr, ph, pe, p, V, V30, fluage }]. Par défaut (norme) V = Vr60 − a·pr
+ * (lecture de pression) et p = pr + ph − pe(V) (pe au volume corrigé).
  */
-export function corrigerEssai(paliers, { z, hc = 0, pe = () => 0, a = 0, gammaW = GAMMA_W_ESSAI }) {
-  const ph = pressionHydrostatique(z, hc, gammaW);
+export function corrigerEssai(paliers, { z, hc = 0, pe = () => 0, a = 0, convention = "norme", gammaW = null }) {
+  const c = CONVENTIONS[convention] ?? CONVENTIONS.norme;
+  const ph = pressionHydrostatique(z, hc, gammaW ?? c.gammaW);
   return paliers
     .filter((q) => Number.isFinite(q.p) && Number.isFinite(q.V60))
     .map((q, i) => {
-      const V = q.V60 - a * q.p;
-      const V30 = Number.isFinite(q.V30) ? q.V30 - a * q.p : NaN;
-      const pE = pe(V);
-      return { n: i + 1, pr: q.p, ph, pe: pE, p: q.p + ph - pE, V, V60: V, V30, fluage: Number.isFinite(q.V30) ? q.V60 - q.V30 : NaN };
+      let V, pE, p;
+      if (c.peSurBrut) {
+        pE = pe(q.V60);
+        p = q.p + ph - pE;
+        V = q.V60 - a * (c.aSurCorrigee ? p : q.p);
+      } else {
+        V = q.V60 - a * q.p;
+        pE = pe(V);
+        p = q.p + ph - pE;
+      }
+      const V30 = Number.isFinite(q.V30) ? q.V30 - (q.V60 - V) : NaN;
+      return { n: i + 1, pr: q.p, ph, pe: pE, p, V, V60: V, V30, fluage: Number.isFinite(q.V30) ? q.V60 - q.V30 : NaN };
     });
 }
 
@@ -112,12 +136,14 @@ export const pentes = (c) => c.slice(1).map((q, i) => (q.V - c[i].V) / (q.p - c[
 // ─────────────────────────── Phase pseudo-élastique ───────────────────────
 
 /**
- * Phase pseudo-élastique : paliers consécutifs où la courbe est la plus raide
- * en pression (ΔV/Δp minimal et presque constant), au moins trois paliers.
- * Détection : on part du segment de pente minimale (hors mise en contact) et
- * on l'étend tant que les pentes voisines restent à moins de 10 % du minimum,
- * en relâchant la tolérance si la plage n'a que deux paliers. i1, i2 imposés :
- * choix de l'opérateur (indices de la courbe, 0 = premier palier).
+ * Phase pseudo-élastique : paliers consécutifs où la courbe est quasi linéaire
+ * et le fluage faible et constant, au moins trois paliers. Proposition
+ * automatique : on part du segment de pente ΔV/Δp minimale (hors mise en
+ * contact) et on l'étend de part et d'autre tant que la pente du segment
+ * ajouté reste inférieure au double du minimum et que le fluage du palier
+ * ajouté reste sur le palier bas (au plus le minimum + max(1 cm³, 50 %)).
+ * Sans lectures à 30 s, seule la pente compte (tolérance resserrée à 50 %).
+ * i1, i2 imposés : choix de l'opérateur (indices de la courbe, 0 = premier palier).
  */
 export function phasePseudoElastique(courbe, { i1 = null, i2 = null } = {}) {
   const n = courbe.length;
@@ -129,11 +155,20 @@ export function phasePseudoElastique(courbe, { i1 = null, i2 = null } = {}) {
     const s = pentes(courbe);
     let k = 1;
     for (let j = 1; j < s.length; j++) if (s[j] > 0 && (s[j] < s[k] || !(s[k] > 0))) k = j;
-    for (const tol of [0.1, 0.15, 0.2, 0.3, 0.45]) {
-      d = k; f = k + 1;
-      while (d - 1 >= 1 && s[d - 1] > 0 && s[d - 1] <= s[k] * (1 + tol)) d--;
-      while (f < n - 1 && s[f] > 0 && s[f] <= s[k] * (1 + tol)) f++;
-      if (f - d >= 2) break;
+    const fl = courbe.map((q) => q.fluage);
+    const avecFluage = fl.filter(Number.isFinite).length >= n - 1;
+    const fMin = avecFluage ? Math.min(...fl.slice(1).filter(Number.isFinite)) : NaN;
+    const seuilF = fMin + Math.max(1, 0.5 * fMin);
+    const facteur = avecFluage ? 2 : 1.5;
+    const admis = (seg, point) => s[seg] > 0 && s[seg] <= facteur * s[k] && (!avecFluage || !(courbe[point].fluage > seuilF));
+    d = k; f = k + 1;
+    while (d - 1 >= 1 && admis(d - 1, d - 1)) d--;
+    while (f < n - 1 && admis(f, f + 1)) f++;
+    // Plage trop courte (courbe très régulière ou très bruitée) : on la complète au voisin le plus doux.
+    while (f - d < 2) {
+      const g = d - 1 >= 1 ? s[d - 1] : Infinity, h = f < n - 1 ? s[f] : Infinity;
+      if (!Number.isFinite(g) && !Number.isFinite(h)) break;
+      if (g <= h) d--; else f++;
     }
   }
   const q1 = courbe[d], q2 = courbe[f];
@@ -154,16 +189,21 @@ export function moduleMenard({ Vs, p1, V1, p2, V2, nu = NU }) {
  * les `nMontee` premiers paliers qui suivent ; pf est leur intersection.
  * Faute de deux paliers après la phase, pf = p2.
  */
-export function pressionFluage(courbe, phase, { nMontee = 3 } = {}) {
-  const plateau = courbe.slice(phase.i1, phase.i2 + 1).filter((q) => Number.isFinite(q.fluage));
-  const montee = courbe.slice(phase.i2 + 1, phase.i2 + 1 + nMontee).filter((q) => Number.isFinite(q.fluage));
-  const repli = (motif) => ({ pf: phase.p2, methode: "fin de la phase pseudo-élastique", motif });
+export function pressionFluage(courbe, phase, { nMontee = 3, milieu = false, domaine = null } = {}) {
+  // Palier bas : la phase pseudo-élastique, ou le domaine choisi pour le fluage (Shg Ménard).
+  const [a, b] = domaine ?? [phase.i1, phase.i2];
+  const plateau = courbe.slice(a, b + 1).filter((q) => Number.isFinite(q.fluage));
+  const suite = courbe.slice(b + 1).filter((q) => Number.isFinite(q.fluage));
+  const montee = milieu ? suite : suite.slice(0, nMontee);
+  const repli = (motif) => ({ pf: phase.p2, pfi: null, methode: "fin de la phase pseudo-élastique", motif, atteinte: false });
   if (plateau.length < 2 || montee.length < 2) return repli("pas assez de paliers après la phase pseudo-élastique");
   const bas = regression(plateau.map((q) => [q.p, q.fluage]));
   const haut = regression(montee.map((q) => [q.p, q.fluage]));
-  const pf = (bas.a - haut.a) / (haut.b - bas.b);
-  if (!(haut.b > bas.b) || !(pf >= phase.p1 && pf <= montee[montee.length - 1].p)) return { ...repli("les deux droites ne se coupent pas dans l'essai"), bas, haut };
-  return { pf, methode: "intersection des droites de fluage", bas, haut, montee: montee.map((q) => q.n) };
+  const pfi = (bas.a - haut.a) / (haut.b - bas.b);
+  if (!(haut.b > bas.b) || !(pfi >= phase.p1 && pfi <= montee[montee.length - 1].p)) return { ...repli("les deux droites ne se coupent pas dans l'essai"), bas, haut };
+  // Shg Ménard : pf retenue à mi-chemin entre p2 et la cassure (curseur « Pf » du logiciel).
+  const pf = milieu ? phase.p2 + 0.5 * (pfi - phase.p2) : pfi;
+  return { pf, pfi, atteinte: true, methode: milieu ? "mi-chemin entre p2 et la cassure du fluage" : "intersection des droites de fluage", bas, haut, montee: montee.map((q) => q.n) };
 }
 
 // ───────────────────────────── Pression limite ────────────────────────────
@@ -195,7 +235,7 @@ export function extrapolationHyperbolique(points, { p1, V1, Vl }) {
  * au-delà de pf par les deux méthodes : on retient la plus faible, et l'essai
  * ne donne pas pl si elles s'écartent de plus de 20 % (de la valeur hyperbolique).
  */
-export function pressionLimite(courbe, { Vs, V1, p1, pf }) {
+export function pressionLimite(courbe, { Vs, V1, p1, pf, troisDerniers = false }) {
   const Vl = Vs + 2 * V1;
   for (let i = 1; i < courbe.length; i++) {
     const q0 = courbe[i - 1], q1 = courbe[i];
@@ -203,6 +243,15 @@ export function pressionLimite(courbe, { Vs, V1, p1, pf }) {
       const pl = q0.p + ((q1.p - q0.p) * (Vl - q0.V)) / (q1.V - q0.V);
       return { applicable: true, pl, Vl, extrapolee: false, methode: "lue sur la courbe", entre: [q0.n, q1.n] };
     }
+  }
+  if (troisDerniers) {
+    // Shg Ménard, « Reciprocal » : 1/V linéaire en p sur les trois derniers paliers.
+    const der = courbe.slice(-3);
+    const inv = extrapolationInverse(der, Vl);
+    if (!inv.applicable) return { ...inv, Vl };
+    const dernier = courbe[courbe.length - 1];
+    return { applicable: true, pl: inv.pl, Vl, extrapolee: true, inverse: inv, hyperbole: { applicable: false }, ecart: null,
+      points: der.map((q) => q.n), methode: "inverse du volume sur les trois derniers paliers", lointaine: dernier.V < Vs + V1, pMax: dernier.p };
   }
   const plast = courbe.filter((q) => q.p > pf + 1e-9);
   if (plast.length < 2) return horsDomaine("moins de deux paliers au-delà de pf : pl ne s'extrapole pas", { Vl });
@@ -224,11 +273,21 @@ export function pressionLimite(courbe, { Vs, V1, p1, pf }) {
 
 // ────────────────────────── Pressions nettes et synthèse ───────────────────
 
-/** Contraintes au niveau de l'essai : γ au-dessus de la nappe, γsat dessous. kPa. */
-export function contraintesEssai({ z, zw = Infinity, gamma = 18, gammaSat = null, gammaW = GAMMA_W_ESSAI }) {
-  const hSec = Math.min(z, zw), hSat = Math.max(0, z - zw);
-  const sigmaV = gamma * hSec + (gammaSat ?? gamma) * hSat;
-  const u = gammaW * hSat;
+/**
+ * Contraintes au niveau de l'essai (kPa) : γ au-dessus de la nappe, γsat
+ * dessous ; avec `couches` [{ z0, z1, gamma, gammaSat }], chaque couche
+ * compte pour sa part.
+ */
+export function contraintesEssai({ z, zw = Infinity, gamma = 18, gammaSat = null, couches = null, gammaW = GAMMA_W_ESSAI }) {
+  const liste = couches?.length ? couches : [{ z0: 0, z1: Infinity, gamma, gammaSat }];
+  let sigmaV = 0;
+  for (const c of liste) {
+    const a = Math.max(c.z0, 0), b = Math.min(c.z1, z);
+    if (b <= a) continue;
+    const sec = Math.max(0, Math.min(b, zw) - a);
+    sigmaV += c.gamma * sec + (c.gammaSat ?? c.gamma) * (b - a - sec);
+  }
+  const u = gammaW * Math.max(0, z - zw);
   return { sigmaV, u, sigmaVeff: sigmaV - u };
 }
 
@@ -241,22 +300,34 @@ export const pressionRepos = ({ sigmaVeff, u = 0, K0 = 0.5 }) => (K0 * sigmaVeff
  *  pe(V) (étalonnage), a (cm³/MPa), sol { zw, gamma, gammaSat, K0 },
  *  choix { i1, i2 } de l'opérateur pour la phase pseudo-élastique.
  */
-export function depouiller({ paliers, Vs, z, hc = 0, pe = () => 0, a = 0, sol = {}, choix = {}, pel = null, gammaW = GAMMA_W_ESSAI }) {
-  const courbe = corrigerEssai(paliers, { z, hc, pe, a, gammaW });
+export function depouiller({ paliers, Vs, z, hc = 0, pe = () => 0, a = 0, sol = {}, choix = {}, pel = null, convention = "norme", domaineFluage = null }) {
+  const cv = CONVENTIONS[convention] ?? CONVENTIONS.norme;
+  const gammaW = cv.gammaW;
+  const courbe = corrigerEssai(paliers, { z, hc, pe, a, convention });
   if (courbe.length < 4) return horsDomaine("il faut au moins quatre paliers exploitables", { courbe });
-  const phase = phasePseudoElastique(courbe, choix);
+  let phase = phasePseudoElastique(courbe, choix);
   if (!phase.applicable) return { ...phase, courbe };
+  let fl = pressionFluage(courbe, phase, { milieu: cv.pfMilieu, domaine: domaineFluage });
+  // Plage proposée qui déborde au-delà de pf : on la rogne (au moins trois paliers restent).
+  if (phase.auto && fl.atteinte) {
+    let f = phase.i2;
+    while (f - phase.i1 >= 3 && courbe[f].p > fl.pf * 1.01) f--;
+    if (f !== phase.i2) {
+      phase = phasePseudoElastique(courbe, { i1: phase.i1, i2: f });
+      phase.auto = true;
+      fl = pressionFluage(courbe, phase, { milieu: cv.pfMilieu, domaine: domaineFluage });
+    }
+  }
   const { EM, Vm, G } = moduleMenard({ Vs, ...phase });
-  const fl = pressionFluage(courbe, phase);
-  const lim = pressionLimite(courbe, { Vs, V1: phase.V1, p1: phase.p1, pf: fl.pf });
-  const c = contraintesEssai({ z, zw: sol.zw ?? Infinity, gamma: sol.gamma ?? 18, gammaSat: sol.gammaSat ?? null, gammaW });
+  const lim = pressionLimite(courbe, { Vs, V1: phase.V1, p1: phase.p1, pf: fl.pf, troisDerniers: cv.plTroisDerniers });
+  const c = contraintesEssai({ z, zw: sol.zw ?? Infinity, gamma: sol.gamma ?? 18, gammaSat: sol.gammaSat ?? null, couches: sol.couches ?? null, gammaW });
   const p0 = pressionRepos({ sigmaVeff: c.sigmaVeff, u: c.u, K0: sol.K0 ?? 0.5 });
   const pl = lim.applicable ? lim.pl : NaN;
   const plNette = pl - p0, pfNette = fl.pf - p0;
   const avert = [];
   if (courbe.length < 8) avert.push(`${courbe.length} paliers seulement (8 au moins, 10 de préférence)`);
   if (phase.nPoints < 3) avert.push("phase pseudo-élastique sur deux paliers : EM est peu sûr");
-  if (phase.p2 > fl.pf + 1e-9) avert.push("p2 dépasse pf : la plage de EM empiète sur la phase plastique");
+  if (phase.p2 > fl.pf * 1.03) avert.push("p2 dépasse pf : la plage de EM empiète sur la phase plastique");
   if (phase.V1 > 0.5 * Vs) avert.push("V1 élevé : forage trop large ou paroi remaniée");
   if (courbe.some((q, i) => i && q.p < courbe[i - 1].p)) avert.push("la pression corrigée décroît entre deux paliers");
   if (courbe.some((q) => q.fluage < 0)) avert.push("fluage négatif sur un palier : lecture à vérifier");
@@ -308,19 +379,40 @@ export function essaiSynthetique({
   // croissant linéairement au-delà de pf (les deux droites se coupent en pf).
   const fluage = (p) => (p <= pa ? fluageE * (2.2 - 1.2 * p / pa) : p <= pf ? fluageE : fluageE * (1 + 6 * (p - pf) / (pl - pf)));
   const ph = pressionHydrostatique(z, hc, gammaW);
-  const pas = dp ?? Math.max(0.05, Math.round((pl / 10) * 40) / 40);
+  // L'opérateur règle le manomètre sur des pressions rondes (Δp ≈ pl/10) ;
+  // la pression dans la sonde s'en déduit : pr = p − ph + pe(V(p)).
+  const pas = dp ?? Math.max(0.02, Math.round((pl / 10) * 50) / 50);
   const bruiter = (x, amp) => (alea ? x + (alea() - 0.5) * 2 * amp * bruit : x);
+  const arrondi = (x) => Math.round(x * 10) / 10;
   const paliers = [];
-  for (let k = 1; k <= 24; k++) {
-    const pVise = k * pas;
-    const V = vrai(pVise);
-    const pr = pVise - ph + pe(V);
-    if (pr <= 0) continue;
-    const V60 = bruiter(V + a * pr, 1.5);
-    // Réservoir du CPV épuisé ou sol en rupture : l'essai s'arrête là.
-    if (V60 > vMax || pVise > pu * 0.985) break;
-    const f = fluage(pVise);
-    paliers.push({ p: Math.round(pr * 1000) / 1000, V15: Math.round(V60 - 1.6 * f), V30: Math.round(V60 - f), V60: Math.round(V60) });
+  let prec = 0, increment = pas;
+  // Pression dans la sonde pour une lecture pr donnée ; null si le sol cède avant.
+  const sondePour = (pr) => {
+    const ecart = (p) => p - ph + pe(vrai(p)) - pr;
+    let lo = 0, hi = pu * 0.985;
+    if (ecart(hi) < 0) return null;
+    for (let it = 0; it < 60; it++) { const m = (lo + hi) / 2; if (ecart(m) > 0) hi = m; else lo = m; }
+    return (lo + hi) / 2;
+  };
+  while (paliers.length < 24) {
+    const pr = Math.round((prec + increment) * 100) / 100;
+    const p = pr > prec ? sondePour(pr) : null;
+    if (p === null) {
+      // Près de la rupture, l'opérateur resserre les paliers avant de conclure.
+      if (increment > pas / 4 + 1e-9) { increment /= 2; continue; }
+      break;
+    }
+    const V60 = bruiter(vrai(p) + a * pr, 1);
+    if (V60 > vMax) {
+      // Le réservoir ne suffirait pas : palier resserré, sinon fin de l'essai.
+      if (increment > pas / 4 + 1e-9) { increment /= 2; continue; }
+      break;
+    }
+    prec = pr;
+    if (p <= 0.005) continue;
+    const f = fluage(p);
+    paliers.push({ p: pr, V15: arrondi(V60 - 1.6 * f), V30: arrondi(V60 - f), V60: arrondi(V60) });
+    if (V60 >= 0.88 * vMax) break; // volume suffisant (plus de 700 cm³ environ)
   }
   return { paliers, vrai: { V1, p1: pa, V2, pf, pl, EM, se, VL, pu }, ph };
 }

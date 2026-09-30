@@ -52,7 +52,14 @@ a.brand strong,a.brand small{text-decoration:none}
 @media(max-width:460px){.calc .data-grid{grid-template-columns:1fr}}
 .calc input[type="range"]{accent-color:var(--blue);padding:9px 11px}
 .calc .figure{margin:12px 0 4px;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.calc .figure:empty{display:none}
 .calc .figure svg{display:block;width:100%;height:auto}
+/* Saisie de relevés : un tableau de nombres collé depuis un tableur. */
+.calc .field.champ-large{grid-column:1/-1}
+.calc textarea{display:block;width:100%;min-height:120px;padding:9px 11px;border:1px solid #cbd5e1;border-radius:11px;background:#fff;color:var(--ink);
+  font:13px/1.45 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;font-variant-numeric:tabular-nums;resize:vertical}
+.calc textarea:focus{outline:3px solid #bae6fd;border-color:var(--cyan)}
+.resultats tr.ligne-retenue td{background:#ecfdf5}
 
 /* Deux colonnes F62 / EC7, empilées si étroit. */
 .duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
@@ -212,6 +219,7 @@ a.brand strong,a.brand small{text-decoration:none}
   #intro{break-before:auto!important}
   .valeur-imprimee{display:block;padding:6px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;font-weight:700;font-variant-numeric:tabular-nums}
   .couches-table .valeur-imprimee{padding:3px 6px;font-weight:600}
+  .releves-imprimes{margin:0;font:8.5pt/1.35 ui-monospace,Consolas,monospace;font-weight:400;white-space:pre;columns:3;column-gap:18px}
   .figure-cours,.comparaison,.exemple,.a-retenir,.piege,table{break-inside:avoid}
   /* Un long tableau de résultats se coupe entre deux lignes, en-tête répété,
      plutôt que de sauter en bloc et de laisser une demi-page blanche. */

@@ -45,7 +45,8 @@ test("les calculateurs du cours ne visent que des identifiants existants", () =>
   const html = lire("cours.html");
   const ids = new Set(idsDe(html));
   const scripts = readdirSync(join(racine, "src")).filter((f) => /^cours-ch\d+\.js$/.test(f));
-  assert.equal(scripts.length, 13, "un script par chapitre rédigé");
+  const rediges = JSON.parse(lire("data/chapitres.json")).chapitres.filter((c) => c.cours);
+  assert.equal(scripts.length, rediges.length, "un script par chapitre rédigé");
   for (const f of scripts) {
     const src = lire(join("src", f));
     const siens = new Set([...src.matchAll(/\bid="([^"$]+)"/g)].map((m) => m[1]));

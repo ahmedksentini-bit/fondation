@@ -653,6 +653,78 @@ export function coupePieu({ B, D, couches, profil = null, zones = [], largeur = 
   });
 }
 
+// ───────────────────────────── Essai pressiométrique ─────────────────────
+
+/**
+ * Schéma de l'essai : contrôleur pression-volume (CPV) posé au sol, forage,
+ * sonde tricellulaire à la profondeur z, colonne d'eau hc + z qui fait ph ;
+ * la nappe est dessinée pour montrer qu'elle n'entre pas dans ph.
+ */
+export function schemaPressio({ z = 6, hc = 1, zw = 2, largeur = 560, hauteur = 330 } = {}) {
+  return svg({
+    largeur, hauteur, titre: "Schéma de l'essai pressiométrique", contenu: (id) => {
+      const P = placeur({ x: 2, y: 2, w: largeur - 4, h: hauteur - 4 });
+      const yS = 96, zMax = Math.max(z + 2.2, 5), ech = (hauteur - yS - 16) / zMax;
+      const Y = (h) => yS + h * ech;
+      const xF = 330, wF = 34; // forage
+      let s = "";
+      s += couche(id, { x: 20, y: yS, w: largeur - 40, h: hauteur - yS - 4, sol: "limon" });
+      s += `<rect x="${xF - wF / 2}" y="${yS}" width="${wF}" height="${(Y(z + 1.1) - yS).toFixed(1)}" fill="#fff"/>`;
+      s += ligne(xF - wF / 2, yS, xF - wF / 2, Y(z + 1.1), COULEURS.trait, 1, 'stroke-dasharray="4 3"');
+      s += ligne(xF + wF / 2, yS, xF + wF / 2, Y(z + 1.1), COULEURS.trait, 1, 'stroke-dasharray="4 3"');
+      s += ligne(20, yS, largeur - 20, yS, COULEURS.trait, 1.8);
+      P.segment(20, yS, largeur - 20, yS);
+      // CPV : caisson, manomètre et volumètre.
+      const xc = 70, yM = yS - hc * ech * 0.9 - 18;
+      s += `<rect x="${xc - 44}" y="${yM - 26}" width="92" height="${(yS - yM + 26).toFixed(1)}" rx="6" fill="#e2e8f0" stroke="${COULEURS.betonTrait}" stroke-width="1.4"/>`;
+      s += `<circle cx="${xc - 16}" cy="${yM}" r="13" fill="#fff" stroke="${COULEURS.trait}" stroke-width="1.4"/>`;
+      s += ligne(xc - 16, yM, xc - 8, yM - 8, COULEURS.effort, 1.6);
+      s += `<rect x="${xc + 18}" y="${yM - 20}" width="12" height="${(yS - yM + 12).toFixed(1)}" fill="#fff" stroke="${COULEURS.trait}" stroke-width="1.2"/>`;
+      s += `<rect x="${xc + 19}" y="${(yM + 2).toFixed(1)}" width="10" height="${(yS - yM - 11).toFixed(1)}" fill="${COULEURS.eauFond}"/>`;
+      P.boite({ x: xc - 44, y: yM - 26, w: 92, h: yS - yM + 26 });
+      P.texte([{ x: xc, y: yM - 32, ancre: "middle", lignes: ["CPV"] }], `class="gr" style="font-size:12px"`, { priorite: 3 });
+      // Tubulure du CPV à la sonde.
+      const tub = `M${xc + 48} ${yS - 10}H${xF - 4}V${Y(z) - 36}`;
+      s += `<path d="${tub}" fill="none" stroke="${COULEURS.eau}" stroke-width="2.4"/>`;
+      P.segment(xc + 48, yS - 10, xF - 4, yS - 10, 2); P.segment(xF - 4, yS - 10, xF - 4, Y(z) - 36, 2);
+      P.texte([{ x: (xc + 48 + xF) / 2, y: yS - 16, ancre: "middle", lignes: ["tubulure coaxiale (eau et gaz)"] }], `class="pt halo"`, { taille: 11, priorite: 2 });
+      // Sonde : garde, mesure, garde.
+      const hG = 20, hM = 30, xs = xF - 13, ws = 26;
+      const yM0 = Y(z) - hM / 2;
+      s += `<rect x="${xs}" y="${(yM0 - hG).toFixed(1)}" width="${ws}" height="${hG}" rx="4" fill="#cbd5e1" stroke="${COULEURS.betonTrait}"/>`;
+      s += `<rect x="${xs - 3}" y="${yM0.toFixed(1)}" width="${ws + 6}" height="${hM}" rx="5" fill="#bae6fd" stroke="${COULEURS.eau}" stroke-width="1.6"/>`;
+      s += `<rect x="${xs}" y="${(yM0 + hM).toFixed(1)}" width="${ws}" height="${hG}" rx="4" fill="#cbd5e1" stroke="${COULEURS.betonTrait}"/>`;
+      P.boite({ x: xs - 3, y: yM0 - hG, w: ws + 6, h: hM + 2 * hG });
+      for (const dy of [8, 15, 22]) {
+        s += fleche(id, xs + ws + 4, yM0 + dy, xs + ws + 22, yM0 + dy, { type: "bleu", ep: 1.6 });
+        s += fleche(id, xs - 4, yM0 + dy, xs - 22, yM0 + dy, { type: "bleu", ep: 1.6 });
+        P.segment(xs + ws + 4, yM0 + dy, xs + ws + 22, yM0 + dy); P.segment(xs - 4, yM0 + dy, xs - 22, yM0 + dy);
+      }
+      const etiq = (y, t) => P.texte([{ x: xs + ws + 30, y, ancre: "start", lignes: [t] }, { x: xs + ws + 30, y: y + 8, ancre: "start", lignes: [t] }],
+        `class="halo" style="font-size:11px;font-weight:700"`, { taille: 11, priorite: 2 });
+      etiq(yM0 - hG / 2 + 4, "cellule de garde (gaz)");
+      etiq(yM0 + hM / 2 + 4, "cellule centrale de mesure (eau)");
+      etiq(yM0 + hM + hG / 2 + 4, "cellule de garde (gaz)");
+      // Nappe : présente dans le sol, absente de la correction ph.
+      if (zw < z) {
+        const yw = Y(zw);
+        s += ligne(20, yw, xF - wF / 2, yw, COULEURS.eau, 1.2, 'stroke-dasharray="6 4"');
+        s += ligne(xF + wF / 2, yw, largeur - 20, yw, COULEURS.eau, 1.2, 'stroke-dasharray="6 4"');
+        s += `<path d="M${largeur - 42} ${yw - 1}l6-9h-12z" fill="${COULEURS.eau}"/>`;
+        P.segment(20, yw, largeur - 20, yw);
+        P.texte([{ x: largeur - 50, y: yw - 5, ancre: "end", lignes: ["nappe : n'entre pas dans ph"] }], `class="pt halo" style="fill:${COULEURS.eau}"`, { taille: 11, priorite: 2 });
+      }
+      // Cotes hc et z : leur somme fait la colonne d'eau de la tubulure.
+      s += cote(id, xc - 58, yM, xc - 58, yS, `hc = ${fmt(hc, 3)} m`, { cote: "gauche", P });
+      s += cote(id, xF - wF / 2 - 40, yS, xF - wF / 2 - 40, Y(z), `z = ${fmt(z, 3)} m`, { cote: "gauche", P });
+      P.texte([{ x: largeur - 24, y: 30, ancre: "end", lignes: ["ph = γw (hc + z)", "colonne d'eau du manomètre", "au centre de la sonde"] }],
+        `class="halo" style="font-size:11.5px;font-weight:700;fill:${COULEURS.eau}"`, { taille: 11.5, priorite: 1 });
+      s += P.rendre();
+      return s;
+    },
+  });
+}
+
 // ─────────────────────────── Sondage pressiométrique ─────────────────────
 
 /** Graduations d'un axe logarithmique : 1, 2, 5 × 10ⁿ entre a et b. */
@@ -755,7 +827,7 @@ export function profilPressio({ couches = [], essais = [], zMax = null, largeur 
         }
       }
       for (const b of bandes) {
-        if (b.libelle) s += texte(pE.x + 4, Y(b.z0) + 11, b.libelle, `class="pt halo" style="fill:${COULEURS.bleu};font-weight:700"`);
+        if (b.libelle) s += texte(pR.x + pR.w - 4, Y(b.z1) - 4, b.libelle, `text-anchor="end" class="pt halo" style="fill:${COULEURS.bleu};font-weight:700;font-size:10px"`);
       }
       // Profils : un point par essai, reliés dans l'ordre des profondeurs.
       const tri = [...essais].sort((a, b) => a.z - b.z);

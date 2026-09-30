@@ -5,6 +5,13 @@
 if (new URLSearchParams(location.search).has("impression")) {
   document.documentElement.classList.add("impression");
   window.addEventListener("load", () => setTimeout(() => {
+    // Un tableau de relevés s'imprime tel quel, en chasse fixe.
+    for (const zone of document.querySelectorAll(".calc textarea")) {
+      const pre = document.createElement("pre");
+      pre.className = "valeur-imprimee releves-imprimes";
+      pre.textContent = zone.value.trim() || "—";
+      zone.replaceWith(pre);
+    }
     for (const champ of document.querySelectorAll(".calc input, .calc select")) {
       const wrap = champ.closest(".input-wrap");
       const u = wrap?.querySelector(".unit")?.textContent.trim() ?? "";

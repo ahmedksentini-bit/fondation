@@ -9,7 +9,7 @@
     {
       "id": "A",
       "titre": "Bases",
-      "resume": "Le sol mesuré en place, les actions combinées, la sécurité répartie : ce qui est commun aux semelles et aux pieux."
+      "resume": "Le sol mesuré en place, de l'essai au profil ; les actions combinées ; la sécurité répartie : ce qui est commun aux semelles et aux pieux."
     },
     {
       "id": "B",
@@ -46,6 +46,45 @@
         "formation homogène"
       ],
       "exercices": 6,
+      "cours": true
+    },
+    {
+      "id": "ch2",
+      "number": 2,
+      "partie": "A",
+      "title": "Les essais en place",
+      "description": "Pénétromètres statique et dynamique, piézocône, SPT, dilatomètre, scissomètre, plaque, essais d'eau, géophysique : ce que mesure chaque essai, comment on le dépouille, ce que le projeteur en retient.",
+      "notions": [
+        "piézocône : qt, Qt, Fr, Bq, Ic",
+        "SPT : N60 et (N1)60",
+        "formule des Hollandais",
+        "dilatomètre : ID, KD, ED",
+        "scissomètre et correction de Bjerrum",
+        "plaque : EV1, EV2, k",
+        "Lefranc, Lugeon, pompage",
+        "sismique réfraction, Vs,30"
+      ],
+      "exercices": 0,
+      "cours": false
+    },
+    {
+      "id": "ch3",
+      "number": 3,
+      "partie": "A",
+      "title": "L'essai pressiométrique, du relevé au profil",
+      "description": "Étalonnages, corrections, courbe pressiométrique et courbe de fluage, EM, pf et pl extrapolée, pressions nettes, puis le profil d'un sondage : le dépouillement complet, étape par étape.",
+      "notions": [
+        "dilatation de l'appareillage a et Vs",
+        "résistance propre pe(V)",
+        "ph = γw (hc + z)",
+        "phase pseudo-élastique",
+        "module EM",
+        "pression de fluage pf",
+        "pl à Vs + 2V1, extrapolée",
+        "pl*, pf*, EM/pl*",
+        "profil pressiométrique"
+      ],
+      "exercices": 0,
       "cours": true
     },
     {

@@ -247,6 +247,336 @@
     <a class="secondary" href="exerciseur.html#ch1">Exerciseur</a></div>
 </section>
 
+<!-- ══════════════════════════ CHAPITRE 3 ══════════════════════════ -->
+<section id="ch3" class="card">
+  <h2>3 · L'essai pressiométrique, du relevé au profil</h2>
+
+  <p>Le chapitre 1 a présenté les trois résultats de l'essai — E<sub>M</sub>, p<sub>f</sub>,
+     p<sub>l</sub> — comme des données du rapport géotechnique. Ce chapitre les fabrique. Il
+     part des lectures brutes du contrôleur, applique les étalonnages et les corrections,
+     lit la courbe, puis assemble les essais d'un forage en <strong>profil
+     pressiométrique</strong>. L'ordre suit celui des logiciels de dépouillement (ELK et
+     son module Shg Ménard, par exemple) : chaque étape a son calculateur, et tous
+     travaillent sur le même essai.</p>
+
+  <h3>L'appareil et le déroulement de l'essai</h3>
+  <p>La <strong>sonde</strong> est un cylindre dilatable à trois cellules : une
+     <strong>cellule centrale de mesure</strong>, gonflée à l'eau, et deux
+     <strong>cellules de garde</strong>, gonflées au gaz, qui l'encadrent et l'obligent à se
+     déformer en cylindre. Les sondes à gaine souple, cellules superposées, conviennent aux
+     sols mous à moyennement consistants ; les sondes à cellules emboîtées, ou protégées par
+     un tube fendu, aux sols raides et graveleux. En surface, le <strong>contrôleur
+     pression-volume</strong> (CPV) injecte l'eau et le gaz, et l'on y lit la pression au
+     manomètre et le volume injecté au volumètre, au cm³ près <span class="ref">[NF P94-110-1]</span>.</p>
+  <figure class="figure-cours" id="psSchema"></figure>
+  <p>La sonde descend dans un <strong>forage préalable</strong> exécuté avec un outil adapté
+     au terrain (tarière, carottier, tube lanterné battu dans les sables boulants sous la
+     nappe), au plus tard quelques heures après le forage, et l'essai se répète
+     <strong>à chaque mètre</strong>, sans lacune. La qualité de ce forage conditionne tout
+     le reste : une paroi remaniée ou un trou trop large écourtent la phase élastique et
+     font chuter E<sub>M</sub>, alors que p<sub>l</sub> y est beaucoup moins sensible.</p>
+  <p>On gonfle la sonde par <strong>paliers de pression égaux</strong> — 8 à 12, de
+     préférence 10, d'incrément voisin de p<sub>l</sub>/10, choisi d'après le terrain
+     traversé par le forage. Chaque palier dure 60 s, et l'on note le volume à
+     <strong>15, 30 et 60 s</strong>. L'essai s'arrête quand il compte au moins huit paliers
+     et que la pression atteint 5 MPa ou que le volume injecté dépasse 600 cm³ ; au-delà de
+     700 cm³ sur un palier, on peut l'interrompre.</p>
+  <table class="resultats"><thead><tr><th>Formation</th><th class="num">p<sub>l</sub> indicative (MPa)</th><th>Formation</th><th class="num">p<sub>l</sub> indicative (MPa)</th></tr></thead>
+    <tbody>
+      <tr><td>Vases et tourbes</td><td class="n">0,02 – 0,15</td><td>Limons</td><td class="n">0,2 – 1,5</td></tr>
+      <tr><td>Argiles molles</td><td class="n">0,05 – 0,3</td><td>Sables vaseux</td><td class="n">0,1 – 0,5</td></tr>
+      <tr><td>Argiles plastiques</td><td class="n">0,3 – 0,8</td><td>Sables et graviers</td><td class="n">1,2 – 5</td></tr>
+      <tr><td>Argiles raides</td><td class="n">0,6 – 2</td><td>Remblais récents</td><td class="n">0,05 – 0,3</td></tr>
+      <tr><td>Marnes</td><td class="n">0,6 – 4</td><td>Remblais anciens</td><td class="n">0,4 – 1</td></tr>
+      <tr><td>Sables sédimentaires</td><td class="n">1 – 5</td><td>Calcaires</td><td class="n">3 – plus de 10</td></tr>
+    </tbody></table>
+  <p class="method-note">Ordres de grandeur d'après Ménard, repris par le module de formation
+     (en bar dans l'original : 1 bar = 0,1 MPa). Ils servent à choisir l'incrément des
+     paliers avant l'essai, jamais à remplacer une mesure.</p>
+
+  <div class="calc" id="psContexte">
+    <h3>Assistant de dépouillement · l'essai à dépouiller</h3>
+    <p class="method-note">Choisir un essai d'exemple ou « Mes relevés » pour saisir les siens :
+       les étapes 1 à 8 ci-dessous le dépouillent pas à pas, et tout se recalcule à chaque
+       modification.</p>
+    <div class="data-grid">
+      <div class="field"><label for="psExemple">Essai</label>
+        <div class="input-wrap"><select id="psExemple">
+          <option value="limon">Limon à 6 m — essai complet</option>
+          <option value="tronque">Le même, arrêté au 11e palier (pl extrapolée)</option>
+          <option value="argile">Argile molle à 4 m</option>
+          <option value="marne">Marne raide à 12 m</option>
+          <option value="saisie">Mes relevés (saisie libre)</option>
+        </select></div></div>
+      <div class="field"><label for="psConv">Conventions de correction</label>
+        <div class="input-wrap"><select id="psConv">
+          <option value="norme">NF P94-110-1</option>
+          <option value="shg">comme le logiciel Shg Ménard</option>
+        </select></div></div>
+      <div class="field"><label for="psZ">Profondeur de l'essai z</label>
+        <div class="input-wrap"><input id="psZ" type="text" inputmode="decimal" value="6"><span class="unit">m</span></div></div>
+      <div class="field"><label for="psHc">Hauteur du manomètre h<sub>c</sub></label>
+        <div class="input-wrap"><input id="psHc" type="text" inputmode="decimal" value="1"><span class="unit">m</span></div></div>
+      <div class="field"><label for="psZw">Profondeur de la nappe</label>
+        <div class="input-wrap"><input id="psZw" type="text" inputmode="decimal" value="2"><span class="unit">m</span></div></div>
+      <div class="field"><label for="psGam">γ au-dessus de la nappe</label>
+        <div class="input-wrap"><input id="psGam" type="text" inputmode="decimal" value="19"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="psGsat">γ<sub>sat</sub> sous la nappe</label>
+        <div class="input-wrap"><input id="psGsat" type="text" inputmode="decimal" value="20"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="psK0">K<sub>0</sub></label>
+        <div class="input-wrap"><input id="psK0" type="text" inputmode="decimal" value="0.5"><span class="unit">—</span></div></div>
+      <div class="field"><label for="psNature">Nature du sol (pour α)</label>
+        <div class="input-wrap"><select id="psNature">
+          <option value="argile">argile</option><option value="limon" selected>limon</option>
+          <option value="sable">sable</option><option value="grave">grave</option>
+        </select></div></div>
+    </div>
+  </div>
+
+  <h3>Deux étalonnages avant chaque série d'essais</h3>
+  <p>Le manomètre et le volumètre sont au sol ; ce qui compte, c'est la pression et le
+     volume <strong>contre la paroi du forage</strong>. Deux effets parasites les séparent,
+     et chacun se mesure à part, au début de chaque poste de travail et après toute
+     modification de la sonde ou des tubulures <span class="ref">[NF P94-110-1]</span>.</p>
+  <ul>
+    <li><strong>La dilatation de l'appareillage.</strong> Sous pression, les tubulures
+        gonflent, les gaines s'écrasent, l'eau se comprime : une part du volume injecté
+        n'atteint jamais le sol. On gonfle la sonde dans un <strong>tube d'acier</strong>
+        épais : une fois la sonde plaquée contre le tube, le volume ne croît plus que par ces
+        pertes, linéairement, V = V<sub>c</sub> + a·p. La pente <strong>a</strong>
+        (cm³/MPa) doit rester sous 6 cm³/MPa pour 50 m de tubulures ; l'ordonnée à l'origine
+        V<sub>c</sub> donne le volume de la cellule au repos,
+        V<sub>s</sub> = π d<sub>i</sub>² l<sub>s</sub>/4 − V<sub>c</sub>.</li>
+    <li><strong>La résistance propre de la sonde.</strong> Même sans sol, il faut une
+        pression pour gonfler les gaines. On gonfle la sonde <strong>à l'air libre</strong>,
+        en une dizaine de paliers jusqu'à 1,2 V<sub>s</sub> : la courbe p<sub>e</sub>(V)
+        donne, pour chaque volume, la pression à retrancher. Sa valeur à 1,2 V<sub>s</sub>,
+        p<sub>el</sub>, doit rester petite devant les pressions limites attendues.</li>
+  </ul>
+
+  <div class="calc" id="psEtape1">
+    <h3>Étape 1 · Dilatation de l'appareillage (tube d'acier)</h3>
+    <p class="method-note">Une ligne par palier : p<sub>r</sub> lue (MPa) et V<sub>r</sub>
+       à 60 s (cm³), séparés par un espace, une tabulation ou un point-virgule.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="psTube">Lectures en tube</label>
+        <textarea id="psTube" rows="7" spellcheck="false"></textarea></div>
+      <div class="field"><label for="psPmin">Droite ajustée à partir de</label>
+        <div class="input-wrap"><input id="psPmin" type="text" inputmode="decimal" value="1"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="psDi">Diamètre intérieur du tube d<sub>i</sub></label>
+        <div class="input-wrap"><input id="psDi" type="text" inputmode="decimal" value="66"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="psLs">Longueur de la cellule centrale l<sub>s</sub></label>
+        <div class="input-wrap"><input id="psLs" type="text" inputmode="decimal" value="210"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="psVsImp">V<sub>s</sub> imposé (vide : calculé)</label>
+        <div class="input-wrap"><input id="psVsImp" type="text" inputmode="decimal" value=""><span class="unit">cm³</span></div></div>
+    </div>
+    <div class="figure" id="psFigTube"></div>
+    <p class="final-result" id="psOut1"></p>
+  </div>
+
+  <div class="calc" id="psEtape2">
+    <h3>Étape 2 · Résistance propre de la sonde (étalonnage à l'air libre)</h3>
+    <p class="method-note">Une ligne par palier : p<sub>r</sub> lue (MPa) et V à 60 s (cm³).
+       Si le manomètre est plus haut que la sonde, la pression dans la sonde vaut
+       p<sub>r</sub> + γ<sub>w</sub>·Δz.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="psAir">Lectures à l'air libre</label>
+        <textarea id="psAir" rows="7" spellcheck="false"></textarea></div>
+      <div class="field"><label for="psDz">Dénivelé manomètre − sonde Δz</label>
+        <div class="input-wrap"><input id="psDz" type="text" inputmode="decimal" value="0.5"><span class="unit">m</span></div></div>
+    </div>
+    <div class="figure" id="psFigAir"></div>
+    <p class="final-result" id="psOut2"></p>
+  </div>
+
+  <h3>Corriger chaque palier</h3>
+  <p>Pour chaque palier, on ramène la lecture du CPV aux conditions de la paroi. Le volume
+     perd la dilatation de l'appareillage, la pression gagne la colonne d'eau des tubulures
+     et perd la résistance de la sonde :</p>
+  <p class="formula">V = V<sub>r</sub> − a · p<sub>r</sub>&nbsp;&nbsp;·&nbsp;&nbsp;p = p<sub>r</sub> + p<sub>h</sub> − p<sub>e</sub>(V)&nbsp;&nbsp;avec&nbsp;&nbsp;p<sub>h</sub> = γ<sub>w</sub> (h<sub>c</sub> + z)
+     <span class="ref">[NF P94-110-1]</span></p>
+  <p>La pression hydrostatique p<sub>h</sub> est celle de l'eau <strong>des tubulures</strong>,
+     du manomètre (à h<sub>c</sub> au-dessus du sol) jusqu'au centre de la sonde (à la
+     profondeur z) : <strong>la nappe n'y joue aucun rôle</strong> — elle n'interviendra que
+     dans p<sub>0</sub>. La dilatation se retranche avec la pression lue, la résistance
+     propre se lit au volume corrigé. Le module de formation l'écrit sous la forme
+     P = P<sub>lue</sub> − P<sub>étalonnage</sub> + (H + h)·γ<sub>w</sub>. Le logiciel
+     Shg Ménard procède dans l'autre ordre (p<sub>e</sub> lue au volume brut, puis la
+     dilatation avec la pression corrigée, γ du liquide pris à 10 kN/m³) : l'écart ne dépasse
+     guère quelques dixièmes de cm³, mais il se voit quand on compare deux dépouillements,
+     d'où le choix des conventions dans l'assistant.</p>
+
+  <div class="calc" id="psEtape3">
+    <h3>Étapes 3 et 4 · Lectures de l'essai et corrections</h3>
+    <p class="method-note">Une ligne par palier : p<sub>r</sub> (MPa), V<sub>15</sub>,
+       V<sub>30</sub>, V<sub>60</sub> (cm³). Deux colonnes suffisent (p<sub>r</sub>,
+       V<sub>60</sub>), mais sans V<sub>30</sub> il n'y a pas de courbe de fluage.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="psReleves">Lectures au CPV</label>
+        <textarea id="psReleves" rows="10" spellcheck="false"></textarea></div>
+    </div>
+    <div class="figure" id="psFigCorr"></div>
+    <div id="psOut3"></div>
+  </div>
+
+  <h3>Trois phases, deux courbes</h3>
+  <p>La <strong>courbe pressiométrique corrigée</strong> V<sub>60</sub>(p) montre trois
+     phases. D'abord la sonde se plaque contre la paroi et <strong>resserre</strong> l'anneau
+     de sol décomprimé par le forage : le volume monte vite pour peu de pression. Puis la
+     courbe devient quasi linéaire : c'est la phase <strong>pseudo-élastique</strong>, entre
+     (p<sub>1</sub>, V<sub>1</sub>) et (p<sub>2</sub>, V<sub>2</sub>). Enfin le sol se
+     plastifie autour de la cavité, et le volume croît de plus en plus vite : c'est la phase
+     des <strong>grandes déformations</strong>.</p>
+  <p>La <strong>courbe de fluage</strong>, ΔV<sub>60/30</sub> = V<sub>60</sub> − V<sub>30</sub>
+     en fonction de p, raconte la même histoire autrement : elle décroît pendant la remise en
+     contact, reste basse et presque constante dans la phase pseudo-élastique, puis se met à
+     croître. La <strong>pression de fluage p<sub>f</sub></strong> est à cette cassure : on
+     l'obtient en coupant la droite du palier bas par celle de la branche montante.</p>
+
+  <div class="calc" id="psEtape5">
+    <h3>Étapes 5 et 6 · Phase pseudo-élastique, pression de fluage et module E<sub>M</sub></h3>
+    <p class="method-note">L'assistant propose une plage (pente ΔV/Δp minimale, fluage resté
+       bas) ; l'opérateur peut l'imposer en donnant les numéros du premier et du dernier
+       palier, comme dans les logiciels.</p>
+    <div class="data-grid">
+      <div class="field"><label for="psAuto">Plage pseudo-élastique</label>
+        <div class="input-wrap"><select id="psAuto"><option value="auto">proposée automatiquement</option><option value="manuel">imposée ci-contre</option></select></div></div>
+      <div class="field"><label for="psI1">Premier palier (p<sub>1</sub>)</label>
+        <div class="input-wrap"><input id="psI1" type="text" inputmode="numeric" value="3"><span class="unit">n°</span></div></div>
+      <div class="field"><label for="psI2">Dernier palier (p<sub>2</sub>)</label>
+        <div class="input-wrap"><input id="psI2" type="text" inputmode="numeric" value="6"><span class="unit">n°</span></div></div>
+    </div>
+    <div class="figure" id="psFigCourbe"></div>
+    <div class="figure" id="psFigFluage"></div>
+    <div id="psOut5"></div>
+  </div>
+
+  <h3>Le module pressiométrique E<sub>M</sub></h3>
+  <p>Pour une cavité cylindrique dans un milieu élastique, le module de cisaillement vaut
+     G = V·dp/dV, V étant le volume de la cavité. Ménard le prend au milieu de la phase
+     pseudo-élastique, V = V<sub>s</sub> + V<sub>m</sub>, et le convertit en module
+     d'Young avec un coefficient de Poisson <strong>ν = 0,33</strong> :</p>
+  <p class="formula">E<sub>M</sub> = 2 (1 + ν) (V<sub>s</sub> + V<sub>m</sub>) · (p<sub>2</sub> − p<sub>1</sub>) / (V<sub>2</sub> − V<sub>1</sub>)&nbsp;&nbsp;avec&nbsp;&nbsp;V<sub>m</sub> = (V<sub>1</sub> + V<sub>2</sub>)/2&nbsp;&nbsp;et&nbsp;&nbsp;2 (1 + ν) = 2,66
+     <span class="ref">[NF P94-110-1]</span></p>
+  <p>E<sub>M</sub> est un module <strong>conventionnel</strong> : mesuré sur la première
+     mise en charge d'une paroi remaniée, et déjà teinté de plasticité, il est plus faible
+     que le module du sol intact. C'est pour lui que les méthodes de tassement de Ménard ont
+     été calées, avec le coefficient α (chapitre 9). La plage [p<sub>1</sub>, p<sub>2</sub>]
+     compte au moins trois paliers et s'arrête avant p<sub>f</sub> ; l'élargir aux points de
+     remise en contact ou de la phase plastique fait chuter E<sub>M</sub>.</p>
+
+  <h3>La pression limite p<sub>l</sub></h3>
+  <p>La pression limite « vraie », celle qui ferait croître la cavité indéfiniment, ne se
+     mesure pas. On lui substitue une <strong>pression limite conventionnelle</strong> : la
+     pression pour laquelle la cavité a <strong>doublé de volume</strong> depuis le contact.
+     Au début de la phase pseudo-élastique, la cavité vaut V<sub>s</sub> + V<sub>1</sub> ; elle
+     a doublé quand le volume injecté atteint</p>
+  <p class="formula">V<sub>l</sub> = V<sub>s</sub> + 2 V<sub>1</sub></p>
+  <p>Si l'essai y arrive, p<sub>l</sub> se lit sur la courbe. Sinon, on l'extrapole à partir
+     des paliers qui suivent p<sub>f</sub>, par deux méthodes, et l'on retient la
+     <strong>plus faible</strong> :</p>
+  <ul>
+    <li><strong>l'inverse du volume</strong> : aux fortes pressions, 1/V décroît presque
+        linéairement avec p. On ajuste 1/V = A·p + B et
+        p<sub>l</sub> = (1/V<sub>l</sub> − B)/A ; la droite coupe 1/V = 0 à la pression limite
+        théorique ;</li>
+    <li><strong>l'hyperbole</strong> : avec X = (V² − V<sub>1</sub>²)/(p − p<sub>1</sub>) et
+        Y = (p V² − p<sub>1</sub> V<sub>1</sub>²)/(p − p<sub>1</sub>), les points s'alignent
+        sur Y = C·X − D, et
+        p<sub>l</sub> = [p<sub>1</sub> (V<sub>1</sub>² + D) + C (V<sub>l</sub>² − V<sub>1</sub>²)] / (V<sub>l</sub>² + D).</li>
+  </ul>
+  <p>Si les deux valeurs s'écartent de plus de <strong>20 %</strong>, l'essai ne permet pas
+     de déterminer p<sub>l</sub>. Et un essai arrêté à 5 MPa sans phase plastique ne donne
+     qu'une borne : « p<sub>l</sub> &gt; 5 MPa ». Les logiciels proposent d'autres ajustements
+     — Shg Ménard extrapole l'inverse du volume sur les trois derniers paliers, ou ajuste
+     une double hyperbole sur toute la courbe — et laissent le choix à l'expertise de
+     l'opérateur.</p>
+
+  <div class="calc" id="psEtape7">
+    <h3>Étape 7 · Pression limite</h3>
+    <div class="figure" id="psFigInverse"></div>
+    <div id="psOut7"></div>
+  </div>
+
+  <h3>Pressions nettes et rapport E<sub>M</sub>/p<sub>l</sub>*</h3>
+  <p>Comme au chapitre 1, on retranche la contrainte horizontale totale qui régnait avant
+     l'essai, p<sub>0</sub> = K<sub>0</sub>·σ'<sub>v0</sub> + u<sub>0</sub>, avec
+     K<sub>0</sub> = 0,5 à défaut de mesure <span class="ref">[F62 E.1 § 2.2,1]</span> :</p>
+  <p class="formula">p<sub>l</sub>* = p<sub>l</sub> − p<sub>0</sub>&nbsp;&nbsp;·&nbsp;&nbsp;p<sub>f</sub>* = p<sub>f</sub> − p<sub>0</sub></p>
+  <p>Le rapport E<sub>M</sub>/p<sub>l</sub>* situe l'état du sol et fixe le coefficient
+     rhéologique α (tableau du chapitre 1). Un rapport bas, sous 5 à 7, désigne un sol
+     lâche ou sous-consolidé — ou un <strong>forage de mauvaise qualité</strong> qui a
+     écrasé E<sub>M</sub> ; un rapport très élevé, au-delà de 16 à 20, un sol surconsolidé
+     ou un forage trop serré. Avant d'interpréter le sol, on interroge donc le forage.</p>
+
+  <div class="calc" id="psEtape8">
+    <h3>Étape 8 · Pressions nettes et synthèse de l'essai</h3>
+    <div id="psOut8"></div>
+  </div>
+
+  <div class="piege"><strong>Les erreurs de dépouillement les plus fréquentes</strong>
+    <ul>
+      <li>prendre la nappe, ou la seule profondeur z, pour la pression hydrostatique : c'est
+          la colonne d'eau des tubulures, h<sub>c</sub> + z ;</li>
+      <li>lire p<sub>e</sub> à la pression au lieu du volume, ou oublier la dilatation
+          a·p<sub>r</sub>, qui pèse lourd dans les sols raides ;</li>
+      <li>tracer V<sub>30</sub> au lieu de V<sub>60</sub>, ou calculer le fluage par
+          V<sub>60</sub> − V<sub>15</sub> ;</li>
+      <li>calculer E<sub>M</sub> sur une plage qui déborde sur la remise en contact ou
+          au-delà de p<sub>f</sub>, ou oublier V<sub>s</sub> dans V<sub>s</sub> + V<sub>m</sub> ;</li>
+      <li>chercher p<sub>l</sub> à V = 2 V<sub>s</sub> au lieu de V<sub>s</sub> + 2 V<sub>1</sub> ;
+          extrapoler sur des paliers antérieurs à p<sub>f</sub> ; garder la plus forte des
+          deux extrapolations ;</li>
+      <li>mélanger bar, kPa et MPa : 1 bar = 0,1 MPa = 100 kPa ;</li>
+      <li>porter p<sub>l</sub> au lieu de p<sub>l</sub>* dans les formules de calcul.</li>
+    </ul>
+  </div>
+
+  <h3>Du sondage au profil pressiométrique</h3>
+  <p>Les essais d'un forage, un par mètre, forment le <strong>sondage
+     pressiométrique</strong>. Sa feuille réunit, sur un même axe des profondeurs, la
+     coupe du terrain, l'outil de forage et la nappe, puis E<sub>M</sub> — en
+     <strong>échelle logarithmique</strong>, car il varie d'un facteur cent d'une couche à
+     l'autre —, p<sub>l</sub>* et p<sub>f</sub>*, et le rapport E<sub>M</sub>/p<sub>l</sub>*.
+     Une valeur non atteinte se note « &gt; » : c'est une borne, pas une mesure.</p>
+  <p>Le profil sert ensuite aux calculs : il découpe le terrain en couches homogènes, et
+     fournit les valeurs de calcul — p<sub>le</sub>*, moyenne géométrique de
+     p<sub>l</sub>* sous une semelle (chapitre 6) ou autour de la pointe d'un pieu
+     (chapitre 11), modules de chaque tranche pour les tassements (chapitre 9). Il révèle
+     aussi les essais douteux : un p<sub>f</sub>* supérieur à p<sub>l</sub>*, un
+     E<sub>M</sub>/p<sub>l</sub>* isolé très bas au milieu d'une couche régulière.</p>
+
+  <div class="calc" id="psProfil">
+    <h3>Un sondage complet : du relevé de chaque essai au profil</h3>
+    <p class="method-note">Le sondage d'exemple compte un essai par mètre, dépouillé par
+       l'assistant ci-dessus (mêmes étalonnages, conventions choisies plus haut). Une semelle
+       placée sur le profil donne p<sub>le</sub>*, moyenne géométrique de p<sub>l</sub>*
+       entre D et D + 1,5 B.</p>
+    <div class="data-grid">
+      <div class="field"><label for="psSite">Sondage</label>
+        <div class="input-wrap"><select id="psSite">
+          <option value="A">remblai, argile molle, sable, marne</option>
+          <option value="B">limon, grave compacte, craie altérée</option>
+        </select></div></div>
+      <div class="field"><label for="psSemB">Largeur de la semelle B</label>
+        <div class="input-wrap"><input id="psSemB" type="text" inputmode="decimal" value="2"><span class="unit">m</span></div></div>
+      <div class="field"><label for="psSemD">Profondeur de la base D</label>
+        <div class="input-wrap"><input id="psSemD" type="text" inputmode="decimal" value="1.5"><span class="unit">m</span></div></div>
+    </div>
+    <div class="figure" id="psFigProfil"></div>
+    <div id="psOutProfil"></div>
+  </div>
+
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Deux étalonnages par poste (a et V<sub>s</sub> en tube, p<sub>e</sub>(V) à l'air), trois
+       corrections par palier (p<sub>h</sub> = γ<sub>w</sub>(h<sub>c</sub> + z), p<sub>e</sub>,
+       a·p<sub>r</sub>), deux courbes (V<sub>60</sub> et le fluage), trois résultats
+       (E<sub>M</sub> sur la phase pseudo-élastique, p<sub>f</sub> à la cassure du fluage,
+       p<sub>l</sub> à V<sub>s</sub> + 2 V<sub>1</sub>), deux pressions nettes, et un profil
+       qui se lit couche par couche, en critiquant chaque essai avant de le croire.</p>
+  </div>
+</section>
+
 <!-- ══════════════════════════ CHAPITRE 4 ══════════════════════════ -->
 <section id="ch4" class="card">
   <h2>4 · Actions, combinaisons et sécurité</h2>
@@ -1745,6 +2075,7 @@ marquerSectionLue();
 <script type="module" src="src/impression.js"></script>
 <script type="module" src="src/socle.js"></script>
 <script type="module" src="src/cours-ch1.js"></script>
+<script type="module" src="src/cours-ch3.js"></script>
 <script type="module" src="src/cours-ch4.js"></script>
 <script type="module" src="src/cours-ch5.js"></script>
 <script type="module" src="src/cours-ch6.js"></script>

@@ -1,0 +1,314 @@
+// Calculateurs du chapitre 3 : l'assistant de dépouillement d'un essai
+// pressiométrique, étape par étape (étalonnages, corrections, courbes, EM, pf,
+// pl, pressions nettes), puis le profil d'un sondage complet.
+import { el, num, f, fd, esc, verdict, brancher, garde } from "./ui.js";
+import { graphe, schemaPressio, profilPressio, COULEURS } from "./figures.js";
+import * as P from "./geotech/pressio.js";
+import { alphaMenard } from "./geotech/sols.js";
+import { profilPoints } from "./geotech/outils.js";
+import { pleF62 } from "./geotech/superficielles.js";
+import { ESSAIS, TUBE, AIR, SONDE, texteReleves, texteCouples, sondage, etalonnagesExemple } from "./pressio-exemples.js";
+
+// ── Lecture des zones de saisie ──────────────────────────────────────────
+/**
+ * Tableau de nombres, une ligne par palier : séparateurs espace, tabulation ou
+ * point-virgule (virgule décimale alors acceptée), ou virgule seule (CSV).
+ * Les lignes d'en-tête (commençant par une lettre) sont ignorées.
+ */
+export function lireTableau(texte) {
+  return String(texte ?? "").split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !/^[A-Za-zÀ-ÿ#]/.test(l))
+    .map((l) => {
+      const champs = /[;\t]/.test(l) ? l.split(/[;\t]+/) : /\s/.test(l) ? l.split(/\s+/) : l.split(",");
+      return champs.map((c) => parseFloat(c.trim().replace(",", ".")));
+    })
+    .filter((r) => r.length && Number.isFinite(r[0]));
+}
+
+/** Paliers d'un essai : 4 colonnes (p, V15, V30, V60), 3 (p, V30, V60) ou 2 (p, V60). */
+function lirePaliers(texte) {
+  return lireTableau(texte).map((r) => (r.length >= 4 ? { p: r[0], V15: r[1], V30: r[2], V60: r[3] }
+    : r.length === 3 ? { p: r[0], V30: r[1], V60: r[2] } : { p: r[0], V60: r[1] }))
+    .filter((q) => Number.isFinite(q.V60));
+}
+
+// ── L'essai d'exemple choisi remplit les champs ──────────────────────────
+const CHAMPS_CONTEXTE = { psZ: "z", psHc: "hc", psZw: "zw", psGam: "gamma", psGsat: "gammaSat", psK0: "K0" };
+function chargerExemple() {
+  const cle = el("psExemple").value;
+  const ex = ESSAIS[cle];
+  if (!ex) return;
+  for (const [id, k] of Object.entries(CHAMPS_CONTEXTE)) el(id).value = String(ex.contexte[k]);
+  el("psNature").value = ex.contexte.nature;
+  el("psTube").value = texteCouples(TUBE);
+  el("psAir").value = texteCouples(AIR);
+  el("psReleves").value = texteReleves(ex.paliers());
+  el("psPmin").value = String(SONDE.pminTube);
+  el("psDi").value = String(SONDE.di);
+  el("psLs").value = String(SONDE.ls);
+  el("psDz").value = String(SONDE.dzAir);
+  el("psVsImp").value = "";
+  el("psAuto").value = "auto";
+}
+chargerExemple();
+el("psExemple").addEventListener("change", () => { chargerExemple(); majAssistant(); });
+// Toucher aux données fait passer en saisie libre (les valeurs restent).
+for (const id of ["psTube", "psAir", "psReleves", ...Object.keys(CHAMPS_CONTEXTE), "psPmin", "psDi", "psLs", "psDz", "psVsImp"]) {
+  el(id).addEventListener("input", () => { el("psExemple").value = "saisie"; });
+}
+
+// ── Figures ──────────────────────────────────────────────────────────────
+const nb = (x, c = 3) => f(x, c);
+const bornes = (vals, marge = 0.05) => {
+  const v = vals.filter(Number.isFinite);
+  const lo = Math.min(0, ...v), hi = Math.max(...v);
+  return [lo, hi + (hi - lo) * marge];
+};
+
+function figureTube(pts, tube) {
+  const [, pmax] = bornes(pts.map((q) => q.p));
+  const [, vmax] = bornes(pts.map((q) => q.V), 0.12);
+  return graphe({
+    largeur: 560, hauteur: 250, xmin: 0, xmax: pmax, ymin: 0, ymax: vmax, xlabel: "pression lue pr (MPa)", ylabel: "volume Vr (cm³)",
+    zones: tube.applicable ? [{ x0: tube.pmin, x1: pmax, y0: 0, y1: vmax, couleur: COULEURS.bleu, opacite: 0.07, libelle: "partie droite ajustée", position: "droite" }] : [],
+    series: [
+      { points: pts.map((q) => [q.p, q.V]), couleur: COULEURS.trait, marqueurs: true, epaisseur: 1.4, libelle: "lectures en tube" },
+      ...(tube.applicable ? [{ points: [[0, tube.Vc], [pmax, tube.Vc + tube.a * pmax]], couleur: COULEURS.bleu, tirets: "6 4", libelle: `V = ${nb(tube.Vc, 4)} + ${nb(tube.a, 3)} p` }] : []),
+    ],
+    marques: tube.applicable ? [{ x: 0, y: tube.Vc, couleur: COULEURS.bleu, libelle: `Vc = ${nb(tube.Vc, 4)} cm³`, rayon: 4 }] : [],
+  });
+}
+
+function figureAir(air, Vs) {
+  const t = air.table;
+  const vmax = Math.max(t[t.length - 1][0], 1.2 * Vs) * 1.05;
+  const pmax = Math.max(...t.map((r) => r[1])) * 1.15;
+  return graphe({
+    largeur: 560, hauteur: 250, xmin: 0, xmax: vmax, ymin: 0, ymax: pmax, xlabel: "volume injecté V (cm³)", ylabel: "pe (MPa)",
+    series: [{ points: t, couleur: COULEURS.f62, marqueurs: true, libelle: "résistance propre de la sonde pe(V)" }],
+    marques: air.pel ? [{ x: 1.2 * Vs, y: air.pel, couleur: COULEURS.rouge, guides: true, libelle: `pel = ${nb(air.pel, 3)} MPa à 1,2 Vs` }] : [],
+  });
+}
+
+/** Lectures brutes Vr(pr) et courbe corrigée V(p) superposées : l'effet des corrections se voit. */
+function figureCorrections(paliers, courbe) {
+  const brut = paliers.map((q) => [q.p, q.V60]);
+  const [, xmax] = bornes([...brut.map((b) => b[0]), ...courbe.map((q) => q.p)]);
+  const [, ymax] = bornes([...brut.map((b) => b[1]), ...courbe.map((q) => q.V)]);
+  return graphe({
+    largeur: 560, hauteur: 260, xmin: 0, xmax, ymin: 0, ymax, xlabel: "pression (MPa)", ylabel: "volume (cm³)",
+    series: [
+      { points: brut, couleur: COULEURS.discret, tirets: "5 4", marqueurs: true, epaisseur: 1.4, libelle: "lectures brutes Vr(pr)" },
+      { points: courbe.map((q) => [q.p, q.V]), couleur: COULEURS.bleu, marqueurs: true, libelle: "courbe corrigée V(p)" },
+    ],
+  });
+}
+
+function figureCourbe(r, Vs) {
+  const c = r.courbe, ph = r.phase, lim = r.limite;
+  const pMax = Math.max(...c.map((q) => q.p), lim.applicable && lim.pl < 2 * c[c.length - 1].p ? lim.pl : 0) * 1.06;
+  const vHaut = Math.max(...c.map((q) => q.V), lim.Vl ?? 0) * 1.08;
+  const series = [
+    { points: c.map((q) => [q.p, q.V]), couleur: COULEURS.bleu, marqueurs: true, libelle: "courbe corrigée V60(p)" },
+    { points: [[ph.p1, ph.V1], [ph.p2, ph.V2]], couleur: COULEURS.ec7, epaisseur: 3.2, libelle: `plage de EM (paliers ${ph.i1 + 1} à ${ph.i2 + 1})` },
+  ];
+  if (lim.applicable && lim.extrapolee && lim.hyperbole?.applicable && lim.hyperbole.courbe) {
+    const der = c[c.length - 1];
+    const pts = [];
+    for (let V = der.V; V <= lim.Vl * 1.001; V += (lim.Vl - der.V) / 30) pts.push([lim.hyperbole.courbe(V), V]);
+    series.push({ points: pts, couleur: COULEURS.f62, tirets: "5 4", libelle: "prolongement hyperbolique" });
+  }
+  if (lim.Vl) series.push({ points: [[0, lim.Vl], [pMax, lim.Vl]], couleur: COULEURS.rouge, tirets: "2 3", epaisseur: 1.4, libelle: `Vl = Vs + 2V1 = ${nb(lim.Vl, 4)} cm³` });
+  const marques = [
+    { x: ph.p1, y: ph.V1, couleur: COULEURS.ec7, libelle: "p1, V1", rayon: 4 },
+    { x: ph.p2, y: ph.V2, couleur: COULEURS.ec7, libelle: "p2, V2", rayon: 4 },
+  ];
+  if (lim.applicable) marques.push({ x: lim.pl, y: lim.Vl, couleur: COULEURS.rouge, guides: true, libelle: `pl = ${nb(lim.pl, 3)} MPa` });
+  return graphe({
+    largeur: 560, hauteur: 300, xmin: 0, xmax: pMax, ymin: 0, ymax: vHaut, xlabel: "pression corrigée p (MPa)", ylabel: "volume corrigé V (cm³)",
+    zones: [
+      { x0: 0, x1: ph.p1, y0: 0, y1: vHaut, couleur: COULEURS.discret, opacite: 0.06, libelle: "remise en contact", position: "gauche" },
+      { x0: ph.p1, x1: ph.p2, y0: 0, y1: vHaut, couleur: COULEURS.ec7, opacite: 0.08, libelle: "pseudo-élastique", position: "gauche" },
+      { x0: ph.p2, x1: pMax, y0: 0, y1: vHaut, couleur: COULEURS.rouge, opacite: 0.05, libelle: "grandes déformations", position: "gauche" },
+    ],
+    series, marques,
+  });
+}
+
+function figureFluage(r) {
+  const c = r.courbe.filter((q) => Number.isFinite(q.fluage));
+  if (c.length < 3) return "";
+  const pMax = Math.max(...c.map((q) => q.p)) * 1.05;
+  const fMax = Math.max(...c.map((q) => q.fluage)) * 1.2;
+  const series = [{ points: c.map((q) => [q.p, q.fluage]), couleur: COULEURS.violet, marqueurs: true, libelle: "fluage ΔV60/30 = V60 − V30" }];
+  const fl = r.fluage;
+  if (fl.bas && fl.haut) {
+    const droite = (d, a, b) => [[a, d.a + d.b * a], [b, d.a + d.b * b]];
+    series.push({ points: droite(fl.bas, 0, pMax), couleur: COULEURS.ec7, tirets: "6 4", epaisseur: 1.4, libelle: "droite du palier bas" });
+    series.push({ points: droite(fl.haut, r.phase.p1, pMax), couleur: COULEURS.rouge, tirets: "6 4", epaisseur: 1.4, libelle: "droite de la branche montante" });
+  }
+  const marques = [{ x: r.pf, y: fl.bas ? fl.bas.a + fl.bas.b * r.pf : 0, couleur: COULEURS.rouge, guides: true, libelle: `pf = ${nb(r.pf, 3)} MPa` }];
+  return graphe({
+    largeur: 560, hauteur: 240, xmin: 0, xmax: pMax, ymin: 0, ymax: fMax, xlabel: "pression corrigée p (MPa)", ylabel: "ΔV60/30 (cm³)",
+    series, marques,
+  });
+}
+
+function figureInverse(r) {
+  const c = r.courbe.slice(r.phase.i1), lim = r.limite;
+  if (!lim.Vl) return "";
+  const pts = c.map((q) => [q.p, 1000 / q.V]);
+  const pMax = Math.max(...c.map((q) => q.p), lim.applicable ? lim.pl : 0) * 1.08;
+  const series = [{ points: pts, couleur: COULEURS.trait, marqueurs: true, epaisseur: 1.2, libelle: "1000/V des paliers" }];
+  const inv = lim.inverse;
+  if (inv?.applicable) {
+    const a = r.pf * 0.9;
+    series.push({ points: [[a, 1000 * (inv.B + inv.A * a)], [pMax, 1000 * (inv.B + inv.A * pMax)]], couleur: COULEURS.bleu, tirets: "6 4", libelle: "droite 1/V = A p + B (paliers plastiques)" });
+  }
+  series.push({ points: [[0, 1000 / lim.Vl], [pMax, 1000 / lim.Vl]], couleur: COULEURS.rouge, tirets: "2 3", epaisseur: 1.4, libelle: "1/Vl" });
+  const yMax = Math.max(...pts.map((q) => q[1])) * 1.1;
+  return graphe({
+    largeur: 560, hauteur: 240, xmin: 0, xmax: pMax, ymin: 0, ymax: Math.max(yMax, (1000 / lim.Vl) * 1.3), xlabel: "pression corrigée p (MPa)", ylabel: "1/V (10⁻³ cm⁻³)",
+    series,
+    marques: lim.applicable ? [{ x: lim.pl, y: 1000 / lim.Vl, couleur: COULEURS.rouge, libelle: lim.extrapolee ? "pl extrapolée" : "pl lue" }] : [],
+  });
+}
+
+// ── L'assistant ──────────────────────────────────────────────────────────
+const majAssistant = garde("psOut8", () => {
+  const z = num("psZ"), hc = num("psHc", 0), zw = num("psZw", Infinity), g = num("psGam", 18), gs = num("psGsat", g), K0 = num("psK0", 0.5);
+  const convention = el("psConv").value;
+  el("psSchema").innerHTML = schemaPressio({ z: z > 0 ? z : 6, hc: hc >= 0 ? hc : 1, zw: Number.isFinite(zw) ? zw : 99 });
+
+  // Étape 1 : tube.
+  const ptsTube = lireTableau(el("psTube").value).filter((r) => r.length >= 2).map(([p, V]) => ({ p, V }));
+  const tube = P.calibrageAppareil(ptsTube, { pmin: num("psPmin", null), di: num("psDi", null), ls: num("psLs", null) });
+  const VsImp = num("psVsImp");
+  const Vs = VsImp > 0 ? VsImp : tube.Vs > 0 ? tube.Vs : 535;
+  const a = tube.applicable ? tube.a : 0;
+  el("psFigTube").innerHTML = ptsTube.length >= 2 ? figureTube(ptsTube, tube) : "";
+  el("psOut1").innerHTML = tube.applicable
+    ? `a = <strong>${fd(tube.a, 3)} cm³/MPa</strong> ${verdict(tube.a < 6, "< 6 cm³/MPa", "≥ 6 cm³/MPa : tubulures à vérifier")}
+       · V<sub>c</sub> = ${fd(tube.Vc, 2)} cm³ <small>(droite sur ${tube.points} paliers, R² = ${fd(tube.r2, 4)})</small><br>
+       ${tube.Vtube ? `V<sub>s</sub> = π d<sub>i</sub>² l<sub>s</sub>/4 − V<sub>c</sub> = ${fd(tube.Vtube, 2)} − ${fd(tube.Vc, 2)} = <strong>${fd(tube.Vs, 2)} cm³</strong>` : ""}
+       ${VsImp > 0 ? `<br>V<sub>s</sub> imposé : <strong>${fd(VsImp, 1)} cm³</strong>` : ""}`
+    : `${esc(tube.motif ?? "Saisir les lectures en tube.")} Sans dilatation connue, a = 0.`;
+
+  // Étape 2 : air.
+  const ptsAir = lireTableau(el("psAir").value).filter((r) => r.length >= 2).map(([p, V]) => ({ p, V }));
+  const air = P.etalonnageSonde(ptsAir, { dz: num("psDz", 0), Vs, gammaW: P.CONVENTIONS[convention].gammaW });
+  const pe = air.applicable ? air.pe : () => 0;
+  el("psFigAir").innerHTML = air.applicable ? figureAir(air, Vs) : "";
+  el("psOut2").innerHTML = air.applicable
+    ? `p<sub>e</sub> = p<sub>r</sub> + γ<sub>w</sub>·Δz, interpolée entre ${air.table.length} points ;
+       p<sub>el</sub> = p<sub>e</sub>(1,2 V<sub>s</sub> = ${fd(1.2 * Vs, 0)} cm³) = <strong>${fd(air.pel, 3)} MPa</strong>
+       ${air.Vmax < 1.2 * Vs ? `<br><span class="verdict ko">étalonnage trop court</span> <small>il s'arrête à ${fd(air.Vmax, 0)} cm³ : p<sub>e</sub> est extrapolée au-delà</small>` : ""}`
+    : "Saisir l'étalonnage à l'air libre (sans lui, p<sub>e</sub> = 0).";
+
+  // Étapes 3 à 8.
+  const paliers = lirePaliers(el("psReleves").value);
+  const manuel = el("psAuto").value === "manuel";
+  const choix = manuel ? { i1: Math.round(num("psI1")) - 1, i2: Math.round(num("psI2")) - 1 } : {};
+  const r = P.depouiller({ paliers, Vs, z, hc, pe, a, sol: { zw, gamma: g, gammaSat: gs, K0 }, choix, pel: air.pel, convention });
+  if (!r.applicable) {
+    for (const id of ["psFigCorr", "psFigCourbe", "psFigFluage", "psFigInverse"]) el(id).innerHTML = "";
+    for (const id of ["psOut3", "psOut5", "psOut7"]) el(id).innerHTML = "";
+    el("psOut8").innerHTML = `<p class="final-result">${verdict(false, "", "dépouillement impossible")} ${esc(r.motif)}</p>`;
+    return;
+  }
+  if (!manuel) { el("psI1").value = String(r.phase.i1 + 1); el("psI2").value = String(r.phase.i2 + 1); }
+  const brut = new Map(paliers.map((q, i) => [i + 1, q.V60]));
+  const c = r.courbe, pt = P.pentes(c);
+
+  // Étapes 3 et 4 : table des corrections.
+  el("psFigCorr").innerHTML = figureCorrections(paliers, c);
+  el("psOut3").innerHTML = `
+    <p class="method-note">p<sub>h</sub> = γ<sub>w</sub> (h<sub>c</sub> + z) = ${f(P.CONVENTIONS[convention].gammaW, 3)} × ${fd(hc + z, 2)} / 1000 = <strong>${fd(c[0].ph, 4)} MPa</strong>
+      · a = ${fd(a, 3)} cm³/MPa · V<sub>s</sub> = ${fd(Vs, 1)} cm³ · conventions : ${esc(P.CONVENTIONS[convention].nom)}</p>
+    <div class="table-large"><table class="resultats"><thead><tr><th>n°</th><th class="num">p<sub>r</sub></th><th class="num">V<sub>60</sub> lu</th>
+      <th class="num">p<sub>e</sub></th><th class="num">p corrigée</th><th class="num">V corrigé</th><th class="num">ΔV<sub>60/30</sub></th><th class="num">ΔV/Δp</th></tr></thead><tbody>
+      ${c.map((q, i) => `<tr${i >= r.phase.i1 && i <= r.phase.i2 ? ' class="ligne-retenue"' : ""}><td>${q.n}</td><td class="n">${fd(q.pr, 3)}</td><td class="n">${fd(brut.get(q.n), 1)}</td>
+        <td class="n">${fd(q.pe, 4)}</td><td class="n">${fd(q.p, 4)}</td><td class="n">${fd(q.V, 1)}</td><td class="n">${Number.isFinite(q.fluage) ? fd(q.fluage, 1) : "—"}</td>
+        <td class="n">${i ? f(pt[i - 1], 4) : ""}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="method-note">Pressions en MPa, volumes en cm³, pentes en cm³/MPa. En vert, la plage retenue pour E<sub>M</sub>.</p>`;
+
+  // Étapes 5 et 6 : courbe, fluage, EM.
+  el("psFigCourbe").innerHTML = figureCourbe(r, Vs);
+  el("psFigFluage").innerHTML = figureFluage(r);
+  const ph = r.phase;
+  el("psOut5").innerHTML = `
+    <p class="final-result">E<sub>M</sub> = 2,66 × (V<sub>s</sub> + V<sub>m</sub>) × Δp/ΔV = 2,66 × (${fd(Vs, 1)} + ${fd(r.Vm, 1)}) × ${fd(ph.p2 - ph.p1, 4)}/${fd(ph.V2 - ph.V1, 1)}
+      = <strong>${fd(r.EM, 2)} MPa</strong>
+      <small>plage ${ph.auto ? "proposée" : "imposée"} : paliers ${ph.i1 + 1} à ${ph.i2 + 1} (${ph.nPoints} points), p<sub>1</sub> = ${fd(ph.p1, 3)} MPa, V<sub>1</sub> = ${fd(ph.V1, 1)} cm³,
+      p<sub>2</sub> = ${fd(ph.p2, 3)} MPa, V<sub>2</sub> = ${fd(ph.V2, 1)} cm³ · G = E<sub>M</sub>/2,66 = ${fd(r.G, 2)} MPa</small></p>
+    <p class="final-result">p<sub>f</sub> = <strong>${fd(r.pf, 3)} MPa</strong> <small>${esc(r.fluage.methode)}${r.fluage.pfi ? ` (cassure à ${fd(r.fluage.pfi, 3)} MPa)` : ""}${r.fluage.motif ? " — " + esc(r.fluage.motif) : ""}</small>
+      ${ph.nPoints < 3 ? `<br>${verdict(false, "", "moins de trois paliers dans la plage")}` : ""}
+      ${ph.p2 > r.pf + 1e-9 ? `<br>${verdict(false, "", "p2 dépasse pf")}` : ""}</p>`;
+
+  // Étape 7 : pl.
+  const lim = r.limite;
+  el("psFigInverse").innerHTML = figureInverse(r);
+  const ligneMethode = (nom, m) => (m?.applicable ? `<tr><td>${nom}</td><td class="n">${fd(m.pl, 3)} MPa</td><td class="motif">R² = ${fd(m.r2, 4)}</td></tr>` : "");
+  el("psOut7").innerHTML = `
+    <p class="final-result">V<sub>l</sub> = V<sub>s</sub> + 2 V<sub>1</sub> = ${fd(Vs, 1)} + 2 × ${fd(ph.V1, 1)} = ${fd(lim.Vl, 1)} cm³ ·
+      ${lim.applicable ? `p<sub>l</sub> = <strong>${fd(lim.pl, 3)} MPa</strong> <small>${esc(lim.methode)}${lim.entre ? ` entre les paliers ${lim.entre[0]} et ${lim.entre[1]}` : ""}</small>`
+        : `${verdict(false, "", "p<sub>l</sub> non déterminée")} <small>${esc(lim.motif)}</small>`}</p>
+    ${lim.extrapolee ? `<table class="resultats"><thead><tr><th>Extrapolation (paliers ${lim.points.join(", ")})</th><th class="num">p<sub>l</sub></th><th>Ajustement</th></tr></thead><tbody>
+      ${ligneMethode("inverse du volume", lim.inverse)}${ligneMethode("hyperbole", lim.hyperbole)}
+      ${lim.ecart !== null && lim.ecart !== undefined ? `<tr><td>écart entre les deux</td><td class="n">${fd(100 * lim.ecart, 1)} %</td><td class="motif">${verdict(lim.ecart <= 0.2, "≤ 20 %", "> 20 %")}</td></tr>` : ""}
+    </tbody></table>` : ""}`;
+
+  // Étape 8 : pressions nettes, classement, avertissements.
+  const nature = el("psNature").value;
+  const al = Number.isFinite(r.plNette) && r.plNette > 0 ? alphaMenard(nature, r.EM, r.plNette) : null;
+  el("psOut8").innerHTML = `
+    <table class="resultats"><thead><tr><th>Grandeur</th><th class="num">Valeur</th></tr></thead><tbody>
+      <tr><td>σ<sub>v0</sub> · u<sub>0</sub> · σ'<sub>v0</sub></td><td class="n">${f(r.contraintes.sigmaV, 4)} · ${f(r.contraintes.u, 3)} · ${f(r.contraintes.sigmaVeff, 4)} kPa</td></tr>
+      <tr><td>p<sub>0</sub> = K<sub>0</sub> σ'<sub>v0</sub> + u<sub>0</sub></td><td class="n">${fd(r.p0 * 1000, 1)} kPa</td></tr>
+      <tr><td><strong>E<sub>M</sub></strong></td><td class="n"><strong>${fd(r.EM, 2)} MPa</strong></td></tr>
+      <tr><td><strong>p<sub>f</sub>* = p<sub>f</sub> − p<sub>0</sub></strong></td><td class="n"><strong>${fd(r.pfNette, 3)} MPa</strong></td></tr>
+      <tr><td><strong>p<sub>l</sub>* = p<sub>l</sub> − p<sub>0</sub></strong></td><td class="n"><strong>${Number.isFinite(r.plNette) ? fd(r.plNette, 3) + " MPa" : "—"}</strong></td></tr>
+      <tr><td>E<sub>M</sub>/p<sub>l</sub>* · p<sub>l</sub>/p<sub>f</sub></td><td class="n">${fd(r.rapport, 2)} · ${fd(r.rapportLimFluage, 2)}</td></tr>
+      ${al ? `<tr><td>État du sol (${esc(nature)}) · α</td><td class="n">${esc(al.etat)} · α = ${fd(al.alpha, 2)}${al.dansTableau ? "" : " <small>rapport sous les tableaux</small>"}</td></tr>` : ""}
+    </tbody></table>
+    ${r.avertissements.length ? `<p class="method-note"><strong>À vérifier :</strong> ${r.avertissements.map(esc).join(" ; ")}.</p>` : `<p class="method-note">Aucune anomalie relevée par les contrôles automatiques.</p>`}`;
+});
+
+// Imposer un palier fait passer la plage en mode manuel (avant le recalcul).
+for (const id of ["psI1", "psI2"]) el(id).addEventListener("input", () => { el("psAuto").value = "manuel"; majAssistant(); });
+brancher(["psConv", "psZ", "psHc", "psZw", "psGam", "psGsat", "psK0", "psNature", "psTube", "psPmin", "psDi", "psLs", "psVsImp",
+  "psAir", "psDz", "psReleves", "psAuto"], majAssistant);
+
+// ── Le sondage complet ───────────────────────────────────────────────────
+const majProfil = garde("psOutProfil", () => {
+  const s = sondage(el("psSite").value);
+  const { pe, a, Vs } = etalonnagesExemple();
+  const convention = el("psConv").value;
+  const res = s.essais.map((e) => {
+    const r = P.depouiller({ paliers: e.paliers, Vs, z: e.z, hc: 1, pe, a, sol: { zw: s.zw, couches: s.poids, K0: 0.5 }, convention });
+    const al = r.applicable && r.plNette > 0 ? alphaMenard(e.nature, r.EM, r.plNette) : null;
+    return { ...e, r, al };
+  });
+  const essais = res.filter((e) => e.r.applicable).map((e) => ({ z: e.z, EM: e.r.EM, plNette: e.r.plNette, pfNette: e.r.pfNette }));
+  const B = num("psSemB"), D = num("psSemD");
+  let bande = [], ple = null;
+  const pts = essais.filter((e) => e.plNette > 0).map((e) => ({ z: e.z, v: e.plNette }));
+  if (B > 0 && D >= 0 && pts.length >= 2) {
+    ple = pleF62({ profil: profilPoints(pts, { log: true }), D, B });
+    bande = [{ z0: ple.z0, z1: ple.z1, libelle: `D à D + 1,5 B` }];
+  }
+  const seuils = s.couches.map((c) => ({ z0: c.z0, z1: c.z1, valeurs: c.nature === "argile" ? [9, 16] : c.nature === "limon" ? [8, 14] : c.nature === "grave" ? [6, 10] : [7, 12] }));
+  el("psFigProfil").innerHTML = profilPressio({ couches: s.couches, essais, seuils, bandes: bande, largeur: 640, hauteur: 480 });
+  el("psOutProfil").innerHTML = `
+    ${ple ? `<p class="final-result">Semelle B = ${fd(B, 2)} m à D = ${fd(D, 2)} m : p<sub>le</sub>* = moyenne géométrique de p<sub>l</sub>* entre ${fd(ple.z0, 2)} et ${fd(ple.z1, 2)} m
+      = <strong>${fd(ple.ple, 3)} MPa</strong> <small>interpolation entre les essais en échelle logarithmique ; c'est la valeur qu'utilise le chapitre 6.</small></p>` : ""}
+    <div class="table-large"><table class="resultats"><thead><tr><th>z (m)</th><th>Couche</th><th class="num">E<sub>M</sub></th><th class="num">p<sub>f</sub>*</th>
+      <th class="num">p<sub>l</sub>*</th><th class="num">E<sub>M</sub>/p<sub>l</sub>*</th><th>État · α</th><th>p<sub>l</sub></th></tr></thead><tbody>
+      ${res.map((e) => (e.r.applicable ? `<tr><td>${fd(e.z, 1)}</td><td class="motif">${esc(e.couche)}</td><td class="n">${fd(e.r.EM, 1)}</td><td class="n">${fd(e.r.pfNette, 2)}</td>
+        <td class="n">${fd(e.r.plNette, 2)}</td><td class="n">${fd(e.r.rapport, 1)}</td><td class="motif">${e.al ? `${esc(e.al.etat)} · ${fd(e.al.alpha, 2)}` : "—"}</td>
+        <td class="motif">${e.r.limite.extrapolee ? "extrapolée" : "lue"}${e.r.avertissements.length ? ` <span title="${esc(e.r.avertissements.join(" ; "))}">⚠</span>` : ""}</td></tr>`
+        : `<tr><td>${fd(e.z, 1)}</td><td class="motif">${esc(e.couche)}</td><td colspan="6" class="motif">${esc(e.r.motif)}</td></tr>`)).join("")}
+    </tbody></table></div>
+    <p class="method-note">E<sub>M</sub>, p<sub>f</sub>* et p<sub>l</sub>* en MPa. Chaque essai du sondage a été dépouillé par l'assistant ci-dessus, avec les étalonnages de la sonde d'exemple ; ⚠ signale un essai que les contrôles automatiques invitent à relire.</p>`;
+});
+brancher(["psSite", "psSemB", "psSemD", "psConv"], majProfil);
