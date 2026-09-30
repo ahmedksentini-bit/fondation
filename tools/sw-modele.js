@@ -32,6 +32,39 @@ self.addEventListener("message", (e) => {
   if (e.data?.type === "version") e.ports?.[0]?.postMessage({ version: VERSION });
 });
 
+// Cloudflare Pages redirige /cours.html vers /cours (et /index.html vers /).
+// Une réponse issue d'une redirection ne peut pas servir une navigation : le
+// navigateur la refuse et affiche une erreur réseau. On la recopie donc en
+// réponse « propre » avant de la rendre depuis le cache.
+const propre = (r) => (r && r.redirected
+  ? r.blob().then((corps) => new Response(corps, { status: r.status, statusText: r.statusText, headers: r.headers }))
+  : r);
+
+/** La même page sous son autre forme d'adresse : /cours ↔ /cours.html, / ↔ /index.html. */
+function variantes(url) {
+  const p = new URL(url).pathname;
+  if (p.endsWith("/")) return [p + "index.html"];
+  if (p.endsWith("/index.html")) return [p.slice(0, -"index.html".length)];
+  if (p.endsWith(".html")) return [p.slice(0, -".html".length)];
+  if (!/\.[a-z0-9]+$/i.test(p)) return [p + ".html"];
+  return [];
+}
+
+async function depuisLeCache(request) {
+  const direct = await caches.match(request);
+  if (direct) return propre(direct);
+  // Le repli ne vaut QUE pour une navigation : servir du HTML à la place d'un
+  // .json ou d'un .js transformerait une panne réseau franche en erreur
+  // d'analyse muette au fond d'un module.
+  if (request.mode !== "navigate") return null;
+  for (const v of variantes(request.url)) {
+    const r = await caches.match(v);
+    if (r) return propre(r);
+  }
+  const accueil = (await caches.match("./")) ?? (await caches.match("./index.html"));
+  return accueil ? propre(accueil) : null;
+}
+
 self.addEventListener("fetch", (e) => {
   const { request } = e;
   if (request.method !== "GET") return;
@@ -40,20 +73,16 @@ self.addEventListener("fetch", (e) => {
   e.respondWith(
     fetch(request)
       .then((reponse) => {
+        // Une redirection (réponse opaque, statut 0) n'est pas mise en cache :
+        // le navigateur la suit, et c'est l'adresse finale qui sera gardée.
         if (reponse && reponse.ok) {
           const copie = reponse.clone();
           caches.open(VERSION).then((c) => c.put(request, copie));
         }
         return reponse;
       })
-      .catch(() => caches.match(request).then((c) => {
-        if (c) return c;
-        // Le repli sur l'accueil ne vaut QUE pour une navigation : servir du
-        // HTML à la place d'un .json ou d'un .js transformerait une panne
-        // réseau franche en erreur d'analyse muette au fond d'un module.
-        if (request.mode === "navigate") return caches.match("./index.html");
-        return new Response(`Ressource indisponible hors ligne : ${new URL(request.url).pathname}`,
-          { status: 504, statusText: "Hors ligne", headers: { "Content-Type": "text/plain" } });
-      }))
+      .catch(async () => (await depuisLeCache(request))
+        ?? new Response(`Ressource indisponible hors ligne : ${new URL(request.url).pathname}`,
+          { status: 504, statusText: "Hors ligne", headers: { "Content-Type": "text/plain" } }))
   );
 });

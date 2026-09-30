@@ -69,11 +69,26 @@ test("le service worker précharge tout ce que les pages utilisent", () => {
 });
 
 test("hors ligne, une donnée absente ne se déguise pas en page d'accueil", () => {
-  assert.match(lire("sw.js"), /request\.mode === "navigate"/, "le repli sur la coquille doit être réservé aux navigations");
+  assert.match(lire("sw.js"), /request\.mode [!=]== "navigate"/, "le repli sur la coquille doit être réservé aux navigations");
   assert.match(lire("src/donnees.js"), /\^\\s\*</, "chargerJson doit détecter une réponse HTML");
   for (const f of fichiers("src").filter((x) => x.endsWith(".js") && !x.endsWith("donnees.js"))) {
     assert.ok(!/fetch\([^)]*\)\s*\.then\(\s*\(?r\)?\s*=>\s*r\.json\(\)/.test(lire(f)), `${f} décode du JSON sans passer par chargerJson`);
   }
+});
+
+test("hors ligne, une page redirigée par l'hébergeur reste servie", () => {
+  // Cloudflare Pages redirige /cours.html vers /cours : une réponse redirigée
+  // mise en cache doit être recopiée avant de servir une navigation, et les
+  // deux formes d'adresse doivent être préchargées.
+  const sw = lire("sw.js");
+  assert.match(sw, /r\.redirected/, "le service worker doit nettoyer les réponses redirigées");
+  for (const p of ["cours", "exerciseur", "bureau"]) assert.ok(sw.includes(`"./${p}"`), `forme /${p} absente de la coquille`);
+});
+
+test("une adresse inconnue répond par une vraie page 404", () => {
+  const html = lire("404.html");
+  assert.match(html, /href="\/styles\.css"/, "la page 404 doit charger ses styles en chemin absolu (elle peut être servie à toute profondeur)");
+  assert.match(html, /href="\/"/, "lien vers l'accueil");
 });
 
 test("chaque chapitre annoncé a sa section de cours et sa banque complète", () => {

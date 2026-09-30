@@ -11,7 +11,11 @@ ancien = open("sw.js", encoding="utf-8").read() if os.path.exists("sw.js") else 
 m = re.search(r'const VERSION = "([^"]+)"', ancien)
 version = sys.argv[1] if len(sys.argv) > 1 else (m.group(1) if m else "fond-v1")
 
+# Les pages sous leurs deux formes d'adresse : Cloudflare Pages sert /cours et
+# redirige /cours.html ; le serveur local ne connaît que /cours.html. La forme
+# absente échoue à l'installation sans conséquence (Promise.allSettled).
 pages = ["./", "./index.html", "./cours.html", "./exerciseur.html", "./bureau.html",
+         "./cours", "./exerciseur", "./bureau",
          "./styles.css", "./enhancements.css", "./site.css", "./assets/icon.svg", "./manifest.webmanifest"]
 modules = []
 for dossier, _, fichiers in os.walk("src"):

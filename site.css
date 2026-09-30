@@ -114,6 +114,8 @@ a.brand strong,a.brand small{text-decoration:none}
 .exo-explication{margin:10px 0 0;padding:12px 14px;border-left:4px solid var(--cyan);border-radius:0 10px 10px 0;background:#ecfeff;font-size:14px}
 .exo-score{margin-top:18px;padding:15px;border-radius:12px;background:#f0fdf4;color:#166534;font-weight:900}
 .exo-score.faible{background:#fef2f2;color:#991b1b}
+/* Sur téléphone, les trois modes se partagent la largeur au lieu de déborder. */
+@media(max-width:560px){.exo-modes{width:100%}.exo-modes button{flex:1 1 auto;padding:8px 6px;font-size:13.5px}}
 .exo-barre{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}
 .exo-barre .exo-modes{margin:0}
 .exo-barre .exam-clock{margin:0;font-variant-numeric:tabular-nums}
