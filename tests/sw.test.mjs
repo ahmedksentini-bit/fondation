@@ -23,14 +23,15 @@ function monter({ cache = {}, enLigne = false, appels = [] }) {
   const ecouteurs = {};
   const cle = (x) => new URL(typeof x === "string" ? x : x.url, `${ORIGINE}/sw.js`).pathname;
   const contexte = {
-    self: null, location: { origin: ORIGINE }, URL, Response, Headers, Blob, Promise, console,
+    self: null, location: { origin: ORIGINE }, URL, Request, Response, Headers, Blob, Promise, console,
     caches: {
       match: async (x) => cache[cle(x)] ?? undefined,
       open: async () => ({ put: async () => {}, add: async () => {} }),
       keys: async () => [], delete: async () => true,
     },
     fetch: async (requete, init = {}) => {
-      appels.push({ url: typeof requete === "string" ? requete : requete.url, cache: init.cache ?? "default" });
+      appels.push({ url: typeof requete === "string" ? requete : requete.url,
+        cache: init.cache ?? requete.cache ?? "default", requete });
       if (!enLigne) throw new TypeError("Failed to fetch");
       return new Response("réseau", { status: 200 });
     },
@@ -38,9 +39,12 @@ function monter({ cache = {}, enLigne = false, appels = [] }) {
   contexte.self = { addEventListener: (type, f) => { ecouteurs[type] = f; }, skipWaiting: () => {}, clients: { claim: async () => {} } };
   vm.createContext(contexte);
   vm.runInContext(source, contexte);
-  return async (chemin, mode = "navigate") => {
+  return async (chemin, mode = "navigate", entetes = {}) => {
     let promesse = null;
-    ecouteurs.fetch({ request: { method: "GET", url: `${ORIGINE}${chemin}`, mode }, respondWith: (p) => { promesse = p; } });
+    const url = `${ORIGINE}${chemin}`;
+    // Une requête de navigation ne se construit pas (mode interdit) : on la simule.
+    const request = mode === "navigate" ? { method: "GET", url, mode } : new Request(url, { mode, headers: entetes });
+    ecouteurs.fetch({ request, respondWith: (p) => { promesse = p; } });
     return promesse;
   };
 }
@@ -85,4 +89,12 @@ test("en ligne : scripts et données sont revalidés, pas lus dans le cache HTTP
   assert.equal(appels[0].cache, "no-cache");
   assert.equal(appels[1].cache, "no-cache");
   assert.equal(appels[2].cache, "default", "une navigation garde sa requête d'origine");
+});
+
+test("en ligne : une lecture partielle garde son en-tête Range", async () => {
+  const appels = [];
+  const servir = monter({ enLigne: true, appels });
+  await servir("/polycopie/fondations-polycopie.pdf", "cors", { Range: "bytes=0-65535" });
+  assert.equal(appels[0].cache, "no-cache");
+  assert.equal(appels[0].requete.headers.get("Range"), "bytes=0-65535");
 });

@@ -6,7 +6,7 @@
 // pour que le cours, l'exerciseur et le bureau de calcul marchent hors ligne.
 // Ce fichier est produit par tools/generer-sw.py ; tests/pages.test.mjs vérifie
 // qu'aucun fichier de src/ ou de data/ ne manque à la coquille.
-const VERSION = "fond-v4";
+const VERSION = "fond-v5";
 const COQUILLE = [
   "./", "./index.html", "./cours.html", "./exerciseur.html", "./bureau.html",
   "./cours", "./exerciseur", "./bureau", "./styles.css", "./enhancements.css",
@@ -44,13 +44,13 @@ const COQUILLE = [
 
 // Cloudflare fait garder les scripts et les données plusieurs heures par le
 // navigateur. Sans précaution, une page neuve tournerait avec des modules
-// d'hier gardés sous la même adresse. On précharge donc en contournant le
-// cache HTTP (reload), et l'on revalide chaque ressource (no-cache : requête
-// conditionnelle, réponse 304 légère si rien n'a changé).
+// d'hier gardés sous la même adresse. Tout passe donc en requête
+// conditionnelle (no-cache) : le serveur renvoie le fichier s'il a changé, et
+// sinon une réponse 304 légère — rien n'est téléchargé deux fois.
 self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open(VERSION)
-      .then((c) => Promise.allSettled(COQUILLE.map((u) => fetch(u, { cache: "reload" })
+      .then((c) => Promise.allSettled(COQUILLE.map((u) => fetch(u, { cache: "no-cache" })
         .then((r) => (r.ok ? c.put(u, r) : null)))))
       .then(() => self.skipWaiting())
   );
@@ -108,16 +108,18 @@ self.addEventListener("fetch", (e) => {
   if (new URL(request.url).origin !== location.origin) return;
 
   // Une navigation garde sa requête d'origine (le HTML est déjà servi sans
-  // durée de cache) ; toute autre ressource est revalidée auprès du serveur.
-  const reseau = request.mode === "navigate" ? fetch(request) : fetch(request.url, { cache: "no-cache" });
+  // durée de cache) ; toute autre ressource est revalidée auprès du serveur,
+  // avec ses en-têtes d'origine (une lecture partielle garde son Range).
+  const reseau = request.mode === "navigate" ? fetch(request) : fetch(new Request(request, { cache: "no-cache" }));
   e.respondWith(
     reseau
       .then((reponse) => {
-        // Une redirection (réponse opaque, statut 0) n'est pas mise en cache :
-        // le navigateur la suit, et c'est l'adresse finale qui sera gardée.
-        if (reponse && reponse.ok) {
+        // Seule une réponse complète est gardée : ni redirection (réponse
+        // opaque, statut 0 — le navigateur la suit, et c'est l'adresse finale
+        // qui sera gardée), ni morceau de fichier (206).
+        if (reponse && reponse.status === 200) {
           const copie = reponse.clone();
-          caches.open(VERSION).then((c) => c.put(request, copie));
+          caches.open(VERSION).then((c) => c.put(request, copie)).catch(() => {});
         }
         return reponse;
       })
