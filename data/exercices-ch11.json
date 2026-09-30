@@ -2,291 +2,380 @@
  "chapitre": "ch11",
  "exercices": [
   {
-   "id": "ch11-lambda",
-   "titre": "Effet d'accrochage de Combarieu",
-   "difficulte": 1,
-   "graine": 3289724924,
-   "enonce": "Pieu tubé de rayon R = 0,40 m traversant argiles et limons mous.",
+   "id": "ch11-intervalle",
+   "titre": "Pression limite équivalente sous la pointe",
+   "difficulte": 2,
+   "graine": 1161757805,
+   "enonce": "Pieu de diamètre B = 1,3 m, pointe à D = 14,40 m. Profil : pl* = 0,65 MPa jusqu'à 12,5 m, 3,35 MPa de 12,5 à 15,90 m, puis 2,35 MPa.",
    "donnees": [
     {
+     "label": "B · D",
+     "valeur": "1,3 · 14,40 m"
+    },
+    {
+     "label": "h dans la couche porteuse",
+     "valeur": "1,90 m"
+    },
+    {
+     "label": "pl*",
+     "valeur": "0,65 / 3,35 / 2,35 MPa"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 560 300\" role=\"img\" aria-label=\"Coupe du pieu\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f4-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f4-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f4-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f4-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f4-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f4-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f4-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f4-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f4-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f4-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f4-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f4-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"30.0\" y=\"28.0\" width=\"260.0\" height=\"167.1\" fill=\"#dccab0\"/>\n    <rect x=\"30.0\" y=\"28.0\" width=\"260.0\" height=\"167.1\" fill=\"url(#f4-argile)\"/><rect x=\"30.0\" y=\"195.1\" width=\"260.0\" height=\"45.5\" fill=\"#f3e5ae\"/>\n    <rect x=\"30.0\" y=\"195.1\" width=\"260.0\" height=\"45.5\" fill=\"url(#f4-sable)\"/><rect x=\"30.0\" y=\"240.6\" width=\"260.0\" height=\"33.4\" fill=\"#cfd8c7\"/>\n    <rect x=\"30.0\" y=\"240.6\" width=\"260.0\" height=\"33.4\" fill=\"url(#f4-marne)\"/><path d=\"M30.0 28.0L290.0 28.0\" stroke=\"#334155\" stroke-width=\"1.8\" fill=\"none\" /><rect x=\"151.3\" y=\"28.0\" width=\"17.4\" height=\"192.5\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.5\"/><rect x=\"151.3\" y=\"28.0\" width=\"17.4\" height=\"192.5\" fill=\"url(#f4-beton)\"/><path d=\"M180.7 28.0L180.7 220.5\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f4-fc)\" marker-end=\"url(#f4-fc)\"/><path d=\"M25.0 28.0L30.0 28.0\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"32.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M25.0 54.7L30.0 54.7\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"58.7\" text-anchor=\"end\" class=\"pt\">2</text><path d=\"M25.0 81.5L30.0 81.5\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"85.5\" text-anchor=\"end\" class=\"pt\">4</text><path d=\"M25.0 108.2L30.0 108.2\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"112.2\" text-anchor=\"end\" class=\"pt\">6</text><path d=\"M25.0 135.0L30.0 135.0\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"139.0\" text-anchor=\"end\" class=\"pt\">8</text><path d=\"M25.0 161.7L30.0 161.7\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"165.7\" text-anchor=\"end\" class=\"pt\">10</text><path d=\"M25.0 188.4L30.0 188.4\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"192.4\" text-anchor=\"end\" class=\"pt\">12</text><path d=\"M25.0 215.2L30.0 215.2\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"219.2\" text-anchor=\"end\" class=\"pt\">14</text><path d=\"M25.0 241.9L30.0 241.9\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"245.9\" text-anchor=\"end\" class=\"pt\">16</text><path d=\"M25.0 268.7L30.0 268.7\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"272.7\" text-anchor=\"end\" class=\"pt\">18</text><text x=\"185.7\" y=\"128.3\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">D = 14,4 m</text><path d=\"M330.0 28.0L330.0 274.0\" stroke=\"#334155\" stroke-width=\"1.2\" fill=\"none\" /><path d=\"M330.0 28.0L540.0 28.0\" stroke=\"#334155\" stroke-width=\"1.2\" fill=\"none\" /><text x=\"435.0\" y=\"20.0\" text-anchor=\"middle\" style=\"font-weight:800;font-size:11.5px\">pl* (MPa)</text><path d=\"M384.5 28.0L384.5 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"384.5\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">1</text><path d=\"M439.0 28.0L439.0 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"439.0\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">2</text><path d=\"M493.5 28.0L493.5 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"493.5\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">3</text><path d=\"M330.0 28.0H365.4V195.1H330.0M330.0 195.1H512.6V240.6H330.0M330.0 240.6H458.1V274.0H330.0\" fill=\"#0369a1\" fill-opacity=\".22\" stroke=\"#0369a1\" stroke-width=\"1.6\"/><text x=\"370.4\" y=\"115.6\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11px;font-weight:800;fill:#0369a1\">0,65</text><text x=\"507.6\" y=\"221.8\" text-anchor=\"end\" class=\"halo\" style=\"font-size:11px;font-weight:800;fill:#0369a1\">3,35</text><text x=\"463.1\" y=\"261.3\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11px;font-weight:800;fill:#0369a1\">2,35</text><path d=\"M326.0 220.5L540.0 220.5\" stroke=\"#dc2626\" stroke-width=\"1\" fill=\"none\" stroke-dasharray=\"5 4\"/></svg>",
+   "questions": [
+    {
+     "texte": "Longueur a ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.65,
+     "explication": "a = max(B/2 ; 0,5 m) = 0,65 m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Longueur b ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.65,
+     "explication": "b = min(a ; h) = min(0,65 ; 1,90) = 0,65 m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "ple* sur [D − b ; D + 3a] ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 3.17692,
+     "explication": "Intervalle [13,75 ; 16,35] m ; moyenne arithmétique pondérée des épaisseurs : ple* = 3,177 MPa.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch11-kp-f62",
+   "titre": "Résistance de pointe au Fascicule 62",
+   "difficulte": 1,
+   "graine": 1694388423,
+   "enonce": "Pieu battu de diamètre B = 1,2 m ancré dans sables et graves moyennement compacts (B) ; ple* = 1,50 MPa sous la pointe.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "1,2 m"
+    },
+    {
      "label": "Sol",
-     "valeur": "Argiles et limons mous"
+     "valeur": "sables et graves moyennement compacts (B)"
     },
     {
-     "label": "Pieu",
-     "valeur": "tube"
+     "label": "ple*",
+     "valeur": "1,50 MPa"
     },
     {
-     "label": "R",
-     "valeur": "0,40 m"
+     "label": "Refoulement",
+     "valeur": "oui"
     }
    ],
    "questions": [
     {
-     "texte": "K tanδ ?",
+     "texte": "Facteur kp (F62 annexe C.3, tableau I) ?",
      "type": "nombre",
      "unite": "",
-     "reponse": 0.1,
-     "explication": "Tableau de l'annexe G.2 (F62) / H.2.2.1 (NF P94-262) : K tanδ = 0,10.",
+     "reponse": 3.7,
+     "explication": "Classe B, avec refoulement : kp = 3,70.",
      "tolerance": 0.001
     },
     {
-     "texte": "Coefficient λ ?",
+     "texte": "Contrainte de rupture qu ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 0.333333,
-     "explication": "K tanδ ≤ 0,15 : λ = 1/(0,5 + 25 K tanδ) = 0,333.",
+     "unite": "kPa",
+     "reponse": 5550,
+     "explication": "qu = kp ple* = 3,70 × 1 500 = 5 550 kPa.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "μ = λ²/(1 + λ) ?",
+     "texte": "Résistance de pointe Qpu ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 0.0833333,
-     "explication": "μ = 0,333² / 1,333 = 0,0833.",
+     "unite": "kN",
+     "reponse": 6276.9,
+     "explication": "Qpu = Ab qu = 1,1310 × 5 550 = 6 277 kN.",
      "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch11-courbeQ",
+   "titre": "Les courbes de frottement Q1 à Q7",
+   "difficulte": 1,
+   "graine": 1353734446,
+   "enonce": "Frottement unitaire limite par la courbe Q3 du Fascicule 62, pour pl = 2,5 MPa.",
+   "donnees": [
+    {
+     "label": "Courbe",
+     "valeur": "Q3"
     },
     {
-     "texte": "Longueur caractéristique L0 = R/(μ K tanδ) ?",
+     "label": "pl",
+     "valeur": "2,5 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "qs lu sur la courbe Q3 ?",
      "type": "nombre",
-     "unite": "m",
-     "reponse": 48,
-     "explication": "L0 = 0,40 / (0,0833 × 0,10) = 48,0 m : sur une couche beaucoup plus mince que L0, σ'v au contact reste proche de sa valeur en tête.",
+     "unite": "kPa",
+     "reponse": 120,
+     "explication": "Q3 : qsn = 0,04 × 3 = 0,12 MPa, pn = 1 + 0,5 × 3 = 2,5 MPa ; pl/pn = 1,000 ≤ 1 : qs = qsn (pl/pn)(2 − pl/pn) = 120,0 kPa.",
      "toleranceRel": 0.015
     }
    ]
   },
   {
-   "id": "ch11-fn-sable",
-   "titre": "Frottement négatif sans accrochage",
+   "id": "ch11-tableauII",
+   "titre": "Choisir la courbe de frottement",
    "difficulte": 2,
-   "graine": 1799356431,
-   "enonce": "Un pieu de diamètre B = 0,4 m traverse 8,0 m de sable lâche (γ' = 8,5 kN/m³, K tanδ = 0,45) sur lequel on applique une surcharge étendue q = 75 kPa. Toute la couche tasse plus que le pieu.",
+   "graine": 3766157573,
+   "enonce": "Pieu foré boue de diamètre B = 0,7 m, traversant 5,5 m de argiles et limons fermes (B) (pl = 1,9 MPa), exécuté sans précaution particulière.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "0,4 m"
+     "label": "Pieu",
+     "valeur": "Foré boue"
     },
     {
-     "label": "Couche",
-     "valeur": "8,0 m · γ' = 8,5 kN/m³"
+     "label": "Sol",
+     "valeur": "argiles et limons fermes (B)"
     },
     {
-     "label": "q",
-     "valeur": "75 kPa"
+     "label": "pl",
+     "valeur": "1,9 MPa"
+    },
+    {
+     "label": "B · h",
+     "valeur": "0,7 · 5,5 m"
     }
    ],
    "questions": [
     {
-     "texte": "Coefficient λ ?",
+     "texte": "Courbe de frottement (tableau II de l'annexe C.3) ?",
+     "type": "choix",
+     "options": [
+      "Q1",
+      "Q3",
+      "Q2",
+      "Q4"
+     ],
+     "reponse": 0,
+     "explication": "Le tableau II donne Q1 pour ce couple. La case propose aussi Q2 en cas de réalésage et rainurage en fin de forage."
+    },
+    {
+     "texte": "Frottement unitaire qs ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 40,
+     "explication": "Courbe Q1 pour pl = 1,9 MPa : qs = 40,0 kPa.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Frottement mobilisé dans la couche ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 483.805,
+     "explication": "Qs = π B h qs = π × 0,7 × 5,5 × 40,0 = 483,8 kN.",
+     "toleranceRel": 0.015
+    }
+   ]
+  },
+  {
+   "id": "ch11-fsol",
+   "titre": "Frottement à la NF P94-262",
+   "difficulte": 2,
+   "graine": 2638967967,
+   "enonce": "Pieu de catégorie 2 (foré boue (pieux et barrettes)) dans sables et graves, pl* = 2,60 MPa.",
+   "donnees": [
+    {
+     "label": "Catégorie de pieu",
+     "valeur": "2 · FB"
+    },
+    {
+     "label": "Sol",
+     "valeur": "Sables et graves"
+    },
+    {
+     "label": "pl*",
+     "valeur": "2,60 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "fsol ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 82.2025,
+     "explication": "fsol = (a pl* + b)(1 − e^(−c pl*)) avec les paramètres du tableau F.5.2.2 pour ce sol : 82,2 kPa.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "αpieu-sol ?",
      "type": "nombre",
      "unite": "",
-     "reponse": 0,
-     "explication": "K tanδ = 0,45 > 0,385 : λ = 0, pas d'effet d'accrochage — la contrainte au contact est celle du champ libre σ'1 = q + γ' z.",
+     "reponse": 1.4,
+     "explication": "Tableau F.5.2.1, catégorie 2 : α = 1,40.",
      "tolerance": 0.001
     },
     {
-     "texte": "∫ σ'v dz sur la couche ?",
+     "texte": "qs ?",
      "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 872,
-     "explication": "∫ (q + γ' z) dz = q H + γ' H²/2 = 600 + 272 = 872 kN/m.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Frottement négatif Fn ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 493.104,
-     "explication": "Fn = P K tanδ ∫ σ'v dz = 1,257 × 0,45 × 872 = 493,1 kN.",
-     "toleranceRel": 0.01
+     "unite": "kPa",
+     "reponse": 90,
+     "explication": "qs = min(α fsol ; qs,max) = min(115,1 ; 90) = 90,0 kPa : c'est le plafond qui joue.",
+     "toleranceRel": 0.015
     }
    ]
   },
   {
-   "id": "ch11-cumul",
-   "titre": "Cumul du frottement négatif et des charges variables",
-   "difficulte": 2,
-   "graine": 1871715559,
-   "enonce": "Tête de pieu : effort permanent (parts quasi permanentes des variables comprises) G' = 1 300 kN ; part non quasi permanente des actions variables Q' = 250 kN ; frottement négatif caractéristique Gsn = 650 kN.",
+   "id": "ch11-Def",
+   "titre": "Encastrement effectif et facteur kp de la norme",
+   "difficulte": 3,
+   "graine": 3238313882,
+   "enonce": "Pieu de catégorie 2 (foré boue (pieux et barrettes)), B = 1,1 m, D = 17 m ; argile molle (pl* = 0,20 MPa) jusqu'à 13,5 m, puis marnes et calcaires marneux (pl* = 2,20 MPa).",
    "donnees": [
     {
-     "label": "G'",
-     "valeur": "1 300 kN"
+     "label": "B · D",
+     "valeur": "1,1 · 17 m"
     },
     {
-     "label": "Q'",
-     "valeur": "250 kN"
+     "label": "Ancrage h",
+     "valeur": "3,5 m"
     },
     {
-     "label": "Gsn",
-     "valeur": "650 kN"
+     "label": "pl*",
+     "valeur": "0,20 puis 2,20 MPa"
     }
    ],
    "questions": [
     {
-     "texte": "Gsn,d à l'ELU (défavorable) ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 877.5,
-     "explication": "γsn = 1,35 : 877,5 kN (au Fascicule 62 : 1,125 × 1,2 = 1,35 également).",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "Q'd ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 375,
-     "explication": "1,5 × 250 = 375 kN.",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "Effort axial de calcul Fd ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 2632.5,
-     "explication": "Fd = G'd + max(Gsn,d ; Q'd) = 1 755 + max(877,5 ; 375) = 2 632,5 kN.",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "Ce qu'aurait donné, à tort, la somme des maxima ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 3007.5,
-     "explication": "3 007,5 kN, soit 375 kN de trop : une charge variable réduit le frottement négatif au lieu de s'y ajouter.",
-     "toleranceRel": 0.005
-    }
-   ]
-  },
-  {
-   "id": "ch11-converse",
-   "titre": "Coefficient d'efficacité au Fascicule 62",
-   "difficulte": 1,
-   "graine": 3147779662,
-   "enonce": "Groupe de 2 × 4 pieux de diamètre B = 0,9 m, en maille carrée d'entraxe d = 2,70 m.",
-   "donnees": [
-    {
-     "label": "m × n",
-     "valeur": "2 × 4"
-    },
-    {
-     "label": "B · d",
-     "valeur": "0,9 · 2,70 m"
-    },
-    {
-     "label": "d/B",
-     "valeur": "3,00"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Converse-Labarre ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.743959,
-     "explication": "Ce = 1 − [arctan(B/d)/(π/2)] (2 − 1/m − 1/n) = 1 − [0,3218/1,5708] × 1,250 = 0,744.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Formule des sols cohérents ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1,
-     "explication": "d ≥ 3B : Ce = 1.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Dans un sable lâche, avec des pieux battus, quelle valeur le Fascicule 62 autorise-t-il ?",
-     "type": "choix",
-     "options": [
-      "Converse-Labarre",
-      "la formule des sols cohérents",
-      "Ce = 1"
-     ],
-     "reponse": 2,
-     "explication": "Le battage densifie le sable lâche : le groupe porte au moins autant que la somme des pieux (F62 annexe G.1 § 2.5,2) — à condition de battre d'abord les pieux périphériques."
-    }
-   ]
-  },
-  {
-   "id": "ch11-ce-ec7",
-   "titre": "Effet de groupe à la NF P94-262",
-   "difficulte": 2,
-   "graine": 3670389683,
-   "enonce": "Groupe de 3 × 5 pieux, B = 0,6 m, d = 1,68 m. Pour un pieu isolé : Rb;d = 740 kN, Rs;d = 1 400 kN.",
-   "donnees": [
-    {
-     "label": "m × n",
-     "valeur": "3 × 5"
-    },
-    {
-     "label": "d/B",
-     "valeur": "2,80"
-    },
-    {
-     "label": "Rb;d · Rs;d",
-     "valeur": "740 · 1 400 kN"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Cd ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.05,
-     "explication": "Cd = 1 − ¼ (1 + d/B) = 1 − ¼ × 3,80 = 0,050.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Ce ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.926667,
-     "explication": "Ce = 1 − Cd [2 − (1/m + 1/n)] = 1 − 0,050 × 1,467 = 0,927.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Résistance de calcul du groupe ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 30560,
-     "explication": "N (Rb;d + Ce Rs;d) = 15 × (740 + 0,927 × 1 400) = 30 560 kN : seul le frottement est réduit.",
-     "toleranceRel": 0.01
-    }
-   ]
-  },
-  {
-   "id": "ch11-rayon",
-   "titre": "Pieu au sein d'un groupe : cylindre d'influence",
-   "difficulte": 2,
-   "graine": 436778000,
-   "enonce": "Groupe en maille rectangulaire d × d' = 1,4 m × 1,7 m sous un remblai qui applique q = 40 kPa au terrain naturel.",
-   "donnees": [
-    {
-     "label": "d × d'",
-     "valeur": "1,4 × 1,7 m"
-    },
-    {
-     "label": "q",
-     "valeur": "40 kPa"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Rayon d'influence b ?",
+     "texte": "Hauteur hD = min(10B ; D) ?",
      "type": "nombre",
      "unite": "m",
-     "reponse": 0.870389,
-     "explication": "b = √(d d'/π) = √(2,38/π) = 0,870 m.",
+     "reponse": 11,
+     "explication": "hD = min(11,0 ; 17) = 11,0 m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Encastrement effectif Def ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 4.18182,
+     "explication": "Def = (1/ple*) ∫ pl* dz sur [D − hD ; D] = [2,20 × 3,50 + 0,20 × 7,50] / 2,20 = 4,18 m.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Borne π b² q du frottement négatif d'un pieu intérieur ?",
+     "texte": "kp ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.34215,
+     "explication": "kp,max = 1,45 (classe 1) ; Def/B = 3,80 < 5 : kp = 1 + (kp,max − 1) Def/(5B) = 1,342.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch11-cpt",
+   "titre": "Pointe d'un pieu au pénétromètre (Fascicule 62)",
+   "difficulte": 2,
+   "graine": 393566804,
+   "enonce": "Pieu battu B = 0,5 m, pointe à 15,0 m dans un sable moyennement compact (classe B) : qc = 11,0 MPa jusqu'à 15,40 m, puis 28,5 MPa.",
+   "donnees": [
+    {
+     "label": "B · D",
+     "valeur": "0,5 · 15,0 m"
+    },
+    {
+     "label": "qc",
+     "valeur": "11,0 puis 28,5 MPa"
+    },
+    {
+     "label": "Refoulement",
+     "valeur": "oui"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "qcm sur [D − b ; D + 3a] ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 20.625,
+     "explication": "a = 0,50 m, b = 0,50 m ; moyenne sur [14,50 ; 16,50] m : qcm = 20,625 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "qce écrêtée à 1,3 qcm ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 19.6969,
+     "explication": "Plafond 1,3 qcm = 26,812 MPa ; qce = 19,697 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance de pointe Qpu = Ab kc qce ?",
      "type": "nombre",
      "unite": "kN",
-     "reponse": 95.2,
-     "explication": "π × 0,870² × 40 = 95,2 kN : un pieu ne peut pas porter plus que le poids de remblai de sa cellule.",
-     "toleranceRel": 0.01
+     "reponse": 1933.74,
+     "explication": "kc = 0,50 (sables, avec refoulement) ; Qpu = 0,1963 × 0,50 × 19 700 = 1 934 kN.",
+     "toleranceRel": 0.015
+    }
+   ]
+  },
+  {
+   "id": "ch11-pieu-f62",
+   "titre": "Portance complète d'un pieu foré au Fascicule 62",
+   "difficulte": 3,
+   "graine": 3151308145,
+   "enonce": "Pieu foré à la boue, B = 0,9 m, D = 15,5 m. Argile molle (A, pl = 0,60 MPa) jusqu'à 5,5 m, sable moyennement compact (B, pl = 1,55 MPa) jusqu'à 12,5 m, puis marne (A, pl = 2,60 MPa).",
+   "donnees": [
+    {
+     "label": "B · D",
+     "valeur": "0,9 · 15,5 m"
+    },
+    {
+     "label": "Couches",
+     "valeur": "5,5 m · 7,0 m · ancrage 3,0 m"
+    },
+    {
+     "label": "pl",
+     "valeur": "0,60 · 1,55 · 2,60 MPa"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 560 300\" role=\"img\" aria-label=\"Coupe du pieu\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f5-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f5-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f5-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f5-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f5-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f5-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f5-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f5-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f5-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f5-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f5-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f5-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"30.0\" y=\"28.0\" width=\"260.0\" height=\"73.1\" fill=\"#dccab0\"/>\n    <rect x=\"30.0\" y=\"28.0\" width=\"260.0\" height=\"73.1\" fill=\"url(#f5-argile)\"/><rect x=\"30.0\" y=\"101.1\" width=\"260.0\" height=\"93.1\" fill=\"#f3e5ae\"/>\n    <rect x=\"30.0\" y=\"101.1\" width=\"260.0\" height=\"93.1\" fill=\"url(#f5-sable)\"/><rect x=\"30.0\" y=\"194.2\" width=\"260.0\" height=\"79.8\" fill=\"#cfd8c7\"/>\n    <rect x=\"30.0\" y=\"194.2\" width=\"260.0\" height=\"79.8\" fill=\"url(#f5-marne)\"/><path d=\"M30.0 28.0L290.0 28.0\" stroke=\"#334155\" stroke-width=\"1.8\" fill=\"none\" /><rect x=\"154.0\" y=\"28.0\" width=\"12.0\" height=\"206.1\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.5\"/><rect x=\"154.0\" y=\"28.0\" width=\"12.0\" height=\"206.1\" fill=\"url(#f5-beton)\"/><path d=\"M178.0 28.0L178.0 234.1\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f5-fc)\" marker-end=\"url(#f5-fc)\"/><path d=\"M25.0 28.0L30.0 28.0\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"32.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M25.0 54.6L30.0 54.6\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"58.6\" text-anchor=\"end\" class=\"pt\">2</text><path d=\"M25.0 81.2L30.0 81.2\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"85.2\" text-anchor=\"end\" class=\"pt\">4</text><path d=\"M25.0 107.8L30.0 107.8\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"111.8\" text-anchor=\"end\" class=\"pt\">6</text><path d=\"M25.0 134.4L30.0 134.4\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"138.4\" text-anchor=\"end\" class=\"pt\">8</text><path d=\"M25.0 161.0L30.0 161.0\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"165.0\" text-anchor=\"end\" class=\"pt\">10</text><path d=\"M25.0 187.6L30.0 187.6\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"191.6\" text-anchor=\"end\" class=\"pt\">12</text><path d=\"M25.0 214.2L30.0 214.2\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"218.2\" text-anchor=\"end\" class=\"pt\">14</text><path d=\"M25.0 240.8L30.0 240.8\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"244.8\" text-anchor=\"end\" class=\"pt\">16</text><path d=\"M25.0 267.4L30.0 267.4\" stroke=\"#334155\" stroke-width=\"1\" fill=\"none\" /><text x=\"23.0\" y=\"271.4\" text-anchor=\"end\" class=\"pt\">18</text><text x=\"183.0\" y=\"135.1\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">D = 15,5 m</text><path d=\"M330.0 28.0L330.0 274.0\" stroke=\"#334155\" stroke-width=\"1.2\" fill=\"none\" /><path d=\"M330.0 28.0L540.0 28.0\" stroke=\"#334155\" stroke-width=\"1.2\" fill=\"none\" /><text x=\"435.0\" y=\"20.0\" text-anchor=\"middle\" style=\"font-weight:800;font-size:11.5px\">qs (kPa)</text><path d=\"M360.4 28.0L360.4 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"360.4\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">20</text><path d=\"M390.9 28.0L390.9 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"390.9\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">40</text><path d=\"M421.3 28.0L421.3 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"421.3\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">60</text><path d=\"M451.7 28.0L451.7 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"451.7\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">80</text><path d=\"M482.2 28.0L482.2 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"482.2\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">100</text><path d=\"M512.6 28.0L512.6 274.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"512.6\" y=\"288.0\" text-anchor=\"middle\" class=\"pt\">120</text><path d=\"M330.0 28.0H369.0V101.1H330.0M330.0 101.1H445.6V194.2H330.0M330.0 194.2H512.6V234.1H330.0\" fill=\"#0369a1\" fill-opacity=\".22\" stroke=\"#0369a1\" stroke-width=\"1.6\"/><text x=\"374.0\" y=\"68.6\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11px;font-weight:800;fill:#0369a1\">25,6</text><text x=\"450.6\" y=\"151.7\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11px;font-weight:800;fill:#0369a1\">76</text><text x=\"517.6\" y=\"218.2\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11px;font-weight:800;fill:#0369a1\">120</text><path d=\"M326.0 234.1L540.0 234.1\" stroke=\"#dc2626\" stroke-width=\"1\" fill=\"none\" stroke-dasharray=\"5 4\"/></svg>",
+   "questions": [
+    {
+     "texte": "Résistance de pointe Qpu ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2977.29,
+     "explication": "ple* = 2,60 MPa (couche d'ancrage homogène), kp = 1,80 (marne A, sans refoulement) ; Qpu = 0,6362 × 1,80 × 2 600 = 2 977 kN.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Frottement Qsu ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2919.18,
+     "explication": "Q1 : 25,6 kPa sur 5,5 m ; Q2 : 76,0 kPa sur 7,0 m ; Q3 : 120,0 kPa sur 3,0 m ; Qsu = π B Σ qs h = 2 919 kN.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Charge limite Qu ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 5896.47,
+     "explication": "Qu = 2 977 + 2 919 = 5 896,5 kN.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Charge de fluage Qc ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 3532.07,
+     "explication": "Qc = 0,5 Qpu + 0,7 Qsu = 3 532,1 kN.",
+     "toleranceRel": 0.015
     }
    ]
   }

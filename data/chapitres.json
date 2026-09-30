@@ -49,8 +49,8 @@
       "cours": true
     },
     {
-      "id": "ch2",
-      "number": 2,
+      "id": "ch4",
+      "number": 4,
       "partie": "A",
       "title": "Actions, combinaisons et sécurité",
       "description": "États limites, situations de projet, combinaisons du Fascicule 62 et de l'Eurocode 0 ; approche de calcul 2 ; où chaque référentiel place ses coefficients.",
@@ -68,8 +68,8 @@
       "cours": true
     },
     {
-      "id": "ch3",
-      "number": 3,
+      "id": "ch5",
+      "number": 5,
       "partie": "B",
       "title": "Géométrie, encastrement et excentrement",
       "description": "Encastrement équivalent De, diagramme des contraintes, surface comprimée, modèle de Meyerhof et contrainte de référence ; les critères d'excentrement comparés.",
@@ -87,8 +87,8 @@
       "cours": true
     },
     {
-      "id": "ch4",
-      "number": 4,
+      "id": "ch6",
+      "number": 6,
       "partie": "B",
       "title": "Portance à partir des essais en place",
       "description": "Pression limite nette équivalente et résistance de pointe équivalente, facteurs kp et kc, inclinaison de la charge et talus ; la vérification au Fascicule 62 et à la NF P94-261.",
@@ -106,8 +106,8 @@
       "cours": true
     },
     {
-      "id": "ch5",
-      "number": 5,
+      "id": "ch7",
+      "number": 7,
       "partie": "B",
       "title": "Portance par la méthode c–φ",
       "description": "La formule à trois termes de l'annexe D de la NF EN 1997-1 : conditions drainées et non drainées, facteurs de forme et d'inclinaison, nappe ; vérification brute (approche 2) ou nette avec le coefficient de modèle de l'annexe F de la NF P94-261.",
@@ -126,8 +126,8 @@
       "cours": true
     },
     {
-      "id": "ch6",
-      "number": 6,
+      "id": "ch8",
+      "number": 8,
       "partie": "B",
       "title": "Glissement et dispositions constructives",
       "description": "Résistance au glissement drainée et non drainée, butée frontale, profondeur hors gel, distance au talus, stabilité d'ensemble.",
@@ -143,8 +143,8 @@
       "cours": true
     },
     {
-      "id": "ch7",
-      "number": 7,
+      "id": "ch9",
+      "number": 9,
       "partie": "B",
       "title": "Tassements et module de réaction",
       "description": "Méthode pressiométrique de Ménard, méthode de Schmertmann, méthodes élastique et œdométrique, module de réaction et répartition des contraintes.",
@@ -162,8 +162,8 @@
       "cours": true
     },
     {
-      "id": "ch8",
-      "number": 8,
+      "id": "ch10",
+      "number": 10,
       "partie": "C",
       "title": "Les pieux : technologies et comportement",
       "description": "Mise en œuvre avec ou sans refoulement, classes et catégories de la NF P94-262, courbe de chargement, charge limite et charge de fluage.",
@@ -180,8 +180,8 @@
       "cours": true
     },
     {
-      "id": "ch9",
-      "number": 9,
+      "id": "ch11",
+      "number": 11,
       "partie": "C",
       "title": "Portance d'un pieu isolé",
       "description": "Méthodes pressiométrique et pénétrométrique : ple* et qce sous la pointe, kp et kc, frottement unitaire par les courbes Q1–Q7 (F62) ou par αpieu-sol·fsol (EC7).",
@@ -198,8 +198,8 @@
       "cours": true
     },
     {
-      "id": "ch10",
-      "number": 10,
+      "id": "ch12",
+      "number": 12,
       "partie": "C",
       "title": "Justifier un pieu",
       "description": "Qmax et Qmin du Fascicule 62 ; modèle de terrain, pieu modèle et essais de chargement à la NF P94-262 ; traction ; tassement d'un pieu isolé.",
@@ -216,8 +216,8 @@
       "cours": true
     },
     {
-      "id": "ch11",
-      "number": 11,
+      "id": "ch13",
+      "number": 13,
       "partie": "C",
       "title": "Frottement négatif et groupes de pieux",
       "description": "Méthode de Combarieu, hauteur d'action, pieux en groupe ; règles de cumul ; coefficient d'efficacité et bloc monolithique.",
@@ -235,8 +235,8 @@
       "cours": true
     },
     {
-      "id": "ch12",
-      "number": 12,
+      "id": "ch14",
+      "number": 14,
       "partie": "C",
       "title": "Pieux sous efforts transversaux",
       "description": "Module de réaction de Ménard, lois de réaction courte et longue durée, poutre sur appuis élastiques, pieu souple ou rigide, poussées latérales du sol.",
@@ -253,8 +253,8 @@
       "cours": true
     },
     {
-      "id": "ch13",
-      "number": 13,
+      "id": "ch15",
+      "number": 15,
       "partie": "D",
       "title": "Semelles sous séisme",
       "description": "Portance sismique d'une semelle filante selon l'annexe F de la NF EN 1998-5, avec les précisions de la NF P94-261 : efforts normalisés, inertie du sol, surface limite, sols cohérents et frottants.",

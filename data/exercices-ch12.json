@@ -2,285 +2,349 @@
  "chapitre": "ch12",
  "exercices": [
   {
-   "id": "ch12-kf",
-   "titre": "Module de réaction de Ménard (B ≥ B0)",
+   "id": "ch12-f62",
+   "titre": "Qmax et Qmin du Fascicule 62",
    "difficulte": 1,
-   "graine": 1571472533,
-   "enonce": "Pieu de diamètre B = 1,2 m dans un sol de module EM = 26 MPa, α = 1/2.",
+   "graine": 136361114,
+   "enonce": "Pieu foré : Qpu = 580 kN, Qsu = 2 810 kN.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "1,2 m"
+     "label": "Qpu",
+     "valeur": "580 kN"
     },
     {
-     "label": "EM",
-     "valeur": "26 MPa"
+     "label": "Qsu",
+     "valeur": "2 810 kN"
     },
     {
-     "label": "α",
-     "valeur": "1/2"
+     "label": "Mise en œuvre",
+     "valeur": "foré"
     }
    ],
    "questions": [
     {
-     "texte": "Dénominateur 4/3 (B0/B)(2,65 B/B0)^α + α ?",
+     "texte": "Qmax à l'ELU fondamental ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2421.43,
+     "explication": "Qu/1,4 = 3 390/1,4 = 2 421,4 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Qmax sous combinaison rare ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2051.82,
+     "explication": "Qc = 2 257 kN ; Qc/1,1 = 2 051,8 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Qmax sous combinaison quasi permanente ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1612.14,
+     "explication": "Qc/1,4 = 1 612,1 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Qmin à l'ELU fondamental (traction comptée négativement) ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": -2007.14,
+     "explication": "−Qtu/1,4 = −2 810/1,4 = -2 007,1 kN.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch12-terrain",
+   "titre": "Procédure du modèle de terrain",
+   "difficulte": 2,
+   "graine": 2134320497,
+   "enonce": "Pieu de catégorie 1 (foré simple (pieux et barrettes)) calculé au pressiomètre : Rb = 1 170 kN, Rs = 2 580 kN (valeurs calculées sur le profil de sol représentatif).",
+   "donnees": [
+    {
+     "label": "Catégorie",
+     "valeur": "1 · FS"
+    },
+    {
+     "label": "Méthode",
+     "valeur": "pressiomètre"
+    },
+    {
+     "label": "Rb · Rs",
+     "valeur": "1 170 · 2 580 kN"
+    },
+    {
+     "label": "Craie",
+     "valeur": "non"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Coefficient γR;d1 en compression ?",
      "type": "nombre",
      "unite": "",
-     "reponse": 2.03478,
-     "explication": "4/3 × 0,500 × 5,300^1/2 + 0,500 = 2,035.",
+     "reponse": 1.15,
+     "explication": "Tableau F.2.1/G.2.1 : γR;d1 = 1,15 ; γR;d2 = 1,1.",
+     "tolerance": 0.001
+    },
+    {
+     "texte": "Rc;k ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2964.43,
+     "explication": "Rc;k = (Rb + Rs)/(γR;d1 γR;d2) = 3 750 / (1,15 × 1,1) = 2 964,4 kN.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Kf (sollicitations de courte durée) ?",
+     "texte": "Rc;d à l'ELU fondamental ?",
      "type": "nombre",
-     "unite": "MPa",
-     "reponse": 153.333,
-     "explication": "Kf = 12 EM / 2,035 = 153 MPa, soit 153 kN/m de réaction par millimètre de déplacement.",
+     "unite": "kN",
+     "reponse": 2694.93,
+     "explication": "Rc;d = Rc;k/γt = 2 964,4/1,1 = 2 694,9 kN.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Module pour les sollicitations de longue durée ?",
+     "texte": "Coefficient global Rc / Rc;d ?",
      "type": "nombre",
-     "unite": "MPa",
-     "reponse": 76.6667,
-     "explication": "Kf/2 = 76,7 MPa.",
-     "toleranceRel": 0.01
+     "unite": "",
+     "reponse": 1.3915,
+     "explication": "1,15 × 1,1 × 1,1 = 1,392, à comparer au 1,4 du Fascicule 62.",
+     "toleranceRel": 0.005
     }
    ]
   },
   {
-   "id": "ch12-kf-petit",
-   "titre": "Module de réaction d'un pieu de petit diamètre",
-   "difficulte": 1,
-   "graine": 451500268,
-   "enonce": "Micropieu ou petit pieu de diamètre B = 0,35 m < B0 = 0,60 m ; EM = 26 MPa, α = 1/2.",
+   "id": "ch12-xi",
+   "titre": "Facteurs de corrélation ξ",
+   "difficulte": 2,
+   "graine": 1053484915,
+   "enonce": "Les appuis et les 10 sondages d'un ouvrage tiennent dans un rectangle de 38 m × 20 m.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "0,35 m"
+     "label": "Rectangle",
+     "valeur": "38 × 20 m"
     },
     {
-     "label": "EM",
-     "valeur": "26 MPa"
-    },
-    {
-     "label": "α",
-     "valeur": "1/2"
+     "label": "N",
+     "valeur": "10"
     }
    ],
    "questions": [
     {
-     "texte": "Kf (courte durée) ?",
+     "texte": "Surface d'investigation S à retenir ?",
      "type": "nombre",
-     "unite": "MPa",
-     "reponse": 116.832,
-     "explication": "B < B0 : Kf = 12 EM / [4/3 × 2,65^α + α] = 12 × 26 / 2,671 = 117 MPa.",
-     "toleranceRel": 0.01
+     "unite": "m²",
+     "reponse": 760,
+     "explication": "Élancement limité à 2 : l = max(20 ; 38/2) = 20 m ; S = 38 × 20 = 760 m², bornée à [100 ; 2 500] : S = 760 m².",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "Kf dépend-il du diamètre pour B < B0 ?",
-     "type": "choix",
-     "options": [
-      "non : la formule ne contient plus B",
-      "oui : il est proportionnel à B",
-      "oui : il est inversement proportionnel à B"
-     ],
-     "reponse": 0,
-     "explication": "Pour B ≤ B0, la formule de Ménard ne dépend plus de B : Kf (module linéique) est constant, alors que le module surfacique k = Kf/B augmente quand le diamètre diminue."
+     "texte": "ξ3 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.13784,
+     "explication": "ξ'3 = 1,25 pour N = 10 ; ξ3 = 1 + (ξ'3 − 1) √(S/2500) = 1 + 0,25 × 0,551 = 1,138.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "ξ4 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.04411,
+     "explication": "ξ'4 = 1,08 ; ξ4 = 1 + 0,08 × 0,551 = 1,044.",
+     "toleranceRel": 0.005
     }
    ]
   },
   {
-   "id": "ch12-l0",
-   "titre": "Longueur de transfert : pieu souple ou rigide ?",
+   "id": "ch12-modele",
+   "titre": "Procédure du pieu modèle avec trois sondages",
+   "difficulte": 3,
+   "graine": 2310505336,
+   "enonce": "Un pieu de catégorie 2 (foré boue (pieux et barrettes)) est calculé au pressiomètre au droit de trois sondages : Rc = 1 610 ; 1 517 ; 1 850 kN. Surface d'investigation S = 1 600 m² ; structure souple.",
+   "donnees": [
+    {
+     "label": "Rc (3 sondages)",
+     "valeur": "1 610 · 1 517 · 1 850 kN"
+    },
+    {
+     "label": "S",
+     "valeur": "1 600 m²"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "(Rc)moy / ξ3 ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1312.5,
+     "explication": "(Rc)moy = 1 659 kN ; ξ3 = 1,264 ; 1 312,5 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "(Rc)min / ξ4 ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1281.25,
+     "explication": "(Rc)min = 1 517 kN ; ξ4 = 1,184 ; 1 281,3 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rc;k ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1114.13,
+     "explication": "Rc;k = min(…)/γR;d1 = 1 281,3 / 1,15 = 1 114,1 kN — c'est le minimum qui gouverne.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch12-els",
+   "titre": "Charge de fluage de calcul",
    "difficulte": 2,
-   "graine": 2376945340,
-   "enonce": "Pieu en béton (E = 20 000 MPa) de diamètre B = 1,3 m et de longueur L = 16 m ; module de réaction Kf = 26 MPa.",
+   "graine": 3560869838,
+   "enonce": "Pieu battu : Rb;k = 1 440 kN, Rs;k = 2 010 kN. À l'ELS quasi permanent, Fc;d = 1 789 kN.",
+   "donnees": [
+    {
+     "label": "Rb;k · Rs;k",
+     "valeur": "1 440 · 2 010 kN"
+    },
+    {
+     "label": "Fc;d (ELS QP)",
+     "valeur": "1 789 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rc;cr;k ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2415,
+     "explication": "Rc;cr;k = 0,7 Rb;k + 0,7 Rs;k = 2 415 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rc;cr;d à l'ELS quasi permanent ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2195.45,
+     "explication": "Rc;cr;d = Rc;cr;k/γcr = 2 415/1,1 = 2 195,5 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rc;cr;d à l'ELS caractéristique ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2683.33,
+     "explication": "γcr = 0,9 : 2 683,3 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "La vérification quasi permanente est-elle satisfaite ?",
+     "type": "choix",
+     "options": [
+      "non",
+      "oui"
+     ],
+     "reponse": 1,
+     "explication": "Fc;d = 1 789 kN ≤ 2 195,5 kN."
+    }
+   ]
+  },
+  {
+   "id": "ch12-traction",
+   "titre": "Résistance de calcul en traction",
+   "difficulte": 2,
+   "graine": 1425965288,
+   "enonce": "Pieu tendu de catégorie 1 (foré simple (pieux et barrettes)), calculé au pressiomètre par le modèle de terrain : frottement calculé Rs = 1 570 kN.",
+   "donnees": [
+    {
+     "label": "Catégorie",
+     "valeur": "1"
+    },
+    {
+     "label": "Méthode",
+     "valeur": "pressiomètre"
+    },
+    {
+     "label": "Rs",
+     "valeur": "1 570 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "γR;d1 en traction ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.4,
+     "explication": "Tableau F.2.1/G.2.1 : 1,40 — plus sévère qu'en compression (1,15).",
+     "tolerance": 0.001
+    },
+    {
+     "texte": "Rt;k ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1019.48,
+     "explication": "Rt;k = Rs/(γR;d1 γR;d2) = 1 570 / (1,40 × 1,1) = 1 019,5 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rt;d à l'ELU fondamental ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 886.505,
+     "explication": "Rt;d = Rt;k/γs;t = 1 019,5/1,15 = 886,5 kN (facteur global 1,77 contre 1,4 au Fascicule 62).",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch12-tassement",
+   "titre": "Ordre de grandeur du tassement d'un pieu",
+   "difficulte": 1,
+   "graine": 1206073148,
+   "enonce": "Pieu foré de diamètre 0,4 m et de 10 m de long, en béton (E = 20 000 MPa), sous un effort de service de 1 450 kN.",
    "donnees": [
     {
      "label": "B · L",
-     "valeur": "1,3 · 16 m"
+     "valeur": "0,4 · 10 m"
     },
     {
-     "label": "E",
-     "valeur": "20 000 MPa"
+     "label": "Mise en œuvre",
+     "valeur": "foré"
     },
     {
-     "label": "Kf",
-     "valeur": "26 MPa"
+     "label": "N · E",
+     "valeur": "1 450 kN · 20 000 MPa"
     }
    ],
    "questions": [
     {
-     "texte": "Rigidité de flexion EI ?",
-     "type": "nombre",
-     "unite": "kN·m²",
-     "reponse": 2803970,
-     "explication": "I = π B⁴/64 = 0,14020 m⁴ ; EI = 2 804 000 kN·m².",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Longueur de transfert l0 ?",
-     "type": "nombre",
-     "unite": "m",
-     "reponse": 4.55738,
-     "explication": "l0 = (4 EI/Kf)^¼ = (4 × 2 804 000 / 26 000)^¼ = 4,56 m.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Comportement du pieu ?",
-     "type": "choix",
-     "options": [
-      "souple (pieu long) : L ≥ 3 l0",
-      "rigide : il pivote en bloc"
-     ],
-     "reponse": 0,
-     "explication": "L/l0 = 3,51. Au-delà de 3 environ, la pointe ne bouge plus et les formules du pieu infiniment long s'appliquent ; en deçà, il faut intégrer l'équation sur la longueur réelle."
-    }
-   ]
-  },
-  {
-   "id": "ch12-libre",
-   "titre": "Pieu long, tête libre",
-   "difficulte": 2,
-   "graine": 3560293254,
-   "enonce": "Pieu long (E = 30 000 MPa, B = 0,6 m) dans un sol homogène de module Kf = 11 MPa ; effort horizontal en tête H = 200 kN, tête libre, sans moment.",
-   "donnees": [
-    {
-     "label": "B",
-     "valeur": "0,6 m"
-    },
-    {
-     "label": "Kf",
-     "valeur": "11 MPa"
-    },
-    {
-     "label": "H",
-     "valeur": "200 kN"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "l0 ?",
-     "type": "nombre",
-     "unite": "m",
-     "reponse": 2.8863,
-     "explication": "l0 = (4 EI/Kf)^¼ = 2,886 m.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Déplacement en tête y0 ?",
+     "texte": "Tassement forfaitaire (règles LCPC-Sétra) ?",
      "type": "nombre",
      "unite": "mm",
-     "reponse": 12.5987,
-     "explication": "y0 = 2H/(Kf l0) = 2 × 200 / (11 000 × 2,886) = 12,60 mm.",
-     "toleranceRel": 0.015
+     "reponse": 2.4,
+     "explication": "0,006 B = 2,4 mm (fourchette 1,2 à 4,0 mm).",
+     "toleranceRel": 0.01
     },
     {
-     "texte": "Moment maximal ?",
-     "type": "nombre",
-     "unite": "kN·m",
-     "reponse": 186.107,
-     "explication": "Mmax ≈ 0,322 H l0 = 186,1 kN·m, atteint à 2,27 m (≈ 0,785 l0).",
-     "toleranceRel": 0.015
-    }
-   ]
-  },
-  {
-   "id": "ch12-encastre",
-   "titre": "Pieu long, tête encastrée dans la semelle",
-   "difficulte": 2,
-   "graine": 1597651293,
-   "enonce": "Même pieu long (E = 30 000 MPa, B = 1,0 m, Kf = 32 MPa, H = 170 kN), mais la tête est encastrée dans une semelle rigide qui en bloque la rotation.",
-   "donnees": [
-    {
-     "label": "B",
-     "valeur": "1,0 m"
-    },
-    {
-     "label": "Kf",
-     "valeur": "32 MPa"
-    },
-    {
-     "label": "H",
-     "valeur": "170 kN"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Déplacement en tête y0 ?",
+     "texte": "Raccourcissement élastique du fût, effort supposé constant ?",
      "type": "nombre",
      "unite": "mm",
-     "reponse": 1.44228,
-     "explication": "y0 = H/(Kf l0) = 1,44 mm — la moitié du cas tête libre (2,88 mm).",
-     "toleranceRel": 0.015
+     "reponse": 5.76937,
+     "explication": "el = N L/(E A) = 1 450 × 10 / (20 000 000 × 0,1257) = 5,77 mm — majorant, l'effort décroissant en réalité avec la profondeur.",
+     "toleranceRel": 0.02
     },
     {
-     "texte": "Moment d'encastrement M0 (valeur absolue) ?",
+     "texte": "Estimation prudente de la NF P94-262 (2 B/100 + el) ?",
      "type": "nombre",
-     "unite": "kN·m",
-     "reponse": 313.09,
-     "explication": "M0 = −H l0/2 = −170 × 3,683/2 = −313,1 kN·m : le moment maximal passe en tête, où il faut ferrailler.",
-     "toleranceRel": 0.015
-    }
-   ]
-  },
-  {
-   "id": "ch12-palier",
-   "titre": "Palier de réaction et minoration près de la surface",
-   "difficulte": 2,
-   "graine": 3829148235,
-   "enonce": "Pieu de diamètre B = 1,2 m dans un sol frottant de pression de fluage nette pf* = 0,65 MPa. On s'intéresse à la réaction du sol à 1,68 m sous la surface, pour une sollicitation de courte durée.",
-   "donnees": [
-    {
-     "label": "B",
-     "valeur": "1,2 m"
-    },
-    {
-     "label": "pf*",
-     "valeur": "0,65 MPa"
-    },
-    {
-     "label": "Sol",
-     "valeur": "frottant"
-    },
-    {
-     "label": "z",
-     "valeur": "1,68 m"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Palier de réaction en profondeur r1 = B pf* ?",
-     "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 780,
-     "explication": "1,2 × 650 = 780 kN/m.",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "Profondeur de minoration zc ?",
-     "type": "nombre",
-     "unite": "m",
-     "reponse": 4.8,
-     "explication": "zc = 4 B = 4,80 m.",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "Coefficient de minoration à cette profondeur ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.675,
-     "explication": "0,5 (1 + z/zc) = 0,5 × (1 + 1,68/4,80) = 0,675.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Palier minoré ?",
-     "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 526.5,
-     "explication": "0,675 × 780 = 526,5 kN/m.",
-     "toleranceRel": 0.01
+     "unite": "mm",
+     "reponse": 13.7694,
+     "explication": "s = 2 × 0,4/100 + el = 8,0 + 5,77 = 13,8 mm.",
+     "toleranceRel": 0.02
     }
    ]
   }

@@ -1,52 +1,69 @@
-// Calculateur du chapitre 10 : des valeurs calculées (Rb, Rs) aux valeurs
-// caractéristiques puis de calcul de la NF P94-262 (modèle de terrain ou pieu
-// modèle), comparées aux Qmax du Fascicule 62 sur les mêmes valeurs limites.
-import { el, num, f, fd, esc, verdict, brancher, garde } from "./ui.js";
-import { CATEGORIES_PIEUX_EC7, categoriePieu, modeleTerrain, pieuModele, limitesF62 } from "./geotech/pieux.js";
+// Calculateur du chapitre 10 : courbe de chargement d'un pieu par les lois de
+// transfert de Frank et Zhao, avec la part de la pointe et du frottement, la
+// charge limite et la charge de fluage des deux référentiels.
+import { el, num, f, fd, brancher, garde } from "./ui.js";
+import { graphe, COULEURS } from "./figures.js";
+import { courbeChargement, coefficientsFrankZhao, loiFrankZhao } from "./geotech/tassement-pieu.js";
 
-el("juCat").innerHTML = CATEGORIES_PIEUX_EC7
-  .map((c) => `<option value="${c.cat}"${c.cat === 6 ? " selected" : ""}>${c.cat} · ${esc(c.nom)}</option>`).join("");
-
-const majJu = garde("juOut", () => {
-  const Rb = Math.max(num("juRb", 0), 0), Rs = Math.max(num("juRs", 0), 0);
-  const methode = el("juMeth").value, cat = Number(el("juCat").value), craie = el("juCraie").value === "oui";
-  const proc = el("juProc").value, N = Math.max(1, Math.round(num("juN", 1))), S = num("juS", 100), raide = el("juRaide").value === "oui";
-  const F = { ELU: num("juFu"), car: num("juFc"), qp: num("juFq") };
-  el("juN").closest(".field").style.display = proc === "modele" ? "" : "none";
-  el("juS").closest(".field").style.display = proc === "modele" ? "" : "none";
-  el("juRaide").closest(".field").style.display = proc === "modele" ? "" : "none";
-  if (!(Rb + Rs > 0)) { el("juOut").textContent = "Renseigner Rb et Rs."; return; }
-  const pc = categoriePieu(cat);
-  const limites = { applicable: true, methode, categorie: pc, craie, refoulement: pc.refoulement, Rb, Rs, Rc: Rb + Rs, Rt: Rs };
-  // Le pieu modèle est ici calculé comme N sondages identiques : c'est la
-  // borne supérieure de ce que N sondages apportent (moyenne = minimum).
-  const r = proc === "terrain" ? modeleTerrain(limites) : pieuModele({ resultats: Array(N).fill(limites), S, raide });
-  const Qc = (pc.refoulement ? 0.7 : 0.5) * Rb + 0.7 * Rs;
-  const f62 = limitesF62({ Qu: Rb + Rs, Qc, Qtu: Rs, Qtc: 0.7 * Rs });
-  const d = r.calcul;
-  const ligne = (etat, F62val, ec7val, Fd, detail) => {
-    const okF = Fd <= F62val + 1e-9, okE = Fd <= ec7val + 1e-9;
-    return `<tr class="${okF && okE ? "" : "ko"}"><td>${etat}</td><td class="n">${f(Fd, 4)}</td>
-      <td class="n">${f(F62val, 4)} ${verdict(okF)}</td><td class="n">${f(ec7val, 4)} ${verdict(okE)}<br><small>${detail}</small></td>
-      <td class="n">${fd((Rb + Rs) / ec7val, 2)}</td></tr>`;
-  };
-  const facteurs = proc === "terrain"
-    ? `γ<sub>R;d1</sub> = ${fd(r.gRd1c, 2)} (compression), ${fd(r.gRd1t, 2)} (traction) · γ<sub>R;d2</sub> = ${fd(r.gRd2, 1)}`
-    : `N = ${N} · S retenue = ${f(r.Sretenue, 4)} m² · ξ<sub>3</sub> = ${fd(r.xiMoy, 3)} · ξ<sub>4</sub> = ${fd(r.xiMin, 3)} (ξ' = ${fd(r.xiPrime[0], 2)} ; ${fd(r.xiPrime[1], 2)}) · γ<sub>R;d1</sub> = ${fd(r.gRd1c, 2)}`;
-  el("juOut").innerHTML = `
-    <p class="final-result">R<sub>c;k</sub> = <strong>${f(r.Rck, 4)} kN</strong> (R<sub>b;k</sub> = ${f(r.Rbk, 4)} ; R<sub>s;k</sub> = ${f(r.Rsk, 4)})
-      · R<sub>c;cr;k</sub> = ${f(r.Rccrk, 4)} kN · R<sub>t;k</sub> = ${f(r.Rtk, 4)} kN
-      <small>${r.procedure} — ${facteurs}</small></p>
-    <div class="table-large"><table class="resultats"><thead><tr><th>État limite</th><th class="num">F<sub>c;d</sub> (kN)</th>
-      <th class="num"><span class="tag-f62">F62</span> Q<sub>max</sub></th><th class="num"><span class="tag-ec7">EC7</span> résistance de calcul</th><th class="num">R<sub>c</sub>/résistance</th></tr></thead><tbody>
-      ${ligne("ELU fondamental", f62.ELU.Qmax, d.ELU.Rcd, F.ELU, "R<sub>c;d</sub> = R<sub>c;k</sub>/1,1")}
-      ${ligne("ELS rare / caractéristique", f62.ELS_rare.Qmax, d.ELS_car.Rccrd, F.car, "R<sub>c;cr;d</sub> = R<sub>c;cr;k</sub>/0,9")}
-      ${ligne("ELS quasi permanent", f62.ELS_QP.Qmax, d.ELS_QP.Rccrd, F.qp, "R<sub>c;cr;d</sub> = R<sub>c;cr;k</sub>/1,1")}
-    </tbody></table></div>
-    <p class="method-note">La dernière colonne est le coefficient global que la norme applique à R<sub>c</sub> pour ce pieu :
-      à comparer au 1,4 du Fascicule 62 à l'ELU (charge limite) — ici ${fd((Rb + Rs) / d.ELU.Rcd, 2)}.
-      ${craie && pc.classe !== "1bis" && pc.classe !== 8 ? "La pointe dans la craie relève γ<sub>R;d1</sub> : les méthodes y sont moins fiables." : ""}
-      ${proc === "modele" ? "Avec des sondages tous identiques, la moyenne égale le minimum : c'est ξ<sub>3</sub> qui gouverne ; des sondages dispersés feraient intervenir ξ<sub>4</sub>." : ""}
-      Traction : F62 Q<sub>tu</sub>/1,4 = ${f(Rs / 1.4, 4)} kN, EC7 R<sub>t;d</sub> = ${f(d.ELU.Rtd, 4)} kN.</p>`;
+const majCc = garde("ccOut", () => {
+  const B = num("ccB"), D = num("ccD"), Es = num("ccEs"), qs = num("ccQs"), Epte = num("ccEp"), qb = num("ccQb"), Ep = num("ccE");
+  const sol = el("ccSol").value, refoulant = el("ccMise").value === "battu";
+  if (!(B > 0 && D > 0 && Es > 0 && qs >= 0 && Epte > 0 && qb >= 0 && Ep > 0)) { el("ccOut").textContent = "Renseigner des valeurs positives."; return; }
+  const couches = [{ z0: 0, z1: D, EM: Es, qs, sol }];
+  const pointe = { EM: Epte, qb, sol };
+  const r = courbeChargement({ B, D, Ep, couches, pointe, points: 60 });
+  const Ab = (Math.PI * B * B) / 4, P = Math.PI * B;
+  const Rb = Ab * qb, Rs = P * D * qs, Rc = Rb + Rs;
+  const Qc = (refoulant ? 0.7 : 0.5) * Rb + 0.7 * Rs;
+  const { kq } = coefficientsFrankZhao({ EM: Epte, B, sol });
+  // Courbes en mm ; part de pointe à partir du déplacement de pointe sb.
+  const tete = r.courbe.map((c) => [c.Q, c.s * 1000]);
+  const partPointe = r.courbe.map((c) => [Ab * loiFrankZhao(c.sb, kq, qb), c.s * 1000]);
+  const partFut = r.courbe.map((c) => [c.Q - Ab * loiFrankZhao(c.sb, kq, qb), c.s * 1000]);
+  const sB10 = (B / 10) * 1000;
+  const sQc = r.tassementSous(Qc);
+  // L'axe descend un peu sous B/10 : la marque de Qu ne tombe pas sur le cadre.
+  const smax = Math.max(1.18 * sB10, Math.min(Math.max(...tete.map((p) => p[1])), 1.6 * sB10));
+  const QB10 = (() => {
+    // charge atteinte pour un enfoncement de B/10 (interpolation sur la courbe)
+    for (let i = 1; i < tete.length; i++) if (tete[i][1] >= sB10) {
+      const [q0, s0] = tete[i - 1], [q1, s1] = tete[i];
+      return q0 + ((q1 - q0) * (sB10 - s0)) / (s1 - s0);
+    }
+    return tete[tete.length - 1][0];
+  })();
+  el("ccFig").innerHTML = graphe({
+    largeur: 560, hauteur: 300, xmin: 0, xmax: Rc * 1.1, ymin: 0, ymax: smax, inverserY: true,
+    xlabel: "charge en tête Q (kN)", ylabel: "enfoncement de la tête (mm)",
+    zones: [{ x0: 0, x1: Rc * 1.1, y0: sB10, y1: smax, couleur: COULEURS.discret, opacite: 0.1, libelle: "au-delà de B/10", position: "droite" }],
+    series: [
+      { points: tete, couleur: COULEURS.encre, epaisseur: 3, libelle: "charge en tête" },
+      { points: partFut, couleur: COULEURS.ec7, tirets: "6 3", libelle: "frottement mobilisé" },
+      { points: partPointe, couleur: COULEURS.f62, tirets: "6 3", libelle: "pointe mobilisée" },
+    ],
+    marques: [
+      ...(sQc !== null ? [{ x: Qc, y: sQc * 1000, couleur: COULEURS.bleu, libelle: "Qc", guides: true }] : []),
+      { x: QB10, y: sB10, couleur: COULEURS.rouge, libelle: "Qu (B/10)", guides: true },
+    ],
+  });
+  const flottant = 0.7 * Rs > (refoulant ? 0.7 : 0.5) * Rb;
+  const fracFut = sQc !== null ? (() => {
+    const i = r.courbe.findIndex((c) => c.Q >= Qc);
+    const c = r.courbe[Math.max(i, 1)];
+    return (c.Q - Ab * loiFrankZhao(c.sb, kq, qb)) / c.Q;
+  })() : null;
+  el("ccOut").innerHTML = `
+    <table class="resultats"><thead><tr><th>Grandeur</th><th class="num">Valeur</th></tr></thead><tbody>
+      <tr><td>Résistance de pointe Q<sub>pu</sub> = A<sub>b</sub> q<sub>b</sub></td><td class="n">${f(Rb, 4)} kN</td></tr>
+      <tr><td>Frottement Q<sub>su</sub> = P D q<sub>s</sub></td><td class="n">${f(Rs, 4)} kN</td></tr>
+      <tr><td>Charge limite Q<sub>u</sub> = Q<sub>pu</sub> + Q<sub>su</sub></td><td class="n">${f(Rc, 4)} kN <small>courbe : ${f(QB10, 4)} kN à B/10 = ${fd(sB10, 0)} mm</small></td></tr>
+      <tr><td>Charge de fluage Q<sub>c</sub> = ${refoulant ? "0,7" : "0,5"} Q<sub>pu</sub> + 0,7 Q<sub>su</sub></td><td class="n">${f(Qc, 4)} kN${sQc !== null ? ` <small>enfoncement ${fd(sQc * 1000, 1)} mm</small>` : ""}</td></tr>
+    </tbody></table>
+    <p class="method-note">${fracFut !== null ? `Sous Q<sub>c</sub>, le frottement porte ${f(100 * fracFut, 2)} % de la charge. ` : ""}Le pieu est
+      <strong>${flottant ? "flottant" : "non flottant"}</strong> au sens du Fascicule 62 : sous la charge de fluage,
+      0,7 Q<sub>su</sub> = ${f(0.7 * Rs, 4)} kN ${flottant ? "&gt;" : "≤"} ${refoulant ? "0,7" : "0,5"} Q<sub>pu</sub> = ${f((refoulant ? 0.7 : 0.5) * Rb, 4)} kN.
+      ${QB10 >= 0.999 * Rc
+        ? `À B/10 = ${fd(sB10, 0)} mm, pointe et frottement sont entièrement mobilisés : Q<sub>u</sub> est atteinte.`
+        : `À B/10 = ${fd(sB10, 0)} mm, la courbe reste ${f(100 * (1 - QB10 / Rc), 2)} % sous Q<sub>pu</sub> + Q<sub>su</sub> : la pointe n'est pas entièrement mobilisée.`}</p>`;
 });
-brancher(["juRb", "juRs", "juMeth", "juCat", "juCraie", "juProc", "juN", "juS", "juRaide", "juFu", "juFc", "juFq"], majJu);
+brancher(["ccB", "ccD", "ccMise", "ccEs", "ccQs", "ccEp", "ccQb", "ccSol", "ccE"], majCc);

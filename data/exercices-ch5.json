@@ -2,294 +2,327 @@
  "chapitre": "ch5",
  "exercices": [
   {
-   "id": "ch5-N",
-   "titre": "Facteurs de portance",
+   "id": "ch5-De",
+   "titre": "Encastrement équivalent sous une couverture faible",
    "difficulte": 1,
-   "graine": 3053605918,
-   "enonce": "Sol d'angle de frottement effectif φ' = 38°. On applique l'annexe D de l'EN 1997-1.",
+   "graine": 3432059871,
+   "enonce": "Une semelle de largeur B = 1,8 m est fondée à D = 1,9 m sous une couverture de pl* = 0,50 MPa ; sous la base, ple* = 1,45 MPa.",
    "donnees": [
     {
-     "label": "φ'",
-     "valeur": "38°"
+     "label": "B",
+     "valeur": "1,8 m"
     },
     {
-     "label": "tan φ'",
-     "valeur": "0,7813"
+     "label": "D",
+     "valeur": "1,9 m"
+    },
+    {
+     "label": "pl* couverture",
+     "valeur": "0,50 MPa"
+    },
+    {
+     "label": "ple*",
+     "valeur": "1,45 MPa"
     }
    ],
+   "figure": "<svg viewBox=\"0 0 560 220\" role=\"img\" aria-label=\"Coupe de la semelle\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f0-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f0-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f0-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f0-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f0-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"176.5\" y=\"64.0\" width=\"207.0\" height=\"57.8\" fill=\"#e8dcc3\"/>\n    <rect x=\"176.5\" y=\"64.0\" width=\"207.0\" height=\"57.8\" fill=\"url(#f0-argile)\"/><rect x=\"176.5\" y=\"121.8\" width=\"207.0\" height=\"82.2\" fill=\"#f3e5ae\"/>\n    <rect x=\"176.5\" y=\"121.8\" width=\"207.0\" height=\"82.2\" fill=\"url(#f0-sable)\"/><path d=\"M176.5 64.0L383.5 64.0\" stroke=\"#334155\" stroke-width=\"1.8\" fill=\"none\" /><rect x=\"252.6\" y=\"102.7\" width=\"54.8\" height=\"19.2\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.6\"/><rect x=\"252.6\" y=\"102.7\" width=\"54.8\" height=\"19.2\" fill=\"url(#f0-beton)\"/><rect x=\"273.2\" y=\"30.0\" width=\"13.7\" height=\"72.7\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.6\"/><path d=\"M252.6 133.8L307.4 133.8\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f0-fc)\" marker-end=\"url(#f0-fc)\"/><path d=\"M238.6 64.0L238.6 121.8\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f0-fc)\" marker-end=\"url(#f0-fc)\"/><text x=\"280.0\" y=\"147.8\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">B = 1,8 m</text><text x=\"233.6\" y=\"96.9\" text-anchor=\"end\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">D = 1,9 m</text><text x=\"389.5\" y=\"68.0\" text-anchor=\"start\" class=\"pt\">TN après travaux</text><text x=\"377.5\" y=\"80.0\" text-anchor=\"end\" class=\"gr halo\" style=\"font-size:11px\">pl* = 0,50 MPa</text><text x=\"377.5\" y=\"198.0\" text-anchor=\"end\" class=\"gr halo\" style=\"font-size:11px\">ple* = 1,45 MPa</text></svg>",
    "questions": [
     {
-     "texte": "Nq ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 48.9333,
-     "explication": "Nq = e^(π tanφ') tan²(45° + φ'/2) = e^(2,4545) × tan²(64,0°) = 48,93.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Nc ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 61.3518,
-     "explication": "Nc = (Nq − 1) cotφ' = 47,933 / 0,7813 = 61,35.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Nγ (base rugueuse) ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 74.8991,
-     "explication": "Nγ = 2 (Nq − 1) tanφ' = 2 × 47,933 × 0,7813 = 74,90.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Lequel de ces facteurs n'a pas de solution exacte ?",
-     "type": "choix",
-     "options": [
-      "Nc",
-      "Nq",
-      "Nγ"
-     ],
-     "reponse": 2,
-     "explication": "Nq et Nc sont exacts (Prandtl, Reissner) pour un sol sans poids ; Nγ, qui dépend du poids du sol mobilisé, n'a que des approximations — et varie de ± 25 % selon les auteurs."
-    }
-   ]
-  },
-  {
-   "id": "ch5-nd",
-   "titre": "Portance à court terme d'une semelle filante",
-   "difficulte": 2,
-   "graine": 4284172846,
-   "enonce": "Semelle filante B = 2,3 m, fondée à D = 1,8 m (γ = 18,0 kN/m³) sur une argile saturée de cohésion non drainée cu = 45 kPa. À l'ELU : Vd = 420 kN/m, Hd = 28 kN/m, excentrement e = 0,05 m.",
-   "donnees": [
-    {
-     "label": "B · e",
-     "valeur": "2,3 m · 0,05 m"
-    },
-    {
-     "label": "cu",
-     "valeur": "45 kPa"
-    },
-    {
-     "label": "q = γ D",
-     "valeur": "32,4 kPa"
-    },
-    {
-     "label": "Vd · Hd",
-     "valeur": "420 · 28 kN/m"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Largeur effective B' ?",
+     "texte": "Hauteur d'encastrement équivalente De ?",
      "type": "nombre",
      "unite": "m",
-     "reponse": 2.2,
-     "explication": "B' = B − 2e = 2,3 − 2 × 0,05 = 2,20 m.",
-     "toleranceRel": 0.005
+     "reponse": 0.655172,
+     "explication": "De = (1/ple*) ∫ pl*(z) dz = 0,50 × 1,9 / 1,45 = 0,655 m.",
+     "toleranceRel": 0.01
     },
     {
-     "texte": "Facteur d'inclinaison ic ?",
+     "texte": "Encastrement relatif De/B ?",
      "type": "nombre",
      "unite": "",
-     "reponse": 0.92343,
-     "explication": "ic = ½ [1 + √(1 − H/(A' cu))] = ½ [1 + √(1 − 28/(2,20 × 45))] = 0,923.",
+     "reponse": 0.363985,
+     "explication": "0,655 / 1,8 = 0,364.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Contrainte de rupture brute R/A' ?",
-     "type": "nombre",
-     "unite": "kPa",
-     "reponse": 246.056,
-     "explication": "R/A' = (π + 2) cu ic + q = 5,142 × 45 × 0,923 + 32,4 = 246,1 kPa.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Résistance de calcul Rd (approche 2, γR;v = 1,4) ?",
-     "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 386.659,
-     "explication": "Rd = A' (R/A') / 1,4 = 2,20 × 246,1 / 1,4 = 386,7 kN/m < Vd = 420 kN/m.",
-     "toleranceRel": 0.015
-    }
-   ]
-  },
-  {
-   "id": "ch5-dr",
-   "titre": "Portance à long terme sous charge inclinée",
-   "difficulte": 3,
-   "graine": 3645049206,
-   "enonce": "Semelle filante de largeur effective B' = 1,7 m. Sol : φ' = 27°, c' = 10 kPa, γ' = 9,0 kN/m³ (nappe au niveau de la base) ; surcharge effective des terres q' = 25,5 kPa. Charges de calcul : V = 680 kN/m, H = 143 kN/m.",
-   "donnees": [
-    {
-     "label": "B'",
-     "valeur": "1,7 m"
-    },
-    {
-     "label": "φ' · c'",
-     "valeur": "27° · 10 kPa"
-    },
-    {
-     "label": "γ' · q'",
-     "valeur": "9,0 kN/m³ · 25,5 kPa"
-    },
-    {
-     "label": "V · H",
-     "valeur": "680 · 143 kN/m"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Facteur iq ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.639267,
-     "explication": "m = 2 (filante) ; iq = [1 − H/(V + A'c' cotφ')]² = [1 − 143/(680 + 1,7 × 10 / 0,510)]² = 0,639.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Facteur iγ ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.51112,
-     "explication": "iγ = [ … ]³ = 0,511.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Contrainte de rupture brute R/A' ?",
-     "type": "nombre",
-     "unite": "kPa",
-     "reponse": 409.746,
-     "explication": "c' Nc ic + q' Nq iq + ½ γ' B' Nγ iγ = 146 + 215,2 + 48,61 = 409,7 kPa (Nq = 13,20, Nc = 23,94, Nγ = 12,43).",
-     "toleranceRel": 0.02
-    },
-    {
-     "texte": "Quel terme porte l'essentiel de la résistance ici ?",
+     "texte": "Type de fondation ?",
      "type": "choix",
      "options": [
-      "le terme de pesanteur ½ γ' B' Nγ",
-      "le terme de cohésion c' Nc",
-      "le terme de surcharge q' Nq"
+      "semi-profonde",
+      "superficielle",
+      "profonde"
      ],
-     "reponse": 2,
-     "explication": "Les trois termes valent 146, 215 et 48,6 kPa. L'inclinaison frappe plus fort le terme de pesanteur (iγ = 0,511) que les autres."
+     "reponse": 1,
+     "explication": "De/B < 1,5 : fondation superficielle. C'est De/B, et non D/B = 1,06, qui classe la fondation."
     }
    ]
   },
   {
-   "id": "ch5-forme",
-   "titre": "Semelle rectangulaire : facteurs de forme",
-   "difficulte": 2,
-   "graine": 715907237,
-   "enonce": "Semelle 2,9 m × 5,1 m (dimensions effectives), sable φ' = 36°, c' = 0, γ = 18,0 kN/m³, q' = 25 kPa. Charge verticale centrée.",
+   "id": "ch5-trapeze",
+   "titre": "Diagramme trapézoïdal et contrainte de référence",
+   "difficulte": 1,
+   "graine": 1748046603,
+   "enonce": "Semelle filante de largeur B = 3,5 m, sous V = 640 kN/m et M = 283,7 kN·m/m à la base.",
    "donnees": [
     {
-     "label": "B' × L'",
-     "valeur": "2,9 × 5,1 m"
+     "label": "B",
+     "valeur": "3,5 m"
     },
     {
-     "label": "φ'",
-     "valeur": "36°"
+     "label": "V",
+     "valeur": "640 kN/m"
     },
     {
-     "label": "γ · q'",
-     "valeur": "18,0 kN/m³ · 25 kPa"
+     "label": "M",
+     "valeur": "283,7 kN·m/m"
     }
    ],
+   "figure": "<svg viewBox=\"0 0 520 262\" role=\"img\" aria-label=\"Diagramme des contraintes sous la semelle\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f1-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f1-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f1-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f1-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f1-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"60\" y=\"44\" width=\"400\" height=\"26\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.5\"/><rect x=\"60\" y=\"44\" width=\"400\" height=\"26\" fill=\"url(#f1-beton)\"/><path d=\"M310.7 6.0L310.7 40.0\" stroke=\"#dc2626\" stroke-width=\"2.4\" fill=\"none\" marker-end=\"url(#f1-fl)\"/><path d=\"M260.0 40.0L260.0 72.0\" stroke=\"#64748b\" stroke-width=\"1\" fill=\"none\" stroke-dasharray=\"3 3\"/><path d=\"M60.0 70.0L60.0 84.2L460.0 174.0L460.0 70.0Z\" fill=\"#0f766e\" fill-opacity=\".18\" stroke=\"#0f766e\" stroke-width=\"1.8\"/><text x=\"460.0\" y=\"190.0\" text-anchor=\"end\" class=\"halo\" style=\"font-size:12px;font-weight:800;fill:#0f766e\">q'max = 321,8 kPa</text><text x=\"317.7\" y=\"27.0\" text-anchor=\"start\" class=\"halo\" style=\"font-weight:800;fill:#dc2626\">V = 640 kN/m</text><text x=\"62.0\" y=\"121.1\" text-anchor=\"start\" class=\"halo\" style=\"font-size:12px;font-weight:700;fill:#0f766e\">q'min = 43,9 kPa</text><path d=\"M60.0 220.0L460.0 220.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f1-fc)\" marker-end=\"url(#f1-fc)\"/><path d=\"M60.0 246.0L460.0 246.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f1-fc)\" marker-end=\"url(#f1-fc)\"/><text x=\"260.0\" y=\"215.0\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">largeur comprimée : 3,5 m (100 %)</text><text x=\"260.0\" y=\"241.0\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">B = 3,5 m</text></svg>",
    "questions": [
     {
-     "texte": "sq ?",
+     "texte": "Excentrement e ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 1.33423,
-     "explication": "sq = 1 + (B'/L') sinφ' = 1 + 0,569 × 0,588 = 1,334.",
+     "unite": "m",
+     "reponse": 0.443281,
+     "explication": "e = M/V = 283,7 / 640 = 0,443 m < B/6 = 0,583 m : toute la semelle est comprimée.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "sγ ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.829412,
-     "explication": "sγ = 1 − 0,3 B'/L' = 0,829.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "R/A' ?",
+     "texte": "Contrainte maximale q'max ?",
      "type": "nombre",
      "unite": "kPa",
-     "reponse": 2415.35,
-     "explication": "q' Nq sq + ½ γ B' Nγ sγ = 1 259 + 1 156 = 2 415 kPa (sans cohésion, le terme c' Nc disparaît).",
-     "toleranceRel": 0.02
-    },
-    {
-     "texte": "Résistance totale Rk = A' (R/A') ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 35723,
-     "explication": "14,79 m² × 2 415 kPa = 35 723 kN.",
-     "toleranceRel": 0.02
-    }
-   ]
-  },
-  {
-   "id": "ch5-annexeF",
-   "titre": "La même semelle à l'EN 1997-1 et à la NF P94-261",
-   "difficulte": 3,
-   "graine": 3177126913,
-   "enonce": "Semelle filante B = 2,6 m, largeur effective B' = 2,29 m. Le calcul de l'annexe D donne une contrainte de rupture brute R/A' = 285 kPa en conditions drainées ; q0 = 40 kPa au niveau de la base (sans nappe). À l'ELU : Vd = 435 kN/m.",
-   "donnees": [
-    {
-     "label": "B · B'",
-     "valeur": "2,6 · 2,29 m"
-    },
-    {
-     "label": "R/A'",
-     "valeur": "285 kPa"
-    },
-    {
-     "label": "q0",
-     "valeur": "40 kPa"
-    },
-    {
-     "label": "Vd",
-     "valeur": "435 kN/m"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Rd de l'EN 1997-1, approche 2 ?",
-     "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 466.179,
-     "explication": "Rd = A' (R/A') / 1,4 = 2,29 × 285 / 1,4 = 466,2 kN/m.",
+     "reponse": 321.812,
+     "explication": "q'max = (V/B)(1 + 6e/B) = 182,9 × 1,760 = 321,8 kPa.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Rv;d de la NF P94-261, annexe F ?",
+     "texte": "Contrainte minimale q'min ?",
      "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 200.375,
-     "explication": "qnet = 285 − 40 = 245 kPa ; γR;v γR;d;v = 1,4 × 2,0 = 2,80 ; Rv;d = 2,29 × 245 / 2,80 = 200,4 kN/m.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Taux (Vd − R0)/Rv;d ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.6519,
-     "explication": "R0 = B q0 = 104 kN/m ; (435 − 104) / 200,4 = 1,652.",
+     "unite": "kPa",
+     "reponse": 43.902,
+     "explication": "q'min = (V/B)(1 − 6e/B) = 43,9 kPa.",
      "toleranceRel": 0.015
     },
     {
-     "texte": "Verdicts ?",
+     "texte": "Contrainte de référence q'ref du Fascicule 62 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 252.335,
+     "explication": "q'ref = (3 q'max + q'min)/4 = 252,3 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Contrainte uniforme de Meyerhof V/(B − 2e) ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 244.888,
+     "explication": "B' = 2,613 m ; V/B' = 244,9 kPa — proche de q'ref tant que l'excentrement est faible.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch5-triangle",
+   "titre": "Semelle partiellement décollée",
+   "difficulte": 2,
+   "graine": 73498912,
+   "enonce": "Semelle filante B = 2,9 m, V = 660 kN/m, M = 530,2 kN·m/m (combinaison rare).",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "2,9 m"
+    },
+    {
+     "label": "V",
+     "valeur": "660 kN/m"
+    },
+    {
+     "label": "M",
+     "valeur": "530,2 kN·m/m"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 520 262\" role=\"img\" aria-label=\"Diagramme des contraintes sous la semelle\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f2-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f2-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f2-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f2-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f2-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f2-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f2-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"60\" y=\"44\" width=\"400\" height=\"26\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.5\"/><rect x=\"60\" y=\"44\" width=\"400\" height=\"26\" fill=\"url(#f2-beton)\"/><path d=\"M370.8 6.0L370.8 40.0\" stroke=\"#dc2626\" stroke-width=\"2.4\" fill=\"none\" marker-end=\"url(#f2-fl)\"/><path d=\"M260.0 40.0L260.0 72.0\" stroke=\"#64748b\" stroke-width=\"1\" fill=\"none\" stroke-dasharray=\"3 3\"/><path d=\"M192.4 70.0L192.4 70.0L460.0 174.0L460.0 70.0Z\" fill=\"#0f766e\" fill-opacity=\".18\" stroke=\"#0f766e\" stroke-width=\"1.8\"/><rect x=\"60\" y=\"70\" width=\"132.4\" height=\"8\" fill=\"#fee2e2\"/><text x=\"460.0\" y=\"190.0\" text-anchor=\"end\" class=\"halo\" style=\"font-size:12px;font-weight:800;fill:#0f766e\">q'max = 680,4 kPa</text><text x=\"377.8\" y=\"27.0\" text-anchor=\"start\" class=\"halo\" style=\"font-weight:800;fill:#dc2626\">V = 660 kN/m</text><text x=\"126.2\" y=\"92.0\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:800;fill:#b91c1c\">décollée</text><path d=\"M192.4 220.0L460.0 220.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f2-fc)\" marker-end=\"url(#f2-fc)\"/><path d=\"M60.0 246.0L460.0 246.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f2-fc)\" marker-end=\"url(#f2-fc)\"/><text x=\"326.2\" y=\"215.0\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">largeur comprimée : 1,94 m (66,9 %)</text><text x=\"260.0\" y=\"241.0\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">B = 2,9 m</text></svg>",
+   "questions": [
+    {
+     "texte": "Largeur comprimée Bc ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.94,
+     "explication": "e = 0,803 m > B/6 : diagramme triangulaire, Bc = 3(B/2 − e) = 3 × (1,45 − 0,803) = 1,940 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Contrainte maximale q'max ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 680.412,
+     "explication": "q'max = 2V/Bc = 2 × 660 / 1,940 = 680,4 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Fraction comprimée (en %) ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 66.8966,
+     "explication": "Bc/B = 1,940 / 2,9 = 66,9 %.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Le critère du Fascicule 62 sous combinaison rare est-il satisfait ?",
      "type": "choix",
      "options": [
-      "EN 1997-1 : vérifié ; NF P94-261 : non vérifié",
-      "EN 1997-1 : non vérifié ; NF P94-261 : non vérifié",
-      "EN 1997-1 : vérifié ; NF P94-261 : vérifié"
+      "non : moins de 75 % de la surface est comprimée",
+      "oui : il suffit de 10 %"
      ],
      "reponse": 0,
-     "explication": "Surdimensionnement 1,07 à l'approche 2 contre un taux de 1,65 à la norme française. En conditions drainées, le coefficient de modèle 2,0 porte le facteur global à 2,8 : c'est lui qui fait la différence."
+     "explication": "F62 B.3.3 : 75 % au moins sous combinaisons rares, soit e ≤ B/4 = 0,725 m. Ici 66,9 %."
+    }
+   ]
+  },
+  {
+   "id": "ch5-ie",
+   "titre": "Surface effective d'une semelle rectangulaire",
+   "difficulte": 2,
+   "graine": 4032949846,
+   "enonce": "Semelle rectangulaire 1,8 m × 3,2 m, résultante excentrée de eB = 0,43 m selon B et eL = 0,42 m selon L (combinaison quasi permanente).",
+   "donnees": [
+    {
+     "label": "B × L",
+     "valeur": "1,8 × 3,2 m"
+    },
+    {
+     "label": "eB",
+     "valeur": "0,43 m"
+    },
+    {
+     "label": "eL",
+     "valeur": "0,42 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Coefficient ie ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.3848,
+     "explication": "ie = (1 − 2eB/B)(1 − 2eL/L) = 0,520 × 0,740 = 0,385.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Surface effective A' ?",
+     "type": "nombre",
+     "unite": "m²",
+     "reponse": 2.21645,
+     "explication": "A' = A · ie = 5,76 × 0,385 = 2,22 m², soit B' × L' = 0,94 × 2,37 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Le critère de la NF P94-261 à l'ELS quasi permanent est-il vérifié ?",
+     "type": "choix",
+     "options": [
+      "oui : ie ≥ 2/3",
+      "non : ie < 2/3"
+     ],
+     "reponse": 1,
+     "explication": "Tableau 9 du guide Cerema : pour une semelle rectangulaire, (1 − 2eB/B)(1 − 2eL/L) ≥ 2/3 aux ELS quasi permanents et fréquents. Ici 0,385."
+    }
+   ]
+  },
+  {
+   "id": "ch5-cercle",
+   "titre": "Semelle circulaire excentrée",
+   "difficulte": 3,
+   "graine": 2513688596,
+   "enonce": "Semelle circulaire de diamètre B = 2,0 m ; la résultante est excentrée de e = 0,44 m (ELS caractéristique).",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "2,0 m"
+    },
+    {
+     "label": "e",
+     "valeur": "0,44 m"
+    },
+    {
+     "label": "e/R",
+     "valeur": "0,440"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Coefficient de réduction ie (annexe Q) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.458416,
+     "explication": "ie = 2 arccos(e/R)/π − (2e/πR) √(1 − (e/R)²) avec e/R = 0,440 : ie = 0,458.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Critère 1 − 2e/B ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.56,
+     "explication": "1 − 2 × 0,44 / 2,0 = 0,560.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Critère d'excentrement à l'ELS caractéristique ?",
+     "type": "choix",
+     "options": [
+      "vérifié : 1 − 2e/B ≥ 9/16",
+      "non vérifié : 1 − 2e/B < 9/16"
+     ],
+     "reponse": 1,
+     "explication": "Pour une semelle circulaire, les seuils deviennent 3/40, 9/16 et 3/4 (ELU, ELS caractéristique, ELS quasi permanent) : ils correspondent aux mêmes surfaces comprimées que 1/15, 1/2 et 2/3 pour un rectangle."
+    }
+   ]
+  },
+  {
+   "id": "ch5-emax",
+   "titre": "Excentrements admissibles d'une semelle filante",
+   "difficulte": 1,
+   "graine": 1534931291,
+   "enonce": "Semelle filante de largeur B = 2,3 m. On cherche les excentrements maximaux admis par le Fascicule 62.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "2,3 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Excentrement maximal à l'ELU (10 % comprimé) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.07333,
+     "explication": "3(B/2 − e) ≥ 0,1 B ⇒ e ≤ B/2 − B/30 = 7B/15 = 1,073 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Excentrement maximal sous combinaison rare (75 %) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.575,
+     "explication": "3(B/2 − e) ≥ 0,75 B ⇒ e ≤ B/4 = 0,575 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Excentrement maximal sous combinaison fréquente (100 %) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.383333,
+     "explication": "Diagramme trapézoïdal : e ≤ B/6 = 0,383 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Que valent ces limites exprimées en 1 − 2e/B, forme de la NF P94-261 ?",
+     "type": "choix",
+     "options": [
+      "1/10, 3/4 et 1",
+      "1/15, 1/2 et 2/3",
+      "1/6, 1/4 et 7/15"
+     ],
+     "reponse": 1,
+     "explication": "1 − 2(7B/15)/B = 1/15 ; 1 − 2(B/4)/B = 1/2 ; 1 − 2(B/6)/B = 2/3 : les critères de la norme sont ceux du fascicule, réécrits en largeur de Meyerhof."
     }
    ]
   }

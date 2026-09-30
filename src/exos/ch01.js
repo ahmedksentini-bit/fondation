@@ -85,7 +85,7 @@ export default [
           choixMelange(a, "État du sol d'après le tableau de α ?", [al.etat, ...etats.filter((e) => e !== al.etat)],
             `Le tableau du coefficient rhéologique (F62 annexe C.5 ; NF P94-261 tableau H.2.1.1.1 corrigé) classe ce rapport dans « ${al.etat} ».`),
           choixMelange(a, "Coefficient α à retenir ?", [fraction(al.alpha), ...FRACTIONS.map(([, t]) => t).filter((t) => t !== fraction(al.alpha))].slice(0, 4),
-            `α = ${fraction(al.alpha)}. Il sert au tassement (chapitre 7) et au module de réaction transversal des pieux (chapitre 12).`),
+            `α = ${fraction(al.alpha)}. Il sert au tassement (chapitre 9) et au module de réaction transversal des pieux (chapitre 14).`),
         ],
       };
     },
@@ -110,7 +110,7 @@ export default [
             homogene ? ["oui : le maximum ne dépasse pas deux fois le minimum", "non : le maximum dépasse deux fois le minimum"] : ["non : le maximum dépasse deux fois le minimum", "oui : le maximum ne dépasse pas deux fois le minimum"],
             "Le guide Cerema de la NF P94-261 (note 27) considère, à titre indicatif, une formation comme homogène si elle est de nature unique et si ses pressions limites maximales n'excèdent pas deux fois les minimales."),
           nombre("Moyenne géométrique des quatre valeurs (épaisseurs égales) ?", geo, "MPa",
-            `(${pls.map((p) => frd(p, 2)).join(" × ")})^(1/4) = ${frd(geo, 3)} MPa — c'est la forme que prend p_le* sous une semelle quand les épaisseurs sont égales (chapitre 4).`, { rel: 0.01 }),
+            `(${pls.map((p) => frd(p, 2)).join(" × ")})^(1/4) = ${frd(geo, 3)} MPa — c'est la forme que prend p_le* sous une semelle quand les épaisseurs sont égales (chapitre 6).`, { rel: 0.01 }),
           choixMelange(a, "Ce critère s'applique-t-il aux essais pénétrométriques ?",
             ["non : les diagrammes de qc sont trop irréguliers", "oui, sans restriction", "oui, à condition de doubler le seuil"],
             "Le guide l'exclut explicitement pour le pénétromètre, dont les diagrammes sont trop irréguliers pour ce type de critère."),

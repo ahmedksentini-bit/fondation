@@ -2,429 +2,335 @@
  "chapitre": "ch4",
  "exercices": [
   {
-   "id": "ch4-ple",
-   "titre": "Pression limite nette équivalente sous une semelle",
+   "id": "ch4-elu",
+   "titre": "Une charge permanente, une charge d'exploitation",
    "difficulte": 1,
-   "graine": 3940855296,
-   "enonce": "Semelle filante de largeur B = 1,8 m. Sous la base : 1,62 m à pl* = 1,00 MPa, puis 0,54 m à 0,55 MPa, puis 1,50 MPa.",
+   "graine": 548913479,
+   "enonce": "Un poteau descend sur sa semelle une charge permanente G = 1 260 kN et une charge d'exploitation Q = 150 kN (ψ2 = 0,3). Aucune autre action variable.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "1,8 m"
+     "label": "G",
+     "valeur": "1 260 kN"
     },
     {
-     "label": "couche 1",
-     "valeur": "1,62 m · 1,00 MPa"
+     "label": "Q",
+     "valeur": "150 kN"
     },
     {
-     "label": "couche 2",
-     "valeur": "0,54 m · 0,55 MPa"
-    },
-    {
-     "label": "couche 3",
-     "valeur": "1,50 MPa"
+     "label": "ψ2",
+     "valeur": "0,3"
     }
    ],
    "questions": [
     {
-     "texte": "Épaisseur d'étude hr (charge centrée) ?",
+     "texte": "Charge verticale à l'ELU fondamental (Fascicule 62) ?",
      "type": "nombre",
-     "unite": "m",
-     "reponse": 2.7,
-     "explication": "hr = 1,5 B = 2,70 m ; la couche 3 y intervient sur 0,54 m.",
+     "unite": "kN",
+     "reponse": 1926,
+     "explication": "1,35 G + 1,5 Q = 1,35 × 1 260 + 1,5 × 150 = 1 926 kN.",
      "toleranceRel": 0.005
     },
     {
-     "texte": "Pression limite nette équivalente ple* (moyenne géométrique) ?",
+     "texte": "Charge verticale à l'ELU fondamental (Eurocode 0, approche 2) ?",
      "type": "nombre",
-     "unite": "MPa",
-     "reponse": 0.962256,
-     "explication": "ple* = (1,00^1,62 × 0,55^0,54 × 1,50^0,54)^(1/2,70) = 0,962 MPa.",
-     "toleranceRel": 0.01
+     "unite": "kN",
+     "reponse": 1926,
+     "explication": "Même expression (6.10) : 1,35 G + 1,5 Q = 1 926 kN.",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "Pour comparaison, moyenne arithmétique sur la même épaisseur ?",
+     "texte": "Charge à l'ELS quasi permanent ?",
      "type": "nombre",
-     "unite": "MPa",
-     "reponse": 1.01,
-     "explication": "(1,620 + 0,297 + 0,810) / 2,70 = 1,010 MPa.",
-     "toleranceRel": 0.01
+     "unite": "kN",
+     "reponse": 1305,
+     "explication": "G + ψ2 Q = 1 260 + 0,3 × 150 = 1 305 kN : c'est la charge des tassements.",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "Pourquoi les deux textes prennent-ils la moyenne géométrique ?",
+     "texte": "Avec une seule action variable, les deux référentiels donnent-ils la même combinaison fondamentale ?",
      "type": "choix",
      "options": [
-      "elle est plus simple à calculer",
-      "elle donne plus de poids à la couche la plus faible",
-      "elle est toujours supérieure à la moyenne arithmétique"
+      "non : l'Eurocode majore G de 1,5",
+      "oui : les écarts n'apparaissent qu'avec les actions d'accompagnement",
+      "non : le Fascicule 62 ne majore pas Q"
      ],
      "reponse": 1,
-     "explication": "La moyenne géométrique est toujours inférieure ou égale à la moyenne arithmétique, d'autant plus que le profil est contrasté : ici 4,7 % de moins. La couche molle pèse davantage, ce qui est le comportement réel d'une semelle."
+     "explication": "La forme linéaire du Fascicule 62 (1,35 Gmax + Gmin + γQ1 Q1 + 1,3 ψ0 Q2) et l'expression 6.10 de l'EN 1990 coïncident pour une seule action variable. La vraie différence entre les deux textes est côté résistance."
     }
    ]
   },
   {
-   "id": "ch4-qce",
-   "titre": "Résistance de pointe équivalente écrêtée",
+   "id": "ch4-accompagnement",
+   "titre": "Deux actions variables",
    "difficulte": 2,
-   "graine": 2125356844,
-   "enonce": "Semelle filante B = 2,4 m sur un sable reconnu au pénétromètre : sous la base, 1,44 m à qc = 4,5 MPa, 0,54 m à 24,5 MPa, puis 4,0 MPa.",
+   "graine": 2280244699,
+   "enonce": "Charges verticales sur une semelle : G = 930 kN, action variable de base Q1 = 120 kN, action d'accompagnement Q2 = 250 kN, avec ψ0 = 0,6 dans les deux référentiels.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "2,4 m"
+     "label": "G",
+     "valeur": "930 kN"
     },
     {
-     "label": "couche 1",
-     "valeur": "1,44 m · 4,5 MPa"
+     "label": "Q1",
+     "valeur": "120 kN"
     },
     {
-     "label": "couche 2",
-     "valeur": "0,54 m · 24,5 MPa"
+     "label": "Q2",
+     "valeur": "250 kN"
     },
     {
-     "label": "couche 3",
-     "valeur": "4,0 MPa"
+     "label": "ψ0",
+     "valeur": "0,6"
     }
    ],
    "questions": [
     {
-     "texte": "Moyenne qcm sur hr = 1,5 B ?",
+     "texte": "ELU fondamental au Fascicule 62 ?",
      "type": "nombre",
-     "unite": "MPa",
-     "reponse": 7.275,
-     "explication": "qcm = (4,5 × 1,44 + 24,5 × 0,54 + 4,0 × 1,62) / 3,60 = 7,275 MPa.",
-     "toleranceRel": 0.01
+     "unite": "kN",
+     "reponse": 1630.5,
+     "explication": "1,35 G + 1,5 Q1 + 1,3 ψ0 Q2 = 1 255,5 + 180 + 195 = 1 630,5 kN.",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "Plafond d'écrêtage 1,3 qcm ?",
+     "texte": "ELU fondamental à l'Eurocode 0 ?",
      "type": "nombre",
-     "unite": "MPa",
-     "reponse": 9.4575,
-     "explication": "1,3 × 7,275 = 9,458 MPa : la couche 2 est écrêtée.",
-     "toleranceRel": 0.01
+     "unite": "kN",
+     "reponse": 1660.5,
+     "explication": "1,35 G + 1,5 Q1 + 1,5 ψ0 Q2 = 1 255,5 + 180 + 225 = 1 660,5 kN.",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "Résistance de pointe équivalente qce ?",
+     "texte": "Écart entre les deux ?",
      "type": "nombre",
-     "unite": "MPa",
-     "reponse": 5.01863,
-     "explication": "qce = moyenne du profil écrêté = (4,50 × 1,44 + 9,46 × 0,54 + 4,00 × 1,62) / 3,60 = 5,019 MPa.",
+     "unite": "kN",
+     "reponse": 30,
+     "explication": "(1,5 − 1,3) ψ0 Q2 = 0,2 × 0,6 × 250 = 30 kN : seul le coefficient de l'action d'accompagnement diffère.",
      "toleranceRel": 0.01
     }
    ]
   },
   {
-   "id": "ch4-kp-f62",
-   "titre": "Facteur de portance du Fascicule 62",
+   "id": "ch4-els",
+   "titre": "Les trois combinaisons de service",
    "difficulte": 1,
-   "graine": 2894046805,
-   "enonce": "Semelle filante de largeur B = 2,6 m, sol d'assise marnes et marno-calcaires tendres (classe A), De = 2,86 m.",
+   "graine": 515358241,
+   "enonce": "G = 840 kN, Q = 110 kN ; ψ1 = 0,7, ψ2 = 0,6.",
    "donnees": [
     {
-     "label": "Sol",
-     "valeur": "Marnes et marno-calcaires tendres (A)"
+     "label": "G",
+     "valeur": "840 kN"
     },
     {
-     "label": "B",
-     "valeur": "2,6 m"
+     "label": "Q",
+     "valeur": "110 kN"
     },
     {
-     "label": "B/L",
-     "valeur": "0,000"
-    },
-    {
-     "label": "De",
-     "valeur": "2,86 m"
+     "label": "ψ1 · ψ2",
+     "valeur": "0,7 · 0,6"
     }
    ],
    "questions": [
     {
-     "texte": "Encastrement relatif De/B ?",
+     "texte": "ELS caractéristique (ELS rare au Fascicule 62) ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 1.1,
-     "explication": "2,86 / 2,6 = 1,100.",
-     "toleranceRel": 0.01
+     "unite": "kN",
+     "reponse": 950,
+     "explication": "G + Q = 950 kN.",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "Facteur de portance kp (F62 annexe B.1, tableau I) ?",
+     "texte": "ELS fréquent ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 1.1782,
-     "explication": "kp = k0 [1 + a (0,6 + 0,4 B/L) De/B] = 1,0 × [1 + 0,27 × (0,6 + 0,4 × 0,000) × 1,100] = 1,178.",
-     "toleranceRel": 0.01
-    }
-   ]
-  },
-  {
-   "id": "ch4-kp-ec7",
-   "titre": "Facteur de portance de la NF P94-261",
-   "difficulte": 2,
-   "graine": 1636459202,
-   "enonce": "Semelle rectangulaire 2,8 m × 14,7 m sur un sable, De = 2,66 m.",
-   "donnees": [
-    {
-     "label": "Catégorie",
-     "valeur": "sable"
+     "unite": "kN",
+     "reponse": 917,
+     "explication": "G + ψ1 Q = 840 + 0,7 × 110 = 917 kN.",
+     "toleranceRel": 0.005
     },
     {
-     "label": "B × L",
-     "valeur": "2,8 × 14,7 m"
-    },
-    {
-     "label": "De",
-     "valeur": "2,66 m"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "kp pour B/L = 0 (filante) ?",
+     "texte": "ELS quasi permanent ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 1.29552,
-     "explication": "k = k0 + (a + b De/B)(1 − e^(−c De/B)) avec k0 = 1,0, a = 0,30, b = 0,05, c = 2,0 et De/B = 0,950 : 1,296.",
-     "toleranceRel": 0.01
+     "unite": "kN",
+     "reponse": 906,
+     "explication": "G + ψ2 Q = 840 + 0,6 × 110 = 906 kN.",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "kp pour B/L = 1 (carrée) ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.38762,
-     "explication": "Mêmes formules avec k0 = 1,0, a = 0,22, b = 0,18, c = 5,0 : 1,388.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "kp de la semelle (B/L = 0,190) ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.31307,
-     "explication": "Interpolation linéaire : 1,296 × (1 − 0,190) + 1,388 × 0,190 = 1,313.",
-     "toleranceRel": 0.01
-    }
-   ]
-  },
-  {
-   "id": "ch4-idelta",
-   "titre": "Réduction pour charge inclinée",
-   "difficulte": 2,
-   "graine": 3636591734,
-   "enonce": "Semelle filante B = 2,3 m, De = 1,72 m, sol frottant. Charges de calcul : Vd = 620 kN/m, Hd = 118 kN/m.",
-   "donnees": [
-    {
-     "label": "B · De",
-     "valeur": "2,3 m · 1,72 m"
-    },
-    {
-     "label": "Sol",
-     "valeur": "frottant"
-    },
-    {
-     "label": "Vd · Hd",
-     "valeur": "620 · 118 kN/m"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Inclinaison δ de la charge ?",
-     "type": "nombre",
-     "unite": "°",
-     "reponse": 10.7758,
-     "explication": "δ = arctan(Hd/Vd) = arctan(118/620) = 10,78°.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Coefficient iδ de la NF P94-261 (sol frottant) ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.682074,
-     "explication": "iδ = (1 − 2δ/π)² − (2δ/π)(2 − 3·2δ/π) e^(−De/B), avec 2δ/π = 0,1197 et e^(−De/B) = 0,472 : iδ = 0,682.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Même coefficient au Fascicule 62 (Φ2) ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.682074,
-     "explication": "Φ2(δ) = (1 − δ/90)² (1 − e^(−De/B)) + [max(1 − δ/45 ; 0)]² e^(−De/B) = 0,682 : identique, les deux textes ont la même formule sous deux écritures.",
-     "toleranceRel": 0.01
-    }
-   ]
-  },
-  {
-   "id": "ch4-ibeta",
-   "titre": "Semelle en crête de talus",
-   "difficulte": 2,
-   "graine": 3338346354,
-   "enonce": "Semelle filante B = 3,0 m posée en surface (De = 0) sur un sable, à d = 3,75 m de la crête d'un talus de pente β = 26°.",
-   "donnees": [
-    {
-     "label": "B",
-     "valeur": "3,0 m"
-    },
-    {
-     "label": "d",
-     "valeur": "3,75 m"
-    },
-    {
-     "label": "β",
-     "valeur": "26°"
-    }
-   ],
-   "figure": "<svg viewBox=\"0 0 560 220\" role=\"img\" aria-label=\"Coupe de la semelle\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f3-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f3-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f3-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f3-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f3-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f3-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f3-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f3-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f3-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"179.7\" y=\"64.0\" width=\"200.7\" height=\"140.0\" fill=\"#f3e5ae\"/>\n    <rect x=\"179.7\" y=\"64.0\" width=\"200.7\" height=\"140.0\" fill=\"url(#f3-sable)\"/><path d=\"M179.66666666666666 63L217.0 63L179.7 82.2L179.66666666666666 82.2Z\" fill=\"#fff\"/><path d=\"M217.0 64.0L179.7 82.2\" stroke=\"#334155\" stroke-width=\"1.6\" fill=\"none\" /><path d=\"M217.0 52.0L287.0 52.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f3-fc)\" marker-end=\"url(#f3-fc)\"/><path d=\"M217.0 64.0L380.3 64.0\" stroke=\"#334155\" stroke-width=\"1.8\" fill=\"none\" /><rect x=\"287.0\" y=\"64.0\" width=\"56.0\" height=\"5.6\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.6\"/><rect x=\"287.0\" y=\"64.0\" width=\"56.0\" height=\"5.6\" fill=\"url(#f3-beton)\"/><rect x=\"308.0\" y=\"30.0\" width=\"14.0\" height=\"34.0\" fill=\"#cbd5e1\" stroke=\"#475569\" stroke-width=\"1.6\"/><path d=\"M287.0 81.6L343.0 81.6\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f3-fc)\" marker-end=\"url(#f3-fc)\"/><path d=\"M357.0 64.0L357.0 69.6\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f3-fc)\" marker-end=\"url(#f3-fc)\"/><text x=\"252.0\" y=\"47.0\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">d = 3,75 m</text><text x=\"315.0\" y=\"95.6\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">B = 3 m</text><text x=\"362.0\" y=\"70.8\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">D = 0,3 m</text><text x=\"205.0\" y=\"92.0\" text-anchor=\"end\" class=\"pt halo\">β = 26°</text><text x=\"386.3\" y=\"52.0\" text-anchor=\"start\" class=\"pt\">TN après travaux</text></svg>",
-   "questions": [
-    {
-     "texte": "Rapport d/8B ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.15625,
-     "explication": "3,75 / (8 × 3,0) = 0,156.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Coefficient iβ (Corté et Garnier) ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.527414,
-     "explication": "iβ = 1 − 0,9 tanβ (2 − tanβ) (1 − d/8B)² = 1 − 0,9 × 0,488 × 1,512 × 0,712 = 0,527.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "À partir de quelle distance le talus n'a-t-il plus d'effet ?",
+     "texte": "Sous quelle combinaison calcule-t-on le tassement d'une semelle ?",
      "type": "choix",
      "options": [
-      "d ≥ 5 B",
-      "d ≥ 8 B",
-      "d ≥ 2 B"
+      "quasi permanente",
+      "fondamentale",
+      "caractéristique",
+      "fréquente"
      ],
-     "reponse": 1,
-     "explication": "Le terme (1 − d/8B)² s'annule pour d = 8 B : au-delà, iβ = 1. Le Fascicule 62 impose en outre 2 m au moins entre le bord de la semelle et le talus (B.4.1,2)."
+     "reponse": 0,
+     "explication": "Le tassement se calcule sous les charges présentes la plus grande partie du temps : combinaison quasi permanente (F62 annexe F.2 § 1 ; NF P94-261 § 13)."
     }
    ]
   },
   {
-   "id": "ch4-f62",
-   "titre": "Portance d'une semelle au Fascicule 62",
+   "id": "ch4-excentrement",
+   "titre": "Quelle combinaison excentre le plus ?",
    "difficulte": 2,
-   "graine": 2514853769,
-   "enonce": "Semelle filante B = 2,4 m fondée à D = 1,4 m (γ = 19 kN/m³, pas de nappe) sur argiles et limons mous (classe A, comportement cohérent) : ple* = 0,35 MPa, De = 1,12 m. À l'ELU fondamental : V = 540 kN/m centrée, H = 65 kN/m.",
+   "graine": 3526501611,
+   "enonce": "Une semelle filante de largeur B = 2,0 m reçoit une charge permanente centrée VG = 390 kN/m et un effort horizontal variable HQ = 25 kN/m appliqué à 1,5 m au-dessus de la base.",
    "donnees": [
     {
-     "label": "B · D",
-     "valeur": "2,4 · 1,4 m"
+     "label": "B",
+     "valeur": "2,0 m"
     },
     {
-     "label": "Sol",
-     "valeur": "Argiles et limons mous (A)"
+     "label": "VG",
+     "valeur": "390 kN/m"
     },
     {
-     "label": "ple* · De",
-     "valeur": "0,35 MPa · 1,12 m"
+     "label": "HQ",
+     "valeur": "25 kN/m"
     },
     {
-     "label": "V · H (ELU)",
-     "valeur": "540 · 65 kN/m"
+     "label": "bras de levier",
+     "valeur": "1,5 m"
     }
    ],
    "questions": [
     {
-     "texte": "Facteur de portance kp ?",
+     "texte": "Excentrement à l'ELU avec G défavorable (1,35 G + 1,5 Q) ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 0.856,
-     "explication": "kp = 0,8 [1 + 0,25 × 0,6 × 0,467] = 0,856 (filante : B/L = 0).",
+     "unite": "m",
+     "reponse": 0.106838,
+     "explication": "M = 1,5 × 25 × 1,5 = 56,25 kN·m/m ; V = 1,35 × 390 = 526,5 kN/m ; e = 0,107 m.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Coefficient iδβ ?",
+     "texte": "Excentrement à l'ELU avec G favorable (1,0 G + 1,5 Q) ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 0.85329,
-     "explication": "δ = 6,86° ; sol cohérent : Φ1 = 0,853.",
-     "toleranceRel": 0.015
+     "unite": "m",
+     "reponse": 0.144231,
+     "explication": "Même moment, V = 390 kN/m : e = 56,25 / 390 = 0,144 m — 35 % de plus.",
+     "toleranceRel": 0.01
     },
     {
-     "texte": "Contrainte admissible q'0 + kp ple* iδβ / 2 ?",
+     "texte": "Coefficient 1 − 2e/B de la NF P94-261 pour la combinaison défavorable à l'excentrement ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.855769,
+     "explication": "1 − 2 × 0,144 / 2,0 = 0,856, à comparer à 1/15 = 0,067 à l'ELU.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Quelle combinaison faut-il retenir pour vérifier l'excentrement ?",
+     "type": "choix",
+     "options": [
+      "l'ELS quasi permanent",
+      "celle où G est favorable : V minimal pour le même moment",
+      "celle où G est défavorable : les charges sont maximales"
+     ],
+     "reponse": 1,
+     "explication": "L'excentrement e = M/V augmente quand V diminue : on associe au moment maximal la charge verticale minimale (G avec γG = 1,0)."
+    }
+   ]
+  },
+  {
+   "id": "ch4-quelle-combinaison",
+   "titre": "À chaque vérification sa combinaison",
+   "difficulte": 1,
+   "graine": 701418732,
+   "enonce": "Associer chaque vérification à sa combinaison d'actions.",
+   "questions": [
+    {
+     "texte": "Critère 1 − 2e/B ≥ 2/3 de la NF P94-261 ?",
+     "type": "choix",
+     "options": [
+      "ELU fondamentaux",
+      "ELS quasi permanents et fréquents",
+      "ELS caractéristiques"
+     ],
+     "reponse": 1,
+     "explication": "Tableau 8 du guide Cerema : 2/3 aux ELS quasi permanents et fréquents, 1/2 aux ELS caractéristiques, 1/15 aux ELU."
+    },
+    {
+     "texte": "Charge de fluage d'un pieu, vérifiée à l'ELS quasi permanent : quel coefficient au Fascicule 62 ?",
+     "type": "choix",
+     "options": [
+      "Qu / 1,4",
+      "Qc / 1,1",
+      "Qc / 1,4"
+     ],
+     "reponse": 2,
+     "explication": "F62 C.4.1 : Qmax = Qc/1,4 sous combinaisons quasi permanentes, Qc/1,1 sous combinaisons rares, Qu/1,4 à l'ELU."
+    },
+    {
+     "texte": "Critère « sol entièrement comprimé » au Fascicule 62 ?",
+     "type": "choix",
+     "options": [
+      "combinaisons fréquentes",
+      "combinaisons rares",
+      "combinaisons fondamentales"
+     ],
+     "reponse": 0,
+     "explication": "F62 B.3.3 : entièrement comprimé sous combinaisons fréquentes, au moins 75 % sous combinaisons rares."
+    },
+    {
+     "texte": "Vérification du glissement d'une semelle ?",
+     "type": "choix",
+     "options": [
+      "ELS caractéristique",
+      "ELU, avec la charge verticale maximale",
+      "ELU, avec la charge verticale minimale associée à H"
+     ],
+     "reponse": 2,
+     "explication": "Le glissement est un état limite ultime où V est une résistance : on prend la combinaison qui minimise V pour le H considéré."
+    }
+   ]
+  },
+  {
+   "id": "ch4-securite",
+   "titre": "Où chaque référentiel place sa sécurité",
+   "difficulte": 2,
+   "graine": 3651486227,
+   "enonce": "Une semelle a une contrainte de rupture nette kp·ple* = 1 070 kPa, sous charge verticale centrée (iδ = ie = 1).",
+   "donnees": [
+    {
+     "label": "kp·ple*",
+     "valeur": "1 070 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Contrainte nette admissible à l'ELU au Fascicule 62 ?",
      "type": "nombre",
      "unite": "kPa",
-     "reponse": 154.423,
-     "explication": "q'0 = 19 × 1,4 = 26,6 kPa ; 0,856 × 350 × 0,853 / 2 + 26,6 = 154,4 kPa.",
-     "toleranceRel": 0.02
-    },
-    {
-     "texte": "Taux de travail q'ref / q'adm ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.45704,
-     "explication": "q'ref = V/B = 225 kPa (charge centrée) ; 225 / 154,4 = 1,457 > 1 : portance insuffisante.",
-     "toleranceRel": 0.02
-    }
-   ]
-  },
-  {
-   "id": "ch4-ec7",
-   "titre": "Portance d'une semelle à la NF P94-261",
-   "difficulte": 3,
-   "graine": 1387544166,
-   "enonce": "Semelle filante B = 2,5 m, D = 1,0 m (γ = 19 kN/m³), sur une argile (comportement cohérent) : ple* = 1,90 MPa, De = 0,90 m. ELU fondamental : Vd = 800 kN/m (poids de la semelle et des terres compris), Hd = 160 kN/m, excentrement e = 0,07 m.",
-   "donnees": [
-    {
-     "label": "B · D",
-     "valeur": "2,5 · 1,0 m"
-    },
-    {
-     "label": "ple* · De",
-     "valeur": "1,90 MPa · 0,90 m"
-    },
-    {
-     "label": "Vd · Hd",
-     "valeur": "800 · 160 kN/m"
-    },
-    {
-     "label": "e",
-     "valeur": "0,07 m"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "kp (filante) ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.87744,
-     "explication": "kp = k0 + (a + b De/B)(1 − e^(−c De/B)) = 0,877 pour De/B = 0,360.",
+     "reponse": 535,
+     "explication": "(q'u − q'0)/γq = 1 070 / 2 = 535 kPa.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "iδ ?",
+     "texte": "Contrainte nette de calcul à l'ELU à la NF P94-261 ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 0.76446,
-     "explication": "δ = 11,31° → iδ = 0,764.",
-     "toleranceRel": 0.015
-    },
-    {
-     "texte": "Surface effective A' par mètre ?",
-     "type": "nombre",
-     "unite": "m²/m",
-     "reponse": 2.36,
-     "explication": "A' = B − 2e = 2,5 − 2 × 0,07 = 2,360 m²/m (ie = 0,944).",
+     "unite": "kPa",
+     "reponse": 636.905,
+     "explication": "qnet/(γR;v γR;d;v) = 1 070 / (1,4 × 1,2) = 636,9 kPa.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Résistance nette de calcul Rv;d ?",
-     "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 1790.31,
-     "explication": "qnet = kp ple* iδ = 1 274 kPa ; Rv;d = A' qnet / (1,4 × 1,2) = 2,360 × 1 274 / 1,68 = 1 790 kN/m.",
-     "toleranceRel": 0.02
-    },
-    {
-     "texte": "Taux (Vd − R0) / Rv;d ?",
+     "texte": "Rapport des deux ?",
      "type": "nombre",
      "unite": "",
-     "reponse": 0.420318,
-     "explication": "R0 = A q0 = 2,5 × 19 = 47,5 kN/m ; (800 − 47,5) / 1 790 = 0,420 : vérifié.",
-     "toleranceRel": 0.02
+     "reponse": 1.19048,
+     "explication": "2 / 1,68 = 1,190 : à k_p égal, la norme admet 19 % de plus — mais ses k_p et sa surface effective diffèrent.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Que mesure le coefficient γR;d;v = 1,2 de la NF P94-261 ?",
+     "type": "choix",
+     "options": [
+      "l'incertitude de la méthode de calcul, calée sur des essais de chargement",
+      "l'effet de la nappe",
+      "la variabilité des charges d'exploitation"
+     ],
+     "reponse": 0,
+     "explication": "C'est un coefficient de modèle : il a été déterminé par l'exploitation d'une base d'essais de chargement de fondations superficielles (guide Cerema, note 37)."
     }
    ]
   }

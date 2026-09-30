@@ -653,6 +653,132 @@ export function coupePieu({ B, D, couches, profil = null, zones = [], largeur = 
   });
 }
 
+// ─────────────────────────── Sondage pressiométrique ─────────────────────
+
+/** Graduations d'un axe logarithmique : 1, 2, 5 × 10ⁿ entre a et b. */
+function graduationsLog(a, b) {
+  const t = [];
+  for (let n = Math.floor(Math.log10(a)); n <= Math.ceil(Math.log10(b)); n++) {
+    for (const m of [1, 2, 5]) { const v = m * 10 ** n; if (v >= a * 0.999 && v <= b * 1.001) t.push(v); }
+  }
+  return t;
+}
+
+/**
+ * Feuille de sondage pressiométrique : coupe du terrain, puis profils EM
+ * (échelle logarithmique), pl* et pf*, et rapport EM/pl*, sur un même axe des
+ * profondeurs. couches : [{ z0, z1, sol, nom, nature? }] ; essais :
+ * [{ z, EM, plNette, pfNette }] (MPa) ; seuils : [{ z0, z1, valeurs: [9, 16] }]
+ * repères du rapport EM/pl* propres à la nature de chaque couche ;
+ * bandes : [{ z0, z1, libelle }] zones à mettre en évidence (sous une semelle…).
+ */
+export function profilPressio({ couches = [], essais = [], zMax = null, largeur = 640, hauteur = 460, seuils = [], bandes = [], titre = "Sondage pressiométrique" }) {
+  const zBas = zMax ?? Math.ceil(Math.max(...essais.map((e) => e.z), ...couches.map((c) => c.z1).filter(Number.isFinite)) + 0.5);
+  const haut = 40, bas = 14, gauche = 34;
+  const H = hauteur - haut - bas;
+  const Y = (z) => haut + (z / zBas) * H;
+  const panneaux = [
+    { cle: "coupe", w: 112, titre: "Coupe" },
+    { cle: "EM", w: 150, titre: "EM (MPa)" },
+    { cle: "pl", w: 150, titre: "pl* et pf* (MPa)" },
+    { cle: "rapport", w: largeur - gauche - 112 - 150 - 150 - 3 * 16 - 8, titre: "EM/pl*" },
+  ];
+  let x = gauche;
+  for (const p of panneaux) { p.x = x; x += p.w + 16; }
+  const [pC, pE, pP, pR] = panneaux;
+  const valides = essais.filter((e) => Number.isFinite(e.EM) && e.EM > 0);
+  const emMin = 10 ** Math.floor(Math.log10(Math.min(...valides.map((e) => e.EM), 10)));
+  const emMax = 10 ** Math.ceil(Math.log10(Math.max(...valides.map((e) => e.EM), 10) * 1.05));
+  const XE = (v) => pE.x + ((Math.log10(v) - Math.log10(emMin)) / (Math.log10(emMax) - Math.log10(emMin))) * pE.w;
+  const plMax = Math.max(0.5, ...essais.map((e) => e.plNette).filter(Number.isFinite)) * 1.08;
+  const pasP = pasJoli(plMax, 4), plHaut = Math.ceil(plMax / pasP) * pasP;
+  const XP = (v) => pP.x + (v / plHaut) * pP.w;
+  const rMax = Math.max(20, ...valides.map((e) => e.EM / e.plNette).filter(Number.isFinite)) * 1.05;
+  const pasR = pasJoli(rMax, 3), rHaut = Math.ceil(rMax / pasR) * pasR;
+  const XR = (v) => pR.x + (v / rHaut) * pR.w;
+  return svg({
+    largeur, hauteur, titre, contenu: (id) => {
+      let s = "";
+      // Bandes mises en évidence (sous une fondation…), derrière tout le reste.
+      for (const b of bandes) {
+        s += `<rect x="${pE.x}" y="${Y(b.z0).toFixed(1)}" width="${pR.x + pR.w - pE.x}" height="${(Y(b.z1) - Y(b.z0)).toFixed(1)}" fill="${COULEURS.bleu}" opacity=".09"/>`;
+      }
+      // Axe des profondeurs et grille horizontale commune.
+      const pasZ = pasJoli(zBas, 8);
+      for (let z = 0; z <= zBas + 1e-9; z += pasZ) {
+        s += texte(gauche - 6, Y(z) + 4, fmt(z, 3), `text-anchor="end" class="pt"`);
+        for (const p of panneaux.slice(1)) s += ligne(p.x, Y(z), p.x + p.w, Y(z), COULEURS.grille, 1);
+      }
+      s += `<text transform="translate(11 ${haut + H / 2}) rotate(-90)" text-anchor="middle" style="font-weight:700;font-size:11px">profondeur (m)</text>`;
+      // Coupe
+      for (const c of couches) {
+        const a = Math.max(c.z0, 0), b = Math.min(c.z1, zBas);
+        if (b <= a) continue;
+        s += couche(id, { x: pC.x, y: Y(a), w: pC.w, h: Y(b) - Y(a), sol: c.sol });
+        if (c.nom && Y(b) - Y(a) >= 14) {
+          const lignes = couper(c.nom, pC.w - 10, 10.5).slice(0, Math.max(1, Math.floor((Y(b) - Y(a) - 4) / 12)));
+          s += texteLignes(pC.x + pC.w / 2, (Y(a) + Y(b)) / 2 + 4 - (lignes.length - 1) * 6, lignes, `text-anchor="middle" class="gr halo" style="font-size:10.5px"`, 12);
+        }
+      }
+      s += `<rect x="${pC.x}" y="${haut}" width="${pC.w}" height="${H}" fill="none" stroke="${COULEURS.trait}" stroke-width="1"/>`;
+      // Grilles verticales et graduations des trois profils ; aux bords d'un
+      // panneau, le chiffre se cale vers l'intérieur pour ne pas toucher le voisin.
+      const graduation = (px, p, v) => {
+        const ancre = px - p.x < 6 ? "start" : p.x + p.w - px < 6 ? "end" : "middle";
+        return texte(px, haut - 6, fmt(v, 3), `text-anchor="${ancre}" class="pt"`);
+      };
+      for (const v of graduationsLog(emMin, emMax)) {
+        const decade = Math.abs(Math.log10(v) - Math.round(Math.log10(v))) < 1e-9;
+        s += ligne(XE(v), haut, XE(v), haut + H, COULEURS.grille, decade ? 1.2 : 0.8);
+        if (decade) s += graduation(XE(v), pE, v);
+      }
+      for (let v = 0; v <= plHaut + 1e-9; v += pasP) {
+        s += ligne(XP(v), haut, XP(v), haut + H, COULEURS.grille, 1);
+        s += graduation(XP(v), pP, v);
+      }
+      for (let v = 0; v <= rHaut + 1e-9; v += pasR) {
+        s += ligne(XR(v), haut, XR(v), haut + H, COULEURS.grille, 1);
+        s += graduation(XR(v), pR, v);
+      }
+      for (const p of panneaux) {
+        // Le titre du panneau pl*/pf* sert de légende : chaque grandeur dans sa couleur.
+        s += p.cle === "pl"
+          ? `<text x="${(p.x + p.w / 2).toFixed(1)}" y="16" text-anchor="middle" style="font-weight:800;font-size:11.5px"><tspan style="fill:${COULEURS.effort}">● pl*</tspan> et <tspan style="fill:${COULEURS.f62}">▫ pf*</tspan> (MPa)</text>`
+          : texte(p.x + p.w / 2, 16, p.titre, `text-anchor="middle" style="font-weight:800;font-size:11.5px"`);
+        if (p.cle !== "coupe") s += `<rect x="${p.x}" y="${haut}" width="${p.w}" height="${H}" fill="none" stroke="${COULEURS.trait}" stroke-width="1.1"/>`;
+      }
+      // Repères du rapport EM/pl*, couche par couche.
+      for (const r of seuils) {
+        for (const v of r.valeurs) {
+          if (v > rHaut) continue;
+          s += ligne(XR(v), Y(Math.max(r.z0, 0)), XR(v), Y(Math.min(r.z1, zBas)), COULEURS.discret, 1, 'stroke-dasharray="3 3"');
+        }
+      }
+      for (const b of bandes) {
+        if (b.libelle) s += texte(pE.x + 4, Y(b.z0) + 11, b.libelle, `class="pt halo" style="fill:${COULEURS.bleu};font-weight:700"`);
+      }
+      // Profils : un point par essai, reliés dans l'ordre des profondeurs.
+      const tri = [...essais].sort((a, b) => a.z - b.z);
+      const trace = (pts, couleur, tirets = "", forme = "rond") => {
+        const ok = pts.filter(([px]) => Number.isFinite(px));
+        if (!ok.length) return "";
+        let t = `<path d="${ok.map(([px, z], i) => `${i ? "L" : "M"}${px.toFixed(1)} ${Y(z).toFixed(1)}`).join("")}" fill="none" stroke="${couleur}" stroke-width="1.8" ${tirets ? `stroke-dasharray="${tirets}"` : ""}/>`;
+        for (const [px, z] of ok) {
+          t += forme === "rond"
+            ? `<circle cx="${px.toFixed(1)}" cy="${Y(z).toFixed(1)}" r="3.2" fill="${couleur}" stroke="#fff" stroke-width="1"/>`
+            : `<rect x="${(px - 3).toFixed(1)}" y="${(Y(z) - 3).toFixed(1)}" width="6" height="6" fill="#fff" stroke="${couleur}" stroke-width="1.5"/>`;
+        }
+        return t;
+      };
+      s += trace(tri.map((e) => [e.EM > 0 ? XE(Math.min(Math.max(e.EM, emMin), emMax)) : NaN, e.z]), COULEURS.bleu);
+      s += trace(tri.map((e) => [Number.isFinite(e.pfNette) ? XP(Math.max(e.pfNette, 0)) : NaN, e.z]), COULEURS.f62, "5 3", "carre");
+      s += trace(tri.map((e) => [Number.isFinite(e.plNette) ? XP(Math.max(e.plNette, 0)) : NaN, e.z]), COULEURS.effort);
+      s += trace(tri.map((e) => [e.plNette > 0 && e.EM > 0 ? XR(Math.min(e.EM / e.plNette, rHaut)) : NaN, e.z]), COULEURS.violet);
+      return s;
+    },
+  });
+}
+
 // ───────────────────────── Diagramme des contraintes ─────────────────────
 
 /**

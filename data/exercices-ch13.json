@@ -2,230 +2,291 @@
  "chapitre": "ch13",
  "exercices": [
   {
-   "id": "ch13-nmax-coh",
-   "titre": "Nmax et inertie d'un sol cohérent",
+   "id": "ch13-lambda",
+   "titre": "Effet d'accrochage de Combarieu",
    "difficulte": 1,
-   "graine": 2974092390,
-   "enonce": "Semelle filante B = 3,1 m sur une argile non sensible : cu = 180 kPa, γ = 19,0 kN/m³. Séisme : ag/g = 0,30, S = 1,50. On prend γM = 1,4 sur cu.",
+   "graine": 2956973530,
+   "enonce": "Pieu tubé de rayon R = 0,60 m traversant argiles et limons mous.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "3,1 m"
+     "label": "Sol",
+     "valeur": "Argiles et limons mous"
     },
     {
-     "label": "cu",
-     "valeur": "180 kPa"
+     "label": "Pieu",
+     "valeur": "tube"
     },
     {
-     "label": "γ",
-     "valeur": "19,0 kN/m³"
-    },
-    {
-     "label": "ag/g · S",
-     "valeur": "0,30 · 1,50"
+     "label": "R",
+     "valeur": "0,60 m"
     }
    ],
    "questions": [
     {
-     "texte": "Cohésion de calcul c̄ = cu/γM ?",
-     "type": "nombre",
-     "unite": "kPa",
-     "reponse": 128.571,
-     "explication": "180 / 1,4 = 128,6 kPa.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Nmax ?",
-     "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 2049.29,
-     "explication": "Nmax = (π + 2) c̄ B = 5,142 × 128,6 × 3,1 = 2 049 kN/m.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Force d'inertie adimensionnelle F̄ ?",
+     "texte": "K tanδ ?",
      "type": "nombre",
      "unite": "",
-     "reponse": 0.20615,
-     "explication": "F̄ = ρ ag S B / c̄ = γ (ag/g) S B / c̄ = 19,0 × 0,30 × 1,50 × 3,1 / 128,6 = 0,206.",
+     "reponse": 0.1,
+     "explication": "Tableau de l'annexe G.2 (F62) / H.2.2.1 (NF P94-262) : K tanδ = 0,10.",
+     "tolerance": 0.001
+    },
+    {
+     "texte": "Coefficient λ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.333333,
+     "explication": "K tanδ ≤ 0,15 : λ = 1/(0,5 + 25 K tanδ) = 0,333.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "μ = λ²/(1 + λ) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.0833333,
+     "explication": "μ = 0,333² / 1,333 = 0,0833.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Longueur caractéristique L0 = R/(μ K tanδ) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 72,
+     "explication": "L0 = 0,60 / (0,0833 × 0,10) = 72,0 m : sur une couche beaucoup plus mince que L0, σ'v au contact reste proche de sa valeur en tête.",
+     "toleranceRel": 0.015
+    }
+   ]
+  },
+  {
+   "id": "ch13-fn-sable",
+   "titre": "Frottement négatif sans accrochage",
+   "difficulte": 2,
+   "graine": 430492625,
+   "enonce": "Un pieu de diamètre B = 0,9 m traverse 8,0 m de sable lâche (γ' = 10,5 kN/m³, K tanδ = 0,45) sur lequel on applique une surcharge étendue q = 55 kPa. Toute la couche tasse plus que le pieu.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "0,9 m"
+    },
+    {
+     "label": "Couche",
+     "valeur": "8,0 m · γ' = 10,5 kN/m³"
+    },
+    {
+     "label": "q",
+     "valeur": "55 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Coefficient λ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0,
+     "explication": "K tanδ = 0,45 > 0,385 : λ = 0, pas d'effet d'accrochage — la contrainte au contact est celle du champ libre σ'1 = q + γ' z.",
+     "tolerance": 0.001
+    },
+    {
+     "texte": "∫ σ'v dz sur la couche ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 776,
+     "explication": "∫ (q + γ' z) dz = q H + γ' H²/2 = 440 + 336 = 776 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Frottement négatif Fn ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 987.34,
+     "explication": "Fn = P K tanδ ∫ σ'v dz = 2,827 × 0,45 × 776 = 987,3 kN.",
      "toleranceRel": 0.01
     }
    ]
   },
   {
-   "id": "ch13-nmax-frot",
-   "titre": "Nmax et inertie d'un sol frottant",
+   "id": "ch13-cumul",
+   "titre": "Cumul du frottement négatif et des charges variables",
    "difficulte": 2,
-   "graine": 3826118451,
-   "enonce": "Semelle filante B = 2,2 m sur un sable dense : φ' = 33°, γ = 21,0 kN/m³. Séisme : ag/g = 0,18, av/g = 0,072. On prend γφ' = 1,25 sur tanφ'.",
+   "graine": 18283633,
+   "enonce": "Tête de pieu : effort permanent (parts quasi permanentes des variables comprises) G' = 2 350 kN ; part non quasi permanente des actions variables Q' = 750 kN ; frottement négatif caractéristique Gsn = 650 kN.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "2,2 m"
+     "label": "G'",
+     "valeur": "2 350 kN"
     },
     {
-     "label": "φ'",
-     "valeur": "33°"
+     "label": "Q'",
+     "valeur": "750 kN"
     },
     {
-     "label": "γ",
-     "valeur": "21,0 kN/m³"
-    },
-    {
-     "label": "ag/g · av/g",
-     "valeur": "0,18 · 0,072"
+     "label": "Gsn",
+     "valeur": "650 kN"
     }
    ],
    "questions": [
     {
-     "texte": "Angle de calcul φ'd ?",
+     "texte": "Gsn,d à l'ELU (défavorable) ?",
      "type": "nombre",
-     "unite": "°",
-     "reponse": 27.4531,
-     "explication": "tanφ'd = tan33°/1,25 = 0,5195 ⇒ φ'd = 27,45°.",
+     "unite": "kN",
+     "reponse": 877.5,
+     "explication": "γsn = 1,35 : 877,5 kN (au Fascicule 62 : 1,125 × 1,2 = 1,35 également).",
      "toleranceRel": 0.005
     },
     {
-     "texte": "Nγ (avec φ'd) ?",
+     "texte": "Q'd ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1125,
+     "explication": "1,5 × 750 = 1 125 kN.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Effort axial de calcul Fd ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 4297.5,
+     "explication": "Fd = G'd + max(Gsn,d ; Q'd) = 3 172,5 + max(877,5 ; 1 125) = 4 297,5 kN.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Ce qu'aurait donné, à tort, la somme des maxima ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 5175,
+     "explication": "5 175 kN, soit 877,5 kN de trop : une charge variable réduit le frottement négatif au lieu de s'y ajouter.",
+     "toleranceRel": 0.005
+    }
+   ]
+  },
+  {
+   "id": "ch13-converse",
+   "titre": "Coefficient d'efficacité au Fascicule 62",
+   "difficulte": 1,
+   "graine": 3060814040,
+   "enonce": "Groupe de 3 × 2 pieux de diamètre B = 1,0 m, en maille carrée d'entraxe d = 1,50 m.",
+   "donnees": [
+    {
+     "label": "m × n",
+     "valeur": "3 × 2"
+    },
+    {
+     "label": "B · d",
+     "valeur": "1,0 · 1,50 m"
+    },
+    {
+     "label": "d/B",
+     "valeur": "1,50"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Converse-Labarre ?",
      "type": "nombre",
      "unite": "",
-     "reponse": 13.3672,
-     "explication": "Nγ = 2 (Nq − 1) tanφ'd = 13,37.",
+     "reponse": 0.563277,
+     "explication": "Ce = 1 − [arctan(B/d)/(π/2)] (2 − 1/m − 1/n) = 1 − [0,5880/1,5708] × 1,167 = 0,563.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Nmax, accélération verticale défavorable ?",
-     "type": "nombre",
-     "unite": "kN/m",
-     "reponse": 630.411,
-     "explication": "Nmax = ½ γ (1 − av/g) B² Nγ = 0,5 × 21,0 × 0,928 × 4,84 × 13,37 = 630,4 kN/m.",
-     "toleranceRel": 0.015
-    },
-    {
-     "texte": "F̄ ?",
+     "texte": "Formule des sols cohérents ?",
      "type": "nombre",
      "unite": "",
-     "reponse": 0.34647,
-     "explication": "F̄ = (ag/g)/tanφ'd = 0,18 / 0,5195 = 0,346.",
+     "reponse": 0.625,
+     "explication": "Ce = ¼ (1 + d/B) = ¼ × 2,50 = 0,625.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Dans un sable lâche, avec des pieux battus, quelle valeur le Fascicule 62 autorise-t-il ?",
+     "type": "choix",
+     "options": [
+      "la formule des sols cohérents",
+      "Converse-Labarre",
+      "Ce = 1"
+     ],
+     "reponse": 2,
+     "explication": "Le battage densifie le sable lâche : le groupe porte au moins autant que la somme des pieux (F62 annexe G.1 § 2.5,2) — à condition de battre d'abord les pieux périphériques."
+    }
+   ]
+  },
+  {
+   "id": "ch13-ce-ec7",
+   "titre": "Effet de groupe à la NF P94-262",
+   "difficulte": 2,
+   "graine": 1110389409,
+   "enonce": "Groupe de 3 × 2 pieux, B = 0,9 m, d = 1,89 m. Pour un pieu isolé : Rb;d = 640 kN, Rs;d = 1 860 kN.",
+   "donnees": [
+    {
+     "label": "m × n",
+     "valeur": "3 × 2"
+    },
+    {
+     "label": "d/B",
+     "valeur": "2,10"
+    },
+    {
+     "label": "Rb;d · Rs;d",
+     "valeur": "640 · 1 860 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cd ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.225,
+     "explication": "Cd = 1 − ¼ (1 + d/B) = 1 − ¼ × 3,10 = 0,225.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Ce ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.7375,
+     "explication": "Ce = 1 − Cd [2 − (1/m + 1/n)] = 1 − 0,225 × 1,167 = 0,737.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance de calcul du groupe ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 12070.5,
+     "explication": "N (Rb;d + Ce Rs;d) = 6 × (640 + 0,737 × 1 860) = 12 070 kN : seul le frottement est réduit.",
      "toleranceRel": 0.01
     }
    ]
   },
   {
-   "id": "ch13-verif-coh",
-   "titre": "Vérification sismique sur argile",
-   "difficulte": 3,
-   "graine": 530350438,
-   "enonce": "Semelle filante B = 2,7 m sur argile (cu = 190 kPa, γM = 1,4, γ = 20 kN/m³), ag/g = 0,14, S = 1,50, γRd = 1,15. Efforts sismiques de calcul : N = 622 kN/m, V = 106 kN/m, M = 118 kN·m/m.",
+   "id": "ch13-rayon",
+   "titre": "Pieu au sein d'un groupe : cylindre d'influence",
+   "difficulte": 2,
+   "graine": 4040686922,
+   "enonce": "Groupe en maille rectangulaire d × d' = 2,2 m × 2,7 m sous un remblai qui applique q = 55 kPa au terrain naturel.",
    "donnees": [
     {
-     "label": "B · cu",
-     "valeur": "2,7 m · 190 kPa"
+     "label": "d × d'",
+     "valeur": "2,2 × 2,7 m"
     },
     {
-     "label": "ag/g · S",
-     "valeur": "0,14 · 1,50"
-    },
-    {
-     "label": "γRd",
-     "valeur": "1,15"
-    },
-    {
-     "label": "N · V · M",
-     "valeur": "622 · 106 · 118"
+     "label": "q",
+     "valeur": "55 kPa"
     }
    ],
    "questions": [
     {
-     "texte": "N̄ ?",
+     "texte": "Rayon d'influence b ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 0.379666,
-     "explication": "Nmax = 1 884 kN/m ; N̄ = γRd N/Nmax = 1,15 × 622 / 1 884 = 0,380.",
+     "unite": "m",
+     "reponse": 1.37505,
+     "explication": "b = √(d d'/π) = √(5,94/π) = 1,375 m.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "M̄ ?",
+     "texte": "Borne π b² q du frottement négatif d'un pieu intérieur ?",
      "type": "nombre",
-     "unite": "",
-     "reponse": 0.0266765,
-     "explication": "M̄ = γRd M/(B Nmax) = 0,0267.",
+     "unite": "kN",
+     "reponse": 326.7,
+     "explication": "π × 1,375² × 55 = 326,7 kN : un pieu ne peut pas porter plus que le poids de remblai de sa cellule.",
      "toleranceRel": 0.01
-    },
-    {
-     "texte": "Valeur du membre de gauche de F.1 ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": -0.854995,
-     "explication": "F̄ = 0,084 ; terme d'effort 0,099, terme de moment 0,046 ; 0,099 + 0,046 − 1 = -0,855.",
-     "tolerance": 0.02
-    },
-    {
-     "texte": "Portance sismique ?",
-     "type": "choix",
-     "options": [
-      "vérifiée",
-      "non vérifiée"
-     ],
-     "reponse": 0,
-     "explication": "Conditions respectées (N̄ ≤ 0,990, |V̄| ≤ 1) et membre de gauche ≤ 0."
-    }
-   ]
-  },
-  {
-   "id": "ch13-verif-frot",
-   "titre": "Vérification sismique sur sable",
-   "difficulte": 3,
-   "graine": 2545622579,
-   "enonce": "Semelle filante B = 3,8 m sur sable dense (φ' = 33°, γφ' = 1,25, γ = 20 kN/m³), ag/g = 0,19, av/g = 0,086, γRd = 1. Efforts : N = 229 kN/m, V = 23 kN/m, M = 17 kN·m/m.",
-   "donnees": [
-    {
-     "label": "B · φ'",
-     "valeur": "3,8 m · 33°"
-    },
-    {
-     "label": "ag/g · av/g",
-     "valeur": "0,19 · 0,086"
-    },
-    {
-     "label": "N · V · M",
-     "valeur": "229 · 23 · 17"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "F̄ ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.365718,
-     "explication": "φ'd = 27,45° ; F̄ = (ag/g)/tanφ'd = 0,366.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Borne (1 − m F̄^k)^k' de N̄ ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.844797,
-     "explication": "(1 − 0,96 × 0,366)^0,39 = 0,845 : l'inertie du sol réduit déjà la charge verticale admissible.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "N̄ ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.129802,
-     "explication": "Nmax = 1 764 kN/m ; N̄ = 0,130.",
-     "toleranceRel": 0.015
-    },
-    {
-     "texte": "Portance sismique ?",
-     "type": "choix",
-     "options": [
-      "vérifiée",
-      "non vérifiée"
-     ],
-     "reponse": 0,
-     "explication": "Membre de gauche de F.1 : -0,743 ; conditions respectées."
     }
    ]
   }

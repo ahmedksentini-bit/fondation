@@ -1,0 +1,233 @@
+{
+ "chapitre": "ch15",
+ "exercices": [
+  {
+   "id": "ch15-nmax-coh",
+   "titre": "Nmax et inertie d'un sol cohérent",
+   "difficulte": 1,
+   "graine": 3454701028,
+   "enonce": "Semelle filante B = 1,9 m sur une argile non sensible : cu = 60 kPa, γ = 19,0 kN/m³. Séisme : ag/g = 0,12, S = 1,50. On prend γM = 1,4 sur cu.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "1,9 m"
+    },
+    {
+     "label": "cu",
+     "valeur": "60 kPa"
+    },
+    {
+     "label": "γ",
+     "valeur": "19,0 kN/m³"
+    },
+    {
+     "label": "ag/g · S",
+     "valeur": "0,12 · 1,50"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cohésion de calcul c̄ = cu/γM ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 42.8571,
+     "explication": "60 / 1,4 = 42,9 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Nmax ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 418.673,
+     "explication": "Nmax = (π + 2) c̄ B = 5,142 × 42,9 × 1,9 = 418,7 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Force d'inertie adimensionnelle F̄ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.15162,
+     "explication": "F̄ = ρ ag S B / c̄ = γ (ag/g) S B / c̄ = 19,0 × 0,12 × 1,50 × 1,9 / 42,9 = 0,152.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch15-nmax-frot",
+   "titre": "Nmax et inertie d'un sol frottant",
+   "difficulte": 2,
+   "graine": 3794529393,
+   "enonce": "Semelle filante B = 2,3 m sur un sable dense : φ' = 34°, γ = 19,0 kN/m³. Séisme : ag/g = 0,34, av/g = 0,136. On prend γφ' = 1,25 sur tanφ'.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "2,3 m"
+    },
+    {
+     "label": "φ'",
+     "valeur": "34°"
+    },
+    {
+     "label": "γ",
+     "valeur": "19,0 kN/m³"
+    },
+    {
+     "label": "ag/g · av/g",
+     "valeur": "0,34 · 0,136"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Angle de calcul φ'd ?",
+     "type": "nombre",
+     "unite": "°",
+     "reponse": 28.3516,
+     "explication": "tanφ'd = tan34°/1,25 = 0,5396 ⇒ φ'd = 28,35°.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Nγ (avec φ'd) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 15.4341,
+     "explication": "Nγ = 2 (Nq − 1) tanφ'd = 15,43.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Nmax, accélération verticale défavorable ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 670.152,
+     "explication": "Nmax = ½ γ (1 − av/g) B² Nγ = 0,5 × 19,0 × 0,864 × 5,29 × 15,43 = 670,2 kN/m.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "F̄ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.630088,
+     "explication": "F̄ = (ag/g)/tanφ'd = 0,34 / 0,5396 = 0,630.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch15-verif-coh",
+   "titre": "Vérification sismique sur argile",
+   "difficulte": 3,
+   "graine": 1167700264,
+   "enonce": "Semelle filante B = 3,2 m sur argile (cu = 130 kPa, γM = 1,4, γ = 20 kN/m³), ag/g = 0,28, S = 1,50, γRd = 1,15. Efforts sismiques de calcul : N = 413 kN/m, V = 70 kN/m, M = 53 kN·m/m.",
+   "donnees": [
+    {
+     "label": "B · cu",
+     "valeur": "3,2 m · 130 kPa"
+    },
+    {
+     "label": "ag/g · S",
+     "valeur": "0,28 · 1,50"
+    },
+    {
+     "label": "γRd",
+     "valeur": "1,15"
+    },
+    {
+     "label": "N · V · M",
+     "valeur": "413 · 70 · 53"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "N̄ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.310874,
+     "explication": "Nmax = 1 528 kN/m ; N̄ = γRd N/Nmax = 1,15 × 413 / 1 528 = 0,311.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "M̄ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.012467,
+     "explication": "M̄ = γRd M/(B Nmax) = 0,0125.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Valeur du membre de gauche de F.1 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": -0.922612,
+     "explication": "F̄ = 0,289 ; terme d'effort 0,065, terme de moment 0,013 ; 0,065 + 0,013 − 1 = -0,923.",
+     "tolerance": 0.02
+    },
+    {
+     "texte": "Portance sismique ?",
+     "type": "choix",
+     "options": [
+      "non vérifiée",
+      "vérifiée"
+     ],
+     "reponse": 1,
+     "explication": "Conditions respectées (N̄ ≤ 0,954, |V̄| ≤ 1) et membre de gauche ≤ 0."
+    }
+   ]
+  },
+  {
+   "id": "ch15-verif-frot",
+   "titre": "Vérification sismique sur sable",
+   "difficulte": 3,
+   "graine": 3876247613,
+   "enonce": "Semelle filante B = 2,1 m sur sable dense (φ' = 37°, γφ' = 1,25, γ = 20 kN/m³), ag/g = 0,11, av/g = 0,050, γRd = 1. Efforts : N = 341 kN/m, V = 24 kN/m, M = 36 kN·m/m.",
+   "donnees": [
+    {
+     "label": "B · φ'",
+     "valeur": "2,1 m · 37°"
+    },
+    {
+     "label": "ag/g · av/g",
+     "valeur": "0,11 · 0,050"
+    },
+    {
+     "label": "N · V · M",
+     "valeur": "341 · 24 · 36"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "F̄ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.182469,
+     "explication": "φ'd = 31,08° ; F̄ = (ag/g)/tanφ'd = 0,182.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Borne (1 − m F̄^k)^k' de N̄ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.927646,
+     "explication": "(1 − 0,96 × 0,182)^0,39 = 0,928 : l'inertie du sol réduit déjà la charge verticale admissible.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "N̄ ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.34043,
+     "explication": "Nmax = 1 002 kN/m ; N̄ = 0,340.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Portance sismique ?",
+     "type": "choix",
+     "options": [
+      "non vérifiée",
+      "vérifiée"
+     ],
+     "reponse": 1,
+     "explication": "Membre de gauche de F.1 : -0,541 ; conditions respectées."
+    }
+   ]
+  }
+ ]
+}

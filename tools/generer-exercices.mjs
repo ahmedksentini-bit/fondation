@@ -4,7 +4,7 @@
 // sortent des mêmes solveurs que le cours et le bureau de calcul.
 //
 //   node tools/generer-exercices.mjs            → toutes les banques
-//   node tools/generer-exercices.mjs ch4 ch9    → quelques chapitres
+//   node tools/generer-exercices.mjs ch6 ch11    → quelques chapitres
 import { readFileSync, writeFileSync } from "node:fs";
 import { creerAlea } from "../src/exos/alea.js";
 import { MODELES, graineDe, controler } from "../src/exos/index.js";

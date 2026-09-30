@@ -2,348 +2,303 @@
  "chapitre": "ch10",
  "exercices": [
   {
-   "id": "ch10-f62",
-   "titre": "Qmax et Qmin du Fascicule 62",
+   "id": "ch10-Qc",
+   "titre": "Charge limite et charge de fluage",
    "difficulte": 1,
-   "graine": 883786424,
-   "enonce": "Pieu battu : Qpu = 980 kN, Qsu = 2 400 kN.",
+   "graine": 2434734650,
+   "enonce": "Un pieu foré (sans refoulement) a une résistance de pointe Qpu = 920 kN et un frottement latéral limite Qsu = 1 950 kN.",
    "donnees": [
     {
+     "label": "Mise en œuvre",
+     "valeur": "foré"
+    },
+    {
      "label": "Qpu",
-     "valeur": "980 kN"
+     "valeur": "920 kN"
     },
     {
      "label": "Qsu",
-     "valeur": "2 400 kN"
-    },
-    {
-     "label": "Mise en œuvre",
-     "valeur": "battu"
+     "valeur": "1 950 kN"
     }
    ],
    "questions": [
     {
-     "texte": "Qmax à l'ELU fondamental ?",
+     "texte": "Charge limite Qu ?",
      "type": "nombre",
      "unite": "kN",
-     "reponse": 2414.29,
-     "explication": "Qu/1,4 = 3 380/1,4 = 2 414,3 kN.",
-     "toleranceRel": 0.01
+     "reponse": 2870,
+     "explication": "Qu = Qpu + Qsu = 2 870 kN.",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "Qmax sous combinaison rare ?",
+     "texte": "Charge de fluage Qc ?",
      "type": "nombre",
      "unite": "kN",
-     "reponse": 2150.91,
-     "explication": "Qc = 2 366 kN ; Qc/1,1 = 2 150,9 kN.",
-     "toleranceRel": 0.01
+     "reponse": 1825,
+     "explication": "Qc = 0,5 Qpu + 0,7 Qsu = 460 + 1 365 = 1 825 kN (F62 annexe C.2 ; formule 14.2.2 de la NF P94-262 pour Rc;cr;k).",
+     "toleranceRel": 0.005
     },
     {
-     "texte": "Qmax sous combinaison quasi permanente ?",
+     "texte": "Rapport Qc/Qu ?",
      "type": "nombre",
-     "unite": "kN",
-     "reponse": 1690,
-     "explication": "Qc/1,4 = 1 690 kN.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Qmin à l'ELU fondamental (traction comptée négativement) ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": -1714.29,
-     "explication": "−Qtu/1,4 = −2 400/1,4 = -1 714,3 kN.",
+     "unite": "",
+     "reponse": 0.635889,
+     "explication": "0,636 : la charge de fluage est d'autant plus proche de la charge limite que le frottement domine.",
      "toleranceRel": 0.01
     }
    ]
   },
   {
-   "id": "ch10-terrain",
-   "titre": "Procédure du modèle de terrain",
-   "difficulte": 2,
-   "graine": 673408703,
-   "enonce": "Pieu de catégorie 2 (foré boue (pieux et barrettes)) calculé au pressiomètre, pointe ancrée dans la craie : Rb = 1 310 kN, Rs = 1 800 kN (valeurs calculées sur le profil de sol représentatif).",
+   "id": "ch10-flottant",
+   "titre": "Un pieu flottant ?",
+   "difficulte": 1,
+   "graine": 313586834,
+   "enonce": "Pieu foré de diamètre B = 0,6 m et de longueur D = 24 m ; contrainte de rupture sous la pointe qb = 1 500 kPa, frottement unitaire moyen qs = 100 kPa.",
    "donnees": [
     {
-     "label": "Catégorie",
-     "valeur": "2 · FB"
+     "label": "B · D",
+     "valeur": "0,6 · 24 m"
     },
     {
-     "label": "Méthode",
-     "valeur": "pressiomètre"
+     "label": "qb",
+     "valeur": "1 500 kPa"
     },
     {
-     "label": "Rb · Rs",
-     "valeur": "1 310 · 1 800 kN"
-    },
-    {
-     "label": "Craie",
-     "valeur": "oui"
+     "label": "qs",
+     "valeur": "100 kPa"
     }
    ],
    "questions": [
     {
-     "texte": "Coefficient γR;d1 en compression ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.4,
-     "explication": "Tableau F.2.1/G.2.1 : γR;d1 = 1,40 (pointe dans la craie) ; γR;d2 = 1,1.",
-     "tolerance": 0.001
-    },
-    {
-     "texte": "Rc;k ?",
+     "texte": "Résistance de pointe Qpu ?",
      "type": "nombre",
      "unite": "kN",
-     "reponse": 2019.48,
-     "explication": "Rc;k = (Rb + Rs)/(γR;d1 γR;d2) = 3 110 / (1,40 × 1,1) = 2 019,5 kN.",
+     "reponse": 424.115,
+     "explication": "Ab = π B²/4 = 0,2827 m² ; Qpu = 0,2827 × 1 500 = 424,1 kN.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Rc;d à l'ELU fondamental ?",
+     "texte": "Frottement Qsu ?",
      "type": "nombre",
      "unite": "kN",
-     "reponse": 1835.89,
-     "explication": "Rc;d = Rc;k/γt = 2 019,5/1,1 = 1 835,9 kN.",
+     "reponse": 4523.89,
+     "explication": "P = π B = 1,885 m ; Qsu = 1,885 × 24 × 100 = 4 524 kN.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Coefficient global Rc / Rc;d ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.694,
-     "explication": "1,40 × 1,1 × 1,1 = 1,694, à comparer au 1,4 du Fascicule 62.",
-     "toleranceRel": 0.005
+     "texte": "Le pieu est-il flottant au sens du Fascicule 62 ?",
+     "type": "choix",
+     "options": [
+      "oui : sous Qc, le frottement mobilisé dépasse la pointe",
+      "non : la pointe l'emporte"
+     ],
+     "reponse": 0,
+     "explication": "F62 C.4.1,21 : sous la charge de fluage, frottement 0,7 Qsu = 3 167 kN contre pointe 0,5 Qpu = 212,1 kN. Un groupe de pieux flottants appelle une vérification d'effet de groupe."
     }
    ]
   },
   {
-   "id": "ch10-xi",
-   "titre": "Facteurs de corrélation ξ",
-   "difficulte": 2,
-   "graine": 2193198081,
-   "enonce": "Les appuis et les 6 sondages d'un ouvrage tiennent dans un rectangle de 23 m × 20 m.",
+   "id": "ch10-traction",
+   "titre": "Pieu en traction",
+   "difficulte": 1,
+   "graine": 3659864358,
+   "enonce": "Un pieu sollicité en traction a un frottement latéral limite Qsu = 800 kN (le poids propre est négligé).",
    "donnees": [
     {
-     "label": "Rectangle",
-     "valeur": "23 × 20 m"
-    },
-    {
-     "label": "N",
-     "valeur": "6"
+     "label": "Qsu",
+     "valeur": "800 kN"
     }
    ],
    "questions": [
     {
-     "texte": "Surface d'investigation S à retenir ?",
-     "type": "nombre",
-     "unite": "m²",
-     "reponse": 460,
-     "explication": "Élancement limité à 2 : l = max(20 ; 23/2) = 20 m ; S = 23 × 20 = 460 m², bornée à [100 ; 2 500] : S = 460 m².",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "ξ3 ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.1244,
-     "explication": "ξ'3 = 1,29 pour N = 6 ; ξ3 = 1 + (ξ'3 − 1) √(S/2500) = 1 + 0,29 × 0,429 = 1,124.",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "ξ4 ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.06434,
-     "explication": "ξ'4 = 1,15 ; ξ4 = 1 + 0,15 × 0,429 = 1,064.",
-     "toleranceRel": 0.005
-    }
-   ]
-  },
-  {
-   "id": "ch10-modele",
-   "titre": "Procédure du pieu modèle avec trois sondages",
-   "difficulte": 3,
-   "graine": 3131391402,
-   "enonce": "Un pieu de catégorie 6 (foré tarière creuse simple ou double rotation) est calculé au pressiomètre au droit de trois sondages : Rc = 3 051 ; 2 322 ; 2 214 kN. Surface d'investigation S = 900 m² ; structure souple.",
-   "donnees": [
-    {
-     "label": "Rc (3 sondages)",
-     "valeur": "3 051 · 2 322 · 2 214 kN"
-    },
-    {
-     "label": "S",
-     "valeur": "900 m²"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "(Rc)moy / ξ3 ?",
+     "texte": "Charge limite en traction Qtu ?",
      "type": "nombre",
      "unite": "kN",
-     "reponse": 2111.02,
-     "explication": "(Rc)moy = 2 529 kN ; ξ3 = 1,198 ; 2 111 kN.",
+     "reponse": 800,
+     "explication": "Qtu = Qsu = 800 kN : la pointe ne travaille pas en traction.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Charge de fluage en traction Qtc ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 560,
+     "explication": "Qtc = 0,7 Qsu = 560 kN.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Qmin à l'ELU fondamental, Fascicule 62 (traction comptée négativement) ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": -571.429,
+     "explication": "Qmin = −Qtu/1,4 = −571,4 kN.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "(Rc)min / ξ4 ?",
+     "texte": "Qmin sous combinaison rare (négatif) ?",
      "type": "nombre",
      "unite": "kN",
-     "reponse": 1945.52,
-     "explication": "(Rc)min = 2 214 kN ; ξ4 = 1,138 ; 1 945,5 kN.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Rc;k ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 1691.76,
-     "explication": "Rc;k = min(…)/γR;d1 = 1 945,5 / 1,15 = 1 691,8 kN — c'est le minimum qui gouverne.",
+     "reponse": -400,
+     "explication": "Qmin = −Qtc/1,4 = −400 kN. Sous combinaison quasi permanente, aucune traction n'est admise.",
      "toleranceRel": 0.01
     }
    ]
   },
   {
-   "id": "ch10-els",
-   "titre": "Charge de fluage de calcul",
-   "difficulte": 2,
-   "graine": 887607788,
-   "enonce": "Pieu battu : Rb;k = 1 190 kN, Rs;k = 660 kN. À l'ELS quasi permanent, Fc;d = 1 177 kN.",
+   "id": "ch10-categories",
+   "titre": "Classes et catégories de pieux",
+   "difficulte": 1,
+   "graine": 617507390,
+   "enonce": "Un projet prévoit des pieux de type « palplanches battues » (sigle PP).",
    "donnees": [
     {
-     "label": "Rb;k · Rs;k",
-     "valeur": "1 190 · 660 kN"
+     "label": "Technologie",
+     "valeur": "Palplanches battues"
     },
     {
-     "label": "Fc;d (ELS QP)",
-     "valeur": "1 177 kN"
+     "label": "Sigle",
+     "valeur": "PP"
     }
    ],
    "questions": [
     {
-     "texte": "Rc;cr;k ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 1295,
-     "explication": "Rc;cr;k = 0,7 Rb;k + 0,7 Rs;k = 1 295 kN.",
-     "toleranceRel": 0.01
+     "texte": "Classe de la NF P94-262 ?",
+     "type": "choix",
+     "options": [
+      "classe 2",
+      "classe 1",
+      "classe 7",
+      "classe 8"
+     ],
+     "reponse": 2,
+     "explication": "Catégorie 16 (PP), classe 7 de l'annexe A de la NF P94-262. La classe fixe k_p,max et k_c,max ; la catégorie fixe α_pieu-sol et q_s,max."
     },
     {
-     "texte": "Rc;cr;d à l'ELS quasi permanent ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 1177.27,
-     "explication": "Rc;cr;d = Rc;cr;k/γcr = 1 295/1,1 = 1 177,3 kN.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Rc;cr;d à l'ELS caractéristique ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 1438.89,
-     "explication": "γcr = 0,9 : 1 438,9 kN.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "La vérification quasi permanente est-elle satisfaite ?",
+     "texte": "Mise en place avec refoulement du sol ?",
      "type": "choix",
      "options": [
       "oui",
       "non"
      ],
      "reponse": 0,
-     "explication": "Fc;d = 1 177 kN ≤ 1 177,3 kN."
+     "explication": "Pieu battu ou vissé : le sol est chassé latéralement et densifié ; la charge de fluage prend alors 0,7 R_b."
+    },
+    {
+     "texte": "Combien de catégories de pieux la NF P94-262 distingue-t-elle ?",
+     "type": "choix",
+     "options": [
+      "8",
+      "7",
+      "20",
+      "12"
+     ],
+     "reponse": 2,
+     "explication": "Vingt catégories, regroupées en huit classes (plus la classe 1bis des micropieux)."
     }
    ]
   },
   {
-   "id": "ch10-traction",
-   "titre": "Résistance de calcul en traction",
-   "difficulte": 2,
-   "graine": 3659864358,
-   "enonce": "Pieu tendu de catégorie 1 (foré simple (pieux et barrettes)), calculé au pressiomètre par le modèle de terrain : frottement calculé Rs = 2 100 kN.",
-   "donnees": [
-    {
-     "label": "Catégorie",
-     "valeur": "1"
-    },
-    {
-     "label": "Méthode",
-     "valeur": "pressiomètre"
-    },
-    {
-     "label": "Rs",
-     "valeur": "2 100 kN"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "γR;d1 en traction ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 1.4,
-     "explication": "Tableau F.2.1/G.2.1 : 1,40 — plus sévère qu'en compression (1,15).",
-     "tolerance": 0.001
-    },
-    {
-     "texte": "Rt;k ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 1363.64,
-     "explication": "Rt;k = Rs/(γR;d1 γR;d2) = 2 100 / (1,40 × 1,1) = 1 363,6 kN.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Rt;d à l'ELU fondamental ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 1185.77,
-     "explication": "Rt;d = Rt;k/γs;t = 1 363,6/1,15 = 1 185,8 kN (facteur global 1,77 contre 1,4 au Fascicule 62).",
-     "toleranceRel": 0.01
-    }
-   ]
-  },
-  {
-   "id": "ch10-tassement",
-   "titre": "Ordre de grandeur du tassement d'un pieu",
+   "id": "ch10-section",
+   "titre": "Pieu carré ou pieu circulaire",
    "difficulte": 1,
-   "graine": 975457498,
-   "enonce": "Pieu battu de diamètre 1,4 m et de 25 m de long, en béton (E = 25 000 MPa), sous un effort de service de 2 450 kN.",
+   "graine": 1786535297,
+   "enonce": "On compare un pieu circulaire de diamètre 0,60 m et un pieu carré de 0,60 m de côté, avec qb = 4 500 kPa et qs = 115 kPa.",
    "donnees": [
     {
-     "label": "B · L",
-     "valeur": "1,4 · 25 m"
+     "label": "B",
+     "valeur": "0,60 m"
     },
     {
-     "label": "Mise en œuvre",
-     "valeur": "battu"
+     "label": "qb",
+     "valeur": "4 500 kPa"
     },
     {
-     "label": "N · E",
-     "valeur": "2 450 kN · 25 000 MPa"
+     "label": "qs",
+     "valeur": "115 kPa"
     }
    ],
    "questions": [
     {
-     "texte": "Tassement forfaitaire (règles LCPC-Sétra) ?",
+     "texte": "Résistance de pointe du pieu circulaire ?",
      "type": "nombre",
-     "unite": "mm",
-     "reponse": 12.6,
-     "explication": "0,009 B = 12,6 mm (fourchette 11,2 à 16,8 mm).",
+     "unite": "kN",
+     "reponse": 1272.35,
+     "explication": "Ab = π B²/4 = 0,2827 m² ; Rb = 1 272 kN.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Raccourcissement élastique du fût, effort supposé constant ?",
+     "texte": "Résistance de pointe du pieu carré ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 1620,
+     "explication": "Ab = B² = 0,3600 m² ; Rb = 1 620 kN, soit 4/π = 1,27 fois plus.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Frottement par mètre de fût du pieu carré ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 276,
+     "explication": "P = 4 B = 2,400 m ; P qs = 276 kN/m (contre 216,8 kN/m pour le pieu circulaire).",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch10-frankzhao",
+   "titre": "Lois de transfert de Frank et Zhao",
+   "difficulte": 2,
+   "graine": 2097157280,
+   "enonce": "Pieu de diamètre B = 0,5 m dans un sol fin de module pressiométrique EM = 26 MPa ; frottement limite qs = 40 kPa.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "0,5 m"
+    },
+    {
+     "label": "EM",
+     "valeur": "26 MPa"
+    },
+    {
+     "label": "Sol",
+     "valeur": "fin"
+    },
+    {
+     "label": "qs",
+     "valeur": "40 kPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Pente kt de la loi de frottement ?",
+     "type": "nombre",
+     "unite": "MPa/m",
+     "reponse": 104,
+     "explication": "kt = 2 EM/B = 104 MPa/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Pente kq de la loi de pointe ?",
+     "type": "nombre",
+     "unite": "MPa/m",
+     "reponse": 572,
+     "explication": "kq = 11 EM/B = 572 MPa/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Déplacement mobilisant qs/2 ?",
      "type": "nombre",
      "unite": "mm",
-     "reponse": 1.59155,
-     "explication": "el = N L/(E A) = 2 450 × 25 / (25 000 000 × 1,5394) = 1,59 mm — majorant, l'effort décroissant en réalité avec la profondeur.",
+     "reponse": 0.192308,
+     "explication": "La loi est linéaire jusqu'à qs/2 : s = qs/(2 kt) = 0,19 mm.",
      "toleranceRel": 0.02
     },
     {
-     "texte": "Estimation prudente de la NF P94-262 (2 B/100 + el) ?",
+     "texte": "Déplacement mobilisant qs en entier ?",
      "type": "nombre",
      "unite": "mm",
-     "reponse": 29.5915,
-     "explication": "s = 2 × 1,4/100 + el = 28,0 + 1,59 = 29,6 mm.",
+     "reponse": 1.15385,
+     "explication": "Au-delà, la pente est divisée par 5 : s = qs/(2kt) + (qs/2)/(kt/5) = 3 qs/kt = 1,15 mm — quelques millimètres, contre des centimètres pour la pointe.",
      "toleranceRel": 0.02
     }
    ]

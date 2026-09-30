@@ -1,111 +1,98 @@
-// Exercices du chapitre 8 : les pieux, technologies et comportement.
+// Exercices du chapitre 8 : glissement et stabilité d'ensemble.
 import { fr, frd, nombre, choixMelange, donnee } from "./alea.js";
-import { section, CATEGORIES_PIEUX_EC7 } from "../geotech/pieux.js";
-import { coefficientsFrankZhao } from "../geotech/tassement-pieu.js";
+import { glissementF62, glissementEC7, diagramme } from "../geotech/superficielles.js";
+
+const RAD = Math.PI / 180;
 
 export default [
   {
-    id: "ch8-Qc", titre: "Charge limite et charge de fluage", difficulte: 1,
+    id: "ch8-f62", titre: "Glissement au Fascicule 62", difficulte: 1,
     generer(a) {
-      const Qpu = a.entre(300, 2500, 10), Qsu = a.entre(400, 3000, 10), refoulant = a.choix([false, true]);
-      const Qc = (refoulant ? 0.7 : 0.5) * Qpu + 0.7 * Qsu;
+      const B = a.entre(1.5, 3, 0.1), e = +(a.entre(0, 0.3, 0.01) * B).toFixed(2);
+      const V = a.entre(200, 700, 10), H = +(V * a.entre(0.2, 0.55, 0.01)).toFixed(0);
+      const phi = a.entier(24, 36), c = a.entre(0, 20, 5);
+      const d = diagramme({ B, V, e });
+      const r = glissementF62({ Vd: V, Hd: H, phi, c, Aprime: d.Bc });
       return {
-        enonce: `Un pieu ${refoulant ? "battu (mis en place avec refoulement du sol)" : "foré (sans refoulement)"} a une résistance de pointe Qpu = ${fr(Qpu, 4)} kN et un frottement latéral limite Qsu = ${fr(Qsu, 4)} kN.`,
-        donnees: [donnee("Mise en œuvre", refoulant ? "battu" : "foré"), donnee("Qpu", `${fr(Qpu, 4)} kN`), donnee("Qsu", `${fr(Qsu, 4)} kN`)],
+        enonce: `Semelle filante B = ${frd(B, 1)} m, V = ${fr(V, 3)} kN/m excentrée de e = ${frd(e, 2)} m, H = ${fr(H, 3)} kN/m (ELU, combinaison la plus défavorable). Sol : φ' = ${phi}°, c' = ${fr(c, 2)} kPa.`,
+        donnees: [donnee("B · e", `${frd(B, 1)} · ${frd(e, 2)} m`), donnee("Vd · Hd", `${fr(V, 3)} · ${fr(H, 3)} kN/m`), donnee("φ' · c'", `${phi}° · ${fr(c, 2)} kPa`)],
         questions: [
-          nombre("Charge limite Qu ?", Qpu + Qsu, "kN", `Qu = Qpu + Qsu = ${fr(Qpu + Qsu, 5)} kN.`, { rel: 0.005 }),
-          nombre("Charge de fluage Qc ?", Qc, "kN", `Qc = ${refoulant ? "0,7" : "0,5"} Qpu + 0,7 Qsu = ${fr((refoulant ? 0.7 : 0.5) * Qpu, 4)} + ${fr(0.7 * Qsu, 4)} = ${fr(Qc, 5)} kN (F62 annexe C.2 ; formule 14.2.2 de la NF P94-262 pour Rc;cr;k).`, { rel: 0.005 }),
-          nombre("Rapport Qc/Qu ?", Qc / (Qpu + Qsu), "", `${frd(Qc / (Qpu + Qsu), 3)} : la charge de fluage est d'autant plus proche de la charge limite que le frottement domine.`, { rel: 0.01 }),
+          nombre("Surface comprimée A' (par mètre) ?", d.Bc, "m²/m", d.trapeze ? `e ≤ B/6 : toute la semelle est comprimée, A' = ${frd(B, 2)} m²/m.` : `e > B/6 : A' = 3(B/2 − e) = ${frd(d.Bc, 3)} m²/m.`, { rel: 0.01 }),
+          nombre("Résistance au glissement de calcul ?", r.R, "kN/m", `Vd tanφ'/1,2 + c'A'/1,5 = ${fr(V, 3)} × ${frd(Math.tan(phi * RAD), 3)} / 1,2 + ${fr(c, 2)} × ${frd(d.Bc, 3)} / 1,5 = ${fr(r.Rf, 4)} + ${fr(r.Rc, 3)} = ${fr(r.R, 4)} kN/m.`, { rel: 0.015 }),
+          choixMelange(a, "Glissement vérifié ?", r.ok ? ["oui", "non"] : ["non", "oui"], `Hd = ${fr(H, 3)} kN/m ${r.ok ? "≤" : ">"} ${fr(r.R, 4)} kN/m (taux ${frd(r.taux, 2)}).`),
         ],
       };
     },
   },
   {
-    id: "ch8-flottant", titre: "Un pieu flottant ?", difficulte: 1,
+    id: "ch8-ec7-dr", titre: "Glissement drainé à la NF P94-261", difficulte: 1,
     generer(a) {
-      const B = a.entre(0.4, 1.2, 0.1), D = a.entre(8, 25, 1), qb = a.entre(1000, 5000, 100), qs = a.entre(30, 120, 5), refoulant = false;
-      const { Ab, P } = section({ B });
-      const Qpu = Ab * qb, Qsu = P * D * qs;
-      const flottant = 0.7 * Qsu > 0.5 * Qpu;
+      const V = a.entre(200, 800, 10), H = +(V * a.entre(0.2, 0.5, 0.01)).toFixed(0);
+      const phiC = a.entier(26, 34), prefa = a.choix([false, true]);
+      const r = glissementEC7({ Vd: V, Hd: H, phiCrit: phiC, prefabrique: prefa });
       return {
-        enonce: `Pieu foré de diamètre B = ${frd(B, 1)} m et de longueur D = ${fr(D, 2)} m ; contrainte de rupture sous la pointe qb = ${fr(qb, 4)} kPa, frottement unitaire moyen qs = ${fr(qs, 3)} kPa.`,
-        donnees: [donnee("B · D", `${frd(B, 1)} · ${fr(D, 2)} m`), donnee("qb", `${fr(qb, 4)} kPa`), donnee("qs", `${fr(qs, 3)} kPa`)],
+        enonce: `Semelle ${prefa ? "préfabriquée à sous-face lisse" : "coulée en place"} ; Vd = ${fr(V, 3)} kN/m, Hd = ${fr(H, 3)} kN/m à l'ELU fondamental ; angle de frottement à l'état critique du sol φ'crit = ${phiC}°.`,
+        donnees: [donnee("Vd · Hd", `${fr(V, 3)} · ${fr(H, 3)} kN/m`), donnee("φ'crit", `${phiC}°`), donnee("Semelle", prefa ? "préfabriquée lisse" : "coulée en place")],
         questions: [
-          nombre("Résistance de pointe Qpu ?", Qpu, "kN", `Ab = π B²/4 = ${frd(Ab, 4)} m² ; Qpu = ${frd(Ab, 4)} × ${fr(qb, 4)} = ${fr(Qpu, 4)} kN.`, { rel: 0.01 }),
-          nombre("Frottement Qsu ?", Qsu, "kN", `P = π B = ${frd(P, 3)} m ; Qsu = ${frd(P, 3)} × ${fr(D, 2)} × ${fr(qs, 3)} = ${fr(Qsu, 4)} kN.`, { rel: 0.01 }),
-          choixMelange(a, "Le pieu est-il flottant au sens du Fascicule 62 ?",
-            flottant ? ["oui : sous Qc, le frottement mobilisé dépasse la pointe", "non : la pointe l'emporte"] : ["non : sous Qc, la pointe l'emporte", "oui : le frottement l'emporte"],
-            `F62 C.4.1,21 : sous la charge de fluage, frottement 0,7 Qsu = ${fr(0.7 * Qsu, 4)} kN contre pointe 0,5 Qpu = ${fr(0.5 * Qpu, 4)} kN. ${refoulant ? "" : ""}Un groupe de pieux flottants appelle une vérification d'effet de groupe.`),
+          nombre("Angle de frottement d'interface δa;k ?", r.delta, "°", prefa ? `Préfabriquée lisse : δ = 2/3 φ'crit = ${frd(r.delta, 1)}°.` : `Coulée en place : δ = φ'crit = ${phiC}°.`, { rel: 0.005 }),
+          nombre("Rh;d ?", r.Rhd, "kN/m", `Rh;d = Vd tanδ / (γR;h γR;d;h) = ${fr(V, 3)} × ${frd(Math.tan(r.delta * RAD), 3)} / (1,1 × 1,1) = ${fr(r.Rhd, 4)} kN/m.`, { rel: 0.01 }),
+          choixMelange(a, "Glissement vérifié ?", r.ok ? ["oui", "non"] : ["non", "oui"], `Hd = ${fr(H, 3)} ${r.ok ? "≤" : ">"} ${fr(r.Rhd, 4)} kN/m (taux ${frd(r.taux, 2)}). La cohésion effective est négligée.`),
         ],
       };
     },
   },
   {
-    id: "ch8-traction", titre: "Pieu en traction", difficulte: 1,
+    id: "ch8-ec7-nd", titre: "Glissement à court terme sur une argile", difficulte: 2,
     generer(a) {
-      const Qsu = a.entre(300, 2500, 10);
+      const B = a.entre(1.5, 3, 0.1), e = +(a.entre(0, 0.2, 0.01) * B).toFixed(2), Ap = B - 2 * e;
+      const cu = a.entre(20, 80, 5), V = a.entre(150, 500, 10), H = +(V * a.entre(0.15, 0.45, 0.01)).toFixed(0);
+      const r = glissementEC7({ Vd: V, Hd: H, drainage: "non-draine", cu, Aprime: Ap });
       return {
-        enonce: `Un pieu sollicité en traction a un frottement latéral limite Qsu = ${fr(Qsu, 4)} kN (le poids propre est négligé).`,
-        donnees: [donnee("Qsu", `${fr(Qsu, 4)} kN`)],
+        enonce: `Semelle filante B = ${frd(B, 1)} m sur argile saturée (cu = ${fr(cu, 2)} kPa), charge excentrée de e = ${frd(e, 2)} m. ELU : Vd = ${fr(V, 3)} kN/m, Hd = ${fr(H, 3)} kN/m.`,
+        donnees: [donnee("B · e", `${frd(B, 1)} · ${frd(e, 2)} m`), donnee("cu", `${fr(cu, 2)} kPa`), donnee("Vd · Hd", `${fr(V, 3)} · ${fr(H, 3)} kN/m`)],
         questions: [
-          nombre("Charge limite en traction Qtu ?", Qsu, "kN", `Qtu = Qsu = ${fr(Qsu, 4)} kN : la pointe ne travaille pas en traction.`, { rel: 0.005 }),
-          nombre("Charge de fluage en traction Qtc ?", 0.7 * Qsu, "kN", `Qtc = 0,7 Qsu = ${fr(0.7 * Qsu, 4)} kN.`, { rel: 0.005 }),
-          nombre("Qmin à l'ELU fondamental, Fascicule 62 (traction comptée négativement) ?", -Qsu / 1.4, "kN", `Qmin = −Qtu/1,4 = −${fr(Qsu / 1.4, 4)} kN.`, { rel: 0.01 }),
-          nombre("Qmin sous combinaison rare (négatif) ?", (-0.7 * Qsu) / 1.4, "kN", `Qmin = −Qtc/1,4 = −${fr((0.7 * Qsu) / 1.4, 4)} kN. Sous combinaison quasi permanente, aucune traction n'est admise.`, { rel: 0.01 }),
+          nombre("Terme d'adhérence A' cu / (γR;h γR;d;h) ?", r.termeCohesion, "kN/m", `A' = B − 2e = ${frd(Ap, 2)} m²/m ; ${frd(Ap, 2)} × ${fr(cu, 2)} / 1,21 = ${fr(r.termeCohesion, 4)} kN/m.`, { rel: 0.01 }),
+          nombre("Plafond 0,4 Vd ?", r.plafond, "kN/m", `0,4 × ${fr(V, 3)} = ${fr(r.plafond, 4)} kN/m.`, { rel: 0.005 }),
+          nombre("Rh;d retenue ?", r.Rhd, "kN/m", `Le minimum des deux : ${fr(r.Rhd, 4)} kN/m${r.Rhd === r.plafond ? " — c'est le plafond qui gouverne" : ""}.`, { rel: 0.01 }),
+          choixMelange(a, "Si la vérification échouait, que recommanderait le commentaire du Fascicule 62 ?",
+            ["une disposition constructive (bêche, butons…)", "élargir la semelle jusqu'à ce que le calcul passe", "augmenter cu dans le calcul"],
+            "F62 B.3.4 (commentaire) : un risque de glissement à court terme se traite de préférence par des dispositions constructives plutôt que par le dimensionnement de la fondation."),
         ],
       };
     },
   },
   {
-    id: "ch8-categories", titre: "Classes et catégories de pieux", difficulte: 1,
+    id: "ch8-vmin", titre: "Le bon V pour vérifier le glissement", difficulte: 2,
     generer(a) {
-      const c = a.choix(CATEGORIES_PIEUX_EC7.filter((x) => x.cat <= 16));
-      const autres = a.tirage(CATEGORIES_PIEUX_EC7.filter((x) => String(x.classe) !== String(c.classe)).map((x) => `classe ${x.classe}`), 6);
-      const opts = [...new Set(autres)].slice(0, 3);
+      const G = a.entre(200, 600, 10), Qv = a.entre(50, 250, 10), Qh = a.entre(40, 140, 5), phiC = a.entier(26, 32);
+      const Vmin = G, Vmax = 1.35 * G + 1.5 * Qv, Hd = 1.5 * Qh;
+      const rMin = glissementEC7({ Vd: Vmin, Hd, phiCrit: phiC }), rMax = glissementEC7({ Vd: Vmax, Hd, phiCrit: phiC });
       return {
-        enonce: `Un projet prévoit des pieux de type « ${c.nom.toLowerCase()} » (sigle ${c.abr}).`,
-        donnees: [donnee("Technologie", c.nom), donnee("Sigle", c.abr)],
+        enonce: `Une semelle coulée en place reçoit G = ${fr(G, 3)} kN/m (poids propre compris), une charge d'exploitation verticale Qv = ${fr(Qv, 3)} kN/m et un effort variable horizontal Qh = ${fr(Qh, 3)} kN/m indépendant de Qv. Sol : φ'crit = ${phiC}°.`,
+        donnees: [donnee("G", `${fr(G, 3)} kN/m`), donnee("Qv · Qh", `${fr(Qv, 3)} · ${fr(Qh, 3)} kN/m`), donnee("φ'crit", `${phiC}°`)],
         questions: [
-          choixMelange(a, "Classe de la NF P94-262 ?", [`classe ${c.classe}`, ...opts],
-            `Catégorie ${c.cat} (${c.abr}), classe ${c.classe} de l'annexe A de la NF P94-262. La classe fixe k_p,max et k_c,max ; la catégorie fixe α_pieu-sol et q_s,max.`),
-          choixMelange(a, "Mise en place avec refoulement du sol ?", c.refoulement ? ["oui", "non"] : ["non", "oui"],
-            c.refoulement ? "Pieu battu ou vissé : le sol est chassé latéralement et densifié ; la charge de fluage prend alors 0,7 R_b." : "Pieu foré : le sol est extrait ; la charge de fluage ne prend que 0,5 R_b."),
-          choixMelange(a, "Combien de catégories de pieux la NF P94-262 distingue-t-elle ?", ["20", "8", "12", "7"],
-            "Vingt catégories, regroupées en huit classes (plus la classe 1bis des micropieux)."),
+          nombre("Hd à l'ELU ?", Hd, "kN/m", `Hd = 1,5 Qh = ${fr(Hd, 4)} kN/m.`, { rel: 0.005 }),
+          nombre("Vd à associer à Hd pour le glissement ?", Vmin, "kN/m", `G est favorable (γG = 1,0) et Qv, favorable, est omise : Vd = ${fr(Vmin, 3)} kN/m.`, { rel: 0.005 }),
+          nombre("Rh;d correspondante ?", rMin.Rhd, "kN/m", `${fr(Vmin, 3)} × tan${phiC}° / 1,21 = ${fr(rMin.Rhd, 4)} kN/m : taux ${frd(rMin.taux, 2)}.`, { rel: 0.01 }),
+          nombre("Rh;d que l'on trouverait à tort avec 1,35 G + 1,5 Qv ?", rMax.Rhd, "kN/m", `Vd = ${fr(Vmax, 4)} kN/m donnerait ${fr(rMax.Rhd, 4)} kN/m, soit ${fr(100 * (rMax.Rhd / rMin.Rhd - 1), 2)} % de résistance fictive.`, { rel: 0.01 }),
         ],
       };
     },
   },
   {
-    id: "ch8-section", titre: "Pieu carré ou pieu circulaire", difficulte: 1,
+    id: "ch8-stabilite", titre: "Paramètres de calcul pour la stabilité d'ensemble", difficulte: 1,
     generer(a) {
-      const B = a.entre(0.3, 0.6, 0.05), qb = a.entre(2000, 6000, 100), qs = a.entre(40, 120, 5);
-      const c = section({ B }), k = section({ B, forme: "carre" });
+      const phi = a.entier(22, 36), c = a.entre(5, 30, 5), cu = a.entre(30, 100, 10);
+      const t = Math.tan(phi * RAD);
+      const pF = Math.atan(t / 1.2) / RAD, pE = Math.atan(t / 1.25) / RAD;
       return {
-        enonce: `On compare un pieu circulaire de diamètre ${frd(B, 2)} m et un pieu carré de ${frd(B, 2)} m de côté, avec qb = ${fr(qb, 4)} kPa et qs = ${fr(qs, 3)} kPa.`,
-        donnees: [donnee("B", `${frd(B, 2)} m`), donnee("qb", `${fr(qb, 4)} kPa`), donnee("qs", `${fr(qs, 3)} kPa`)],
+        enonce: `Talus sous une semelle : φ' = ${phi}°, c' = ${fr(c, 2)} kPa, et à court terme cu = ${fr(cu, 3)} kPa.`,
+        donnees: [donnee("φ'", `${phi}°`), donnee("c'", `${fr(c, 2)} kPa`), donnee("cu", `${fr(cu, 3)} kPa`)],
         questions: [
-          nombre("Résistance de pointe du pieu circulaire ?", c.Ab * qb, "kN", `Ab = π B²/4 = ${frd(c.Ab, 4)} m² ; Rb = ${fr(c.Ab * qb, 4)} kN.`, { rel: 0.01 }),
-          nombre("Résistance de pointe du pieu carré ?", k.Ab * qb, "kN", `Ab = B² = ${frd(k.Ab, 4)} m² ; Rb = ${fr(k.Ab * qb, 4)} kN, soit 4/π = 1,27 fois plus.`, { rel: 0.01 }),
-          nombre("Frottement par mètre de fût du pieu carré ?", k.P * qs, "kN/m", `P = 4 B = ${frd(k.P, 3)} m ; P qs = ${fr(k.P * qs, 4)} kN/m (contre ${fr(c.P * qs, 4)} kN/m pour le pieu circulaire).`, { rel: 0.01 }),
-        ],
-      };
-    },
-  },
-  {
-    id: "ch8-frankzhao", titre: "Lois de transfert de Frank et Zhao", difficulte: 2,
-    generer(a) {
-      const B = a.entre(0.4, 1.2, 0.1), EM = a.entre(5, 30, 1), sol = a.choix(["fin", "granulaire"]), qs = a.entre(40, 120, 5);
-      const { kt, kq } = coefficientsFrankZhao({ EM, B, sol });
-      const s1 = qs / (2 * kt), s2 = s1 + qs / 2 / (kt / 5);
-      return {
-        enonce: `Pieu de diamètre B = ${frd(B, 1)} m dans un sol ${sol === "fin" ? "fin" : "granulaire"} de module pressiométrique EM = ${fr(EM, 2)} MPa ; frottement limite qs = ${fr(qs, 3)} kPa.`,
-        donnees: [donnee("B", `${frd(B, 1)} m`), donnee("EM", `${fr(EM, 2)} MPa`), donnee("Sol", sol), donnee("qs", `${fr(qs, 3)} kPa`)],
-        questions: [
-          nombre("Pente kt de la loi de frottement ?", kt / 1000, "MPa/m", `kt = ${sol === "fin" ? "2" : "0,8"} EM/B = ${fr(kt / 1000, 3)} MPa/m.`, { rel: 0.01 }),
-          nombre("Pente kq de la loi de pointe ?", kq / 1000, "MPa/m", `kq = ${sol === "fin" ? "11" : "4,8"} EM/B = ${fr(kq / 1000, 3)} MPa/m.`, { rel: 0.01 }),
-          nombre("Déplacement mobilisant qs/2 ?", s1 * 1000, "mm", `La loi est linéaire jusqu'à qs/2 : s = qs/(2 kt) = ${frd(s1 * 1000, 2)} mm.`, { rel: 0.02 }),
-          nombre("Déplacement mobilisant qs en entier ?", s2 * 1000, "mm", `Au-delà, la pente est divisée par 5 : s = qs/(2kt) + (qs/2)/(kt/5) = 3 qs/kt = ${frd(s2 * 1000, 2)} mm — quelques millimètres, contre des centimètres pour la pointe.`, { rel: 0.02 }),
+          nombre("φd au Fascicule 62 (B.3.6) ?", pF, "°", `tanφd = tan${phi}°/1,20 = ${frd(t / 1.2, 4)} ⇒ φd = ${frd(pF, 2)}°.`, { rel: 0.005 }),
+          nombre("φ'd en approche 3 (γφ' = 1,25) ?", pE, "°", `tanφ'd = tan${phi}°/1,25 = ${frd(t / 1.25, 4)} ⇒ φ'd = ${frd(pE, 2)}°.`, { rel: 0.005 }),
+          nombre("cd au Fascicule 62 ?", c / 1.5, "kPa", `cd = c/1,50 = ${frd(c / 1.5, 2)} kPa (contre ${frd(c / 1.25, 2)} kPa en approche 3).`, { rel: 0.01 }),
+          nombre("cu,d en approche 3 ?", cu / 1.4, "kPa", `cu,d = cu/1,4 = ${frd(cu / 1.4, 2)} kPa (contre cu/1,5 = ${frd(cu / 1.5, 2)} kPa au Fascicule 62).`, { rel: 0.01 }),
         ],
       };
     },

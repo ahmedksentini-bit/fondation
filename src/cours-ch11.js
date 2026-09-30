@@ -1,113 +1,113 @@
-// Calculateurs du chapitre 11 : frottement négatif par la méthode de
-// Combarieu (pieu isolé et pieu en groupe) et coefficient d'efficacité d'un
-// groupe (Converse-Labarre, Fascicule 62 en sols cohérents, NF P94-262).
-import { el, num, f, fd, verdict, brancher, garde } from "./ui.js";
-import { graphe, echantillon, COULEURS } from "./figures.js";
-import { K_TAN_DELTA, lambdaCombarieu, muIsole, frottementNegatif, rayonInfluence, repartitionGroupe } from "./geotech/frottement-negatif.js";
-import { converseLabarre, efficaciteCoherentF62, efficaciteEC7, verifGroupeEC7, blocMonolithique } from "./geotech/groupes.js";
+// Calculateur du chapitre 11 : portance d'un pieu isolé au Fascicule 62
+// (annexes C.3 et C.4) et à la NF P94-262 (annexes F et G), sur un même
+// profil de sol saisi en couches.
+import { el, num, f, fd, esc, verdict, brancher, garde } from "./ui.js";
+import { graphe, COULEURS } from "./figures.js";
+import { pieuF62, valeursLimitesEC7, intervallePointe } from "./geotech/pieux.js";
+import { CLASSES_F62, CATEGORIES_EC7 } from "./geotech/sols.js";
 
-// ── Frottement négatif ──────────────────────────────────────────────────
-const majFn = garde("fnOut", () => {
-  const B = num("fnB"), mise = el("fnMise").value, nat = el("fnNat").value;
-  const H = num("fnH"), g = num("fnG"), h2 = num("fnH2", Infinity);
-  const hr = Math.max(num("fnHr", 0), 0), gr = num("fnGr", 20), natR = el("fnNr").value;
-  const d = num("fnD"), files = Math.max(1, Math.round(num("fnFiles", 1)));
-  if (!(B > 0 && H > 0 && g > 0)) { el("fnOut").textContent = "Renseigner B, l'épaisseur et le poids volumique de la couche."; return; }
-  const R = B / 2;
-  const Kt = K_TAN_DELTA[nat][mise];
-  const KtR = K_TAN_DELTA[natR][mise];
-  const remblai = hr > 0 ? { h: hr, gamma: gr } : null;
-  const couches = [{ z0: 0, z1: H, gamma: g, Kt }];
-  const iso = frottementNegatif({ R, remblai, couches, h2, KtRemblai: KtR });
-  const b = d > B ? rayonInfluence(files > 1 ? { d, dPrime: d } : { d }) : null;
-  const grp = b ? frottementNegatif({ R, remblai, couches, h2, KtRemblai: KtR, b }) : null;
-  const lam = lambdaCombarieu(Kt), mu = muIsole(lam), L0 = mu > 0 ? R / (mu * Kt) : Infinity;
+const DEFAUT = [
+  { base: 5, classe: "argile-A", sol: "argile", pl: 0.5, qc: 1.2 },
+  { base: 12, classe: "sable-B", sol: "sable", pl: 1.5, qc: 10 },
+  { base: 30, classe: "marne-A", sol: "marne", pl: 2.5, qc: 8 },
+  { base: "", classe: "sable-C", sol: "sable", pl: 3, qc: 20 },
+];
 
-  const pts = (cle) => iso.profil.map((p) => [p[cle], p.z]);
-  if (!remblai) {
-    // Sans remblai, σ'v reste égal à σ'v0 : il n'y a rien à accrocher.
-    el("fnFig").innerHTML = graphe({
-      largeur: 560, hauteur: 260, xmin: 0, xmax: g * H * 1.1, ymin: 0, ymax: H, inverserY: true,
-      xlabel: "contrainte verticale effective (kPa)", ylabel: "profondeur sous le TN (m)",
-      zones: [{ x0: 0, x1: g * H * 1.1, y0: 0, y1: H, couleur: "#dccab0", opacite: 0.35, libelle: "couche compressible, sans remblai", position: "droite" }],
-      series: [{ points: [[0, 0], [g * H, H]], couleur: COULEURS.bleu, libelle: "σ'v = σ'v0 : pas de surcharge, pas de frottement négatif" }],
-    });
+const optionsClasses = (choisie) => Object.entries(CLASSES_F62)
+  .map(([k, c]) => `<option value="${k}"${k === choisie ? " selected" : ""}>${esc(c.nom)} (${c.lettre})</option>`).join("");
+const optionsCategories = (choisie) => Object.entries(CATEGORIES_EC7)
+  .map(([k, c]) => `<option value="${k}"${k === choisie ? " selected" : ""}>${esc(c.nom)}</option>`).join("");
+
+el("piCouches").innerHTML = DEFAUT.map((c, i) => `<tr>
+    <td>${i + 1}</td>
+    <td><input id="piZ${i}" type="text" inputmode="decimal" value="${c.base}" style="width:5em" aria-label="Base de la couche ${i + 1}"></td>
+    <td><select id="piC${i}" aria-label="Classe F62 de la couche ${i + 1}">${optionsClasses(c.classe)}</select></td>
+    <td><select id="piS${i}" aria-label="Catégorie EC7 de la couche ${i + 1}">${optionsCategories(c.sol)}</select></td>
+    <td><input id="piPl${i}" type="text" inputmode="decimal" value="${c.pl}" style="width:4.5em" aria-label="pl* de la couche ${i + 1}"></td>
+    <td><input id="piQc${i}" type="text" inputmode="decimal" value="${c.qc}" style="width:4.5em" aria-label="qc de la couche ${i + 1}"></td>
+  </tr>`).join("");
+
+/** Couches actives : une couche compte si sa base dépasse la précédente. */
+function lireCouches() {
+  const couches = [];
+  let z = 0;
+  for (let i = 0; i < DEFAUT.length; i++) {
+    const base = num(`piZ${i}`);
+    if (!(base > z)) continue;
+    couches.push({ z0: z, z1: base, classe: el(`piC${i}`).value, sol: el(`piS${i}`).value, pl: num(`piPl${i}`), qc: num(`piQc${i}`) });
+    z = base;
   }
-  const xmax = Math.max(...iso.profil.map((p) => p.s1)) * 1.1;
-  if (remblai) el("fnFig").innerHTML = graphe({
-    largeur: 560, hauteur: 300, xmin: 0, xmax, ymin: -hr, ymax: H, inverserY: true,
-    xlabel: "contrainte verticale effective (kPa)", ylabel: "profondeur sous le TN (m)",
+  return couches;
+}
+
+const majPi = garde("piOut", () => {
+  const [typeF62, cat] = el("piType").value.split("|");
+  const B = num("piB"), D = num("piD"), methode = el("piMeth").value;
+  const couches = lireCouches();
+  if (!(B > 0 && D > 0 && couches.length)) { el("piOut").textContent = "Renseigner B, D et au moins une couche."; return; }
+  const cle = methode === "pressio" ? "pl" : "qc";
+  if (couches.some((c) => !(c[cle] > 0))) { el("piOut").textContent = `Renseigner ${methode === "pressio" ? "pl*" : "qc"} dans chaque couche.`; return; }
+  const bas = couches[couches.length - 1].z1;
+  if (D >= bas) { el("piOut").textContent = `La dernière couche doit descendre sous la pointe (au moins jusqu'à ${fd(D + 3 * Math.max(B / 2, 0.5), 2)} m).`; return; }
+
+  const r62 = pieuF62({ methode, type: typeF62, B, D, couches });
+  const r7 = valeursLimitesEC7({ methode, cat: Number(cat), B, D, couches });
+
+  // Figure : qs(z) des deux référentiels, couches et intervalle de pointe.
+  const zMax = Math.min(bas, D + 3 * Math.max(B / 2, 0.5) + 2);
+  const serie = (lignes, cleQs) => lignes.flatMap((l) => [[l[cleQs], l.z0], [l[cleQs], l.z1]]);
+  const series = [];
+  if (r62.applicable) series.push({ points: serie(r62.lignes, "qs"), couleur: COULEURS.f62, epaisseur: 2.6, libelle: "qs Fascicule 62" });
+  if (r7.applicable) series.push({ points: serie(r7.lignes, "qs"), couleur: COULEURS.ec7, epaisseur: 2.6, tirets: "6 3", libelle: "qs NF P94-262" });
+  const qsMax = Math.max(10, ...series.flatMap((s) => s.points.map((p) => p[0]))) * 1.25;
+  const porteuse = couches.find((c) => D - 1e-9 >= c.z0 && D - 1e-9 < c.z1) ?? couches[couches.length - 1];
+  const I = intervallePointe({ B, D, h: D - porteuse.z0 });
+  const teintes = ["#dccab0", "#f3e5ae", "#cfd8c7", "#e3d3a0"];
+  el("piFig").innerHTML = graphe({
+    largeur: 560, hauteur: 320, xmin: 0, xmax: qsMax, ymin: 0, ymax: zMax, inverserY: true,
+    xlabel: "frottement unitaire qs (kPa)", ylabel: "profondeur (m)",
     zones: [
-      ...(hr > 0 ? [{ x0: 0, x1: xmax, y0: -hr, y1: 0, couleur: "#eadfd2", opacite: 0.6, libelle: "remblai", position: "droite" }] : []),
-      { x0: 0, x1: xmax, y0: 0, y1: H, couleur: "#dccab0", opacite: 0.35, libelle: "couche compressible", position: "droite" },
+      ...couches.map((c, i) => ({ x0: 0, x1: qsMax, y0: c.z0, y1: Math.min(c.z1, zMax), couleur: teintes[i % 4], opacite: 0.45, position: "droite",
+        libelle: `F62 ${c.classe.replace("-", " ")} · EC7 ${CATEGORIES_EC7[c.sol].nom.split(" (")[0].toLowerCase()}` })),
+      { x0: qsMax * 0.72, x1: qsMax, y0: I.z0, y1: I.z1, couleur: COULEURS.rouge, opacite: 0.18, libelle: "pointe", position: "droite" },
     ],
-    series: [
-      { points: pts("s1"), couleur: COULEURS.discret, tirets: "5 4", libelle: "σ'1 : champ libre, après remblai" },
-      { points: pts("sv"), couleur: COULEURS.effort, epaisseur: 2.8, libelle: "σ'v au contact du pieu" },
-      { points: iso.profil.filter((p) => p.z >= 0).map((p) => [p.s0, p.z]), couleur: COULEURS.bleu, libelle: "σ'v0 : avant remblai" },
-      // Hauteur d'action : un trait horizontal quand elle s'arrête dans la couche.
-      ...(iso.hAction > 0 && iso.hAction < H - 1e-6 ? [{ points: [[0, iso.hAction], [xmax, iso.hAction]], couleur: COULEURS.rouge, tirets: "2 3", epaisseur: 1.6, libelle: `hauteur d'action h = ${fd(iso.hAction, 2)} m` }] : []),
-    ],
+    series,
   });
-  let groupe = "";
-  if (grp) {
-    const rep = repartitionGroupe({ FnIsole: iso.Fn, FnGroupe: grp.Fn, files });
-    groupe = `<tr><td>Pieu en groupe illimité (b = ${fd(b, 2)} m)</td><td class="n">${f(grp.Fn, 4)} kN${grp.Fn < grp.FnSansBorne - 1e-6 ? " <small>borné par π b² q</small>" : ""}</td></tr>
-      ${files > 1
-        ? `<tr><td>Groupe fini : pieu d'angle · de bord · intérieur</td><td class="n">${f(rep.angle, 4)} · ${f(rep.bord, 4)} · ${f(rep.interieur, 4)} kN</td></tr>`
-        : `<tr><td>File unique : pieu d'extrémité · courant</td><td class="n">${f(rep.extremite, 4)} · ${f(rep.courant, 4)} kN</td></tr>`}`;
-  }
-  el("fnOut").innerHTML = `
-    <table class="resultats"><thead><tr><th>Grandeur</th><th class="num">Valeur</th></tr></thead><tbody>
-      <tr><td>K tanδ couche · remblai</td><td class="n">${fd(Kt, 2)} · ${fd(KtR, 2)}</td></tr>
-      <tr><td>λ · μ · L<sub>0</sub> = R/(μ K tanδ)</td><td class="n">${fd(lam, 3)} · ${fd(mu, 3)} · ${Number.isFinite(L0) ? fd(L0, 1) + " m" : "∞ (pas d'accrochage)"}</td></tr>
-      <tr><td>Hauteur d'action h = min(h<sub>1</sub> ; h<sub>2</sub>)</td><td class="n">${fd(iso.hAction, 2)} m <small>${iso.h1 !== null ? `h<sub>1</sub> = ${fd(iso.h1, 2)} m` : "σ'v ne redescend pas à σ'v0 dans la couche"}${Number.isFinite(h2) ? ` · h<sub>2</sub> = ${fd(h2, 2)} m` : ""}</small></td></tr>
-      <tr><td><strong>F<sub>n</sub> sur un pieu isolé</strong></td><td class="n"><strong>${f(iso.Fn, 4)} kN</strong> <small>sans accrochage : ${f(iso.FnMax, 4)} kN</small></td></tr>
-      ${groupe}
-      <tr><td>F<sub>n</sub> de calcul à l'ELU (γ<sub>sn</sub> = 1,35)</td><td class="n">${f(1.35 * iso.Fn, 4)} kN</td></tr>
-    </tbody></table>
-    <p class="method-note">L'accrochage réduit ici le frottement négatif de ${f(100 * (1 - iso.Fn / iso.FnMax), 2)} % par rapport au calcul en champ
-      libre. Un chemisage au bitume (K tanδ = 0,05) le divise encore — c'est la parade classique, avec la
-      préconsolidation du sol avant la mise en place des pieux.</p>`;
-});
-brancher(["fnB", "fnMise", "fnNat", "fnH", "fnG", "fnH2", "fnHr", "fnGr", "fnNr", "fnD", "fnFiles"], majFn);
 
-// ── Effet de groupe ─────────────────────────────────────────────────────
-const majGr = garde("grOut", () => {
-  const B = num("grB"), d = num("grD"), m = Math.max(1, Math.round(num("grM", 1))), n = Math.max(1, Math.round(num("grN", 1)));
-  const Rb = Math.max(num("grRb", 0), 0), Rs = Math.max(num("grRs", 0), 0), F = num("grF", 0);
-  if (!(B > 0 && d >= B)) { el("grOut").textContent = "Renseigner B et un entraxe d ≥ B."; return; }
-  const N = m * n;
-  const cl = converseLabarre({ B, d, m, n });
-  const coh = efficaciteCoherentF62({ B, d });
-  const ec7 = efficaciteEC7({ B, d, m, n });
-  el("grFig").innerHTML = graphe({
-    largeur: 560, hauteur: 260, xmin: 1, xmax: 5, ymin: 0, ymax: 1.05, xlabel: "d/B", ylabel: "Ce",
-    series: [
-      { points: echantillon((x) => converseLabarre({ B: 1, d: x, m, n }), 1, 5, 80), couleur: COULEURS.f62, libelle: "Converse-Labarre (F62)" },
-      { points: echantillon((x) => efficaciteCoherentF62({ B: 1, d: x }), 1, 5, 80), couleur: COULEURS.f62, tirets: "6 3", libelle: "F62 sols cohérents" },
-      { points: echantillon((x) => efficaciteEC7({ B: 1, d: x, m, n }), 1, 5, 80), couleur: COULEURS.ec7, epaisseur: 2.8, libelle: "NF P94-262 (annexe J)" },
-    ],
-    marques: [{ x: d / B, y: ec7, couleur: COULEURS.ec7, guides: true }, { x: d / B, y: cl, couleur: COULEURS.f62 }],
+  const cellule = (r, fn) => (r.applicable ? fn(r) : "—");
+  const motif = (r) => (r.applicable ? "" : `<br><span class="verdict ko">non applicable</span> <small>${esc(r.motif)}</small>`);
+  let lignesFrot = "";
+  couches.forEach((c) => {
+    const a = Math.max(c.z0, 0), b = Math.min(c.z1, D);
+    if (b <= a) return;
+    const l62 = r62.applicable ? r62.lignes.find((l) => Math.abs(l.z0 - a) < 1e-9) : null;
+    const l7 = r7.applicable ? r7.lignes.filter((l) => l.z0 >= a - 1e-9 && l.z1 <= b + 1e-9) : [];
+    const t7 = l7.map((l) => `${f(l.qs, 3)} kPa <small>α = ${fd(l.alpha, 2)} · f<sub>sol</sub> = ${f(l.fsol, 3)} · q<sub>s,max</sub> = ${f(l.qsmax, 3)}${l.plafonne ? " (plafond)" : ""}${l.reductions.length ? " · " + l.reductions.join(", ") : ""}</small>`).join("<br>");
+    lignesFrot += `<tr><td>q<sub>s</sub> de ${fd(a, 1)} à ${fd(b, 1)} m</td>
+      <td class="n">${l62 ? `${f(l62.qs, 3)} kPa <small>${l62.courbe ? `courbe Q${l62.courbe}` : `β, q<sub>s,max</sub>`}${l62.remarque ? " · " + esc(l62.remarque) : ""}</small>` : "—"}</td>
+      <td class="n">${t7 || "—"}</td></tr>`;
   });
-  const bloc = blocMonolithique({ B, d, m: Math.min(m, n), n: Math.max(m, n) });
-  const vE = verifGroupeEC7({ Fcgd: F, N, Rbd: Rb, Rsd: Rs, Ce: ec7 });
-  // F62 G.1 § 2.5 : sols cohérents → formule ¼(1 + d/B) ; sols frottants,
-  // pieux sans refoulement → Converse-Labarre ; sables lâches et pieux
-  // refoulants → Ce = 1 (toujours avec la réserve du bloc de Terzaghi).
-  const sol = el("grSol").value;
-  const ceF62 = sol === "coherent" ? coh : sol === "frottant" ? cl : 1;
-  const RF62 = ceF62 * N * (Rb + Rs);
-  el("grOut").innerHTML = `
-    <table class="resultats"><thead><tr><th>Grandeur</th><th class="num"><span class="tag-f62">F62</span></th><th class="num"><span class="tag-ec7">EC7</span></th></tr></thead><tbody>
-      <tr><td>C<sub>e</sub> (d/B = ${fd(d / B, 2)}, ${m} × ${n} pieux)</td><td class="n">Converse-Labarre ${fd(cl, 3)} · cohérent ${fd(coh, 3)}</td><td class="n">${fd(ec7, 3)}</td></tr>
-      <tr><td>Résistance du groupe</td><td class="n">C<sub>e</sub> N (R<sub>b</sub> + R<sub>s</sub>) = ${f(RF62, 4)} kN <small>C<sub>e</sub> retenu : ${fd(ceF62, 3)}</small></td><td class="n">N (R<sub>b;d</sub> + C<sub>e</sub> R<sub>s;d</sub>) = ${f(vE.R, 4)} kN</td></tr>
-      <tr><td>Taux sous ${f(F, 4)} kN</td><td class="n">${fd(F / RF62, 2)} ${verdict(F <= RF62 + 1e-9)}</td><td class="n">${fd(vE.taux, 2)} ${verdict(vE.ok)}</td></tr>
-      <tr><td>Bloc monolithique</td><td class="n" colspan="2" style="text-align:center">${fd(bloc.L, 2)} m × ${fd(bloc.l, 2)} m · périmètre ${fd(bloc.perimetre, 2)} m · base ${fd(bloc.aire, 2)} m²</td></tr>
-    </tbody></table>
-    <p class="method-note">La norme ne réduit que le frottement : la pointe, qui travaille dans un sol non partagé, garde sa
-      résistance entière. À d ≥ 3B, elle ne réduit plus rien, alors que Converse-Labarre pénalise encore le groupe.
-      Le bloc monolithique se vérifie comme une fondation dont la base est au niveau des pointes (chapitres 4 et 9),
-      avec le frottement sur son périmètre.</p>`;
+  const QcF = r62.applicable ? r62.Qc : NaN;
+  const Rccr = r7.applicable ? (r7.refoulement ? 0.7 : 0.5) * r7.Rb + 0.7 * r7.Rs : NaN;
+  el("piOut").innerHTML = `
+    <div class="table-large"><table class="resultats"><thead><tr><th>Grandeur</th>
+      <th class="num"><span class="tag-f62">Fascicule 62</span>${motif(r62)}</th><th class="num"><span class="tag-ec7">NF P94-262</span>${motif(r7)}</th></tr></thead><tbody>
+      <tr><td>Intervalle de pointe [D − b ; D + 3a]</td><td class="n" colspan="2" style="text-align:center">[${fd(I.z0, 2)} ; ${fd(I.z1, 2)}] m · a = ${fd(I.a, 2)} · b = ${fd(I.b, 2)}</td></tr>
+      <tr><td>${methode === "pressio" ? "p<sub>le</sub>*" : "q<sub>ce</sub>"} (MPa)</td><td class="n">${cellule(r62, (r) => fd(r.qEquiv, 3))}</td><td class="n">${cellule(r7, (r) => fd(methode === "pressio" ? r.pointe.ple : r.pointe.qce, 3))}</td></tr>
+      <tr><td>Encastrement effectif</td><td class="n">—</td><td class="n">${cellule(r7, (r) => `D<sub>ef</sub> = ${fd(r.pointe.Def, 2)} m · D<sub>ef</sub>/B = ${fd(r.pointe.DefB, 2)}`)}</td></tr>
+      <tr><td>Facteur de portance</td><td class="n">${cellule(r62, (r) => `${methode === "pressio" ? "k<sub>p</sub>" : "k<sub>c</sub>"} = ${fd(r.kPointe, 2)} <small>${r.refoulement ? "avec" : "sans"} refoulement</small>`)}</td>
+        <td class="n">${cellule(r7, (r) => `${methode === "pressio" ? "k<sub>p</sub>" : "k<sub>c</sub>"} = ${fd(r.pointe.k, 3)} <small>max ${fd(r.pointe.kmax, 2)}</small>`)}</td></tr>
+      <tr><td>Contrainte de pointe (kPa)</td><td class="n">${cellule(r62, (r) => f(r.qu, 4))}</td><td class="n">${cellule(r7, (r) => f(r.pointe.qb, 4))}</td></tr>
+      <tr><td>Pointe Q<sub>pu</sub> · R<sub>b</sub> (kN)</td><td class="n">${cellule(r62, (r) => f(r.Qpu, 4))}</td><td class="n">${cellule(r7, (r) => f(r.Rb, 4))}</td></tr>
+      ${lignesFrot}
+      <tr><td>Frottement Q<sub>su</sub> · R<sub>s</sub> (kN)</td><td class="n">${cellule(r62, (r) => f(r.Qsu, 4))}</td><td class="n">${cellule(r7, (r) => f(r.Rs, 4))}</td></tr>
+      <tr><td><strong>Charge limite Q<sub>u</sub> · R<sub>c</sub> (kN)</strong></td><td class="n"><strong>${cellule(r62, (r) => f(r.Qu, 4))}</strong></td><td class="n"><strong>${cellule(r7, (r) => f(r.Rc, 4))}</strong></td></tr>
+      <tr><td>Charge de fluage Q<sub>c</sub> · R<sub>c;cr</sub> (kN)</td><td class="n">${f(QcF, 4)}</td><td class="n">${f(Rccr, 4)} <small>sur les valeurs calculées, avant coefficients de modèle</small></td></tr>
+    </tbody></table></div>
+    ${r7.applicable && r7.avertissements.length ? `<p class="method-note">${r7.avertissements.map(esc).join("<br>")}</p>` : ""}
+    ${r62.applicable && r7.applicable ? `<p class="method-note">Écart sur la charge limite : ${r7.Rc >= r62.Qu ? "+" : ""}${f(100 * (r7.Rc / r62.Qu - 1), 2)} % (pointe ${f(100 * (r7.Rb / r62.Qpu - 1), 2)} %, frottement ${f(100 * (r7.Rs / r62.Qsu - 1), 2)} %).
+      Ces valeurs ne sont pas encore des résistances de calcul : le chapitre 12 leur applique les coefficients de chaque référentiel.</p>` : ""}`;
 });
-brancher(["grB", "grD", "grM", "grN", "grRb", "grRs", "grSol", "grF"], majGr);
+const ids = ["piType", "piB", "piD", "piMeth"];
+for (let i = 0; i < DEFAUT.length; i++) ids.push(`piZ${i}`, `piC${i}`, `piS${i}`, `piPl${i}`, `piQc${i}`);
+brancher(ids, majPi);

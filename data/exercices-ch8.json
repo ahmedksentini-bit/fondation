@@ -2,304 +2,268 @@
  "chapitre": "ch8",
  "exercices": [
   {
-   "id": "ch8-Qc",
-   "titre": "Charge limite et charge de fluage",
+   "id": "ch8-f62",
+   "titre": "Glissement au Fascicule 62",
    "difficulte": 1,
-   "graine": 1145846309,
-   "enonce": "Un pieu battu (mis en place avec refoulement du sol) a une résistance de pointe Qpu = 790 kN et un frottement latéral limite Qsu = 2 560 kN.",
+   "graine": 3745396773,
+   "enonce": "Semelle filante B = 2,5 m, V = 630 kN/m excentrée de e = 0,07 m, H = 221 kN/m (ELU, combinaison la plus défavorable). Sol : φ' = 36°, c' = 10 kPa.",
    "donnees": [
     {
-     "label": "Mise en œuvre",
-     "valeur": "battu"
+     "label": "B · e",
+     "valeur": "2,5 · 0,07 m"
     },
     {
-     "label": "Qpu",
-     "valeur": "790 kN"
+     "label": "Vd · Hd",
+     "valeur": "630 · 221 kN/m"
     },
     {
-     "label": "Qsu",
-     "valeur": "2 560 kN"
+     "label": "φ' · c'",
+     "valeur": "36° · 10 kPa"
     }
    ],
    "questions": [
     {
-     "texte": "Charge limite Qu ?",
+     "texte": "Surface comprimée A' (par mètre) ?",
      "type": "nombre",
-     "unite": "kN",
-     "reponse": 3350,
-     "explication": "Qu = Qpu + Qsu = 3 350 kN.",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "Charge de fluage Qc ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 2345,
-     "explication": "Qc = 0,7 Qpu + 0,7 Qsu = 553 + 1 792 = 2 345 kN (F62 annexe C.2 ; formule 14.2.2 de la NF P94-262 pour Rc;cr;k).",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "Rapport Qc/Qu ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 0.7,
-     "explication": "0,700 : la charge de fluage est d'autant plus proche de la charge limite que le frottement domine.",
-     "toleranceRel": 0.01
-    }
-   ]
-  },
-  {
-   "id": "ch8-flottant",
-   "titre": "Un pieu flottant ?",
-   "difficulte": 1,
-   "graine": 23100233,
-   "enonce": "Pieu foré de diamètre B = 1,2 m et de longueur D = 21 m ; contrainte de rupture sous la pointe qb = 3 200 kPa, frottement unitaire moyen qs = 35 kPa.",
-   "donnees": [
-    {
-     "label": "B · D",
-     "valeur": "1,2 · 21 m"
-    },
-    {
-     "label": "qb",
-     "valeur": "3 200 kPa"
-    },
-    {
-     "label": "qs",
-     "valeur": "35 kPa"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Résistance de pointe Qpu ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 3619.11,
-     "explication": "Ab = π B²/4 = 1,1310 m² ; Qpu = 1,1310 × 3 200 = 3 619 kN.",
+     "unite": "m²/m",
+     "reponse": 2.5,
+     "explication": "e ≤ B/6 : toute la semelle est comprimée, A' = 2,50 m²/m.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Frottement Qsu ?",
+     "texte": "Résistance au glissement de calcul ?",
      "type": "nombre",
-     "unite": "kN",
-     "reponse": 2770.88,
-     "explication": "P = π B = 3,770 m ; Qsu = 3,770 × 21 × 35 = 2 771 kN.",
-     "toleranceRel": 0.01
+     "unite": "kN/m",
+     "reponse": 398.101,
+     "explication": "Vd tanφ'/1,2 + c'A'/1,5 = 630 × 0,727 / 1,2 + 10 × 2,500 / 1,5 = 381,4 + 16,7 = 398,1 kN/m.",
+     "toleranceRel": 0.015
     },
     {
-     "texte": "Le pieu est-il flottant au sens du Fascicule 62 ?",
+     "texte": "Glissement vérifié ?",
      "type": "choix",
      "options": [
-      "oui : sous Qc, le frottement mobilisé dépasse la pointe",
-      "non : la pointe l'emporte"
+      "oui",
+      "non"
      ],
      "reponse": 0,
-     "explication": "F62 C.4.1,21 : sous la charge de fluage, frottement 0,7 Qsu = 1 940 kN contre pointe 0,5 Qpu = 1 810 kN. Un groupe de pieux flottants appelle une vérification d'effet de groupe."
+     "explication": "Hd = 221 kN/m ≤ 398,1 kN/m (taux 0,56)."
     }
    ]
   },
   {
-   "id": "ch8-traction",
-   "titre": "Pieu en traction",
+   "id": "ch8-ec7-dr",
+   "titre": "Glissement drainé à la NF P94-261",
    "difficulte": 1,
-   "graine": 4101467001,
-   "enonce": "Un pieu sollicité en traction a un frottement latéral limite Qsu = 1 800 kN (le poids propre est négligé).",
+   "graine": 371009531,
+   "enonce": "Semelle coulée en place ; Vd = 610 kN/m, Hd = 262 kN/m à l'ELU fondamental ; angle de frottement à l'état critique du sol φ'crit = 29°.",
    "donnees": [
     {
-     "label": "Qsu",
-     "valeur": "1 800 kN"
+     "label": "Vd · Hd",
+     "valeur": "610 · 262 kN/m"
+    },
+    {
+     "label": "φ'crit",
+     "valeur": "29°"
+    },
+    {
+     "label": "Semelle",
+     "valeur": "coulée en place"
     }
    ],
    "questions": [
     {
-     "texte": "Charge limite en traction Qtu ?",
+     "texte": "Angle de frottement d'interface δa;k ?",
      "type": "nombre",
-     "unite": "kN",
-     "reponse": 1800,
-     "explication": "Qtu = Qsu = 1 800 kN : la pointe ne travaille pas en traction.",
+     "unite": "°",
+     "reponse": 29,
+     "explication": "Coulée en place : δ = φ'crit = 29°.",
      "toleranceRel": 0.005
     },
     {
-     "texte": "Charge de fluage en traction Qtc ?",
+     "texte": "Rh;d ?",
      "type": "nombre",
-     "unite": "kN",
-     "reponse": 1260,
-     "explication": "Qtc = 0,7 Qsu = 1 260 kN.",
-     "toleranceRel": 0.005
-    },
-    {
-     "texte": "Qmin à l'ELU fondamental, Fascicule 62 (traction comptée négativement) ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": -1285.71,
-     "explication": "Qmin = −Qtu/1,4 = −1 286 kN.",
+     "unite": "kN/m",
+     "reponse": 279.445,
+     "explication": "Rh;d = Vd tanδ / (γR;h γR;d;h) = 610 × 0,554 / (1,1 × 1,1) = 279,4 kN/m.",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Qmin sous combinaison rare (négatif) ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": -900,
-     "explication": "Qmin = −Qtc/1,4 = −900 kN. Sous combinaison quasi permanente, aucune traction n'est admise.",
-     "toleranceRel": 0.01
-    }
-   ]
-  },
-  {
-   "id": "ch8-categories",
-   "titre": "Classes et catégories de pieux",
-   "difficulte": 1,
-   "graine": 1378334949,
-   "enonce": "Un projet prévoit des pieux de type « foré tarière creuse simple ou double rotation » (sigle FTC, FTCD).",
-   "donnees": [
-    {
-     "label": "Technologie",
-     "valeur": "Foré tarière creuse simple ou double rotation"
-    },
-    {
-     "label": "Sigle",
-     "valeur": "FTC, FTCD"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Classe de la NF P94-262 ?",
-     "type": "choix",
-     "options": [
-      "classe 5",
-      "classe 4",
-      "classe 3",
-      "classe 2"
-     ],
-     "reponse": 3,
-     "explication": "Catégorie 6 (FTC, FTCD), classe 2 de l'annexe A de la NF P94-262. La classe fixe k_p,max et k_c,max ; la catégorie fixe α_pieu-sol et q_s,max."
-    },
-    {
-     "texte": "Mise en place avec refoulement du sol ?",
+     "texte": "Glissement vérifié ?",
      "type": "choix",
      "options": [
       "non",
       "oui"
      ],
-     "reponse": 0,
-     "explication": "Pieu foré : le sol est extrait ; la charge de fluage ne prend que 0,5 R_b."
-    },
-    {
-     "texte": "Combien de catégories de pieux la NF P94-262 distingue-t-elle ?",
-     "type": "choix",
-     "options": [
-      "12",
-      "20",
-      "7",
-      "8"
-     ],
      "reponse": 1,
-     "explication": "Vingt catégories, regroupées en huit classes (plus la classe 1bis des micropieux)."
+     "explication": "Hd = 262 ≤ 279,4 kN/m (taux 0,94). La cohésion effective est négligée."
     }
    ]
   },
   {
-   "id": "ch8-section",
-   "titre": "Pieu carré ou pieu circulaire",
-   "difficulte": 1,
-   "graine": 287632452,
-   "enonce": "On compare un pieu circulaire de diamètre 0,35 m et un pieu carré de 0,35 m de côté, avec qb = 5 100 kPa et qs = 75 kPa.",
+   "id": "ch8-ec7-nd",
+   "titre": "Glissement à court terme sur une argile",
+   "difficulte": 2,
+   "graine": 672020935,
+   "enonce": "Semelle filante B = 1,6 m sur argile saturée (cu = 25 kPa), charge excentrée de e = 0,00 m. ELU : Vd = 460 kN/m, Hd = 193 kN/m.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "0,35 m"
+     "label": "B · e",
+     "valeur": "1,6 · 0,00 m"
     },
     {
-     "label": "qb",
-     "valeur": "5 100 kPa"
+     "label": "cu",
+     "valeur": "25 kPa"
     },
     {
-     "label": "qs",
-     "valeur": "75 kPa"
+     "label": "Vd · Hd",
+     "valeur": "460 · 193 kN/m"
     }
    ],
    "questions": [
     {
-     "texte": "Résistance de pointe du pieu circulaire ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 490.678,
-     "explication": "Ab = π B²/4 = 0,0962 m² ; Rb = 490,7 kN.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Résistance de pointe du pieu carré ?",
-     "type": "nombre",
-     "unite": "kN",
-     "reponse": 624.75,
-     "explication": "Ab = B² = 0,1225 m² ; Rb = 624,7 kN, soit 4/π = 1,27 fois plus.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Frottement par mètre de fût du pieu carré ?",
+     "texte": "Terme d'adhérence A' cu / (γR;h γR;d;h) ?",
      "type": "nombre",
      "unite": "kN/m",
-     "reponse": 105,
-     "explication": "P = 4 B = 1,400 m ; P qs = 105 kN/m (contre 82,47 kN/m pour le pieu circulaire).",
+     "reponse": 33.0579,
+     "explication": "A' = B − 2e = 1,60 m²/m ; 1,60 × 25 / 1,21 = 33,06 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Plafond 0,4 Vd ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 184,
+     "explication": "0,4 × 460 = 184 kN/m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Rh;d retenue ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 33.0579,
+     "explication": "Le minimum des deux : 33,06 kN/m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Si la vérification échouait, que recommanderait le commentaire du Fascicule 62 ?",
+     "type": "choix",
+     "options": [
+      "une disposition constructive (bêche, butons…)",
+      "élargir la semelle jusqu'à ce que le calcul passe",
+      "augmenter cu dans le calcul"
+     ],
+     "reponse": 0,
+     "explication": "F62 B.3.4 (commentaire) : un risque de glissement à court terme se traite de préférence par des dispositions constructives plutôt que par le dimensionnement de la fondation."
+    }
+   ]
+  },
+  {
+   "id": "ch8-vmin",
+   "titre": "Le bon V pour vérifier le glissement",
+   "difficulte": 2,
+   "graine": 2737437483,
+   "enonce": "Une semelle coulée en place reçoit G = 370 kN/m (poids propre compris), une charge d'exploitation verticale Qv = 240 kN/m et un effort variable horizontal Qh = 45 kN/m indépendant de Qv. Sol : φ'crit = 31°.",
+   "donnees": [
+    {
+     "label": "G",
+     "valeur": "370 kN/m"
+    },
+    {
+     "label": "Qv · Qh",
+     "valeur": "240 · 45 kN/m"
+    },
+    {
+     "label": "φ'crit",
+     "valeur": "31°"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Hd à l'ELU ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 67.5,
+     "explication": "Hd = 1,5 Qh = 67,5 kN/m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Vd à associer à Hd pour le glissement ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 370,
+     "explication": "G est favorable (γG = 1,0) et Qv, favorable, est omise : Vd = 370 kN/m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Rh;d correspondante ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 183.734,
+     "explication": "370 × tan31° / 1,21 = 183,7 kN/m : taux 0,37.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rh;d que l'on trouverait à tort avec 1,35 G + 1,5 Qv ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 426.81,
+     "explication": "Vd = 859,5 kN/m donnerait 426,8 kN/m, soit 130 % de résistance fictive.",
      "toleranceRel": 0.01
     }
    ]
   },
   {
-   "id": "ch8-frankzhao",
-   "titre": "Lois de transfert de Frank et Zhao",
-   "difficulte": 2,
-   "graine": 1607130573,
-   "enonce": "Pieu de diamètre B = 1,1 m dans un sol fin de module pressiométrique EM = 14 MPa ; frottement limite qs = 60 kPa.",
+   "id": "ch8-stabilite",
+   "titre": "Paramètres de calcul pour la stabilité d'ensemble",
+   "difficulte": 1,
+   "graine": 3024103684,
+   "enonce": "Talus sous une semelle : φ' = 29°, c' = 15 kPa, et à court terme cu = 50 kPa.",
    "donnees": [
     {
-     "label": "B",
-     "valeur": "1,1 m"
+     "label": "φ'",
+     "valeur": "29°"
     },
     {
-     "label": "EM",
-     "valeur": "14 MPa"
+     "label": "c'",
+     "valeur": "15 kPa"
     },
     {
-     "label": "Sol",
-     "valeur": "fin"
-    },
-    {
-     "label": "qs",
-     "valeur": "60 kPa"
+     "label": "cu",
+     "valeur": "50 kPa"
     }
    ],
    "questions": [
     {
-     "texte": "Pente kt de la loi de frottement ?",
+     "texte": "φd au Fascicule 62 (B.3.6) ?",
      "type": "nombre",
-     "unite": "MPa/m",
-     "reponse": 25.4545,
-     "explication": "kt = 2 EM/B = 25,5 MPa/m.",
+     "unite": "°",
+     "reponse": 24.7934,
+     "explication": "tanφd = tan29°/1,20 = 0,4619 ⇒ φd = 24,79°.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "φ'd en approche 3 (γφ' = 1,25) ?",
+     "type": "nombre",
+     "unite": "°",
+     "reponse": 23.9148,
+     "explication": "tanφ'd = tan29°/1,25 = 0,4434 ⇒ φ'd = 23,91°.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "cd au Fascicule 62 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 10,
+     "explication": "cd = c/1,50 = 10,00 kPa (contre 12,00 kPa en approche 3).",
      "toleranceRel": 0.01
     },
     {
-     "texte": "Pente kq de la loi de pointe ?",
+     "texte": "cu,d en approche 3 ?",
      "type": "nombre",
-     "unite": "MPa/m",
-     "reponse": 140,
-     "explication": "kq = 11 EM/B = 140 MPa/m.",
+     "unite": "kPa",
+     "reponse": 35.7143,
+     "explication": "cu,d = cu/1,4 = 35,71 kPa (contre cu/1,5 = 33,33 kPa au Fascicule 62).",
      "toleranceRel": 0.01
-    },
-    {
-     "texte": "Déplacement mobilisant qs/2 ?",
-     "type": "nombre",
-     "unite": "mm",
-     "reponse": 1.17857,
-     "explication": "La loi est linéaire jusqu'à qs/2 : s = qs/(2 kt) = 1,18 mm.",
-     "toleranceRel": 0.02
-    },
-    {
-     "texte": "Déplacement mobilisant qs en entier ?",
-     "type": "nombre",
-     "unite": "mm",
-     "reponse": 7.07143,
-     "explication": "Au-delà, la pente est divisée par 5 : s = qs/(2kt) + (qs/2)/(kt/5) = 3 qs/kt = 7,07 mm — quelques millimètres, contre des centimètres pour la pointe.",
-     "toleranceRel": 0.02
     }
    ]
   }

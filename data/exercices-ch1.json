@@ -168,7 +168,7 @@
       "1"
      ],
      "reponse": 3,
-     "explication": "α = 1. Il sert au tassement (chapitre 7) et au module de réaction transversal des pieux (chapitre 12)."
+     "explication": "α = 1. Il sert au tassement (chapitre 9) et au module de réaction transversal des pieux (chapitre 14)."
     }
    ]
   },
@@ -220,7 +220,7 @@
      "type": "nombre",
      "unite": "MPa",
      "reponse": 1.33169,
-     "explication": "(1,05 × 2,08 × 1,80 × 0,80)^(1/4) = 1,332 MPa — c'est la forme que prend p_le* sous une semelle quand les épaisseurs sont égales (chapitre 4).",
+     "explication": "(1,05 × 2,08 × 1,80 × 0,80)^(1/4) = 1,332 MPa — c'est la forme que prend p_le* sous une semelle quand les épaisseurs sont égales (chapitre 6).",
      "toleranceRel": 0.01
     },
     {

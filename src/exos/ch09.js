@@ -1,174 +1,114 @@
-// Exercices du chapitre 9 : portance d'un pieu isolé.
+// Exercices du chapitre 9 : tassements et module de réaction.
 import { fr, frd, nombre, choixMelange, donnee } from "./alea.js";
-import * as P from "../geotech/pieux.js";
-import { CLASSES_F62, CATEGORIES_EC7 } from "../geotech/sols.js";
-import { coupePieu } from "../figures.js";
-
-const nomClasse = (c) => `${CLASSES_F62[c].nom.toLowerCase()} (${CLASSES_F62[c].lettre})`;
+import { tassementMenard, moduleEd, moduleReaction, schmertmann, tassementOedometrique, tassementElastique, coefficientCf, lambdas } from "../geotech/tassements.js";
+import { fraction } from "./ch01.js";
 
 export default [
   {
-    id: "ch9-intervalle", titre: "Pression limite équivalente sous la pointe", difficulte: 2,
+    id: "ch9-menard", titre: "Tassement pressiométrique en sol homogène", difficulte: 2,
     generer(a) {
-      const B = a.entre(0.4, 1.4, 0.1), zc = a.entre(8, 16, 0.5), h = a.entre(0.3, 3, 0.1), D = +(zc + h).toFixed(2);
-      const p1 = a.entre(0.4, 1.2, 0.05), p2 = a.entre(1.8, 3.5, 0.05), p3 = a.entre(1.2, 4, 0.05);
-      const z2 = +(D + a.entre(0.5, 2, 0.5)).toFixed(2);
-      const couches = [{ z0: 0, z1: zc, pl: p1 }, { z0: zc, z1: z2, pl: p2 }, { z0: z2, z1: 60, pl: p3 }];
-      const c = (z) => couches.find((x) => z >= x.z0 && z < x.z1);
-      const r = P.pleProfond({ plFn: (z) => c(z).pl, ruptures: [zc, z2], B, D, h });
+      const forme = a.choix(["carree", "rectangulaire", "filante"]);
+      const B = a.entre(1.2, 3, 0.1), L = forme === "rectangulaire" ? +(B * a.choix([2, 3, 5])).toFixed(2) : B;
+      const EM = a.entre(5, 25, 1), alpha = a.choix([1 / 3, 1 / 2, 2 / 3]);
+      const s0 = a.entre(15, 40, 1), q = s0 + a.entre(80, 250, 5);
+      const r = tassementMenard({ forme, B, L, q, sigmaV0: s0, alpha, Ec: EM, Ed: EM });
       return {
-        enonce: `Pieu de diamètre B = ${frd(B, 1)} m, pointe à D = ${frd(D, 2)} m. Profil : pl* = ${frd(p1, 2)} MPa jusqu'à ${frd(zc, 1)} m, ${frd(p2, 2)} MPa de ${frd(zc, 1)} à ${frd(z2, 2)} m, puis ${frd(p3, 2)} MPa.`,
-        donnees: [donnee("B · D", `${frd(B, 1)} · ${frd(D, 2)} m`), donnee("h dans la couche porteuse", `${frd(h, 2)} m`), donnee("pl*", `${frd(p1, 2)} / ${frd(p2, 2)} / ${frd(p3, 2)} MPa`)],
-        figure: coupePieu({ B, D, hauteur: 300, zMax: D + 4, couches: [{ z0: 0, z1: zc, sol: "argile" }, { z0: zc, z1: z2, sol: "sable" }, { z0: z2, z1: 60, sol: "marne" }], profil: { libelle: "pl*", unite: "MPa", valeurs: couches.map((x) => ({ z0: x.z0, z1: Math.min(x.z1, D + 4), v: x.pl })), etiquettes: true } }),
+        enonce: `Semelle ${forme === "carree" ? "carrée" : forme === "filante" ? "filante" : `rectangulaire (L = ${frd(L, 2)} m)`} de largeur B = ${frd(B, 1)} m sur un sol homogène : EM = ${fr(EM, 2)} MPa, α = ${fraction(alpha)}. Sous la combinaison quasi permanente, q' = ${fr(q, 3)} kPa ; σ'v0 = ${fr(s0, 2)} kPa au niveau de la base.`,
+        donnees: [donnee("Forme · B", `${forme} · ${frd(B, 1)} m`), donnee("EM · α", `${fr(EM, 2)} MPa · ${fraction(alpha)}`), donnee("q' − σ'v0", `${fr(q - s0, 3)} kPa`)],
         questions: [
-          nombre("Longueur a ?", r.a, "m", `a = max(B/2 ; 0,5 m) = ${frd(r.a, 2)} m.`, { rel: 0.005 }),
-          nombre("Longueur b ?", r.b, "m", `b = min(a ; h) = min(${frd(r.a, 2)} ; ${frd(h, 2)}) = ${frd(r.b, 2)} m.`, { rel: 0.005 }),
-          nombre("ple* sur [D − b ; D + 3a] ?", r.ple, "MPa", `Intervalle [${frd(r.z0, 2)} ; ${frd(r.z1, 2)}] m ; moyenne arithmétique pondérée des épaisseurs : ple* = ${frd(r.ple, 3)} MPa.`, { rel: 0.01 }),
+          nombre("Coefficient λd ?", r.ld, "", `L/B = ${forme === "filante" ? "∞ (on prend 20)" : frd(L / B, 1)} ⇒ λc = ${frd(r.lc, 2)}, λd = ${frd(r.ld, 2)}.`, { rel: 0.005 }),
+          nombre("Tassement sphérique sc ?", r.sc, "mm", `sc = α (q' − σ'v0) λc B / (9 EM) = ${frd(alpha, 3)} × ${fr(q - s0, 3)} × ${frd(r.lc, 2)} × ${frd(B, 1)} / (9 × ${fr(EM * 1000, 5)}) = ${frd(r.sc, 2)} mm.`, { rel: 0.02 }),
+          nombre("Tassement déviatorique sd ?", r.sd, "mm", `sd = 2 (q' − σ'v0) B0 (λd B/B0)^α / (9 EM) = 2 × ${fr(q - s0, 3)} × 0,6 × (${frd((r.ld * B) / 0.6, 3)})^${fraction(alpha)} / (9 × ${fr(EM * 1000, 5)}) = ${frd(r.sd, 2)} mm.`, { rel: 0.02 }),
+          nombre("Tassement final sf ?", r.sf, "mm", `sf = sc + sd = ${frd(r.sf, 2)} mm.`, { rel: 0.02 }),
         ],
       };
     },
   },
   {
-    id: "ch9-kp-f62", titre: "Résistance de pointe au Fascicule 62", difficulte: 1,
+    id: "ch9-Ed", titre: "Module déviatorique d'un sol hétérogène", difficulte: 2,
     generer(a) {
-      const classe = a.choix(Object.keys(P.KP_PIEU_F62).filter((k) => !k.startsWith("roche")));
-      const refoulant = a.choix([false, true]);
-      const B = a.entre(0.4, 1.2, 0.1), ple = a.entre(Math.max(CLASSES_F62[classe].pl[0], 0.5), Number.isFinite(CLASSES_F62[classe].pl[1]) ? CLASSES_F62[classe].pl[1] : 4, 0.05);
-      const kp = P.KP_PIEU_F62[classe][refoulant ? 1 : 0];
-      const { Ab } = P.section({ B });
+      const E1 = a.entre(4, 12, 0.5), E2 = a.entre(4, 15, 0.5), E35 = a.entre(8, 25, 0.5), E68 = a.entre(12, 35, 0.5), E916 = a.entre(15, 50, 0.5);
+      const Ed7 = moduleEd({ E1, E2, E35, E68, E916 });
+      const Ed62 = moduleEd({ E1, E2, E35, E68, E916, referentiel: "F62" });
       return {
-        enonce: `Pieu ${refoulant ? "battu" : "foré"} de diamètre B = ${frd(B, 1)} m ancré dans ${nomClasse(classe)} ; ple* = ${frd(ple, 2)} MPa sous la pointe.`,
-        donnees: [donnee("B", `${frd(B, 1)} m`), donnee("Sol", nomClasse(classe)), donnee("ple*", `${frd(ple, 2)} MPa`), donnee("Refoulement", refoulant ? "oui" : "non")],
+        enonce: `Sous une semelle, les modules pressiométriques équivalents des tranches B/2 valent E1 = ${frd(E1, 1)} MPa, E2 = ${frd(E2, 1)} MPa, E3;5 = ${frd(E35, 1)} MPa, E6;8 = ${frd(E68, 1)} MPa et E9;16 = ${frd(E916, 1)} MPa.`,
+        donnees: [donnee("E1 · E2", `${frd(E1, 1)} · ${frd(E2, 1)} MPa`), donnee("E3;5", `${frd(E35, 1)} MPa`), donnee("E6;8 · E9;16", `${frd(E68, 1)} · ${frd(E916, 1)} MPa`)],
         questions: [
-          nombre("Facteur kp (F62 annexe C.3, tableau I) ?", kp, "", `Classe ${CLASSES_F62[classe].lettre}, ${refoulant ? "avec" : "sans"} refoulement : kp = ${frd(kp, 2)}.`, { abs: 0.001 }),
-          nombre("Contrainte de rupture qu ?", kp * ple * 1000, "kPa", `qu = kp ple* = ${frd(kp, 2)} × ${fr(ple * 1000, 4)} = ${fr(kp * ple * 1000, 4)} kPa.`, { rel: 0.01 }),
-          nombre("Résistance de pointe Qpu ?", Ab * kp * ple * 1000, "kN", `Qpu = Ab qu = ${frd(Ab, 4)} × ${fr(kp * ple * 1000, 4)} = ${fr(Ab * kp * ple * 1000, 4)} kN.`, { rel: 0.01 }),
+          nombre("Ec ?", E1, "MPa", `Ec = E1 = ${frd(E1, 1)} MPa : le tassement sphérique ne voit que la première tranche.`, { rel: 0.005 }),
+          nombre("Ed selon la NF P94-261 ?", Ed7, "MPa", `1/Ed = 0,25/${frd(E1, 1)} + 0,30/${frd(E2, 1)} + 0,25/${frd(E35, 1)} + 0,1/${frd(E68, 1)} + 0,1/${frd(E916, 1)} = ${frd(1 / Ed7, 4)} ⇒ Ed = ${frd(Ed7, 2)} MPa.`, { rel: 0.01 }),
+          nombre("Ed selon le Fascicule 62 ?", Ed62, "MPa", `4/Ed = 1/E1 + 1/(0,85 E2) + 1/E3;5 + 1/(2,5 E6;8) + 1/(2,5 E9;16) ⇒ Ed = ${frd(Ed62, 2)} MPa — la somme des poids vaut 0,994 au lieu de 1.`, { rel: 0.01 }),
         ],
       };
     },
   },
   {
-    id: "ch9-courbeQ", titre: "Les courbes de frottement Q1 à Q7", difficulte: 1,
+    id: "ch9-kv", titre: "Module de réaction sous une semelle", difficulte: 2,
     generer(a) {
-      const n = a.entier(1, 7), pl = a.entre(0.3, 3.5, 0.1);
-      const qs = P.courbeQ(n, pl);
-      let detail;
-      if (n <= 4) {
-        const qsn = 0.04 * n, pn = 1 + 0.5 * n, r = pl / pn;
-        const q5 = pl >= 0.2 ? Math.min((pl - 0.2) / 9, (pl + 3.3) / 32) : 0;
-        const brut = r <= 1 ? qsn * r * (2 - r) : qsn;
-        detail = `Q${n} : qsn = 0,04 × ${n} = ${frd(qsn, 2)} MPa, pn = 1 + 0,5 × ${n} = ${frd(pn, 1)} MPa ; ${r <= 1 ? `pl/pn = ${frd(r, 3)} ≤ 1 : qs = qsn (pl/pn)(2 − pl/pn) = ${frd(brut * 1000, 1)} kPa` : `pl ≥ pn : palier qs = qsn = ${frd(brut * 1000, 1)} kPa`}${brut > q5 + 1e-12 ? `, borné par Q5 = ${frd(q5 * 1000, 1)} kPa` : ""}.`;
-      } else if (n === 5) detail = `Q5 = min[(pl − 0,2)/9 ; (pl + 3,3)/32] = ${frd(qs, 1)} kPa.`;
-      else if (n === 6) detail = `Q6 = min[(pl + 0,4)/10 ; (pl + 4)/30] = ${frd(qs, 1)} kPa.`;
-      else detail = `Q7 = (pl + 0,4)/10 = ${frd(qs, 1)} kPa.`;
+      const forme = a.choix(["carree", "rectangulaire"]);
+      const B = a.entre(1.2, 3, 0.1), L = forme === "rectangulaire" ? +(B * a.choix([2, 3, 5])).toFixed(2) : B;
+      const alpha = a.choix([1 / 3, 1 / 2, 2 / 3]), Ec = a.entre(5, 15, 1), Ed = a.entre(8, 25, 1);
+      const k = moduleReaction({ forme, B, L, alpha, Ec, Ed });
+      const { lc, ld } = lambdas({ forme, B, L });
       return {
-        enonce: `Frottement unitaire limite par la courbe Q${n} du Fascicule 62, pour pl = ${frd(pl, 1)} MPa.`,
-        donnees: [donnee("Courbe", `Q${n}`), donnee("pl", `${frd(pl, 1)} MPa`)],
-        questions: [nombre(`qs lu sur la courbe Q${n} ?`, qs, "kPa", detail, { rel: 0.015 })],
-      };
-    },
-  },
-  {
-    id: "ch9-tableauII", titre: "Choisir la courbe de frottement", difficulte: 2,
-    generer(a) {
-      const cas = [["fore-boue", "argile-B"], ["fore-boue", "sable-B"], ["fore-simple", "argile-C"], ["battu-prefabrique", "sable-B"], ["metal-battu-ferme", "argile-B"], ["fore-tube-recupere", "sable-C"], ["injecte-hp", "marne-A"], ["battu-moule", "argile-A"]];
-      const [type, classe] = a.choix(cas);
-      const ch = P.choixCourbeF62(type, classe);
-      const bas = Math.max(CLASSES_F62[classe].pl[0], 0.3), haut = Number.isFinite(CLASSES_F62[classe].pl[1]) ? CLASSES_F62[classe].pl[1] : 4;
-      const pl = a.entre(bas, haut, 0.1), B = a.entre(0.4, 1.2, 0.1), h = a.entre(2, 10, 0.5);
-      const qs = P.courbeQ(ch.n, pl), Qs = Math.PI * B * h * qs;
-      const autres = [1, 2, 3, 4, 5, 6, 7].filter((k) => k !== ch.n).slice(0, 3).map((k) => `Q${k}`);
-      return {
-        enonce: `Pieu ${P.PIEUX_F62[type].nom.toLowerCase()} de diamètre B = ${frd(B, 1)} m, traversant ${frd(h, 1)} m de ${nomClasse(classe)} (pl = ${frd(pl, 1)} MPa), exécuté sans précaution particulière.`,
-        donnees: [donnee("Pieu", P.PIEUX_F62[type].nom), donnee("Sol", nomClasse(classe)), donnee("pl", `${frd(pl, 1)} MPa`), donnee("B · h", `${frd(B, 1)} · ${frd(h, 1)} m`)],
+        enonce: `Semelle ${forme === "carree" ? "carrée" : `rectangulaire ${frd(B, 1)} × ${frd(L, 2)} m`} de largeur B = ${frd(B, 1)} m ; Ec = ${fr(Ec, 2)} MPa, Ed = ${fr(Ed, 2)} MPa, α = ${fraction(alpha)}.`,
+        donnees: [donnee("B", `${frd(B, 1)} m`), donnee("Ec · Ed", `${fr(Ec, 2)} · ${fr(Ed, 2)} MPa`), donnee("α", fraction(alpha))],
         questions: [
-          choixMelange(a, "Courbe de frottement (tableau II de l'annexe C.3) ?", [`Q${ch.n}`, ...autres],
-            `Le tableau II donne Q${ch.n} pour ce couple.${ch.variante ? ` La case propose aussi Q${ch.variante.n} en cas de ${ch.variante.note}.` : ""}`),
-          nombre("Frottement unitaire qs ?", qs, "kPa", `Courbe Q${ch.n} pour pl = ${frd(pl, 1)} MPa : qs = ${frd(qs, 1)} kPa.`, { rel: 0.015 }),
-          nombre("Frottement mobilisé dans la couche ?", Qs, "kN", `Qs = π B h qs = π × ${frd(B, 1)} × ${frd(h, 1)} × ${frd(qs, 1)} = ${fr(Qs, 4)} kN.`, { rel: 0.015 }),
+          nombre("Module de réaction kv (charges de longue durée) ?", k.kv / 1000, "MN/m³", `1/kv = α λc B/(9 Ec) + (2 B0/9 Ed)(λd B/B0)^α avec λc = ${frd(lc, 2)}, λd = ${frd(ld, 2)} : kv = ${fr(k.kv / 1000, 3)} MN/m³.`, { rel: 0.02 }),
+          nombre("Module pour les charges de courte durée ki ?", k.ki / 1000, "MN/m³", `ki = 2 kv = ${fr(k.ki / 1000, 3)} MN/m³ (F62 annexe F.3 § 4).`, { rel: 0.02 }),
+          choixMelange(a, "Une semelle deux fois plus large sur le même sol aurait un module kv…", ["plus faible", "identique", "plus fort"],
+            "kv = q/s et le tassement croît avec B : le module de réaction n'est pas une propriété du sol, il diminue quand la fondation s'élargit."),
         ],
       };
     },
   },
   {
-    id: "ch9-fsol", titre: "Frottement à la NF P94-262", difficulte: 2,
+    id: "ch9-schmertmann", titre: "Tassement d'une semelle filante sur sable (Schmertmann)", difficulte: 3,
     generer(a) {
-      const cas = [[1, "argile"], [2, "sable"], [2, "argile"], [6, "craie"], [9, "sable"], [12, "argile"], [4, "marne"], [7, "sable"]];
-      const [cat, sol] = a.choix(cas);
-      const X = a.entre(0.3, 3, 0.05);
-      const r = P.qsEC7({ methode: "pressio", cat, sol, X });
-      const pc = P.categoriePieu(cat);
+      const B = a.entre(1.5, 3, 0.5), s0 = a.entre(15, 30, 1), sp = +(s0 + 19 * B).toFixed(0);
+      const q = s0 + a.entre(100, 250, 5), h1 = +(a.entre(0.8, 1.6, 0.1) * B).toFixed(2), q1 = a.entre(2, 6, 0.5), q2 = a.entre(8, 20, 0.5);
+      const r = schmertmann({ forme: "filante", B, q, sigmaV0: s0, sigmaVp: sp, t: 1, couches: [{ z0: 0, z1: h1, qc: q1 }, { z0: h1, z1: 8 * B, qc: q2 }] });
       return {
-        enonce: `Pieu de catégorie ${cat} (${pc.nom.toLowerCase()}) dans ${CATEGORIES_EC7[sol].nom.toLowerCase()}, pl* = ${frd(X, 2)} MPa.`,
-        donnees: [donnee("Catégorie de pieu", `${cat} · ${pc.abr}`), donnee("Sol", CATEGORIES_EC7[sol].nom), donnee("pl*", `${frd(X, 2)} MPa`)],
+        enonce: `Semelle filante B = ${frd(B, 1)} m sur sable ; q' = ${fr(q, 3)} kPa, σ'v0 = ${fr(s0, 2)} kPa à la base, σ'vp = ${fr(sp, 3)} kPa au pic de Iz. Sous la base : ${frd(h1, 2)} m à qc = ${frd(q1, 1)} MPa, puis qc = ${frd(q2, 1)} MPa. Durée t = 1 an.`,
+        donnees: [donnee("B", `${frd(B, 1)} m`), donnee("q' · σ'v0", `${fr(q, 3)} · ${fr(s0, 2)} kPa`), donnee("σ'vp", `${fr(sp, 3)} kPa`), donnee("qc", `${frd(q1, 1)} puis ${frd(q2, 1)} MPa`)],
         questions: [
-          nombre("fsol ?", r.fsol, "kPa", `fsol = (a pl* + b)(1 − e^(−c pl*)) avec les paramètres du tableau F.5.2.2 pour ce sol : ${frd(r.fsol, 1)} kPa.`, { rel: 0.015 }),
-          nombre("αpieu-sol ?", r.alpha, "", `Tableau F.5.2.1, catégorie ${cat} : α = ${frd(r.alpha, 2)}.`, { abs: 0.001 }),
-          nombre("qs ?", r.qs, "kPa", `qs = min(α fsol ; qs,max) = min(${frd(r.alpha * r.fsol, 1)} ; ${fr(r.qsmax, 3)}) = ${frd(r.qs, 1)} kPa${r.plafonne ? " : c'est le plafond qui joue" : ""}.`, { rel: 0.015 }),
+          nombre("Izp ?", r.Izp, "", `Izp = 0,5 + 0,1 √[(q' − σ'v0)/σ'vp] = 0,5 + 0,1 √(${fr(q - s0, 3)}/${fr(sp, 3)}) = ${frd(r.Izp, 3)}.`, { rel: 0.005 }),
+          nombre("C1 ?", r.C1, "", `C1 = 1 − 0,5 σ'v0/(q' − σ'v0) = ${frd(r.C1, 3)}.`, { rel: 0.005 }),
+          nombre("Tassement s ?", r.s, "mm", `E = 3,5 qc (filante), C3 = 1,75, C2 = 1,2 (t = 1 an) ; s = C1 C2 (q' − σ'v0) Σ Iz Δz/(C3 E) = ${frd(r.s, 1)} mm.`, { rel: 0.03 }),
         ],
       };
     },
   },
   {
-    id: "ch9-Def", titre: "Encastrement effectif et facteur kp de la norme", difficulte: 3,
+    id: "ch9-oedo", titre: "Consolidation d'une couche d'argile", difficulte: 2,
     generer(a) {
-      const B = a.entre(0.5, 1.2, 0.1), D = a.entre(10, 20, 1), h = a.entre(1, 5, 0.5);
-      const plc = a.entre(0.2, 0.8, 0.05), ple = a.entre(1.5, 3.5, 0.05), cat = a.choix([1, 2, 6]), sol = a.choix(["sable", "marne", "craie"]);
-      const couches = [{ z0: 0, z1: D - h, sol: "argile", pl: plc }, { z0: D - h, z1: D + 10, sol, pl: ple }];
-      const r = P.valeursLimitesEC7({ methode: "pressio", cat, B, D, couches });
-      const hD = Math.min(10 * B, D);
+      const H = a.entre(2, 6, 0.5), e0 = a.entre(0.7, 1.4, 0.05), Cc = a.entre(0.15, 0.5, 0.01), Cs = +(Cc / a.entre(5, 8, 1)).toFixed(3);
+      const s0 = a.entre(40, 120, 5), sp = s0 + a.entre(0, 60, 5), ds = a.entre(30, 150, 5);
+      const r = tassementOedometrique({ H, e0, Cc, Cs, sigmaV0: s0, sigmaP: sp, dSigma: ds });
+      const s1 = s0 + ds;
       return {
-        enonce: `Pieu de catégorie ${cat} (${P.categoriePieu(cat).nom.toLowerCase()}), B = ${frd(B, 1)} m, D = ${fr(D, 2)} m ; argile molle (pl* = ${frd(plc, 2)} MPa) jusqu'à ${frd(D - h, 1)} m, puis ${CATEGORIES_EC7[sol].nom.toLowerCase()} (pl* = ${frd(ple, 2)} MPa).`,
-        donnees: [donnee("B · D", `${frd(B, 1)} · ${fr(D, 2)} m`), donnee("Ancrage h", `${frd(h, 1)} m`), donnee("pl*", `${frd(plc, 2)} puis ${frd(ple, 2)} MPa`)],
+        enonce: `Couche d'argile de ${frd(H, 1)} m d'épaisseur : e0 = ${frd(e0, 2)}, Cc = ${frd(Cc, 2)}, Cs = ${frd(Cs, 3)}, σ'p = ${fr(sp, 3)} kPa. Au milieu de la couche, σ'v0 = ${fr(s0, 3)} kPa et la fondation ajoute Δσ'v = ${fr(ds, 3)} kPa. On traite la couche en une seule tranche.`,
+        donnees: [donnee("H · e0", `${frd(H, 1)} m · ${frd(e0, 2)}`), donnee("Cc · Cs", `${frd(Cc, 2)} · ${frd(Cs, 3)}`), donnee("σ'v0 · σ'p", `${fr(s0, 3)} · ${fr(sp, 3)} kPa`), donnee("Δσ'v", `${fr(ds, 3)} kPa`)],
         questions: [
-          nombre("Hauteur hD = min(10B ; D) ?", hD, "m", `hD = min(${frd(10 * B, 1)} ; ${fr(D, 2)}) = ${frd(hD, 1)} m.`, { rel: 0.005 }),
-          nombre("Encastrement effectif Def ?", r.pointe.Def, "m", `Def = (1/ple*) ∫ pl* dz sur [D − hD ; D] = [${frd(ple, 2)} × ${frd(Math.min(h, hD), 2)}${hD > h ? ` + ${frd(plc, 2)} × ${frd(hD - h, 2)}` : ""}] / ${frd(ple, 2)} = ${frd(r.pointe.Def, 2)} m.`, { rel: 0.01 }),
-          nombre("kp ?", r.pointe.k, "", `kp,max = ${frd(r.pointe.kmax, 2)} (classe ${P.categoriePieu(cat).classe}) ; Def/B = ${frd(r.pointe.DefB, 2)} ${r.pointe.DefB >= 5 ? "≥ 5 : kp = kp,max" : `< 5 : kp = 1 + (kp,max − 1) Def/(5B) = ${frd(r.pointe.k, 3)}`}.`, { rel: 0.01 }),
+          nombre("Contrainte finale σ'vf ?", s1, "kPa", `σ'vf = σ'v0 + Δσ'v = ${fr(s1, 3)} kPa ${s1 > sp ? "> σ'p : on franchit la préconsolidation" : "≤ σ'p : on reste sur la branche de recompression"}.`, { rel: 0.005 }),
+          nombre("Tassement de consolidation ?", r.s, "mm", s1 > sp
+            ? `s = H/(1 + e0) [Cs lg(σ'p/σ'v0) + Cc lg(σ'vf/σ'p)] = ${frd(H, 1)}/${frd(1 + e0, 2)} × [${frd(Cs, 3)} × ${frd(Math.log10(sp / s0), 4)} + ${frd(Cc, 2)} × ${frd(Math.log10(s1 / sp), 4)}] = ${fr(r.s, 3)} mm.`
+            : `s = H/(1 + e0) Cs lg(σ'vf/σ'v0) = ${frd(H, 1)}/${frd(1 + e0, 2)} × ${frd(Cs, 3)} × ${frd(Math.log10(s1 / s0), 4)} = ${fr(r.s, 3)} mm.`, { rel: 0.02 }),
         ],
       };
     },
   },
   {
-    id: "ch9-cpt", titre: "Pointe d'un pieu au pénétromètre (Fascicule 62)", difficulte: 2,
+    id: "ch9-giroud", titre: "Tassement élastique (abaques de Giroud)", difficulte: 1,
     generer(a) {
-      const B = a.entre(0.4, 1, 0.1), D = a.entre(10, 18, 0.5), refoulant = a.choix([false, true]);
-      const q1 = a.entre(6, 15, 0.5), q2 = a.entre(15, 30, 0.5), z2 = +(D + a.entre(0.3, 1, 0.1)).toFixed(2);
-      const couches = [{ z0: 0, z1: 5, qc: 2 }, { z0: 5, z1: z2, qc: q1 }, { z0: z2, z1: 50, qc: q2 }];
-      const c = (z) => couches.find((x) => z >= x.z0 && z < x.z1);
-      const r = P.qceProfond({ qcFn: (z) => c(z).qc, ruptures: [5, z2], B, D, h: D - 5 });
-      const kc = P.KC_PIEU_F62["sable-B"][refoulant ? 1 : 0];
-      const { Ab } = P.section({ B });
+      const r = a.choix([1, 2, 3, 5]), B = a.entre(1, 3, 0.1), E = a.entre(10, 60, 5), nu = a.choix([0.3, 0.33, 0.35]), q = a.entre(80, 250, 10);
+      const cf = coefficientCf({ forme: "rectangulaire", B, L: r * B, rigidite: "rigide" });
+      const t = tassementElastique({ q, B, E, nu, cf });
       return {
-        enonce: `Pieu ${refoulant ? "battu" : "foré"} B = ${frd(B, 1)} m, pointe à ${frd(D, 1)} m dans un sable moyennement compact (classe B) : qc = ${frd(q1, 1)} MPa jusqu'à ${frd(z2, 2)} m, puis ${frd(q2, 1)} MPa.`,
-        donnees: [donnee("B · D", `${frd(B, 1)} · ${frd(D, 1)} m`), donnee("qc", `${frd(q1, 1)} puis ${frd(q2, 1)} MPa`), donnee("Refoulement", refoulant ? "oui" : "non")],
+        enonce: `Semelle rigide ${frd(B, 1)} m × ${frd(r * B, 1)} m sur un massif élastique homogène : E = ${fr(E, 2)} MPa, ν = ${frd(nu, 2)}, contrainte moyenne q = ${fr(q, 3)} kPa.`,
+        donnees: [donnee("B · L/B", `${frd(B, 1)} m · ${r}`), donnee("E · ν", `${fr(E, 2)} MPa · ${frd(nu, 2)}`), donnee("q", `${fr(q, 3)} kPa`)],
         questions: [
-          nombre("qcm sur [D − b ; D + 3a] ?", r.qcm, "MPa", `a = ${frd(r.a, 2)} m, b = ${frd(r.b, 2)} m ; moyenne sur [${frd(r.z0, 2)} ; ${frd(r.z1, 2)}] m : qcm = ${frd(r.qcm, 3)} MPa.`, { rel: 0.01 }),
-          nombre("qce écrêtée à 1,3 qcm ?", r.qce, "MPa", `Plafond 1,3 qcm = ${frd(1.3 * r.qcm, 3)} MPa ; qce = ${frd(r.qce, 3)} MPa.`, { rel: 0.01 }),
-          nombre("Résistance de pointe Qpu = Ab kc qce ?", Ab * kc * r.qce * 1000, "kN", `kc = ${frd(kc, 2)} (sables, ${refoulant ? "avec" : "sans"} refoulement) ; Qpu = ${frd(Ab, 4)} × ${frd(kc, 2)} × ${fr(r.qce * 1000, 4)} = ${fr(Ab * kc * r.qce * 1000, 4)} kN.`, { rel: 0.015 }),
-        ],
-      };
-    },
-  },
-  {
-    id: "ch9-pieu-f62", titre: "Portance complète d'un pieu foré au Fascicule 62", difficulte: 3,
-    generer(a) {
-      const B = a.entre(0.6, 1.2, 0.1), z1 = a.entre(3, 8, 0.5), z2 = +(z1 + a.entre(4, 10, 0.5)).toFixed(1), h = a.entre(2, 5, 0.5), D = +(z2 + h).toFixed(1);
-      const pl1 = a.entre(0.3, 0.6, 0.05), pl2 = a.entre(1, 2, 0.05), pl3 = a.entre(1.6, 3.5, 0.05);
-      const couches = [
-        { z0: 0, z1: z1, classe: "argile-A", pl: pl1 },
-        { z0: z1, z1: z2, classe: "sable-B", pl: pl2 },
-        { z0: z2, z1: D + 10, classe: "marne-A", pl: pl3 },
-      ];
-      const r = P.pieuF62({ methode: "pressio", type: "fore-boue", B, D, couches });
-      return {
-        enonce: `Pieu foré à la boue, B = ${frd(B, 1)} m, D = ${frd(D, 1)} m. Argile molle (A, pl = ${frd(pl1, 2)} MPa) jusqu'à ${frd(z1, 1)} m, sable moyennement compact (B, pl = ${frd(pl2, 2)} MPa) jusqu'à ${frd(z2, 1)} m, puis marne (A, pl = ${frd(pl3, 2)} MPa).`,
-        donnees: [donnee("B · D", `${frd(B, 1)} · ${frd(D, 1)} m`), donnee("Couches", `${frd(z1, 1)} m · ${frd(z2 - z1, 1)} m · ancrage ${frd(h, 1)} m`), donnee("pl", `${frd(pl1, 2)} · ${frd(pl2, 2)} · ${frd(pl3, 2)} MPa`)],
-        figure: coupePieu({ B, D, hauteur: 300, zMax: D + 3, couches: couches.map((c) => ({ ...c, sol: c.classe })), profil: { libelle: "qs", unite: "kPa", valeurs: r.lignes.map((l) => ({ z0: l.z0, z1: l.z1, v: l.qs })), etiquettes: true } }),
-        questions: [
-          nombre("Résistance de pointe Qpu ?", r.Qpu, "kN", `ple* = ${frd(r.qEquiv, 2)} MPa (couche d'ancrage homogène), kp = ${frd(r.kPointe, 2)} (marne A, sans refoulement) ; Qpu = ${frd(r.Ab, 4)} × ${frd(r.kPointe, 2)} × ${fr(r.qEquiv * 1000, 4)} = ${fr(r.Qpu, 4)} kN.`, { rel: 0.015 }),
-          nombre("Frottement Qsu ?", r.Qsu, "kN", `${r.lignes.map((l) => `Q${l.courbe} : ${frd(l.qs, 1)} kPa sur ${frd(l.z1 - l.z0, 1)} m`).join(" ; ")} ; Qsu = π B Σ qs h = ${fr(r.Qsu, 4)} kN.`, { rel: 0.015 }),
-          nombre("Charge limite Qu ?", r.Qu, "kN", `Qu = ${fr(r.Qpu, 4)} + ${fr(r.Qsu, 4)} = ${fr(r.Qu, 5)} kN.`, { rel: 0.015 }),
-          nombre("Charge de fluage Qc ?", r.Qc, "kN", `Qc = 0,5 Qpu + 0,7 Qsu = ${fr(r.Qc, 5)} kN.`, { rel: 0.015 }),
+          nombre("Coefficient cf (fondation rigide) ?", cf, "", `Tableau J.3.1 (Giroud) pour L/B = ${r} : cf = ${frd(cf, 2)}.`, { rel: 0.005 }),
+          nombre("Tassement s ?", t.s, "mm", `s = (1 − ν²) q B cf / E = ${frd(1 - nu * nu, 4)} × ${fr(q, 3)} × ${frd(B, 1)} × ${frd(cf, 2)} / ${fr(E * 1000, 5)} = ${frd(t.s, 2)} mm.`, { rel: 0.01 }),
         ],
       };
     },

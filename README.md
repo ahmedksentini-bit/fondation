@@ -53,7 +53,7 @@ src/geotech/        solveurs purs et testés (aucun accès au DOM)
 src/cours-chN.js    calculateurs du chapitre N du cours
 src/exos/           modèles d'exercices paramétrés (un fichier par chapitre)
 src/exercices.js    rendu des exercices : apprentissage, entraînement, examen
-src/exerciseur.js   tirages aléatoires reproductibles (#ch4/ch4-ple/123456)
+src/exerciseur.js   tirages aléatoires reproductibles (#ch6/ch6-ple/123456)
 src/bureau/         justification complète d'une semelle et d'un pieu, notes de calcul
 src/figures.js      figures SVG (coupes, diagrammes, graphes) communes à tout le site
 data/chapitres.json plan du cours ; data/exercices-chN.json banques figées

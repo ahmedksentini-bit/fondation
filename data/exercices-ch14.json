@@ -1,0 +1,288 @@
+{
+ "chapitre": "ch14",
+ "exercices": [
+  {
+   "id": "ch14-kf",
+   "titre": "Module de réaction de Ménard (B ≥ B0)",
+   "difficulte": 1,
+   "graine": 1504232279,
+   "enonce": "Pieu de diamètre B = 1,1 m dans un sol de module EM = 8 MPa, α = 2/3.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "1,1 m"
+    },
+    {
+     "label": "EM",
+     "valeur": "8 MPa"
+    },
+    {
+     "label": "α",
+     "valeur": "2/3"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Dénominateur 4/3 (B0/B)(2,65 B/B0)^α + α ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2.75286,
+     "explication": "4/3 × 0,545 × 4,858^2/3 + 0,667 = 2,753.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Kf (sollicitations de courte durée) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 34.8728,
+     "explication": "Kf = 12 EM / 2,753 = 34,9 MPa, soit 34,9 kN/m de réaction par millimètre de déplacement.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Module pour les sollicitations de longue durée ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 17.4364,
+     "explication": "Kf/2 = 17,4 MPa.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch14-kf-petit",
+   "titre": "Module de réaction d'un pieu de petit diamètre",
+   "difficulte": 1,
+   "graine": 3292875302,
+   "enonce": "Micropieu ou petit pieu de diamètre B = 0,40 m < B0 = 0,60 m ; EM = 18 MPa, α = 2/3.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "0,40 m"
+    },
+    {
+     "label": "EM",
+     "valeur": "18 MPa"
+    },
+    {
+     "label": "α",
+     "valeur": "2/3"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Kf (courte durée) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 67.0813,
+     "explication": "B < B0 : Kf = 12 EM / [4/3 × 2,65^α + α] = 12 × 18 / 3,220 = 67,1 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Kf dépend-il du diamètre pour B < B0 ?",
+     "type": "choix",
+     "options": [
+      "oui : il est proportionnel à B",
+      "non : la formule ne contient plus B",
+      "oui : il est inversement proportionnel à B"
+     ],
+     "reponse": 1,
+     "explication": "Pour B ≤ B0, la formule de Ménard ne dépend plus de B : Kf (module linéique) est constant, alors que le module surfacique k = Kf/B augmente quand le diamètre diminue."
+    }
+   ]
+  },
+  {
+   "id": "ch14-l0",
+   "titre": "Longueur de transfert : pieu souple ou rigide ?",
+   "difficulte": 2,
+   "graine": 632634734,
+   "enonce": "Pieu en béton (E = 30 000 MPa) de diamètre B = 0,4 m et de longueur L = 20 m ; module de réaction Kf = 25 MPa.",
+   "donnees": [
+    {
+     "label": "B · L",
+     "valeur": "0,4 · 20 m"
+    },
+    {
+     "label": "E",
+     "valeur": "30 000 MPa"
+    },
+    {
+     "label": "Kf",
+     "valeur": "25 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rigidité de flexion EI ?",
+     "type": "nombre",
+     "unite": "kN·m²",
+     "reponse": 37699.1,
+     "explication": "I = π B⁴/64 = 0,00126 m⁴ ; EI = 37 700 kN·m².",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Longueur de transfert l0 ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.56716,
+     "explication": "l0 = (4 EI/Kf)^¼ = (4 × 37 700 / 25 000)^¼ = 1,57 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Comportement du pieu ?",
+     "type": "choix",
+     "options": [
+      "rigide : il pivote en bloc",
+      "souple (pieu long) : L ≥ 3 l0"
+     ],
+     "reponse": 1,
+     "explication": "L/l0 = 12,76. Au-delà de 3 environ, la pointe ne bouge plus et les formules du pieu infiniment long s'appliquent ; en deçà, il faut intégrer l'équation sur la longueur réelle."
+    }
+   ]
+  },
+  {
+   "id": "ch14-libre",
+   "titre": "Pieu long, tête libre",
+   "difficulte": 2,
+   "graine": 2841398276,
+   "enonce": "Pieu long (E = 30 000 MPa, B = 0,8 m) dans un sol homogène de module Kf = 29 MPa ; effort horizontal en tête H = 130 kN, tête libre, sans moment.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "0,8 m"
+    },
+    {
+     "label": "Kf",
+     "valeur": "29 MPa"
+    },
+    {
+     "label": "H",
+     "valeur": "130 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "l0 ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 3.02015,
+     "explication": "l0 = (4 EI/Kf)^¼ = 3,020 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Déplacement en tête y0 ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 2.96857,
+     "explication": "y0 = 2H/(Kf l0) = 2 × 130 / (29 000 × 3,020) = 2,97 mm.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Moment maximal ?",
+     "type": "nombre",
+     "unite": "kN·m",
+     "reponse": 126.579,
+     "explication": "Mmax ≈ 0,322 H l0 = 126,6 kN·m, atteint à 2,37 m (≈ 0,785 l0).",
+     "toleranceRel": 0.015
+    }
+   ]
+  },
+  {
+   "id": "ch14-encastre",
+   "titre": "Pieu long, tête encastrée dans la semelle",
+   "difficulte": 2,
+   "graine": 1342435903,
+   "enonce": "Même pieu long (E = 30 000 MPa, B = 1,2 m, Kf = 13 MPa, H = 110 kN), mais la tête est encastrée dans une semelle rigide qui en bloque la rotation.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "1,2 m"
+    },
+    {
+     "label": "Kf",
+     "valeur": "13 MPa"
+    },
+    {
+     "label": "H",
+     "valeur": "110 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Déplacement en tête y0 ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 1.52833,
+     "explication": "y0 = H/(Kf l0) = 1,53 mm — la moitié du cas tête libre (3,06 mm).",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Moment d'encastrement M0 (valeur absolue) ?",
+     "type": "nombre",
+     "unite": "kN·m",
+     "reponse": 304.506,
+     "explication": "M0 = −H l0/2 = −110 × 5,536/2 = −304,5 kN·m : le moment maximal passe en tête, où il faut ferrailler.",
+     "toleranceRel": 0.015
+    }
+   ]
+  },
+  {
+   "id": "ch14-palier",
+   "titre": "Palier de réaction et minoration près de la surface",
+   "difficulte": 2,
+   "graine": 3547454593,
+   "enonce": "Pieu de diamètre B = 0,5 m dans un sol frottant de pression de fluage nette pf* = 0,40 MPa. On s'intéresse à la réaction du sol à 0,30 m sous la surface, pour une sollicitation de courte durée.",
+   "donnees": [
+    {
+     "label": "B",
+     "valeur": "0,5 m"
+    },
+    {
+     "label": "pf*",
+     "valeur": "0,40 MPa"
+    },
+    {
+     "label": "Sol",
+     "valeur": "frottant"
+    },
+    {
+     "label": "z",
+     "valeur": "0,30 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Palier de réaction en profondeur r1 = B pf* ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 200,
+     "explication": "0,5 × 400 = 200 kN/m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Profondeur de minoration zc ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 2,
+     "explication": "zc = 4 B = 2,00 m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Coefficient de minoration à cette profondeur ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.575,
+     "explication": "0,5 (1 + z/zc) = 0,5 × (1 + 0,30/2,00) = 0,575.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Palier minoré ?",
+     "type": "nombre",
+     "unite": "kN/m",
+     "reponse": 115,
+     "explication": "0,575 × 200 = 115 kN/m.",
+     "toleranceRel": 0.01
+    }
+   ]
+  }
+ ]
+}

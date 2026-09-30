@@ -1,98 +1,189 @@
-// Exercices du chapitre 6 : glissement et stabilité d'ensemble.
+// Exercices du chapitre 6 : portance des semelles à partir des essais en place.
 import { fr, frd, nombre, choixMelange, donnee } from "./alea.js";
-import { glissementF62, glissementEC7, diagramme } from "../geotech/superficielles.js";
+import * as S from "../geotech/superficielles.js";
+import { profilCouches } from "../geotech/outils.js";
+import { CLASSES_F62 } from "../geotech/sols.js";
+import { coupeSemelle } from "../figures.js";
 
-const RAD = Math.PI / 180;
+const profil = (couches, cle) => { const p = profilCouches(couches); return { fn: p.fn(cle), ruptures: p.ruptures }; };
+const deg = (x) => (x * 180) / Math.PI;
 
 export default [
   {
-    id: "ch6-f62", titre: "Glissement au Fascicule 62", difficulte: 1,
+    id: "ch6-ple", titre: "Pression limite nette équivalente sous une semelle", difficulte: 1,
     generer(a) {
-      const B = a.entre(1.5, 3, 0.1), e = +(a.entre(0, 0.3, 0.01) * B).toFixed(2);
-      const V = a.entre(200, 700, 10), H = +(V * a.entre(0.2, 0.55, 0.01)).toFixed(0);
-      const phi = a.entier(24, 36), c = a.entre(0, 20, 5);
-      const d = diagramme({ B, V, e });
-      const r = glissementF62({ Vd: V, Hd: H, phi, c, Aprime: d.Bc });
+      const B = a.entre(1.2, 2.4, 0.2), hr = 1.5 * B;
+      const h1 = +(a.entre(0.3, 0.6, 0.05) * hr).toFixed(2), h2 = +(a.entre(0.15, 0.3, 0.05) * hr).toFixed(2);
+      const p1 = a.entre(0.8, 1.8, 0.05), p2 = a.entre(0.3, 0.7, 0.05), p3 = a.entre(1.2, 2.5, 0.05);
+      const pr = profil([{ z0: 0, z1: h1, pl: p1 }, { z0: h1, z1: h1 + h2, pl: p2 }, { z0: h1 + h2, z1: 50, pl: p3 }], "pl");
+      const g = S.moyenneGeometrique(pr, 0, hr), m = S.moyenneArithmetique(pr, 0, hr);
+      const h3 = hr - h1 - h2;
       return {
-        enonce: `Semelle filante B = ${frd(B, 1)} m, V = ${fr(V, 3)} kN/m excentrée de e = ${frd(e, 2)} m, H = ${fr(H, 3)} kN/m (ELU, combinaison la plus défavorable). Sol : φ' = ${phi}°, c' = ${fr(c, 2)} kPa.`,
-        donnees: [donnee("B · e", `${frd(B, 1)} · ${frd(e, 2)} m`), donnee("Vd · Hd", `${fr(V, 3)} · ${fr(H, 3)} kN/m`), donnee("φ' · c'", `${phi}° · ${fr(c, 2)} kPa`)],
+        enonce: `Semelle filante de largeur B = ${frd(B, 1)} m. Sous la base : ${frd(h1, 2)} m à pl* = ${frd(p1, 2)} MPa, puis ${frd(h2, 2)} m à ${frd(p2, 2)} MPa, puis ${frd(p3, 2)} MPa.`,
+        donnees: [donnee("B", `${frd(B, 1)} m`), donnee("couche 1", `${frd(h1, 2)} m · ${frd(p1, 2)} MPa`), donnee("couche 2", `${frd(h2, 2)} m · ${frd(p2, 2)} MPa`), donnee("couche 3", `${frd(p3, 2)} MPa`)],
         questions: [
-          nombre("Surface comprimée A' (par mètre) ?", d.Bc, "m²/m", d.trapeze ? `e ≤ B/6 : toute la semelle est comprimée, A' = ${frd(B, 2)} m²/m.` : `e > B/6 : A' = 3(B/2 − e) = ${frd(d.Bc, 3)} m²/m.`, { rel: 0.01 }),
-          nombre("Résistance au glissement de calcul ?", r.R, "kN/m", `Vd tanφ'/1,2 + c'A'/1,5 = ${fr(V, 3)} × ${frd(Math.tan(phi * RAD), 3)} / 1,2 + ${fr(c, 2)} × ${frd(d.Bc, 3)} / 1,5 = ${fr(r.Rf, 4)} + ${fr(r.Rc, 3)} = ${fr(r.R, 4)} kN/m.`, { rel: 0.015 }),
-          choixMelange(a, "Glissement vérifié ?", r.ok ? ["oui", "non"] : ["non", "oui"], `Hd = ${fr(H, 3)} kN/m ${r.ok ? "≤" : ">"} ${fr(r.R, 4)} kN/m (taux ${frd(r.taux, 2)}).`),
+          nombre("Épaisseur d'étude hr (charge centrée) ?", hr, "m", `hr = 1,5 B = ${frd(hr, 2)} m ; la couche 3 y intervient sur ${frd(h3, 2)} m.`, { rel: 0.005 }),
+          nombre("Pression limite nette équivalente ple* (moyenne géométrique) ?", g, "MPa",
+            `ple* = (${frd(p1, 2)}^${frd(h1, 2)} × ${frd(p2, 2)}^${frd(h2, 2)} × ${frd(p3, 2)}^${frd(h3, 2)})^(1/${frd(hr, 2)}) = ${frd(g, 3)} MPa.`, { rel: 0.01 }),
+          nombre("Pour comparaison, moyenne arithmétique sur la même épaisseur ?", m, "MPa", `(${frd(p1 * h1, 3)} + ${frd(p2 * h2, 3)} + ${frd(p3 * h3, 3)}) / ${frd(hr, 2)} = ${frd(m, 3)} MPa.`, { rel: 0.01 }),
+          choixMelange(a, "Pourquoi les deux textes prennent-ils la moyenne géométrique ?",
+            ["elle donne plus de poids à la couche la plus faible", "elle est plus simple à calculer", "elle est toujours supérieure à la moyenne arithmétique"],
+            `La moyenne géométrique est toujours inférieure ou égale à la moyenne arithmétique, d'autant plus que le profil est contrasté : ici ${fr(100 * (1 - g / m), 2)} % de moins. La couche molle pèse davantage, ce qui est le comportement réel d'une semelle.`),
         ],
       };
     },
   },
   {
-    id: "ch6-ec7-dr", titre: "Glissement drainé à la NF P94-261", difficulte: 1,
+    id: "ch6-qce", titre: "Résistance de pointe équivalente écrêtée", difficulte: 2,
     generer(a) {
-      const V = a.entre(200, 800, 10), H = +(V * a.entre(0.2, 0.5, 0.01)).toFixed(0);
-      const phiC = a.entier(26, 34), prefa = a.choix([false, true]);
-      const r = glissementEC7({ Vd: V, Hd: H, phiCrit: phiC, prefabrique: prefa });
+      const B = a.entre(1.2, 2.4, 0.2), hr = 1.5 * B;
+      const h1 = +(a.entre(0.3, 0.5, 0.05) * hr).toFixed(2), h2 = +(a.entre(0.15, 0.3, 0.05) * hr).toFixed(2);
+      const q1 = a.entre(3, 6, 0.5), q2 = a.entre(12, 25, 0.5), q3 = a.entre(4, 8, 0.5);
+      const pr = profil([{ z0: 0, z1: h1, qc: q1 }, { z0: h1, z1: h1 + h2, qc: q2 }, { z0: h1 + h2, z1: 50, qc: q3 }], "qc");
+      const r = S.qceMoyenneEcretee(pr, 0, hr);
+      const h3 = hr - h1 - h2;
+      const plaf = 1.3 * r.qcm;
       return {
-        enonce: `Semelle ${prefa ? "préfabriquée à sous-face lisse" : "coulée en place"} ; Vd = ${fr(V, 3)} kN/m, Hd = ${fr(H, 3)} kN/m à l'ELU fondamental ; angle de frottement à l'état critique du sol φ'crit = ${phiC}°.`,
-        donnees: [donnee("Vd · Hd", `${fr(V, 3)} · ${fr(H, 3)} kN/m`), donnee("φ'crit", `${phiC}°`), donnee("Semelle", prefa ? "préfabriquée lisse" : "coulée en place")],
+        enonce: `Semelle filante B = ${frd(B, 1)} m sur un sable reconnu au pénétromètre : sous la base, ${frd(h1, 2)} m à qc = ${frd(q1, 1)} MPa, ${frd(h2, 2)} m à ${frd(q2, 1)} MPa, puis ${frd(q3, 1)} MPa.`,
+        donnees: [donnee("B", `${frd(B, 1)} m`), donnee("couche 1", `${frd(h1, 2)} m · ${frd(q1, 1)} MPa`), donnee("couche 2", `${frd(h2, 2)} m · ${frd(q2, 1)} MPa`), donnee("couche 3", `${frd(q3, 1)} MPa`)],
         questions: [
-          nombre("Angle de frottement d'interface δa;k ?", r.delta, "°", prefa ? `Préfabriquée lisse : δ = 2/3 φ'crit = ${frd(r.delta, 1)}°.` : `Coulée en place : δ = φ'crit = ${phiC}°.`, { rel: 0.005 }),
-          nombre("Rh;d ?", r.Rhd, "kN/m", `Rh;d = Vd tanδ / (γR;h γR;d;h) = ${fr(V, 3)} × ${frd(Math.tan(r.delta * RAD), 3)} / (1,1 × 1,1) = ${fr(r.Rhd, 4)} kN/m.`, { rel: 0.01 }),
-          choixMelange(a, "Glissement vérifié ?", r.ok ? ["oui", "non"] : ["non", "oui"], `Hd = ${fr(H, 3)} ${r.ok ? "≤" : ">"} ${fr(r.Rhd, 4)} kN/m (taux ${frd(r.taux, 2)}). La cohésion effective est négligée.`),
+          nombre("Moyenne qcm sur hr = 1,5 B ?", r.qcm, "MPa", `qcm = (${frd(q1, 1)} × ${frd(h1, 2)} + ${frd(q2, 1)} × ${frd(h2, 2)} + ${frd(q3, 1)} × ${frd(h3, 2)}) / ${frd(hr, 2)} = ${frd(r.qcm, 3)} MPa.`, { rel: 0.01 }),
+          nombre("Plafond d'écrêtage 1,3 qcm ?", plaf, "MPa", `1,3 × ${frd(r.qcm, 3)} = ${frd(plaf, 3)} MPa : la couche 2 ${q2 > plaf ? "est écrêtée" : "reste sous le plafond"}.`, { rel: 0.01 }),
+          nombre("Résistance de pointe équivalente qce ?", r.qce, "MPa", `qce = moyenne du profil écrêté = (${frd(Math.min(q1, plaf), 2)} × ${frd(h1, 2)} + ${frd(Math.min(q2, plaf), 2)} × ${frd(h2, 2)} + ${frd(Math.min(q3, plaf), 2)} × ${frd(h3, 2)}) / ${frd(hr, 2)} = ${frd(r.qce, 3)} MPa.`, { rel: 0.01 }),
         ],
       };
     },
   },
   {
-    id: "ch6-ec7-nd", titre: "Glissement à court terme sur une argile", difficulte: 2,
+    id: "ch6-kp-f62", titre: "Facteur de portance du Fascicule 62", difficulte: 1,
     generer(a) {
-      const B = a.entre(1.5, 3, 0.1), e = +(a.entre(0, 0.2, 0.01) * B).toFixed(2), Ap = B - 2 * e;
-      const cu = a.entre(20, 80, 5), V = a.entre(150, 500, 10), H = +(V * a.entre(0.15, 0.45, 0.01)).toFixed(0);
-      const r = glissementEC7({ Vd: V, Hd: H, drainage: "non-draine", cu, Aprime: Ap });
+      const classe = a.choix(["argile-A", "argile-B", "argile-C", "sable-A", "sable-B", "sable-C", "craie-B", "marne-A"]);
+      const forme = a.choix(["filante", "rectangulaire", "carree"]);
+      const B = a.entre(1, 3, 0.1), L = forme === "rectangulaire" ? a.entre(B + 0.5, 3 * B, 0.1) : forme === "carree" ? B : 1;
+      const De = a.entre(0.1, 1.2, 0.05) * B;
+      const k = S.kpF62({ classe, B, L, forme, De });
       return {
-        enonce: `Semelle filante B = ${frd(B, 1)} m sur argile saturée (cu = ${fr(cu, 2)} kPa), charge excentrée de e = ${frd(e, 2)} m. ELU : Vd = ${fr(V, 3)} kN/m, Hd = ${fr(H, 3)} kN/m.`,
-        donnees: [donnee("B · e", `${frd(B, 1)} · ${frd(e, 2)} m`), donnee("cu", `${fr(cu, 2)} kPa`), donnee("Vd · Hd", `${fr(V, 3)} · ${fr(H, 3)} kN/m`)],
+        enonce: `Semelle ${forme === "filante" ? "filante" : forme === "carree" ? "carrée" : "rectangulaire"} de largeur B = ${frd(B, 1)} m${forme === "rectangulaire" ? ` et de longueur L = ${frd(L, 1)} m` : ""}, sol d'assise ${CLASSES_F62[classe].nom.toLowerCase()} (classe ${CLASSES_F62[classe].lettre}), De = ${frd(De, 2)} m.`,
+        donnees: [donnee("Sol", `${CLASSES_F62[classe].nom} (${CLASSES_F62[classe].lettre})`), donnee("B", `${frd(B, 1)} m`), donnee("B/L", frd(k.BL, 3)), donnee("De", `${frd(De, 2)} m`)],
         questions: [
-          nombre("Terme d'adhérence A' cu / (γR;h γR;d;h) ?", r.termeCohesion, "kN/m", `A' = B − 2e = ${frd(Ap, 2)} m²/m ; ${frd(Ap, 2)} × ${fr(cu, 2)} / 1,21 = ${fr(r.termeCohesion, 4)} kN/m.`, { rel: 0.01 }),
-          nombre("Plafond 0,4 Vd ?", r.plafond, "kN/m", `0,4 × ${fr(V, 3)} = ${fr(r.plafond, 4)} kN/m.`, { rel: 0.005 }),
-          nombre("Rh;d retenue ?", r.Rhd, "kN/m", `Le minimum des deux : ${fr(r.Rhd, 4)} kN/m${r.Rhd === r.plafond ? " — c'est le plafond qui gouverne" : ""}.`, { rel: 0.01 }),
-          choixMelange(a, "Si la vérification échouait, que recommanderait le commentaire du Fascicule 62 ?",
-            ["une disposition constructive (bêche, butons…)", "élargir la semelle jusqu'à ce que le calcul passe", "augmenter cu dans le calcul"],
-            "F62 B.3.4 (commentaire) : un risque de glissement à court terme se traite de préférence par des dispositions constructives plutôt que par le dimensionnement de la fondation."),
+          nombre("Encastrement relatif De/B ?", k.DeB, "", `${frd(De, 2)} / ${frd(B, 1)} = ${frd(k.DeB, 3)}.`, { rel: 0.01 }),
+          nombre("Facteur de portance kp (F62 annexe B.1, tableau I) ?", k.k, "", `kp = k0 [1 + a (0,6 + 0,4 B/L) De/B] = ${frd(k.k0, 1)} × [1 + ${frd(k.a, 2)} × (0,6 + 0,4 × ${frd(k.BL, 3)}) × ${frd(k.DeB, 3)}] = ${frd(k.k, 3)}.`, { rel: 0.01 }),
         ],
       };
     },
   },
   {
-    id: "ch6-vmin", titre: "Le bon V pour vérifier le glissement", difficulte: 2,
+    id: "ch6-kp-ec7", titre: "Facteur de portance de la NF P94-261", difficulte: 2,
     generer(a) {
-      const G = a.entre(200, 600, 10), Qv = a.entre(50, 250, 10), Qh = a.entre(40, 140, 5), phiC = a.entier(26, 32);
-      const Vmin = G, Vmax = 1.35 * G + 1.5 * Qv, Hd = 1.5 * Qh;
-      const rMin = glissementEC7({ Vd: Vmin, Hd, phiCrit: phiC }), rMax = glissementEC7({ Vd: Vmax, Hd, phiCrit: phiC });
+      const categorie = a.choix(["argile", "sable", "craie", "marne"]);
+      const B = a.entre(1.5, 3, 0.1), L = a.entre(2 * B, 6 * B, 0.1);
+      const De = a.entre(0.1, 1.4, 0.05) * B;
+      const k = S.kpEC7({ categorie, B, L, forme: "rectangulaire", De });
+      const pf = k.parametres.filante, pc = k.parametres.carree;
       return {
-        enonce: `Une semelle coulée en place reçoit G = ${fr(G, 3)} kN/m (poids propre compris), une charge d'exploitation verticale Qv = ${fr(Qv, 3)} kN/m et un effort variable horizontal Qh = ${fr(Qh, 3)} kN/m indépendant de Qv. Sol : φ'crit = ${phiC}°.`,
-        donnees: [donnee("G", `${fr(G, 3)} kN/m`), donnee("Qv · Qh", `${fr(Qv, 3)} · ${fr(Qh, 3)} kN/m`), donnee("φ'crit", `${phiC}°`)],
+        enonce: `Semelle rectangulaire ${frd(B, 1)} m × ${frd(L, 1)} m sur ${categorie === "argile" ? "une argile" : categorie === "sable" ? "un sable" : categorie === "craie" ? "une craie" : "une marne"}, De = ${frd(De, 2)} m.`,
+        donnees: [donnee("Catégorie", categorie), donnee("B × L", `${frd(B, 1)} × ${frd(L, 1)} m`), donnee("De", `${frd(De, 2)} m`)],
         questions: [
-          nombre("Hd à l'ELU ?", Hd, "kN/m", `Hd = 1,5 Qh = ${fr(Hd, 4)} kN/m.`, { rel: 0.005 }),
-          nombre("Vd à associer à Hd pour le glissement ?", Vmin, "kN/m", `G est favorable (γG = 1,0) et Qv, favorable, est omise : Vd = ${fr(Vmin, 3)} kN/m.`, { rel: 0.005 }),
-          nombre("Rh;d correspondante ?", rMin.Rhd, "kN/m", `${fr(Vmin, 3)} × tan${phiC}° / 1,21 = ${fr(rMin.Rhd, 4)} kN/m : taux ${frd(rMin.taux, 2)}.`, { rel: 0.01 }),
-          nombre("Rh;d que l'on trouverait à tort avec 1,35 G + 1,5 Qv ?", rMax.Rhd, "kN/m", `Vd = ${fr(Vmax, 4)} kN/m donnerait ${fr(rMax.Rhd, 4)} kN/m, soit ${fr(100 * (rMax.Rhd / rMin.Rhd - 1), 2)} % de résistance fictive.`, { rel: 0.01 }),
+          nombre("kp pour B/L = 0 (filante) ?", k.kFilante, "", `k = k0 + (a + b De/B)(1 − e^(−c De/B)) avec k0 = ${frd(pf.k0, 1)}, a = ${frd(pf.a, 2)}, b = ${frd(pf.b, 2)}, c = ${frd(pf.c, 1)} et De/B = ${frd(k.DeB, 3)} : ${frd(k.kFilante, 3)}.`, { rel: 0.01 }),
+          nombre("kp pour B/L = 1 (carrée) ?", k.kCarree, "", `Mêmes formules avec k0 = ${frd(pc.k0, 1)}, a = ${frd(pc.a, 2)}, b = ${frd(pc.b, 2)}, c = ${frd(pc.c, 1)} : ${frd(k.kCarree, 3)}.`, { rel: 0.01 }),
+          nombre(`kp de la semelle (B/L = ${frd(k.BL, 3)}) ?`, k.k, "", `Interpolation linéaire : ${frd(k.kFilante, 3)} × (1 − ${frd(k.BL, 3)}) + ${frd(k.kCarree, 3)} × ${frd(k.BL, 3)} = ${frd(k.k, 3)}.`, { rel: 0.01 }),
         ],
       };
     },
   },
   {
-    id: "ch6-stabilite", titre: "Paramètres de calcul pour la stabilité d'ensemble", difficulte: 1,
+    id: "ch6-idelta", titre: "Réduction pour charge inclinée", difficulte: 2,
     generer(a) {
-      const phi = a.entier(22, 36), c = a.entre(5, 30, 5), cu = a.entre(30, 100, 10);
-      const t = Math.tan(phi * RAD);
-      const pF = Math.atan(t / 1.2) / RAD, pE = Math.atan(t / 1.25) / RAD;
+      const sol = a.choix(["frottant", "coherent"]);
+      const B = a.entre(1.5, 3, 0.1), De = a.entre(0.2, 1, 0.05) * B;
+      const V = a.entre(200, 800, 10), H = +(V * a.entre(0.05, 0.35, 0.01)).toFixed(0);
+      const delta = deg(Math.atan(H / V));
+      const id = S.idEC7({ sol, delta, B, De });
+      const F62 = sol === "coherent" ? S.phi1(delta) : S.phi2(delta, De / B);
       return {
-        enonce: `Talus sous une semelle : φ' = ${phi}°, c' = ${fr(c, 2)} kPa, et à court terme cu = ${fr(cu, 3)} kPa.`,
-        donnees: [donnee("φ'", `${phi}°`), donnee("c'", `${fr(c, 2)} kPa`), donnee("cu", `${fr(cu, 3)} kPa`)],
+        enonce: `Semelle filante B = ${frd(B, 1)} m, De = ${frd(De, 2)} m, sol ${sol === "coherent" ? "cohérent" : "frottant"}. Charges de calcul : Vd = ${fr(V, 3)} kN/m, Hd = ${fr(H, 3)} kN/m.`,
+        donnees: [donnee("B · De", `${frd(B, 1)} m · ${frd(De, 2)} m`), donnee("Sol", sol === "coherent" ? "cohérent" : "frottant"), donnee("Vd · Hd", `${fr(V, 3)} · ${fr(H, 3)} kN/m`)],
         questions: [
-          nombre("φd au Fascicule 62 (B.3.6) ?", pF, "°", `tanφd = tan${phi}°/1,20 = ${frd(t / 1.2, 4)} ⇒ φd = ${frd(pF, 2)}°.`, { rel: 0.005 }),
-          nombre("φ'd en approche 3 (γφ' = 1,25) ?", pE, "°", `tanφ'd = tan${phi}°/1,25 = ${frd(t / 1.25, 4)} ⇒ φ'd = ${frd(pE, 2)}°.`, { rel: 0.005 }),
-          nombre("cd au Fascicule 62 ?", c / 1.5, "kPa", `cd = c/1,50 = ${frd(c / 1.5, 2)} kPa (contre ${frd(c / 1.25, 2)} kPa en approche 3).`, { rel: 0.01 }),
-          nombre("cu,d en approche 3 ?", cu / 1.4, "kPa", `cu,d = cu/1,4 = ${frd(cu / 1.4, 2)} kPa (contre cu/1,5 = ${frd(cu / 1.5, 2)} kPa au Fascicule 62).`, { rel: 0.01 }),
+          nombre("Inclinaison δ de la charge ?", delta, "°", `δ = arctan(Hd/Vd) = arctan(${fr(H, 3)}/${fr(V, 3)}) = ${frd(delta, 2)}°.`, { rel: 0.01 }),
+          nombre(`Coefficient iδ de la NF P94-261 (sol ${sol === "coherent" ? "cohérent" : "frottant"}) ?`, id.i, "", sol === "coherent"
+            ? `iδ = (1 − 2δ/π)² = (1 − ${frd(delta, 2)}/90)² = ${frd(id.i, 3)}.`
+            : `iδ = (1 − 2δ/π)² − (2δ/π)(2 − 3·2δ/π) e^(−De/B), avec 2δ/π = ${frd(delta / 90, 4)} et e^(−De/B) = ${frd(Math.exp(-De / B), 3)} : iδ = ${frd(id.i, 3)}.`, { rel: 0.01 }),
+          nombre(`Même coefficient au Fascicule 62 (${sol === "coherent" ? "Φ1" : "Φ2"}) ?`, F62, "", sol === "coherent"
+            ? `Φ1(δ) = (1 − δ/90°)² = ${frd(F62, 3)} : identique.`
+            : `Φ2(δ) = (1 − δ/90)² (1 − e^(−De/B)) + [max(1 − δ/45 ; 0)]² e^(−De/B) = ${frd(F62, 3)} : identique, les deux textes ont la même formule sous deux écritures.`, { rel: 0.01 }),
+        ],
+      };
+    },
+  },
+  {
+    id: "ch6-ibeta", titre: "Semelle en crête de talus", difficulte: 2,
+    generer(a) {
+      const B = a.entre(1.5, 3, 0.1), beta = a.entre(20, 40, 1), d = a.entre(0.5, 4, 0.5) * B / 2;
+      const r = S.ibEC7({ sol: "frottant", beta, d, B, De: 0 });
+      const t = Math.tan((beta * Math.PI) / 180);
+      return {
+        enonce: `Semelle filante B = ${frd(B, 1)} m posée en surface (De = 0) sur un sable, à d = ${frd(d, 2)} m de la crête d'un talus de pente β = ${fr(beta, 2)}°.`,
+        donnees: [donnee("B", `${frd(B, 1)} m`), donnee("d", `${frd(d, 2)} m`), donnee("β", `${fr(beta, 2)}°`)],
+        figure: coupeSemelle({ B, D: 0.3, epaisseur: 0.3, hauteur: 220, profondeurVue: 2.5 * B, talus: { beta, d }, couches: [{ z0: 0, z1: 30, sol: "sable" }] }),
+        questions: [
+          nombre("Rapport d/8B ?", d / (8 * B), "", `${frd(d, 2)} / (8 × ${frd(B, 1)}) = ${frd(d / (8 * B), 3)}.`, { rel: 0.01 }),
+          nombre("Coefficient iβ (Corté et Garnier) ?", r.i, "", `iβ = 1 − 0,9 tanβ (2 − tanβ) (1 − d/8B)² = 1 − 0,9 × ${frd(t, 3)} × ${frd(2 - t, 3)} × ${frd((1 - d / (8 * B)) ** 2, 3)} = ${frd(r.i, 3)}.`, { rel: 0.01 }),
+          choixMelange(a, "À partir de quelle distance le talus n'a-t-il plus d'effet ?", ["d ≥ 8 B", "d ≥ 2 B", "d ≥ 5 B"],
+            "Le terme (1 − d/8B)² s'annule pour d = 8 B : au-delà, iβ = 1. Le Fascicule 62 impose en outre 2 m au moins entre le bord de la semelle et le talus (B.4.1,2)."),
+        ],
+      };
+    },
+  },
+  {
+    id: "ch6-f62", titre: "Portance d'une semelle au Fascicule 62", difficulte: 2,
+    generer(a) {
+      const classe = a.choix(["argile-B", "sable-B", "argile-A", "sable-C"]);
+      const B = a.entre(1.5, 3, 0.1), D = a.entre(0.8, 1.5, 0.1), g = a.entre(18, 20, 1);
+      // ple* tirée dans la fourchette de la classe : l'énoncé reste cohérent.
+      const [bas, haut] = CLASSES_F62[classe].pl;
+      const ple = a.entre(Math.max(bas, 0.35), Number.isFinite(haut) ? haut : bas + 1.5, 0.05);
+      const De = +(a.entre(0.4, 0.9, 0.05) * D).toFixed(2);
+      const V = a.entre(300, 900, 10), H = +(V * a.entre(0, 0.2, 0.01)).toFixed(0);
+      const k = S.kpF62({ classe, B, L: 1, forme: "filante", De });
+      const delta = deg(Math.atan(H / V));
+      const idb = S.idbF62({ sol: classe.startsWith("argile") ? "coherent" : "frottant", delta, B, De }).i;
+      const q0 = g * D;
+      const p = S.portanceF62({ qnette: k.k * ple * 1000, q0, idb, qref: V / B, etat: "ELU" });
+      return {
+        enonce: `Semelle filante B = ${frd(B, 1)} m fondée à D = ${frd(D, 1)} m (γ = ${fr(g, 2)} kN/m³, pas de nappe) sur ${CLASSES_F62[classe].nom.toLowerCase()} (classe ${CLASSES_F62[classe].lettre}, comportement ${classe.startsWith("argile") ? "cohérent" : "frottant"}) : ple* = ${frd(ple, 2)} MPa, De = ${frd(De, 2)} m. À l'ELU fondamental : V = ${fr(V, 3)} kN/m centrée, H = ${fr(H, 3)} kN/m.`,
+        donnees: [donnee("B · D", `${frd(B, 1)} · ${frd(D, 1)} m`), donnee("Sol", `${CLASSES_F62[classe].nom} (${CLASSES_F62[classe].lettre})`), donnee("ple* · De", `${frd(ple, 2)} MPa · ${frd(De, 2)} m`), donnee("V · H (ELU)", `${fr(V, 3)} · ${fr(H, 3)} kN/m`)],
+        questions: [
+          nombre("Facteur de portance kp ?", k.k, "", `kp = ${frd(k.k0, 1)} [1 + ${frd(k.a, 2)} × 0,6 × ${frd(k.DeB, 3)}] = ${frd(k.k, 3)} (filante : B/L = 0).`, { rel: 0.01 }),
+          nombre("Coefficient iδβ ?", idb, "", `δ = ${frd(delta, 2)}° ; ${classe.startsWith("argile") ? "sol cohérent : Φ1" : "sol frottant : Φ2"} = ${frd(idb, 3)}.`, { rel: 0.015 }),
+          nombre("Contrainte admissible q'0 + kp ple* iδβ / 2 ?", p.qadm, "kPa", `q'0 = ${fr(g, 2)} × ${frd(D, 1)} = ${fr(q0, 3)} kPa ; ${frd(k.k, 3)} × ${fr(ple * 1000, 4)} × ${frd(idb, 3)} / 2 + ${fr(q0, 3)} = ${fr(p.qadm, 4)} kPa.`, { rel: 0.02 }),
+          nombre("Taux de travail q'ref / q'adm ?", p.taux, "", `q'ref = V/B = ${fr(V / B, 4)} kPa (charge centrée) ; ${fr(V / B, 4)} / ${fr(p.qadm, 4)} = ${frd(p.taux, 3)} ${p.ok ? "≤ 1 : portance vérifiée" : "> 1 : portance insuffisante"}.`, { rel: 0.02 }),
+        ],
+      };
+    },
+  },
+  {
+    id: "ch6-ec7", titre: "Portance d'une semelle à la NF P94-261", difficulte: 3,
+    generer(a) {
+      const categorie = a.choix(["argile", "sable"]);
+      const B = a.entre(1.5, 3, 0.1), D = a.entre(0.8, 1.5, 0.1), g = a.entre(18, 20, 1);
+      const ple = a.entre(0.8, 2, 0.05), De = +(a.entre(0.4, 0.9, 0.05) * D).toFixed(2);
+      const V = a.entre(400, 1200, 10), H = +(V * a.entre(0, 0.2, 0.01)).toFixed(0);
+      const e = +(a.entre(0, 0.12, 0.01) * B).toFixed(2);
+      const k = S.kpEC7({ categorie, B, forme: "filante", De });
+      const delta = deg(Math.atan(H / V));
+      const id = S.idEC7({ sol: categorie === "argile" ? "coherent" : "frottant", delta, B, De }).i;
+      const ex = S.excentrementEC7({ forme: "filante", B, eB: e });
+      const qnet = k.k * ple * id * 1000;
+      const p = S.portanceEC7({ A: B, ie: ex.ie, qnet, q0: g * D, Vd: V, etat: "ELU" });
+      return {
+        enonce: `Semelle filante B = ${frd(B, 1)} m, D = ${frd(D, 1)} m (γ = ${fr(g, 2)} kN/m³), sur ${categorie === "argile" ? "une argile (comportement cohérent)" : "un sable (comportement frottant)"} : ple* = ${frd(ple, 2)} MPa, De = ${frd(De, 2)} m. ELU fondamental : Vd = ${fr(V, 3)} kN/m (poids de la semelle et des terres compris), Hd = ${fr(H, 3)} kN/m, excentrement e = ${frd(e, 2)} m.`,
+        donnees: [donnee("B · D", `${frd(B, 1)} · ${frd(D, 1)} m`), donnee("ple* · De", `${frd(ple, 2)} MPa · ${frd(De, 2)} m`), donnee("Vd · Hd", `${fr(V, 3)} · ${fr(H, 3)} kN/m`), donnee("e", `${frd(e, 2)} m`)],
+        questions: [
+          nombre("kp (filante) ?", k.k, "", `kp = k0 + (a + b De/B)(1 − e^(−c De/B)) = ${frd(k.k, 3)} pour De/B = ${frd(k.DeB, 3)}.`, { rel: 0.01 }),
+          nombre("iδ ?", id, "", `δ = ${frd(delta, 2)}° → iδ = ${frd(id, 3)}.`, { rel: 0.015 }),
+          nombre("Surface effective A' par mètre ?", ex.Aprime, "m²/m", `A' = B − 2e = ${frd(B, 1)} − 2 × ${frd(e, 2)} = ${frd(ex.Aprime, 3)} m²/m (ie = ${frd(ex.ie, 3)}).`, { rel: 0.01 }),
+          nombre("Résistance nette de calcul Rv;d ?", p.Rvd, "kN/m", `qnet = kp ple* iδ = ${fr(qnet, 4)} kPa ; Rv;d = A' qnet / (1,4 × 1,2) = ${frd(ex.Aprime, 3)} × ${fr(qnet, 4)} / 1,68 = ${fr(p.Rvd, 4)} kN/m.`, { rel: 0.02 }),
+          nombre("Taux (Vd − R0) / Rv;d ?", p.taux, "", `R0 = A q0 = ${frd(B, 1)} × ${fr(g * D, 3)} = ${fr(p.R0, 4)} kN/m ; (${fr(V, 3)} − ${fr(p.R0, 4)}) / ${fr(p.Rvd, 4)} = ${frd(p.taux, 3)} : ${p.ok ? "vérifié" : "non vérifié"}.`, { rel: 0.02 }),
         ],
       };
     },

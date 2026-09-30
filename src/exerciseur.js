@@ -1,6 +1,6 @@
 // Exerciseur : les modèles de src/exos, tirés avec une graine aléatoire.
-// Adresse : exerciseur.html#ch4 (chapitre), #ch4/ch4-ple (modèle), et
-// #ch4/ch4-ple/123456 (tirage précis, pour le partager ou le corriger en séance).
+// Adresse : exerciseur.html#ch6 (chapitre), #ch6/ch6-ple (modèle), et
+// #ch6/ch6-ple/123456 (tirage précis, pour le partager ou le corriger en séance).
 
 import { chargerJson } from "./donnees.js";
 import { creerAlea } from "./exos/alea.js";
