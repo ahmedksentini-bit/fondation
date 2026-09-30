@@ -282,6 +282,7 @@
     <li>les <strong>puits et tranchées</strong>, qui donnent à voir le terrain et à y
         tailler des blocs intacts, mais sur quelques mètres seulement.</li>
   </ul>
+  <figure class="figure-cours" data-schema="schemaForage"><figcaption>Sondage carotté. Le fluide injecté par les tiges remonte les déblais par l'espace annulaire ; dans le carottier double, le tube intérieur ne tourne pas et protège la carotte. À droite, sur le même axe des profondeurs, les paramètres enregistrés pendant la foration : au toit du rocher, la vitesse d'avance chute pendant que la poussée et le couple montent ; une chute d'outil trahit la cavité.</figcaption></figure>
   <table class="resultats"><thead><tr><th>Classe</th><th>L'échantillon a conservé</th><th>On peut y mesurer</th></tr></thead>
     <tbody>
       <tr><td>1</td><td class="motif">structure, teneur en eau, densité, état de contraintes relâché seulement</td><td class="motif">identification, et résistance, compressibilité, perméabilité (c', φ', c<sub>u</sub>, C<sub>c</sub>, σ'<sub>p</sub>, k)</td></tr>
@@ -318,6 +319,7 @@
      argile. Hvorslev l'a mis en formule : le retard se résorbe exponentiellement, avec un
      temps caractéristique T<sub>0</sub> = A/(F·k), où A est la section du tube, F le facteur
      de forme de la crépine et k la perméabilité.</p>
+  <figure class="figure-cours" data-schema="schemaPiezometres"><figcaption>Le piézomètre ouvert mesure un niveau : pour suivre une variation de pression, l'eau doit entrer dans le tube ou en sortir par la crépine, ce qui prend du temps dans un sol peu perméable. Le piézomètre fermé mesure la pression sur place, isolé de la surface par un bouchon d'argile.</figcaption></figure>
 
   <div class="calc" id="esPzCalc">
     <h3>Temps de réponse d'un piézomètre ouvert</h3>
@@ -343,6 +345,7 @@
      trahit la nature du sol : faible dans les sables, élevé dans les argiles
      <span class="ref">[NF EN ISO 22476-1]</span>. L'essai est rapide, répétable et donne un profil
      presque continu ; il refuse en revanche les graves grossières, les blocs et le rocher.</p>
+  <figure class="figure-cours" data-schema="schemaCptu"><figcaption>Le camion lesté fonce les tiges par vérin, à 2 cm/s. Le cône mesure q<sub>c</sub>, le manchon qui le suit f<sub>s</sub>, et le filtre placé juste derrière le cône la pression interstitielle u<sub>2</sub>.</figcaption></figure>
   <p>Le <strong>piézocône</strong> (CPTU) mesure en plus la pression interstitielle u<sub>2</sub>,
      juste derrière le cône. Dans une argile, l'enfoncement met l'eau en surpression ; comme
      cette pression agit aussi sur l'épaulement de la pointe, on corrige la résistance
@@ -413,6 +416,7 @@
      en supposant un choc mou entre le mouton et la masse frappée M' (tiges, enclume, pointe) :</p>
   <p class="formula">q<sub>d</sub> = M² g H / [(M + M') · A · e]&nbsp;&nbsp;avec&nbsp;&nbsp;e = h/N, enfoncement moyen par coup
      <span class="ref">[NF EN ISO 22476-2]</span></p>
+  <figure class="figure-cours" data-schema="schemaPenetroDyn"><figcaption>On compte les coups de mouton nécessaires pour enfoncer la pointe de 10 cm. La pointe, plus large que les tiges, limite leur frottement ; le diagramme N<sub>10</sub> se lit comme un profil de résistance, que la formule des Hollandais convertit en q<sub>d</sub>.</figcaption></figure>
 
   <div class="calc" id="esDpCalc">
     <h3>Résistance dynamique de pointe (formule des Hollandais)</h3>
@@ -454,6 +458,7 @@
      contrainte effective de 100 kPa ((N<sub>1</sub>)<sub>60</sub>) :</p>
   <p class="formula">N<sub>60</sub> = N · C<sub>E</sub> · C<sub>B</sub> · C<sub>R</sub> · C<sub>S</sub>&nbsp;&nbsp;·&nbsp;&nbsp;(N<sub>1</sub>)<sub>60</sub> = C<sub>N</sub> · N<sub>60</sub>&nbsp;&nbsp;avec&nbsp;&nbsp;C<sub>N</sub> = √(100/σ'<sub>v0</sub>), entre 0,5 et 2
      <span class="ref">[NF EN 1998-5 annexe B]</span></p>
+  <figure class="figure-cours" data-schema="schemaSpt"><figcaption>Au fond du forage, le carottier est battu sur 45 cm : les 15 premiers centimètres servent d'amorçage, N compte les coups des deux passes suivantes. Ouvert, le carottier livre un échantillon remanié pour l'identification.</figcaption></figure>
   <p>Les corrélations tirées de N sont nombreuses et dispersées : pour un même sable, trois
      formules publiées donnent des angles de frottement qui s'écartent de 5 à 8°. Le SPT sert
      donc surtout à identifier, à comparer, et à juger le risque de liquéfaction ; pour
@@ -491,6 +496,7 @@
      la raideur propre de la membrane (ΔA, ΔB), elles donnent p<sub>0</sub> et p<sub>1</sub>,
      puis trois indices <span class="ref">[NF EN ISO 22476-11]</span> :</p>
   <p class="formula">I<sub>D</sub> = (p<sub>1</sub> − p<sub>0</sub>)/(p<sub>0</sub> − u<sub>0</sub>)&nbsp;&nbsp;·&nbsp;&nbsp;K<sub>D</sub> = (p<sub>0</sub> − u<sub>0</sub>)/σ'<sub>v0</sub>&nbsp;&nbsp;·&nbsp;&nbsp;E<sub>D</sub> = 34,7 (p<sub>1</sub> − p<sub>0</sub>)</p>
+  <figure class="figure-cours" data-schema="schemaDmt"><figcaption>La lame est foncée par arrêts de 20 cm. À chaque arrêt, le gaz gonfle la membrane : on lit A quand elle décolle, B quand son centre a avancé de 1,1 mm (déplacement agrandi sur le profil).</figcaption></figure>
   <p>I<sub>D</sub> classe le sol (argile sous 0,6, limon jusqu'à 1,8, sable au-delà) ;
      K<sub>D</sub> reflète la contrainte horizontale et la surconsolidation ; E<sub>D</sub> est un
      module. Les corrélations de Marchetti en tirent le module œdométrique M = R<sub>M</sub>·E<sub>D</sub>,
@@ -527,6 +533,7 @@
      rapport des deux sa <strong>sensibilité</strong> <span class="ref">[NF EN ISO 22476-9]</span>. Dans
      les argiles plastiques, la vitesse de l'essai surestime c<sub>u</sub> : Bjerrum a proposé
      de la minorer d'un facteur μ qui décroît avec l'indice de plasticité.</p>
+  <figure class="figure-cours" data-schema="schemaScissometre"><figcaption>Le moulinet tourne lentement au bas du tube de protection. Le couple maximal mobilise c<sub>u</sub> sur toute la surface du cylindre cisaillé ; après une dizaine de tours, le couple résiduel donne la résistance du sol remanié.</figcaption></figure>
 
   <div class="calc" id="esVstCalc">
     <h3>Cohésion non drainée au scissomètre</h3>
@@ -573,6 +580,7 @@
      rapport k = E<sub>V2</sub>/E<sub>V1</sub> juge le compactage (bon sous 2) et E<sub>V2</sub>
      classe la plate-forme (PF1 à PF4). L'essai n'intéresse que les 0,9 m sous la plaque :
      c'est un essai de plate-forme et de couche d'assise, non de fondation profonde.</p>
+  <figure class="figure-cours" data-schema="schemaPlaque"><figcaption>Le camion lesté fournit la réaction ; le vérin charge la plaque rigide, et le comparateur, porté par une poutre de référence dont les appuis sont hors de la zone influencée, mesure l'enfoncement.</figcaption></figure>
   <p>L'<strong>essai de chargement statique d'un pieu</strong> est l'essai de fondation par
      excellence : on charge un vrai pieu par paliers en suivant l'enfoncement de sa tête, et,
      s'il est instrumenté, l'effort à plusieurs niveaux du fût <span class="ref">[NF P94-150-1]</span>.
@@ -581,6 +589,7 @@
      Q<sub>c</sub>, comme la cassure du fluage pressiométrique donnait p<sub>f</sub>. Les
      résultats d'essais de pieux entrent dans l'Eurocode 7 par les facteurs de corrélation ξ
      (chapitre 12).</p>
+  <figure class="figure-cours" data-schema="schemaChargementPieu"><figcaption>Le vérin prend appui sur une poutre ancrée à des pieux de réaction ; le capteur de force mesure la charge, les comparateurs l'enfoncement de la tête. Instrumenté, le fût donne l'effort à plusieurs niveaux, donc le partage entre frottement q<sub>s</sub> et pointe q<sub>b</sub>.</figcaption></figure>
 
   <div class="calc" id="esPlqCalc">
     <h3>Module à la plaque : E<sub>V1</sub>, E<sub>V2</sub> et compactage</h3>
@@ -637,6 +646,8 @@
         le coefficient d'emmagasinement <span class="ref">[NF P94-130]</span>.</li>
   </ul>
 
+  <figure class="figure-cours" data-schema="schemaLefranc"><figcaption>Sous la nappe, au fond d'un tubage étanche, une cavité de longueur L et de diamètre D échange de l'eau avec le terrain. À charge constante on mesure le débit Q ; à charge variable, la vitesse à laquelle h retombe.</figcaption></figure>
+
   <div class="calc" id="esLefCalc">
     <h3>Essai Lefranc</h3>
     <div class="data-grid">
@@ -659,6 +670,8 @@
     </div>
     <p class="final-result" id="esLefOut"></p>
   </div>
+
+  <figure class="figure-cours" data-schema="schemaLugeon"><figcaption>Deux obturateurs isolent une passe de longueur L. On y injecte de l'eau par paliers de pression montants puis descendants ; le débit absorbé par les fissures, rapporté à la longueur de la passe et à la pression, donne les unités Lugeon.</figcaption></figure>
 
   <div class="calc" id="esLugCalc">
     <h3>Essai Lugeon</h3>
@@ -683,6 +696,8 @@
     <div class="figure" id="esLugFig"></div>
     <p class="final-result" id="esLugOut"></p>
   </div>
+
+  <figure class="figure-cours" data-schema="schemaPompage"><figcaption>On pompe à débit constant Q ; la nappe se déprime en un cône de rabattement. Les rabattements s<sub>1</sub> et s<sub>2</sub>, lus dans des piézomètres à r<sub>1</sub> et r<sub>2</sub> du puits, donnent la transmissivité T et le coefficient d'emmagasinement.</figcaption></figure>
 
   <div class="calc" id="esPompCalc">
     <h3>Essai de pompage : la droite de Jacob</h3>
@@ -723,6 +738,8 @@
         couches.</li>
   </ul>
 
+  <figure class="figure-cours" data-schema="schemaRefraction"><figcaption>Près de la source, l'onde directe arrive la première ; plus loin, l'onde réfractée, qui a parcouru la couche 2 plus rapide, la dépasse. La cassure de l'hodochrone donne l'épaisseur h de la couche 1.</figcaption></figure>
+
   <div class="calc" id="esRefCalc">
     <h3>Sismique réfraction à deux couches</h3>
     <p class="method-note">Une ligne par géophone : distance à l'ébranlement (m) et temps de
@@ -744,6 +761,8 @@
     <div class="figure" id="esRefFig"></div>
     <p class="final-result" id="esRefOut"></p>
   </div>
+
+  <figure class="figure-cours" data-schema="schemaOndesS"><figcaption>Deux façons de mesurer V<sub>s</sub> : entre deux forages, en chronométrant à chaque mètre une onde de cisaillement d'un forage à l'autre ; depuis la surface, en analysant la dispersion des ondes de surface, dont la pénétration croît avec la longueur d'onde.</figcaption></figure>
 
   <div class="calc" id="esVsCalc">
     <h3>V<sub>s,30</sub> et classe de sol sismique</h3>
@@ -2623,6 +2642,7 @@ marquerSectionLue();
 </script>
 <script type="module" src="src/impression.js"></script>
 <script type="module" src="src/socle.js"></script>
+<script type="module" src="src/cours-schemas.js"></script>
 <script type="module" src="src/cours-ch1.js"></script>
 <script type="module" src="src/cours-ch2.js"></script>
 <script type="module" src="src/cours-ch3.js"></script>
