@@ -115,9 +115,9 @@ const majPt = garde("ptOut", () => {
   el("ptFig").innerHTML = coupeSemelle({
     B, D, e: etats[0].e, V: "Vd", H: etats[0].H, hauteur: 280, montrerHr: 1.5 * B,
     couches: [
-      { z0: 0, z1: D, sol: "remblai", etiquette: D > 0 ? `pl* = ${fd(plc, 2)} MPa` : null },
-      { z0: D, z1: D + h1, sol: classe, etiquette: `${CLASSES_F62[classe]?.nom ?? ""} · pl* = ${fd(pl1, 2)} MPa` },
-      { z0: D + h1, z1: D + h1 + 50, sol: "sable", etiquette: `pl* = ${fd(pl2, 2)} MPa` },
+      { z0: 0, z1: D, sol: "remblai", etiquette: D > 0 ? `pl* ${fd(plc, 2)} MPa` : null },
+      { z0: D, z1: D + h1, sol: classe, etiquette: `${classe.replace("-", " ")} · pl* ${fd(pl1, 2)} MPa` },
+      { z0: D + h1, z1: D + h1 + 50, sol: "sable", etiquette: `pl* ${fd(pl2, 2)} MPa` },
     ],
   });
 

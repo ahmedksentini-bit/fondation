@@ -369,15 +369,21 @@ function calculerFrottement(v) {
   const G = nombre(v.G, 0), Q = nombre(v.Q, 0), psi2 = nombre(v.psi2, 0.3);
   const Fdim = rep ? (files > 1 ? rep.angle : rep.extremite) : iso.Fn;
   const c = combinaisonsPieu({ G, Q, psi2, Fn: Fdim });
-  const xmax = Math.max(...iso.profil.map((p) => p.s1)) * 1.1;
-  const figure = graphe({
+  const xmax = remblai ? Math.max(...iso.profil.map((p) => p.s1)) * 1.1 : g * H * 1.1;
+  // Sans remblai, σ'v reste égal à σ'v0 : un seul profil, pas de hauteur d'action.
+  const figure = !remblai ? graphe({
+    largeur: 560, hauteur: 280, xmin: 0, xmax, ymin: 0, ymax: H, inverserY: true, xlabel: "contrainte verticale effective (kPa)", ylabel: "profondeur sous le TN (m)",
+    zones: [{ x0: 0, x1: xmax, y0: 0, y1: H, couleur: "#dccab0", opacite: 0.35, libelle: "couche compressible, sans remblai", position: "droite" }],
+    series: [{ points: [[0, 0], [g * H, H]], couleur: COULEURS.bleu, libelle: "σ'v = σ'v0 : pas de surcharge, pas de frottement négatif" }],
+  }) : graphe({
     largeur: 560, hauteur: 320, xmin: 0, xmax, ymin: -hr, ymax: H, inverserY: true, xlabel: "contrainte verticale effective (kPa)", ylabel: "profondeur sous le TN (m)",
-    zones: [...(hr > 0 ? [{ x0: 0, x1: xmax, y0: -hr, y1: 0, couleur: "#eadfd2", opacite: 0.6, libelle: "remblai" }] : []),
-      { x0: 0, x1: xmax, y0: 0, y1: H, couleur: "#dccab0", opacite: 0.35, libelle: "couche compressible" }],
+    zones: [...(hr > 0 ? [{ x0: 0, x1: xmax, y0: -hr, y1: 0, couleur: "#eadfd2", opacite: 0.6, libelle: "remblai", position: "droite" }] : []),
+      { x0: 0, x1: xmax, y0: 0, y1: H, couleur: "#dccab0", opacite: 0.35, libelle: "couche compressible", position: "droite" }],
     series: [
       { points: iso.profil.map((p) => [p.s1, p.z]), couleur: COULEURS.discret, tirets: "5 4", libelle: "σ'1 champ libre" },
       { points: iso.profil.map((p) => [p.sv, p.z]), couleur: COULEURS.effort, epaisseur: 2.8, libelle: "σ'v au contact, pieu isolé" },
       ...(grp ? [{ points: grp.profil.map((p) => [p.sv, p.z]), couleur: COULEURS.violet, libelle: "σ'v au contact, pieu en groupe" }] : []),
+      ...(iso.hAction > 0 && iso.hAction < H - 1e-6 ? [{ points: [[0, iso.hAction], [xmax, iso.hAction]], couleur: COULEURS.rouge, tirets: "2 3", epaisseur: 1.6, libelle: `hauteur d'action h = ${fd(iso.hAction, 2)} m` }] : []),
     ],
   });
   const synthese = `<table class="resultats"><thead><tr><th>Grandeur</th><th class="num">Valeur</th></tr></thead><tbody>

@@ -24,19 +24,29 @@ const majFn = garde("fnOut", () => {
   const lam = lambdaCombarieu(Kt), mu = muIsole(lam), L0 = mu > 0 ? R / (mu * Kt) : Infinity;
 
   const pts = (cle) => iso.profil.map((p) => [p[cle], p.z]);
+  if (!remblai) {
+    // Sans remblai, σ'v reste égal à σ'v0 : il n'y a rien à accrocher.
+    el("fnFig").innerHTML = graphe({
+      largeur: 560, hauteur: 260, xmin: 0, xmax: g * H * 1.1, ymin: 0, ymax: H, inverserY: true,
+      xlabel: "contrainte verticale effective (kPa)", ylabel: "profondeur sous le TN (m)",
+      zones: [{ x0: 0, x1: g * H * 1.1, y0: 0, y1: H, couleur: "#dccab0", opacite: 0.35, libelle: "couche compressible, sans remblai", position: "droite" }],
+      series: [{ points: [[0, 0], [g * H, H]], couleur: COULEURS.bleu, libelle: "σ'v = σ'v0 : pas de surcharge, pas de frottement négatif" }],
+    });
+  }
   const xmax = Math.max(...iso.profil.map((p) => p.s1)) * 1.1;
-  el("fnFig").innerHTML = graphe({
+  if (remblai) el("fnFig").innerHTML = graphe({
     largeur: 560, hauteur: 300, xmin: 0, xmax, ymin: -hr, ymax: H, inverserY: true,
     xlabel: "contrainte verticale effective (kPa)", ylabel: "profondeur sous le TN (m)",
     zones: [
-      ...(hr > 0 ? [{ x0: 0, x1: xmax, y0: -hr, y1: 0, couleur: "#eadfd2", opacite: 0.6, libelle: "remblai" }] : []),
-      { x0: 0, x1: xmax, y0: 0, y1: H, couleur: "#dccab0", opacite: 0.35, libelle: "couche compressible" },
-      { x0: xmax * 0.85, x1: xmax, y0: -hr, y1: iso.hAction, couleur: COULEURS.rouge, opacite: 0.2, libelle: "h" },
+      ...(hr > 0 ? [{ x0: 0, x1: xmax, y0: -hr, y1: 0, couleur: "#eadfd2", opacite: 0.6, libelle: "remblai", position: "droite" }] : []),
+      { x0: 0, x1: xmax, y0: 0, y1: H, couleur: "#dccab0", opacite: 0.35, libelle: "couche compressible", position: "droite" },
     ],
     series: [
       { points: pts("s1"), couleur: COULEURS.discret, tirets: "5 4", libelle: "σ'1 : champ libre, après remblai" },
       { points: pts("sv"), couleur: COULEURS.effort, epaisseur: 2.8, libelle: "σ'v au contact du pieu" },
       { points: iso.profil.filter((p) => p.z >= 0).map((p) => [p.s0, p.z]), couleur: COULEURS.bleu, libelle: "σ'v0 : avant remblai" },
+      // Hauteur d'action : un trait horizontal quand elle s'arrête dans la couche.
+      ...(iso.hAction > 0 && iso.hAction < H - 1e-6 ? [{ points: [[0, iso.hAction], [xmax, iso.hAction]], couleur: COULEURS.rouge, tirets: "2 3", epaisseur: 1.6, libelle: `hauteur d'action h = ${fd(iso.hAction, 2)} m` }] : []),
     ],
   });
   let groupe = "";

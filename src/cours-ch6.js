@@ -1,7 +1,7 @@
 // Calculateurs du chapitre 6 : glissement au Fascicule 62 et à la NF P94-261
 // (drainé et non drainé), paramètres de calcul de la stabilité d'ensemble.
 import { el, num, f, fd, verdict, brancher, garde } from "./ui.js";
-import { coupeSemelle, fleche, texte, COULEURS } from "./figures.js";
+import { coupeSemelle, fleche } from "./figures.js";
 import { glissementF62, glissementEC7, diagramme } from "./geotech/superficielles.js";
 
 const RAD = Math.PI / 180;
@@ -20,11 +20,11 @@ const majGl = garde("glOut", () => {
   const nd = cu > 0 ? glissementEC7({ Vd: V, Hd: H, drainage: "non-draine", cu, Aprime: Ap }) : null;
 
   el("glFig").innerHTML = coupeSemelle({
-    B, D: 1, e, V: "Vd", H, hauteur: 230, profondeurVue: 3,
-    couches: [{ z0: 0, z1: 20, sol: "argile", etiquette: `φ' = ${f(phi, 3)}° · φ'crit = ${f(phiC, 3)}° · c' = ${f(c, 3)} kPa` }],
-    annotations: [(id, { Y, xs, ws }) =>
-      fleche(id, xs + ws * 0.75, Y(1) + 9, xs + ws * 0.25, Y(1) + 9, { type: "reaction", libelle: "R", ep: 2.6 })
-      + texte(xs + ws / 2, Y(1) + 26, "frottement sous la base", `text-anchor="middle" class="pt"`)],
+    B, D: 1, e, V: "Vd", H, hauteur: 240, profondeurVue: 3, epaisseur: 0.5, decalageCoteB: 36,
+    couches: [{ z0: 0, z1: 20, sol: "argile", position: "bas", etiquette: `φ' ${f(phi, 3)}° · φ'crit ${f(phiC, 3)}° · c' ${f(c, 3)} kPa` }],
+    // Réaction de frottement sous la base, opposée à H ; la cote B est descendue d'autant.
+    annotations: [(id, { Y, xs, ws, P }) =>
+      fleche(id, xs + ws * 0.8, Y(1) + 11, xs + ws * 0.2, Y(1) + 11, { type: "reaction", libelle: "R (frottement)", ep: 2.6, P })],
   });
 
   const col = (x) => `<td class="n">${x}</td>`;

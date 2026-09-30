@@ -127,7 +127,7 @@
      "toleranceRel": 0.005
     },
     {
-     "texte": "Qmin à l'ELU fondamental (Fascicule 62) ?",
+     "texte": "Qmin à l'ELU fondamental, Fascicule 62 (traction comptée négativement) ?",
      "type": "nombre",
      "unite": "kN",
      "reponse": -1285.71,
@@ -135,7 +135,7 @@
      "toleranceRel": 0.01
     },
     {
-     "texte": "Qmin sous combinaison rare ?",
+     "texte": "Qmin sous combinaison rare (négatif) ?",
      "type": "nombre",
      "unite": "kN",
      "reponse": -900,

@@ -22,7 +22,8 @@ const majCc = garde("ccOut", () => {
   const partFut = r.courbe.map((c) => [c.Q - Ab * loiFrankZhao(c.sb, kq, qb), c.s * 1000]);
   const sB10 = (B / 10) * 1000;
   const sQc = r.tassementSous(Qc);
-  const smax = Math.min(Math.max(...tete.map((p) => p[1])), 1.6 * sB10);
+  // L'axe descend un peu sous B/10 : la marque de Qu ne tombe pas sur le cadre.
+  const smax = Math.max(1.18 * sB10, Math.min(Math.max(...tete.map((p) => p[1])), 1.6 * sB10));
   const QB10 = (() => {
     // charge atteinte pour un enfoncement de B/10 (interpolation sur la courbe)
     for (let i = 1; i < tete.length; i++) if (tete[i][1] >= sB10) {
@@ -34,7 +35,7 @@ const majCc = garde("ccOut", () => {
   el("ccFig").innerHTML = graphe({
     largeur: 560, hauteur: 300, xmin: 0, xmax: Rc * 1.1, ymin: 0, ymax: smax, inverserY: true,
     xlabel: "charge en tête Q (kN)", ylabel: "enfoncement de la tête (mm)",
-    zones: [{ x0: 0, x1: Rc * 1.1, y0: sB10, y1: smax, couleur: COULEURS.discret, opacite: 0.08, libelle: "au-delà de B/10" }],
+    zones: [{ x0: 0, x1: Rc * 1.1, y0: sB10, y1: smax, couleur: COULEURS.discret, opacite: 0.1, libelle: "au-delà de B/10", position: "droite" }],
     series: [
       { points: tete, couleur: COULEURS.encre, epaisseur: 3, libelle: "charge en tête" },
       { points: partFut, couleur: COULEURS.ec7, tirets: "6 3", libelle: "frottement mobilisé" },

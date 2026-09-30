@@ -1,6 +1,14 @@
 // Boîte à outils des figures SVG : coupes de sol, semelles, pieux, cotes,
 // efforts et graphiques. Tout est produit sous forme de chaîne SVG — la même
-// figure sert au cours, à l'exerciseur, au bureau de calcul et à l'impression.
+// figure sert au cours, à l'exerciseur, au bureau de calcul et au polycopié.
+//
+// Règles de mise en page, tenues partout :
+//  · une légende ne se pose jamais sur les courbes : elle va sous le graphique ;
+//  · les étiquettes sont posées par un placeur, qui essaie plusieurs positions
+//    et retient la première qui ne touche ni tracé, ni point, ni autre texte ;
+//  · un texte qui peut frôler un tracé porte un liseré blanc (classe halo) ;
+//  · une étiquette trop longue pour la place libre passe à la ligne sur « · » ;
+//  · aucun libellé ne sort du cadre de la figure.
 
 export const COULEURS = {
   encre: "#0f172a", trait: "#334155", discret: "#64748b", grille: "#e2e8f0",
@@ -32,6 +40,26 @@ export const solDe = (cle = "") => {
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 export const fmt = (x, c = 3) => (Number.isFinite(x) ? Number(x).toLocaleString("fr-FR", { maximumSignificantDigits: c }) : "—");
 
+/** Pas « rond » (1, 2 ou 5 × 10ⁿ) qui découpe une étendue en n intervalles environ. */
+export function pasJoli(etendue, n = 6) {
+  const brut = etendue / n, p = 10 ** Math.floor(Math.log10(brut)), r = brut / p;
+  return (r < 1.5 ? 1 : r < 3.5 ? 2 : r < 7.5 ? 5 : 10) * p;
+}
+
+// Chasse approchée des caractères (en em), pour une police sans empattement.
+const ETROITS = new Set(" il.,:;'’|!·ıj");
+const MI_ETROITS = new Set("tfr()[]1*-/");
+const LARGES = new Set("mwMW%—");
+/** Largeur approchée d'un texte, en unités SVG (graisse forte par défaut). */
+export function largeurTexte(s, taille = 12, gras = true) {
+  let em = 0;
+  for (const c of String(s ?? "")) {
+    em += ETROITS.has(c) ? 0.29 : MI_ETROITS.has(c) ? 0.4 : LARGES.has(c) ? 0.86
+      : c === "I" ? 0.32 : c >= "A" && c <= "Z" ? 0.7 : /[0-9=+−×<>≥≤→]/.test(c) ? 0.6 : 0.56;
+  }
+  return em * taille * (gras ? 1.05 : 0.98);
+}
+
 let compteur = 0;
 /** Préfixe unique par figure : deux figures d'une même page ne partagent pas leurs motifs. */
 const nouvelId = () => `f${(compteur++).toString(36)}`;
@@ -56,8 +84,8 @@ function defs(id) {
 /** Cadre SVG commun ; `contenu(id)` reçoit le préfixe des motifs. */
 export function svg({ largeur = 560, hauteur = 300, titre = "", contenu }) {
   const id = nouvelId();
-  return `<svg viewBox="0 0 ${largeur} ${hauteur}" role="img" aria-label="${esc(titre)}" xmlns="http://www.w3.org/2000/svg">
-  ${defs(id)}<style>text{font-family:Inter,-apple-system,"Segoe UI",sans-serif;font-size:12px;fill:${COULEURS.encre}}.pt{font-size:11px;fill:${COULEURS.discret}}.gr{font-weight:800}</style>
+  return `<svg viewBox="0 0 ${largeur} ${Math.round(hauteur)}" role="img" aria-label="${esc(titre)}" xmlns="http://www.w3.org/2000/svg">
+  ${defs(id)}<style>text{font-family:Inter,-apple-system,"Segoe UI",sans-serif;font-size:12px;fill:${COULEURS.encre}}.pt{font-size:11px;fill:${COULEURS.discret}}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>
   ${contenu(id)}</svg>`;
 }
 
@@ -65,111 +93,364 @@ export const texte = (x, y, s, attrs = "") => `<text x="${x.toFixed(1)}" y="${y.
 export const ligne = (x1, y1, x2, y2, couleur = COULEURS.trait, ep = 1.4, attrs = "") =>
   `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${couleur}" stroke-width="${ep}" fill="none" ${attrs}/>`;
 
-/** Rectangle de sol avec son motif. */
-export function couche(id, { x, y, w, h, sol, etiquette = null, cote = "droite" }) {
+/**
+ * Découpe une étiquette en lignes qui tiennent dans `largeurMax`, en coupant
+ * d'abord sur « · », puis sur les espaces.
+ */
+export function couper(s, largeurMax, taille = 11) {
+  if (largeurTexte(s, taille) <= largeurMax) return [s];
+  const morceaux = String(s).split(" · ");
+  const lignes = [];
+  let courant = "";
+  const pousser = (m) => {
+    const essai = courant ? `${courant} · ${m}` : m;
+    if (!courant || largeurTexte(essai, taille) <= largeurMax) courant = essai;
+    else { lignes.push(courant); courant = m; }
+  };
+  for (const m of morceaux) {
+    if (largeurTexte(m, taille) <= largeurMax) { pousser(m); continue; }
+    // Morceau trop long : on le coupe sur les espaces.
+    for (const mot of m.split(" ")) {
+      const essai = courant ? `${courant} ${mot}` : mot;
+      if (!courant || largeurTexte(essai, taille) <= largeurMax) courant = essai;
+      else { lignes.push(courant); courant = mot; }
+    }
+  }
+  if (courant) lignes.push(courant);
+  return lignes;
+}
+
+/** Texte sur plusieurs lignes (une ligne par élément). */
+function texteLignes(x, y, lignes, attrs, pas = 13) {
+  return lignes.map((l, i) => texte(x, y + i * pas, l, attrs)).join("");
+}
+
+// ───────────────────────── Placement des étiquettes ──────────────────────
+
+/** Le segment (x1, y1)–(x2, y2) traverse-t-il le rectangle r ? (Liang–Barsky) */
+function coupeRect(x1, y1, x2, y2, r) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const p = [-dx, dx, -dy, dy], q = [x1 - r.x, r.x + r.w - x1, y1 - r.y, r.y + r.h - y1];
+  let t0 = 0, t1 = 1;
+  for (let i = 0; i < 4; i++) {
+    if (p[i] === 0) { if (q[i] < 0) return false; continue; }
+    const t = q[i] / p[i];
+    if (p[i] < 0) { if (t > t1) return false; if (t > t0) t0 = t; }
+    else { if (t < t0) return false; if (t < t1) t1 = t; }
+  }
+  return true;
+}
+const chevauche = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+const contient = (a, b) => b.x >= a.x - 0.5 && b.y >= a.y - 0.5 && b.x + b.w <= a.x + a.w + 0.5 && b.y + b.h <= a.y + a.h + 0.5;
+
+/** Boîte d'un texte d'une ou plusieurs lignes ; y est la ligne de base de la première. */
+export function boiteTexte(x, y, lignes, { taille = 12, ancre = "start", pas = 13 } = {}) {
+  const ls = Array.isArray(lignes) ? lignes : [lignes];
+  const w = Math.max(...ls.map((l) => largeurTexte(l, taille)));
+  return { x: ancre === "end" ? x - w : ancre === "middle" ? x - w / 2 : x, y: y - 0.8 * taille, w, h: 1.05 * taille + (ls.length - 1) * pas };
+}
+
+/**
+ * Placeur d'étiquettes. Les tracés déclarent leurs obstacles (segments,
+ * boîtes) ; chaque étiquette propose des positions candidates, par ordre de
+ * préférence, et rendre() les pose toutes à la fin : la première position qui
+ * ne touche rien l'emporte, sinon la moins gênée. Une étiquette posée devient
+ * à son tour un obstacle. cadre : rectangle dont aucune étiquette ne sort.
+ */
+export function placeur(cadre = null) {
+  const segments = [], boites = [], demandes = [];
+  const cout = (b, dedans) => {
+    const r = { x: b.x - 2, y: b.y - 2, w: b.w + 4, h: b.h + 4 };
+    let c = 0;
+    if (cadre && !contient(cadre, b)) c += 100;
+    if (dedans && !contient(dedans, b)) c += 40;
+    for (const [x1, y1, x2, y2, p] of segments) if (coupeRect(x1, y1, x2, y2, r)) c += p;
+    for (const o of boites) if (chevauche(o, r)) c += o.poids;
+    return c;
+  };
+  return {
+    segment(x1, y1, x2, y2, poids = 1) { segments.push([x1, y1, x2, y2, poids]); },
+    polyligne(pts, poids = 1) {
+      for (let i = 1; i < pts.length; i++) segments.push([pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1], poids]);
+    },
+    boite(b, poids = 4) { boites.push({ ...b, poids }); },
+    /**
+     * Étiquette différée : candidats [{ x, y, ancre, lignes, dedans? }] ; style :
+     * attributs SVG communs ; dedans : zone dont l'étiquette ne doit pas sortir.
+     */
+    texte(candidats, style, { taille = 12, pas = 13, dedans = null, priorite = 0 } = {}) {
+      demandes.push({ candidats, style, taille, pas, dedans, priorite, rang: demandes.length });
+    },
+    rendre() {
+      let s = "";
+      demandes.sort((a, b) => b.priorite - a.priorite || a.rang - b.rang);
+      for (const d of demandes) {
+        let retenu = null, min = Infinity;
+        d.candidats.forEach((c, i) => {
+          const b = boiteTexte(c.x, c.y, c.lignes, { taille: d.taille, ancre: c.ancre, pas: d.pas });
+          const k = cout(b, c.dedans ?? d.dedans) + i * 1e-3;
+          if (k < min) { min = k; retenu = { ...c, b }; }
+        });
+        if (!retenu) continue;
+        boites.push({ ...retenu.b, poids: 4 });
+        s += texteLignes(retenu.x, retenu.y, retenu.lignes, `text-anchor="${retenu.ancre}" ${d.style}`, d.pas);
+      }
+      demandes.length = 0;
+      return s;
+    },
+  };
+}
+
+/**
+ * Rectangle de sol avec son motif et, éventuellement, son étiquette (posée
+ * sans placeur : les coupes passent par leur propre placement).
+ */
+export function couche(id, { x, y, w, h, sol, etiquette = null, cote = "droite", position = "haut", largeurMax = null }) {
   const s = typeof sol === "string" ? solDe(sol) : sol;
   let t = `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${s.fond}"/>
     <rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="url(#${id}-${s.motif})"/>`;
   if (etiquette && h > 13) {
+    const lignes = couper(etiquette, largeurMax ?? w - 12, 11).slice(0, Math.max(1, Math.floor((h - 4) / 13)));
     const tx = cote === "droite" ? x + w - 6 : x + 6;
-    t += texte(tx, y + Math.min(h / 2 + 4, 18), etiquette, `text-anchor="${cote === "droite" ? "end" : "start"}" class="gr" style="font-size:11px"`);
+    const ty = position === "bas" ? y + h - 6 - (lignes.length - 1) * 13 : y + Math.min(h / 2 + 4, 16);
+    t += texteLignes(tx, ty, lignes, `text-anchor="${cote === "droite" ? "end" : "start"}" class="gr halo" style="font-size:11px"`);
   }
   return t;
 }
 
-/** Ligne de cote avec flèches aux deux bouts et libellé. */
-export function cote(id, x1, y1, x2, y2, libelle, { cote: position = "haut", decalage = 5 } = {}) {
-  const vertical = Math.abs(x2 - x1) < Math.abs(y2 - y1);
-  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
-  const lx = vertical ? mx + (position === "gauche" ? -decalage : decalage) : mx;
-  const ly = vertical ? my + 4 : my + (position === "bas" ? 14 : -decalage);
-  const ancre = vertical ? (position === "gauche" ? "end" : "start") : "middle";
-  return `${ligne(x1, y1, x2, y2, COULEURS.cote, 1.1, `marker-start="url(#${id}-fc)" marker-end="url(#${id}-fc)"`)}
-    ${libelle ? texte(lx, ly, libelle, `text-anchor="${ancre}" style="font-size:11.5px;font-weight:700;fill:${COULEURS.cote}"`) : ""}`;
+/**
+ * Candidats d'étiquette pour une bande de terrain [y0, y1] entre xg et xd :
+ * d'une traite dans la bande (côté et hauteur préférés d'abord), puis, si
+ * `dehors` donne la place libre de part et d'autre ({ gauche, droite }), à
+ * l'extérieur du bloc, en face de la bande ; en dernier recours, coupée.
+ */
+function candidatsBande(etiquette, { xg, xd, y0, y1, cote = "droite", position = "haut", largeurs = [200, 150, 110, 80], dehors = null }) {
+  const h = y1 - y0, nMax = Math.max(1, Math.floor((h - 4) / 13));
+  const dedans = { x: xg, y: y0, w: xd - xg, h };
+  const variantes = [[etiquette]];
+  for (const lmax of largeurs) {
+    const l = couper(etiquette, Math.min(lmax, xd - xg - 12), 11);
+    if (l.length <= nMax && !variantes.some((v) => v.join("|") === l.join("|"))) variantes.push(l);
+  }
+  const autre = cote === "droite" ? "gauche" : "droite";
+  const verticales = [position, position === "haut" ? "bas" : "haut", "milieu"];
+  const yDe = (v, n) => (v === "haut" ? y0 + Math.min(h / 2 + 4, 16) : v === "bas" ? y1 - 6 - (n - 1) * 13 : y0 + h / 2 + 4 - (n - 1) * 6.5);
+  const interieur = (v, l, c) => ({ x: c === "droite" ? xd - 6 : xg + 6, y: yDe(v, l.length), ancre: c === "droite" ? "end" : "start", lignes: l, dedans });
+  const exterieur = (l, c) => ({
+    x: c === "droite" ? xd + 6 : xg - 6, y: yDe("haut", l.length), ancre: c === "droite" ? "start" : "end", lignes: l,
+    dedans: c === "droite" ? { x: xd, y: y0, w: dehors.droite - xd, h } : { x: dehors.gauche, y: y0, w: xg - dehors.gauche, h },
+  });
+  const cands = [];
+  for (const l of variantes) {
+    for (const v of verticales) for (const c of [cote, autre]) cands.push(interieur(v, l, c));
+    if (dehors) for (const c of [cote, autre]) cands.push(exterieur(l, c));
+  }
+  return cands;
 }
 
-/** Flèche d'effort (rouge), de réaction (vert) ou d'écoulement (bleu). */
-export function fleche(id, x1, y1, x2, y2, { type = "effort", libelle = "", ep = 2.4, position = "fin" } = {}) {
+/**
+ * Ligne de cote avec flèches aux deux bouts et libellé. Avec un placeur P,
+ * le libellé cherche sa place (côté demandé d'abord, au milieu puis vers les
+ * bouts) et la cote devient un obstacle pour les autres étiquettes.
+ */
+export function cote(id, x1, y1, x2, y2, libelle, { cote: position = "haut", decalage = 5, P = null } = {}) {
+  const vertical = Math.abs(x2 - x1) < Math.abs(y2 - y1);
+  const trait = ligne(x1, y1, x2, y2, COULEURS.cote, 1.1, `marker-start="url(#${id}-fc)" marker-end="url(#${id}-fc)"`);
+  if (P) P.segment(x1, y1, x2, y2, 2);
+  if (!libelle) return trait;
+  const style = `class="halo" style="font-size:11.5px;font-weight:700;fill:${COULEURS.cote}"`;
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+  let cands;
+  if (vertical) {
+    const g = position === "gauche";
+    const pos = (gauche, f) => ({ x: mx + (gauche ? -decalage : decalage), y: y1 + f * (y2 - y1) + 4, ancre: gauche ? "end" : "start" });
+    cands = [pos(g, 0.5), pos(g, 0.3), pos(g, 0.7), pos(g, 0.15), pos(g, 0.85), pos(!g, 0.5), pos(!g, 0.3), pos(!g, 0.7)];
+  } else {
+    const bas = position === "bas";
+    const pos = (dessous, f) => ({ x: x1 + f * (x2 - x1), y: my + (dessous ? 14 : -decalage), ancre: "middle" });
+    // Cote courte au bord de la figure : libellé calé sur l'un de ses bouts.
+    const bout = (dessous, droite) => ({ x: droite ? Math.max(x1, x2) : Math.min(x1, x2), y: my + (dessous ? 14 : -decalage), ancre: droite ? "end" : "start" });
+    cands = [pos(bas, 0.5), pos(!bas, 0.5), pos(bas, 0.3), pos(bas, 0.7), pos(!bas, 0.3), pos(!bas, 0.7),
+      bout(bas, true), bout(bas, false), bout(!bas, true), bout(!bas, false)];
+  }
+  cands = cands.map((c) => ({ ...c, lignes: [libelle] }));
+  if (!P) return trait + texte(cands[0].x, cands[0].y, libelle, `text-anchor="${cands[0].ancre}" ${style}`);
+  P.texte(cands, style, { taille: 11.5, priorite: 3 });
+  return trait;
+}
+
+/**
+ * Flèche d'effort (rouge), de réaction (vert) ou d'écoulement (bleu). Le
+ * libellé s'accroche à l'extrémité désignée par `position` : au-dessus d'une
+ * flèche horizontale, à droite d'une flèche verticale ; avec un placeur P, il
+ * se déplace si cette place est prise.
+ */
+export function fleche(id, x1, y1, x2, y2, { type = "effort", libelle = "", ep = 2.4, position = "fin", P = null } = {}) {
   const couleur = type === "reaction" ? COULEURS.reaction : type === "bleu" ? COULEURS.bleu : COULEURS.effort;
   const m = type === "reaction" ? "fr" : type === "bleu" ? "fb" : "fl";
-  const lx = position === "fin" ? x2 : x1, ly = position === "fin" ? y2 : y1;
-  const dx = x2 - x1, dy = y2 - y1;
-  const tx = lx + (Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 6 : -6) : 7);
-  const ty = ly + (Math.abs(dy) >= Math.abs(dx) ? (dy > 0 ? 14 : -6) : -6);
-  const ancre = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "start" : "end") : "start";
-  return `${ligne(x1, y1, x2, y2, couleur, ep, `marker-end="url(#${id}-${m})"`)}
-    ${libelle ? texte(tx, ty, libelle, `text-anchor="${ancre}" style="font-weight:800;fill:${couleur}"`) : ""}`;
+  const trait = ligne(x1, y1, x2, y2, couleur, ep, `marker-end="url(#${id}-${m})"`);
+  if (P) P.segment(x1, y1, x2, y2, 2);
+  if (!libelle) return trait;
+  const fin = position === "fin";
+  const [ax, ay] = fin ? [x2, y2] : [x1, y1]; // extrémité qui porte le libellé
+  const [bx, by] = fin ? [x1, y1] : [x2, y2];
+  let cands;
+  if (Math.abs(x2 - x1) > Math.abs(y2 - y1)) {
+    // Le texte part de l'extrémité et longe la flèche.
+    const s = Math.sign(bx - ax) || 1, ancre = s > 0 ? "start" : "end";
+    cands = [
+      { x: ax + 2 * s, y: ay - 7, ancre }, { x: ax + 2 * s, y: ay + 16, ancre },
+      { x: ax - 7 * s, y: ay + 4, ancre: s > 0 ? "end" : "start" },
+      { x: (ax + bx) / 2, y: ay - 7, ancre: "middle" }, { x: (ax + bx) / 2, y: ay + 16, ancre: "middle" },
+    ];
+  } else {
+    const ty = ay + (y2 > y1 ? (fin ? -2 : 4) : 12);
+    cands = [
+      { x: ax + 7, y: ty, ancre: "start" }, { x: ax - 7, y: ty, ancre: "end" },
+      { x: ax, y: by > ay ? ay - 5 : ay + 14, ancre: "middle" },
+      { x: ax + 7, y: (ay + by) / 2 + 4, ancre: "start" }, { x: ax - 7, y: (ay + by) / 2 + 4, ancre: "end" },
+    ];
+  }
+  cands = cands.map((c) => ({ ...c, lignes: [libelle] }));
+  const style = `class="halo" style="font-weight:800;fill:${couleur}"`;
+  if (!P) return trait + texte(cands[0].x, cands[0].y, libelle, `text-anchor="${cands[0].ancre}" ${style}`);
+  P.texte(cands, style, { taille: 12, priorite: 3 });
+  return trait;
 }
 
-/** Symbole de nappe (triangle inversé) et trait du niveau d'eau. */
-export function nappe(x, y, largeur) {
+/** Symbole de nappe (triangle inversé, à droite) et trait du niveau d'eau. */
+export function nappe(x, y, largeur, P = null) {
+  const xs = x + largeur - 22;
+  if (P) { P.segment(x, y, x + largeur, y, 1); P.boite({ x: xs - 6, y: y - 10, w: 12, h: 10 }); }
   return `${ligne(x, y, x + largeur, y, COULEURS.eau, 1.4, 'stroke-dasharray="6 4"')}
-    <path d="M${x + 14} ${y - 1}l6-9h-12z" fill="${COULEURS.eau}"/>`;
+    <path d="M${xs} ${y - 1}l6-9h-12z" fill="${COULEURS.eau}"/>`;
 }
 
 // ───────────────────────────── Graphique x–y ──────────────────────────────
 
 /**
- * Graphique cartésien : séries de points, axes gradués, légende.
- * series : [{ points: [[x, y]], couleur, libelle, tirets, epaisseur, points: bool }]
+ * Graphique cartésien : séries de points, axes gradués, légende sous le
+ * graphique (jamais sur les courbes).
+ * series : [{ points: [[x, y]], couleur, libelle, tirets, epaisseur, marqueurs }]
+ * zones : [{ x0, x1, y0, y1, couleur, opacite, libelle, position: "gauche"|"droite" }]
+ * marques : [{ x, y, couleur, libelle, guides, rayon }]
  * inverserY : pour un profil en profondeur (z croissant vers le bas).
+ * legende : "dessous" (défaut) | "dedans" | false.
+ * Les libellés des marques puis des zones sont posés par le placeur : ils
+ * évitent les courbes, les guides, les points et les autres libellés.
  */
 export function graphe({
   largeur = 560, hauteur = 300, xmin, xmax, ymin, ymax, xlabel = "", ylabel = "", series = [],
-  titre = "", inverserY = false, pasX = null, pasY = null, marques = [], legende = true, zones = [],
+  titre = "", inverserY = false, pasX = null, pasY = null, marques = [], legende = "dessous", zones = [],
 }) {
-  const g = { gauche: 58, droite: 18, haut: 18, bas: 44 };
+  const g = { gauche: 58, droite: 18, haut: 14, bas: 44 };
   const W = largeur - g.gauche - g.droite, H = hauteur - g.haut - g.bas;
   const X = (x) => g.gauche + ((x - xmin) / (xmax - xmin)) * W;
   const Y = (y) => inverserY ? g.haut + ((y - ymin) / (ymax - ymin)) * H : g.haut + H - ((y - ymin) / (ymax - ymin)) * H;
-  const pas = (a, b, voulu) => {
-    if (voulu) return voulu;
-    const brut = (b - a) / 6, p = 10 ** Math.floor(Math.log10(brut)), r = brut / p;
-    return (r < 1.5 ? 1 : r < 3.5 ? 2 : r < 7.5 ? 5 : 10) * p;
-  };
-  const px = pas(xmin, xmax, pasX), py = pas(ymin, ymax, pasY);
+  const px = pasX || pasJoli(xmax - xmin), py = pasY || pasJoli(ymax - ymin);
+
+  // Légende : rangées d'éléments sous le titre de l'axe x.
+  const avecLibelle = series.filter((se) => se.libelle);
+  const rangees = [];
+  if (legende && legende !== "dedans" && avecLibelle.length) {
+    let rangee = [], occupe = 0;
+    for (const se of avecLibelle) {
+      const w = 34 + largeurTexte(se.libelle, 11);
+      if (rangee.length && occupe + w > largeur - 20) { rangees.push({ rangee, occupe }); rangee = []; occupe = 0; }
+      rangee.push({ se, w }); occupe += w;
+    }
+    rangees.push({ rangee, occupe });
+  }
+  const hLegende = rangees.length ? rangees.length * 17 + 6 : 0;
+
   return svg({
-    largeur, hauteur, titre, contenu: (id) => {
+    largeur, hauteur: hauteur + hLegende, titre, contenu: (id) => {
       let s = "";
+      const P = placeur({ x: g.gauche, y: g.haut, w: W, h: H });
       for (const z of zones) {
         s += `<rect x="${X(z.x0).toFixed(1)}" y="${Math.min(Y(z.y0), Y(z.y1)).toFixed(1)}" width="${(X(z.x1) - X(z.x0)).toFixed(1)}" height="${Math.abs(Y(z.y1) - Y(z.y0)).toFixed(1)}" fill="${z.couleur}" opacity="${z.opacite ?? 0.18}"/>`;
-        if (z.libelle) s += texte(X(z.x0) + 4, Math.min(Y(z.y0), Y(z.y1)) + 13, z.libelle, `class="pt"`);
       }
+      // Graduations ; le zéro s'écrit « 0 », jamais « -0 ».
       for (let x = Math.ceil(xmin / px) * px; x <= xmax + 1e-9; x += px) {
         s += ligne(X(x), g.haut, X(x), g.haut + H, COULEURS.grille, 1);
-        s += texte(X(x), g.haut + H + 16, fmt(x, 4), `text-anchor="middle" class="pt"`);
+        s += texte(X(x), g.haut + H + 16, fmt(Math.abs(x) < px * 1e-9 ? 0 : x, 4), `text-anchor="middle" class="pt"`);
       }
       for (let y = Math.ceil(ymin / py) * py; y <= ymax + 1e-9; y += py) {
         s += ligne(g.gauche, Y(y), g.gauche + W, Y(y), COULEURS.grille, 1);
-        s += texte(g.gauche - 7, Y(y) + 4, fmt(y, 4), `text-anchor="end" class="pt"`);
+        s += texte(g.gauche - 7, Y(y) + 4, fmt(Math.abs(y) < py * 1e-9 ? 0 : y, 4), `text-anchor="end" class="pt"`);
       }
       s += `<rect x="${g.gauche}" y="${g.haut}" width="${W}" height="${H}" fill="none" stroke="${COULEURS.trait}" stroke-width="1.2"/>`;
-      s += texte(g.gauche + W / 2, hauteur - 8, xlabel, `text-anchor="middle" style="font-weight:700"`);
+      s += texte(g.gauche + W / 2, hauteur - 10, xlabel, `text-anchor="middle" style="font-weight:700"`);
       s += `<text transform="translate(14 ${g.haut + H / 2}) rotate(-90)" text-anchor="middle" style="font-weight:700">${esc(ylabel)}</text>`;
       const clip = `${id}-clip`;
       s += `<clipPath id="${clip}"><rect x="${g.gauche}" y="${g.haut}" width="${W}" height="${H}"/></clipPath>`;
+      // Guides des marques d'abord : ils passent sous les courbes.
+      for (const m of marques) {
+        if (!m.guides) continue;
+        const col = m.couleur ?? COULEURS.effort, cx = X(m.x), cy = Y(m.y);
+        s += ligne(cx, cy, cx, g.haut + H, col, 1, `stroke-dasharray="4 3" clip-path="url(#${clip})"`);
+        s += ligne(g.gauche, cy, cx, cy, col, 1, `stroke-dasharray="4 3" clip-path="url(#${clip})"`);
+        P.segment(cx, cy, cx, g.haut + H, 0.5);
+        P.segment(g.gauche, cy, cx, cy, 0.5);
+      }
       series.forEach((se) => {
         const pts = se.points.filter(([x, y]) => Number.isFinite(x) && Number.isFinite(y));
         if (!pts.length) return;
         const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${X(x).toFixed(1)} ${Y(y).toFixed(1)}`).join("");
-        s += `<path d="${d}" fill="none" stroke="${se.couleur}" stroke-width="${se.epaisseur ?? 2.2}" ${se.tirets ? `stroke-dasharray="${se.tirets}"` : ""} clip-path="url(#${clip})"/>`;
-        if (se.marqueurs) pts.forEach(([x, y]) => { s += `<circle cx="${X(x).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="3" fill="${se.couleur}"/>`; });
+        s += `<path d="${d}" fill="none" stroke="${se.couleur}" stroke-width="${se.epaisseur ?? 2.2}" ${se.tirets ? `stroke-dasharray="${se.tirets}"` : ""} stroke-linejoin="round" clip-path="url(#${clip})"/>`;
+        P.polyligne(pts.map(([x, y]) => [X(x), Y(y)]));
+        if (se.marqueurs) pts.forEach(([x, y]) => {
+          s += `<circle cx="${X(x).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="3" fill="${se.couleur}"/>`;
+          P.boite({ x: X(x) - 3, y: Y(y) - 3, w: 6, h: 6 }, 2);
+        });
       });
       for (const m of marques) {
-        s += `<circle cx="${X(m.x).toFixed(1)}" cy="${Y(m.y).toFixed(1)}" r="${m.rayon ?? 5}" fill="${m.couleur ?? COULEURS.effort}" stroke="#fff" stroke-width="1.5"/>`;
-        if (m.guides) {
-          s += ligne(X(m.x), Y(m.y), X(m.x), inverserY ? g.haut : g.haut + H, m.couleur ?? COULEURS.effort, 1, 'stroke-dasharray="4 3"');
-          s += ligne(g.gauche, Y(m.y), X(m.x), Y(m.y), m.couleur ?? COULEURS.effort, 1, 'stroke-dasharray="4 3"');
-        }
-        if (m.libelle) s += texte(X(m.x) + 8, Y(m.y) - 8, m.libelle, `style="font-weight:800;fill:${m.couleur ?? COULEURS.effort}"`);
+        const col = m.couleur ?? COULEURS.effort, cx = X(m.x), cy = Y(m.y), r = m.rayon ?? 5;
+        s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="${col}" stroke="#fff" stroke-width="1.5"/>`;
+        P.boite({ x: cx - r, y: cy - r, w: 2 * r, h: 2 * r });
+        if (!m.libelle) continue;
+        const d = r + 3;
+        P.texte([
+          { x: cx + d, y: cy - d, ancre: "start" }, { x: cx - d, y: cy - d, ancre: "end" },
+          { x: cx + d, y: cy + d + 10, ancre: "start" }, { x: cx - d, y: cy + d + 10, ancre: "end" },
+          { x: cx + d + 2, y: cy + 4, ancre: "start" }, { x: cx - d - 2, y: cy + 4, ancre: "end" },
+          { x: cx, y: cy - d - 2, ancre: "middle" }, { x: cx, y: cy + d + 12, ancre: "middle" },
+        ].map((c) => ({ ...c, lignes: [m.libelle] })), `class="halo" style="font-weight:800;fill:${col}"`, { taille: 12, priorite: 2 });
       }
-      if (legende) {
-        const avec = series.filter((se) => se.libelle);
-        avec.forEach((se, i) => {
+      // Libellés des zones : dans leur zone, là où aucune courbe ne passe.
+      for (const z of zones) {
+        if (!z.libelle) continue;
+        const haut = Math.max(Math.min(Y(z.y0), Y(z.y1)), g.haut), bas = Math.min(Math.max(Y(z.y0), Y(z.y1)), g.haut + H);
+        const gx = Math.max(X(z.x0), g.gauche), dx = Math.min(X(z.x1), g.gauche + W);
+        if (bas - haut < 15 || dx - gx < 30) continue;
+        const Z = { x: gx, y: haut, w: dx - gx, h: bas - haut };
+        const lignes = couper(z.libelle, Z.w - 10, 11).slice(0, Math.max(1, Math.floor((Z.h - 4) / 13)));
+        const n = lignes.length;
+        const pref = z.position === "droite" ? "droite" : "gauche";
+        const cands = [];
+        for (const yv of [Z.y + 12.5, Z.y + Z.h - 5 - (n - 1) * 13, Z.y + Z.h / 2 + 4 - (n - 1) * 6.5]) {
+          for (const c of [pref, pref === "droite" ? "gauche" : "droite"]) {
+            cands.push({ x: c === "droite" ? Z.x + Z.w - 5 : Z.x + 5, y: yv, ancre: c === "droite" ? "end" : "start", lignes });
+          }
+        }
+        P.texte(cands, `class="pt halo"`, { taille: 11, dedans: Z, priorite: 1 });
+      }
+      s += P.rendre();
+      if (legende === "dedans") {
+        avecLibelle.forEach((se, i) => {
           const lx = g.gauche + 10, ly = g.haut + 14 + i * 16;
-          s += `<rect x="${lx - 4}" y="${ly - 11}" width="${Math.min(W - 12, 18 + se.libelle.length * 6.4)}" height="15" fill="#fff" opacity=".85"/>`;
           s += ligne(lx, ly - 4, lx + 16, ly - 4, se.couleur, 2.4, se.tirets ? `stroke-dasharray="${se.tirets}"` : "");
-          s += texte(lx + 21, ly, se.libelle, `style="font-size:11px;font-weight:700"`);
+          s += texte(lx + 21, ly, se.libelle, `class="halo" style="font-size:11px;font-weight:700"`);
+        });
+      } else {
+        rangees.forEach(({ rangee, occupe }, i) => {
+          let lx = (largeur - occupe) / 2 + 4;
+          const ly = hauteur + 8 + i * 17;
+          for (const { se, w } of rangee) {
+            s += ligne(lx, ly - 4, lx + 18, ly - 4, se.couleur, se.epaisseur ? Math.max(se.epaisseur, 2.2) : 2.4, se.tirets ? `stroke-dasharray="${se.tirets}"` : "");
+            s += texte(lx + 24, ly, se.libelle, `style="font-size:11px;font-weight:700"`);
+            lx += w;
+          }
         });
       }
       return s;
@@ -188,64 +469,100 @@ export const echantillon = (f, a, b, n = 80) => Array.from({ length: n + 1 }, (_
 /**
  * Coupe transversale d'une semelle : terrain, couches, semelle et poteau,
  * charge V (excentrée de e) et H, cotes B et D, nappe, talus éventuel.
- * couches : [{ z0, z1, sol, etiquette }] depuis le terrain après travaux.
+ * couches : [{ z0, z1, sol, etiquette, cote, position }] depuis le terrain
+ * après travaux ; cote et position ne sont que des préférences.
+ * annotations : fonctions (id, { Y, xC, ech, xs, ws, yTN, P }) → SVG ; en
+ * passant P à cote() ou fleche(), leurs libellés entrent dans le placement.
+ * decalageCoteB : distance (px) de la cote B sous la base.
  */
 export function coupeSemelle({
   B, D, e = 0, V = null, H = 0, couches = [], zNappe = null, largeur = 560, hauteur = 300,
-  profondeurVue = null, epaisseur = null, talus = null, annotations = [], montrerHr = null,
+  profondeurVue = null, epaisseur = null, talus = null, annotations = [], montrerHr = null, decalageCoteB = 12,
 }) {
   const zVue = profondeurVue ?? Math.max(D + 2 * B, 4);
-  const marge = { g: 40, d: 40, h: 58, b: 16 };
+  const marge = { g: 40, d: 40, h: 64, b: 16 };
   const largeurM = Math.max(3.2 * B, B + 5, talus ? talus.d + B + 4 : 0);
   const ech = Math.min((largeur - marge.g - marge.d) / largeurM, (hauteur - marge.h - marge.b) / zVue);
   const x0 = marge.g + ((largeur - marge.g - marge.d) - largeurM * ech) / 2;
   const xC = x0 + (talus ? talus.d * ech + (largeurM - talus.d - B) * ech / 2 + B * ech / 2 : largeurM * ech / 2);
   const yTN = marge.h;
   const Y = (z) => yTN + z * ech;
+  const xs = xC - (B / 2) * ech, ws = B * ech;
   return svg({
     largeur, hauteur, titre: "Coupe de la semelle", contenu: (id) => {
       let s = "";
       const xg = x0, xd = x0 + largeurM * ech;
-      const liste = couches.length ? couches : [{ z0: 0, z1: zVue, sol: "argile" }];
-      for (const c of liste) {
+      const P = placeur({ x: 2, y: 2, w: largeur - 4, h: hauteur - 4 });
+      // Terrain : les fonds d'abord, les étiquettes à la fin.
+      const bandes = [];
+      for (const c of couches.length ? couches : [{ z0: 0, z1: zVue, sol: "argile" }]) {
         const a = Math.max(c.z0, 0), b = Math.min(c.z1, zVue);
         if (b <= a) continue;
-        s += couche(id, { x: xg, y: Y(a), w: xd - xg, h: (b - a) * ech, sol: c.sol, etiquette: c.etiquette });
+        s += couche(id, { x: xg, y: Y(a), w: xd - xg, h: (b - a) * ech, sol: c.sol });
+        if (c.etiquette) bandes.push({ c, y0: Y(a), y1: Y(b) });
       }
       // Talus : on retire la partie du terrain à gauche de l'arête.
+      let xTN = xg;
       if (talus) {
-        const xa = xC - (B / 2) * ech - talus.d * ech; // arête du talus
+        const xa = xs - talus.d * ech; // arête du talus
         const t = Math.tan((talus.beta * Math.PI) / 180);
-        const hVue = zVue;
-        const xb = xa - (hVue / t) * ech;
-        s += `<path d="M${xg} ${yTN - 1}L${xa.toFixed(1)} ${yTN - 1}L${Math.max(xb, xg).toFixed(1)} ${Y(Math.min(hVue, (xa - xg) / ech * t)).toFixed(1)}L${xg} ${Y(Math.min(hVue, (xa - xg) / ech * t)).toFixed(1)}Z" fill="#fff"/>`;
-        s += ligne(xa, yTN, Math.max(xb, xg), Y(Math.min(hVue, (xa - xg) / ech * t)), COULEURS.trait, 1.6);
-        s += texte(xa - 30, yTN + 26, `β = ${fmt(talus.beta, 3)}°`, `class="pt"`);
-        s += cote(id, xa, yTN - 12, xC - (B / 2) * ech, yTN - 12, `d = ${fmt(talus.d, 3)} m`);
+        const yb = Y(Math.min(zVue, ((xa - xg) / ech) * t));
+        const xb = Math.max(xa - (zVue / t) * ech, xg);
+        s += `<path d="M${xg} ${yTN - 1}L${xa.toFixed(1)} ${yTN - 1}L${xb.toFixed(1)} ${yb.toFixed(1)}L${xg} ${yb.toFixed(1)}Z" fill="#fff"/>`;
+        s += ligne(xa, yTN, xb, yb, COULEURS.trait, 1.6);
+        P.segment(xa, yTN, xb, yb, 2);
+        P.texte([
+          { x: xa - 12, y: yTN + 28, ancre: "end" }, { x: xa - 8, y: yTN + 16, ancre: "end" }, { x: (xa + xb) / 2 - 10, y: (yTN + yb) / 2, ancre: "end" },
+        ].map((c) => ({ ...c, lignes: [`β = ${fmt(talus.beta, 3)}°`] })), `class="pt halo"`, { taille: 11, priorite: 2 });
+        s += cote(id, xa, yTN - 12, xs, yTN - 12, `d = ${fmt(talus.d, 3)} m`, { P });
+        xTN = xa;
       }
-      s += ligne(xg, yTN, xd, yTN, COULEURS.trait, 1.8);
-      s += texte(xd - 4, yTN - 6, "TN après travaux", `text-anchor="end" class="pt"`);
-      if (zNappe !== null && zNappe < zVue) s += nappe(xg, Y(zNappe), xd - xg);
-      // Fouille remblayée, semelle et poteau.
+      s += ligne(xTN, yTN, xd, yTN, COULEURS.trait, 1.8);
+      P.segment(xTN, yTN, xd, yTN, 1);
+      if (zNappe !== null && zNappe < zVue) s += nappe(xg, Y(zNappe), xd - xg, P);
+      // Semelle et poteau.
       const ep = epaisseur ?? Math.min(Math.max(0.35 * B, 0.3), D);
-      const xs = xC - (B / 2) * ech, ws = B * ech;
       s += `<rect x="${xs.toFixed(1)}" y="${Y(D - ep).toFixed(1)}" width="${ws.toFixed(1)}" height="${(ep * ech).toFixed(1)}" fill="${COULEURS.beton}" stroke="${COULEURS.betonTrait}" stroke-width="1.6"/>`;
       s += `<rect x="${xs.toFixed(1)}" y="${Y(D - ep).toFixed(1)}" width="${ws.toFixed(1)}" height="${(ep * ech).toFixed(1)}" fill="url(#${id}-beton)"/>`;
       const bp = Math.max(0.25 * B, 0.2) * ech;
       s += `<rect x="${(xC - bp / 2).toFixed(1)}" y="${(yTN - 34).toFixed(1)}" width="${bp.toFixed(1)}" height="${(Y(D - ep) - yTN + 34).toFixed(1)}" fill="${COULEURS.beton}" stroke="${COULEURS.betonTrait}" stroke-width="1.6"/>`;
-      // Charges
+      P.boite({ x: xs, y: Y(D - ep), w: ws, h: ep * ech });
+      P.boite({ x: xC - bp / 2, y: yTN - 34, w: bp, h: Y(D - ep) - yTN + 34 });
+      // Charges : V au-dessus du poteau (excentrée de e), H sur le poteau.
       const xe = xC + e * ech;
-      if (V !== null) s += fleche(id, xe, yTN - 56, xe, yTN - 36, { libelle: V, position: "debut" });
-      if (H) s += fleche(id, xC - bp / 2 - 40, yTN - 28, xC - bp / 2 - 4, yTN - 28, { libelle: "H", position: "debut" });
-      if (e) s += cote(id, xC, yTN - 40, xe, yTN - 40, "e");
-      // Cotes
-      s += cote(id, xs, Y(D) + 12, xs + ws, Y(D) + 12, `B = ${fmt(B, 3)} m`, { cote: "bas" });
-      if (D > 0) s += cote(id, xs - 14, yTN, xs - 14, Y(D), `D = ${fmt(D, 3)} m`, { cote: "gauche" });
+      if (V !== null) s += fleche(id, xe, yTN - 60, xe, yTN - 37, { libelle: V, position: "debut", P });
+      if (H) s += fleche(id, xC - bp / 2 - 44, yTN - 22, xC - bp / 2 - 3, yTN - 22, { libelle: "H", position: "debut", P });
+      // Cote de l'excentrement, sous la flèche V ; son libellé ne touche pas la flèche.
+      if (Math.abs(e) * ech >= 8) {
+        s += ligne(xC, yTN - 44, xe, yTN - 44, COULEURS.cote, 1.1, `marker-start="url(#${id}-fc)" marker-end="url(#${id}-fc)"`);
+        s += ligne(xC, yTN - 49, xC, yTN - 34, COULEURS.cote, 0.8, 'stroke-dasharray="2 2"');
+        P.segment(xC, yTN - 44, xe, yTN - 44, 2);
+        const a = Math.min(xC, xe), b = Math.max(xC, xe);
+        P.texte([
+          { x: b + 6, y: yTN - 40, ancre: "start" }, { x: a - 6, y: yTN - 40, ancre: "end" }, { x: (a + b) / 2, y: yTN - 48, ancre: "middle" },
+        ].map((c) => ({ ...c, lignes: ["e"] })), `class="halo" style="font-size:11.5px;font-weight:700;fill:${COULEURS.cote}"`, { taille: 11.5, priorite: 3 });
+      }
+      // Cotes ; D passe à droite de la semelle quand le talus occupe la gauche.
+      s += cote(id, xs, Y(D) + decalageCoteB, xs + ws, Y(D) + decalageCoteB, `B = ${fmt(B, 3)} m`, { cote: "bas", P });
+      if (D > 0 && talus) s += cote(id, xs + ws + 14, yTN, xs + ws + 14, Y(D), `D = ${fmt(D, 3)} m`, { cote: "droite", P });
+      else if (D > 0) s += cote(id, xs - 14, yTN, xs - 14, Y(D), `D = ${fmt(D, 3)} m`, { cote: "gauche", P });
       if (montrerHr) {
         s += `<rect x="${xs.toFixed(1)}" y="${Y(D).toFixed(1)}" width="${ws.toFixed(1)}" height="${(montrerHr * ech).toFixed(1)}" fill="${COULEURS.bleu}" opacity=".12"/>`;
-        s += cote(id, xs + ws + 14, Y(D), xs + ws + 14, Y(D + montrerHr), `hr = ${fmt(montrerHr, 3)} m`);
+        s += cote(id, xs + ws + 14, Y(D), xs + ws + 14, Y(D + montrerHr), `hr = ${fmt(montrerHr, 3)} m`, { P });
       }
-      for (const a of annotations) s += a(id, { Y, xC, ech, xs, ws, yTN });
+      for (const a of annotations) s += a(id, { Y, xC, ech, xs, ws, yTN, P });
+      // Terrain naturel : au bout de son trait, dans le bloc ou juste après
+      // (jamais à gauche d'un talus, où le terrain est plus bas).
+      P.texte([
+        { x: xd - 4, y: yTN - 7, ancre: "end" }, ...(talus ? [] : [{ x: xTN + 4, y: yTN - 7, ancre: "start" }]),
+        { x: xd + 6, y: yTN + 4, ancre: "start" }, ...(talus ? [] : [{ x: xg - 6, y: yTN + 4, ancre: "end" }]),
+        { x: xd + 6, y: yTN - 12, ancre: "start" }, { x: xd - 4, y: yTN - 20, ancre: "end" }, { x: xd - 4, y: yTN - 50, ancre: "end" },
+      ].map((c) => ({ ...c, lignes: ["TN après travaux"] })), `class="pt"`, { taille: 11, priorite: 2 });
+      for (const { c, y0, y1 } of bandes) {
+        P.texte(candidatsBande(c.etiquette, { xg, xd, y0, y1, cote: c.cote ?? "droite", position: c.position ?? "haut", dehors: { gauche: 2, droite: largeur - 2 } }),
+          `class="gr halo" style="font-size:11px"`, { taille: 11, priorite: 1 });
+      }
+      s += P.rendre();
       return s;
     },
   });
@@ -269,24 +586,40 @@ export function coupePieu({ B, D, couches, profil = null, zones = [], largeur = 
   return svg({
     largeur, hauteur, titre: "Coupe du pieu", contenu: (id) => {
       let s = "";
+      const P = placeur({ x: xs0, y: 2, w: xs1 - xs0, h: hauteur - 4 });
+      const bandes = [];
       for (const c of couches) {
         const a = Math.max(c.z0, 0), b = Math.min(c.z1, zBas);
         if (b <= a) continue;
-        s += couche(id, { x: xs0, y: Y(a), w: xs1 - xs0, h: (b - a) * ech, sol: c.sol, etiquette: c.etiquette, cote: "gauche" });
+        s += couche(id, { x: xs0, y: Y(a), w: xs1 - xs0, h: (b - a) * ech, sol: c.sol });
+        if (c.etiquette) bandes.push({ c, y0: Y(a), y1: Y(b) });
       }
       for (const z of zones) {
-        s += `<rect x="${xs0}" y="${Y(z.z0).toFixed(1)}" width="${xs1 - xs0}" height="${((z.z1 - z.z0) * ech).toFixed(1)}" fill="${z.couleur}" opacity="${z.opacite ?? 0.18}"/>`;
-        if (z.libelle) s += texte(xs1 - 6, Y(z.z0) + 13, z.libelle, `text-anchor="end" style="font-size:11px;font-weight:800;fill:${z.couleur}"`);
+        const Z = { x: xs0, y: Y(z.z0), w: xs1 - xs0, h: (z.z1 - z.z0) * ech };
+        s += `<rect x="${Z.x}" y="${Z.y.toFixed(1)}" width="${Z.w}" height="${Z.h.toFixed(1)}" fill="${z.couleur}" opacity="${z.opacite ?? 0.18}"/>`;
+        if (z.libelle) {
+          P.texte([
+            { x: xs1 - 6, y: Z.y + 13, ancre: "end" }, { x: xs1 - 6, y: Z.y + Z.h - 5, ancre: "end" }, { x: xs0 + 6, y: Z.y + 13, ancre: "start" },
+          ].map((c) => ({ ...c, lignes: [z.libelle] })), `class="halo" style="font-size:11px;font-weight:800;fill:${z.couleur}"`, { taille: 11, priorite: 2 });
+        }
       }
       s += ligne(xs0, Y(0), xs1, Y(0), COULEURS.trait, 1.8);
+      P.segment(xs0, Y(0), xs1, Y(0), 1);
       s += `<rect x="${(xp - wp / 2).toFixed(1)}" y="${Y(-tete).toFixed(1)}" width="${wp.toFixed(1)}" height="${((D + tete) * ech).toFixed(1)}" fill="${COULEURS.beton}" stroke="${COULEURS.betonTrait}" stroke-width="1.5"/>`;
       s += `<rect x="${(xp - wp / 2).toFixed(1)}" y="${Y(-tete).toFixed(1)}" width="${wp.toFixed(1)}" height="${((D + tete) * ech).toFixed(1)}" fill="url(#${id}-beton)"/>`;
-      s += cote(id, xp + wp / 2 + 12, Y(0), xp + wp / 2 + 12, Y(D), `D = ${fmt(D, 3)} m`);
+      P.boite({ x: xp - wp / 2, y: Y(-tete), w: wp, h: (D + tete) * ech });
+      s += cote(id, xp + wp / 2 + 12, Y(0), xp + wp / 2 + 12, Y(D), `D = ${fmt(D, 3)} m`, { P });
+      // Étiquettes des couches : à gauche du pieu de préférence.
+      for (const { c, y0, y1 } of bandes) {
+        P.texte(candidatsBande(c.etiquette, { xg: xs0, xd: xs1, y0, y1, cote: "gauche", position: "haut", largeurs: [xp - wp / 2 - xs0 - 16, 90] }),
+          `class="gr halo" style="font-size:11px"`, { taille: 11, priorite: 1 });
+      }
       // Échelle des profondeurs
       for (let z = 0; z <= zBas + 1e-9; z += zBas > 25 ? 5 : zBas > 12 ? 2 : 1) {
         s += ligne(xs0 - 5, Y(z), xs0, Y(z), COULEURS.trait, 1);
         s += texte(xs0 - 7, Y(z) + 4, fmt(z, 3), `text-anchor="end" class="pt"`);
       }
+      s += P.rendre();
       if (profil) {
         const px0 = 330, px1 = largeur - 20;
         const vmax = profil.max ?? Math.max(...profil.valeurs.map((p) => p.v)) * 1.15;
@@ -294,7 +627,7 @@ export function coupePieu({ B, D, couches, profil = null, zones = [], largeur = 
         s += ligne(px0, Y(0), px0, Y(zBas), COULEURS.trait, 1.2);
         s += ligne(px0, Y(0), px1, Y(0), COULEURS.trait, 1.2);
         s += texte((px0 + px1) / 2, Y(0) - 8, `${profil.libelle} (${profil.unite})`, `text-anchor="middle" style="font-weight:800;font-size:11.5px"`);
-        const pasV = vmax > 1000 ? 500 : vmax > 400 ? 100 : vmax > 150 ? 50 : vmax > 40 ? 10 : vmax > 8 ? 2 : vmax > 3 ? 1 : 0.5;
+        const pasV = pasJoli(vmax, 5);
         for (let v = pasV; v < vmax; v += pasV) {
           s += ligne(X(v), Y(0), X(v), Y(zBas), COULEURS.grille, 1);
           s += texte(X(v), Y(zBas) + 14, fmt(v, 4), `text-anchor="middle" class="pt"`);
@@ -309,7 +642,9 @@ export function coupePieu({ B, D, couches, profil = null, zones = [], largeur = 
         for (const p of profil.valeurs) {
           const a = Math.max(p.z0, 0), b = Math.min(p.z1, zBas);
           if (b - a < 0.5 || !profil.etiquettes) continue;
-          s += texte(X(p.v) + 5, Y((a + b) / 2) + 4, fmt(p.v, 3), `style="font-size:11px;font-weight:800;fill:${profil.couleur ?? COULEURS.bleu}"`);
+          const txt = fmt(p.v, 3), w = largeurTexte(txt, 11);
+          const tx = X(p.v) + 5 + w > px1 ? X(p.v) - 5 : X(p.v) + 5;
+          s += texte(tx, Y((a + b) / 2) + 4, txt, `text-anchor="${tx < X(p.v) ? "end" : "start"}" class="halo" style="font-size:11px;font-weight:800;fill:${profil.couleur ?? COULEURS.bleu}"`);
         }
         s += ligne(px0 - 4, Y(D), px1, Y(D), COULEURS.effort, 1, 'stroke-dasharray="5 4"');
       }
@@ -320,38 +655,94 @@ export function coupePieu({ B, D, couches, profil = null, zones = [], largeur = 
 
 // ───────────────────────── Diagramme des contraintes ─────────────────────
 
-/** Semelle vue en coupe avec son diagramme de contraintes et la zone comprimée. */
-export function figureContraintes({ B, V, e, qmax, qmin, Bc, qref = null, meyerhof = null, largeur = 560, hauteur = 250 }) {
+/**
+ * Semelle vue en coupe avec son diagramme de contraintes et la zone comprimée.
+ * Les valeurs de q'ref (F62) et de la contrainte de Meyerhof (EC7) sont
+ * écrites en légende sous le diagramme ; sur le dessin, de simples repères,
+ * posés par le placeur à l'écart des tracés.
+ */
+export function figureContraintes({ B, V, e, qmax, qmin, Bc, qref = null, meyerhof = null, largeur = 560, hauteur = 0, uniteV = "kN/m" }) {
+  const legendes = (qref ? 1 : 0) + (meyerhof ? 1 : 0);
+  const yS = 70, hDiag = 104;
+  const yLeg = yS + hDiag + 34;
+  const yComp = yLeg + legendes * 16 + 12;
+  const yB = yComp + 26;
+  const hTot = Math.max(hauteur, yB + 16);
   return svg({
-    largeur, hauteur, titre: "Diagramme des contraintes sous la semelle", contenu: (id) => {
-      const g = 70, W = largeur - 2 * g;
+    largeur, hauteur: hTot, titre: "Diagramme des contraintes sous la semelle", contenu: (id) => {
+      const g = 60, W = largeur - 2 * g;
       const X = (x) => g + (x / B) * W;
-      const yS = 78, ech = 110 / Math.max(qmax, 1);
+      const ech = hDiag / Math.max(qmax, 1);
+      const ea = Math.abs(e);
+      const P = placeur({ x: 2, y: 2, w: largeur - 4, h: yLeg - 16 });
+      const rouge = (taille, graisse, couleur) => `class="halo" style="font-size:${taille}px;font-weight:${graisse};fill:${couleur}"`;
       let s = "";
       s += `<rect x="${g}" y="${yS - 26}" width="${W}" height="26" fill="${COULEURS.beton}" stroke="${COULEURS.betonTrait}" stroke-width="1.5"/>`;
       s += `<rect x="${g}" y="${yS - 26}" width="${W}" height="26" fill="url(#${id}-beton)"/>`;
-      const xe = X(B / 2 + e);
-      s += fleche(id, xe, 8, xe, yS - 30, { libelle: `V = ${fmt(V, 4)}`, position: "debut" });
+      P.boite({ x: g, y: yS - 26, w: W, h: 26 });
+      const xe = X(B / 2 + ea);
+      s += fleche(id, xe, 6, xe, yS - 30, { libelle: `V = ${fmt(V, 4)} ${uniteV}`, position: "debut", P });
       s += ligne(X(B / 2), yS - 30, X(B / 2), yS + 2, COULEURS.discret, 1, 'stroke-dasharray="3 3"');
-      // Diagramme : de x = B − Bc (bord décomprimé) à x = B (bord le plus chargé)
+      P.segment(X(B / 2), yS, X(B / 2), yS + 2, 0.5);
+      // Diagramme : de x = B − Bc (bord décomprimé) à x = B (bord le plus chargé).
       const x0 = B - Bc;
       const pts = [[X(x0), yS], [X(x0), yS + qmin * ech], [X(B), yS + qmax * ech], [X(B), yS]];
-      s += `<path d="M${pts.map((p) => p.map((v) => v.toFixed(1)).join(" ")).join("L")}Z" fill="${COULEURS.reaction}" fill-opacity=".2" stroke="${COULEURS.reaction}" stroke-width="1.8"/>`;
-      if (x0 > 0) s += `<rect x="${X(0)}" y="${yS}" width="${(X(x0) - X(0)).toFixed(1)}" height="8" fill="#fee2e2"/>` + texte((X(0) + X(x0)) / 2, yS + 22, "décollée", `text-anchor="middle" style="fill:${COULEURS.rouge};font-size:11px;font-weight:800"`);
-      s += texte(X(B) + 6, yS + qmax * ech + 4, `q'max = ${fmt(qmax, 4)} kPa`, `style="font-weight:800;fill:${COULEURS.reaction}"`);
-      if (qmin > 0) s += texte(X(x0) + 6, yS + qmin * ech + 15, `q'min = ${fmt(qmin, 4)}`, `style="font-weight:700;fill:${COULEURS.reaction}"`);
-      if (qref) {
-        const xr = X(B - Bc / 4);
-        s += ligne(xr, yS, xr, yS + qref * ech, COULEURS.f62, 2, 'stroke-dasharray="5 3"');
-        s += texte(xr - 6, yS + qref * ech + 14, `q'ref = ${fmt(qref, 4)} (aux 3/4)`, `text-anchor="end" style="font-weight:800;fill:${COULEURS.f62}"`);
+      s += `<path d="M${pts.map((p) => p.map((v) => v.toFixed(1)).join(" ")).join("L")}Z" fill="${COULEURS.reaction}" fill-opacity=".18" stroke="${COULEURS.reaction}" stroke-width="1.8"/>`;
+      P.polyligne(pts.slice(0, 4), 2);
+      // Ordonnée du bord du diagramme à l'abscisse x (en px).
+      const yBord = (x) => yS + (qmin + ((qmax - qmin) * (x - X(x0))) / Math.max(X(B) - X(x0), 1)) * ech;
+      if (x0 > 0) {
+        s += `<rect x="${X(0)}" y="${yS}" width="${(X(x0) - X(0)).toFixed(1)}" height="8" fill="#fee2e2"/>`;
+        P.boite({ x: X(0), y: yS, w: X(x0) - X(0), h: 8 }, 2);
+        const xm = (X(0) + X(x0)) / 2;
+        P.texte([{ x: xm, y: yS + 22, ancre: "middle" }, { x: X(0) + 4, y: yS + 22, ancre: "start" }, { x: xm, y: yS + 38, ancre: "middle" }]
+          .map((c) => ({ ...c, lignes: ["décollée"] })), rouge(11, 800, COULEURS.rouge), { taille: 11, priorite: 1 });
       }
       if (meyerhof) {
-        const Bp = B - 2 * Math.abs(e);
-        s += `<rect x="${X(B - Bp).toFixed(1)}" y="${(yS + meyerhof * ech).toFixed(1)}" width="${(X(B) - X(B - Bp)).toFixed(1)}" height="2.5" fill="${COULEURS.ec7}"/>`;
-        s += texte(X(B - Bp / 2), yS + meyerhof * ech + 16, `Meyerhof : ${fmt(meyerhof, 4)} kPa sur B' = ${fmt(Bp, 3)} m`, `text-anchor="middle" style="font-weight:800;fill:${COULEURS.ec7}"`);
+        const xa = X(2 * ea), xb = X(B), ym = yS + meyerhof * ech;
+        s += `<rect x="${xa.toFixed(1)}" y="${(ym - 1.25).toFixed(1)}" width="${(xb - xa).toFixed(1)}" height="2.5" fill="${COULEURS.violet}"/>`;
+        P.segment(xa, ym, xb, ym, 2);
+        P.texte([
+          { x: xa + 4, y: ym - 5, ancre: "start" }, { x: xa + 4, y: ym + 13, ancre: "start" },
+          { x: (xa + xb) / 2, y: ym - 5, ancre: "middle" }, { x: (xa + xb) / 2, y: ym + 13, ancre: "middle" },
+          { x: xb - 4, y: ym - 5, ancre: "end" }, { x: xb - 4, y: ym + 13, ancre: "end" },
+        ].map((c) => ({ ...c, lignes: ["Meyerhof"] })), rouge(11, 800, COULEURS.violet), { taille: 11, priorite: 2 });
       }
-      s += cote(id, X(0), hauteur - 14, X(B), hauteur - 14, `B = ${fmt(B, 3)} m`, { cote: "haut" });
-      s += cote(id, X(x0), yS - 36, X(B), yS - 36, `comprimée : ${fmt(100 * Bc / B, 3)} %`);
+      if (qref) {
+        const xr = X(B - Bc / 4), hr = qref * ech;
+        s += ligne(xr, yS, xr, yS + hr, COULEURS.f62, 2, 'stroke-dasharray="5 3"');
+        P.segment(xr, yS, xr, yS + hr, 2);
+        P.texte([0.5, 0.3, 0.75].flatMap((f) => [
+          { x: xr - 5, y: yS + f * hr + 4, ancre: "end" }, { x: xr + 5, y: yS + f * hr + 4, ancre: "start" },
+        ]).map((c) => ({ ...c, lignes: ["q'ref"] })), rouge(11, 800, COULEURS.f62), { taille: 11, priorite: 2 });
+      }
+      // Valeurs extrêmes : q'max sous le coin le plus chargé, q'min sous le bord du diagramme.
+      const tMax = `q'max = ${fmt(qmax, 4)} kPa`;
+      P.texte([
+        { x: X(B), y: yS + qmax * ech + 16, ancre: "end" }, { x: X(B) - 6, y: yS + qmax * ech - 8, ancre: "end" },
+      ].map((c) => ({ ...c, lignes: [tMax] })), rouge(12, 800, COULEURS.reaction), { taille: 12, priorite: 4 });
+      if (qmin > 0) {
+        const l1 = [`q'min = ${fmt(qmin, 4)} kPa`], l2 = ["q'min =", `${fmt(qmin, 4)} kPa`];
+        const sous = (l, dy) => ({ x: X(x0) + 2, y: yBord(X(x0) + 2 + Math.max(...l.map((t) => largeurTexte(t, 12)))) + dy, ancre: "start", lignes: l });
+        P.texte([sous(l1, 14), sous(l2, 14), sous(l1, 28), sous(l2, 28)], rouge(12, 700, COULEURS.reaction), { taille: 12, priorite: 3 });
+      }
+      s += P.rendre();
+      // Légende des contraintes de référence.
+      let yl = yLeg;
+      if (qref) {
+        s += ligne(g, yl - 4, g + 18, yl - 4, COULEURS.f62, 2, 'stroke-dasharray="5 3"');
+        s += texte(g + 24, yl, `q'ref (Fascicule 62) = ${fmt(qref, 4)} kPa, aux 3/4 de la largeur comprimée`, `style="font-size:11.5px;font-weight:700;fill:${COULEURS.f62}"`);
+        yl += 16;
+      }
+      if (meyerhof) {
+        s += `<rect x="${g}" y="${yl - 5.25}" width="18" height="2.5" fill="${COULEURS.violet}"/>`;
+        s += texte(g + 24, yl, `Meyerhof (NF P94-261) = ${fmt(meyerhof, 4)} kPa sur B' = B − 2e = ${fmt(B - 2 * ea, 3)} m`, `style="font-size:11.5px;font-weight:700;fill:${COULEURS.violet}"`);
+      }
+      // Cotes : le libellé d'une zone comprimée très courte reste dans le cadre.
+      const Pc = placeur({ x: 2, y: 2, w: largeur - 4, h: hTot - 4 });
+      s += cote(id, X(x0), yComp, X(B), yComp, `largeur comprimée : ${fmt(Bc, 3)} m (${fmt((100 * Bc) / B, 3)} %)`, { P: Pc });
+      s += cote(id, X(0), yB, X(B), yB, `B = ${fmt(B, 3)} m`, { P: Pc });
+      s += Pc.rendre();
       return s;
     },
   });

@@ -1,7 +1,7 @@
 // Calculateurs du chapitre 3 : hauteur d'encastrement équivalente et
 // excentrement (diagramme plan du Fascicule 62, largeur effective de l'EC7).
 import { el, num, fd, f, verdict, brancher, garde } from "./ui.js";
-import { coupeSemelle, figureContraintes, cote, COULEURS, texte } from "./figures.js";
+import { coupeSemelle, figureContraintes, cote, COULEURS } from "./figures.js";
 import { diagramme, FRACTION_MIN_F62, eLimiteF62, contrainteReferenceEC7 } from "./geotech/superficielles.js";
 
 // ── De sous une couverture plus faible ──────────────────────────────────
@@ -19,10 +19,13 @@ const majDe = garde("deOut", () => {
   ];
   el("deFig").innerHTML = coupeSemelle({
     B, D, couches, hauteur: 250, profondeurVue: Math.max(D + 1.6 * B, 3),
-    annotations: [(id, { Y, xs, ws }) => {
+    annotations: [(id, { Y, xs, ws, P }) => {
       const haut = Math.max(D - De, -0.25);
-      return cote(id, xs + ws + 16, Y(haut), xs + ws + 16, Y(D), `De = ${fd(De, 2)} m`)
-        + (De > D ? texte(xs + ws + 22, Y(haut) - 4, "De > D", `style="font-size:11px;fill:${COULEURS.f62};font-weight:800"`) : "");
+      if (De > D) {
+        P.texte([{ x: xs + ws + 22, y: Y(haut) - 4, ancre: "start" }, { x: xs + ws + 10, y: Y(haut) - 4, ancre: "end" }]
+          .map((c) => ({ ...c, lignes: ["De > D"] })), `class="halo" style="font-size:11px;fill:${COULEURS.f62};font-weight:800"`, { taille: 11, priorite: 3 });
+      }
+      return cote(id, xs + ws + 16, Y(haut), xs + ws + 16, Y(D), `De = ${fd(De, 2)} m`, { P });
     }],
   });
   el("deOut").innerHTML =

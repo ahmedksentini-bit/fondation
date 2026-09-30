@@ -47,7 +47,7 @@
      "toleranceRel": 0.01
     },
     {
-     "texte": "Qmin à l'ELU fondamental ?",
+     "texte": "Qmin à l'ELU fondamental (traction comptée négativement) ?",
      "type": "nombre",
      "unite": "kN",
      "reponse": -1714.29,

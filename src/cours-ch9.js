@@ -67,8 +67,9 @@ const majPi = garde("piOut", () => {
     largeur: 560, hauteur: 320, xmin: 0, xmax: qsMax, ymin: 0, ymax: zMax, inverserY: true,
     xlabel: "frottement unitaire qs (kPa)", ylabel: "profondeur (m)",
     zones: [
-      ...couches.map((c, i) => ({ x0: 0, x1: qsMax, y0: c.z0, y1: Math.min(c.z1, zMax), couleur: teintes[i % 4], opacite: 0.45, libelle: `${CLASSES_F62[c.classe].nom} · ${CATEGORIES_EC7[c.sol].nom.split(" (")[0]}` })),
-      { x0: qsMax * 0.7, x1: qsMax, y0: I.z0, y1: I.z1, couleur: COULEURS.rouge, opacite: 0.18, libelle: "pointe" },
+      ...couches.map((c, i) => ({ x0: 0, x1: qsMax, y0: c.z0, y1: Math.min(c.z1, zMax), couleur: teintes[i % 4], opacite: 0.45, position: "droite",
+        libelle: `F62 ${c.classe.replace("-", " ")} · EC7 ${CATEGORIES_EC7[c.sol].nom.split(" (")[0].toLowerCase()}` })),
+      { x0: qsMax * 0.72, x1: qsMax, y0: I.z0, y1: I.z1, couleur: COULEURS.rouge, opacite: 0.18, libelle: "pointe", position: "droite" },
     ],
     series,
   });

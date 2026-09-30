@@ -101,7 +101,7 @@ const majCphi = garde("cpOut", () => {
 
   el("cpFig").innerHTML = coupeSemelle({
     B, D, e: nd.e, V: "Vd", H: Hd, epaisseur: h, zNappe: Dw, hauteur: 250, profondeurVue: Math.max(D + 1.5 * B, 4),
-    couches: [{ z0: 0, z1: 60, sol: "argile", etiquette: `cu = ${f(cu, 3)} kPa · φ' = ${f(phi, 3)}° · c' = ${f(c, 3)} kPa` }],
+    couches: [{ z0: 0, z1: 60, sol: "argile", position: "bas", etiquette: `argile · cu ${f(cu, 3)} kPa · φ' ${f(phi, 3)}° · c' ${f(c, 3)} kPa` }],
   });
 
   const colonnes = [];
