@@ -237,3 +237,9 @@ a.brand strong,a.brand small{text-decoration:none}
   .software-panel{border:0;box-shadow:none;padding:0}
   .note-calcul{break-before:page}
 }
+
+/* Curseur de calcul en direct, sous la case qu'il pilote (src/curseurs.js). */
+.field .curseur{display:block;width:100%;height:22px;margin:8px 0 0;padding:0;border:0;background:none;accent-color:var(--blue);cursor:grab;touch-action:pan-y}
+.field .curseur:active{cursor:grabbing}
+.field .curseur.hors-plage{opacity:.4}
+@media print{.curseur{display:none}}

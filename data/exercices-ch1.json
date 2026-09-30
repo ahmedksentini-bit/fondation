@@ -2,74 +2,11 @@
  "chapitre": "ch1",
  "exercices": [
   {
-   "id": "ch1-pnette",
-   "titre": "Pression limite nette d'un essai sous la nappe",
-   "difficulte": 1,
-   "graine": 2600021384,
-   "enonce": "Un essai pressiométrique mené à 9,5 m de profondeur donne une pression limite pl = 1,65 MPa. La nappe est à 3 m de profondeur ; le sol pèse 20 kN/m³ au-dessus et 21,5 kN/m³ (saturé) au-dessous. On prend K0 = 0,5 et γw = 10 kN/m³.",
-   "donnees": [
-    {
-     "label": "Profondeur de l'essai",
-     "valeur": "9,5 m"
-    },
-    {
-     "label": "pl mesurée",
-     "valeur": "1,65 MPa"
-    },
-    {
-     "label": "Nappe",
-     "valeur": "3 m"
-    },
-    {
-     "label": "γ / γsat",
-     "valeur": "20 / 21,5 kN/m³"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Contrainte verticale effective σ'v0 au niveau de l'essai ?",
-     "type": "nombre",
-     "unite": "kPa",
-     "reponse": 134.75,
-     "explication": "σv0 = 20 × 3 + 21,5 × 6,5 = 199,8 kPa ; u = 10 × 6,5 = 65 kPa ; σ'v0 = σv0 − u = 134,8 kPa.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Pression horizontale totale au repos p0 ?",
-     "type": "nombre",
-     "unite": "kPa",
-     "reponse": 132.375,
-     "explication": "p0 = u + K0 σ'v0 = 65 + 0,5 × 134,8 = 132,4 kPa : l'eau compte entière, le squelette pour moitié.",
-     "toleranceRel": 0.02
-    },
-    {
-     "texte": "Pression limite nette pl* ?",
-     "type": "nombre",
-     "unite": "MPa",
-     "reponse": 1.51763,
-     "explication": "pl* = pl − p0 = 1,65 − 0,132 = 1,518 MPa. La correction représente 8 % de pl : elle n'est pas négligeable en profondeur et sous la nappe.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Quelle pression entre dans les formules de portance des deux référentiels ?",
-     "type": "choix",
-     "options": [
-      "la pression p0 au repos",
-      "la pression limite nette pl*",
-      "la pression limite mesurée pl",
-      "la pression de fluage pf"
-     ],
-     "reponse": 1,
-     "explication": "Les facteurs de portance kp multiplient la pression limite nette, qui mesure ce que le sol peut reprendre au-delà de son état initial. Les classes du Fascicule 62, elles, sont tabulées en pl."
-    }
-   ]
-  },
-  {
    "id": "ch1-classe",
    "titre": "Classer un sol au Fascicule 62",
    "difficulte": 1,
    "graine": 1060492039,
-   "enonce": "Un sol sableux donne au pressiomètre pl = 0,45 MPa et EM = 3,8 MPa.",
+   "enonce": "Un sol sableux donne au pressiomètre pl = 0,45 MPa.",
    "donnees": [
     {
      "label": "Nature",
@@ -78,10 +15,6 @@
     {
      "label": "pl",
      "valeur": "0,45 MPa"
-    },
-    {
-     "label": "EM",
-     "valeur": "3,8 MPa"
     }
    ],
    "questions": [
@@ -97,78 +30,27 @@
      "explication": "Le tableau donne pour les sables : A pour pl < 0,5 MPa, B pour pl de 1,0 à 2,0 MPa, C pour pl > 2,5 MPa. Avec 0,45 MPa, on retient la classe A."
     },
     {
-     "texte": "Rapport EM/pl ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 8.44444,
-     "explication": "EM/pl = 3,8 / 0,45 = 8,44.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "Coefficient rhéologique α ?",
+     "texte": "Quelle résistance de pointe qc attendrait-on au pénétromètre statique dans cette classe ?",
      "type": "choix",
      "options": [
-      "2/3",
-      "1",
-      "1/3",
-      "1/2"
+      "plus de 20 MPa",
+      "de 8 à 15 MPa",
+      "moins de 5 MPa"
      ],
      "reponse": 2,
-     "explication": "Pour un sable, EM/pl = 8,44 correspond à l'état « normalement serré » : α = 1/3. Un grand rapport EM/pl signale un sol surconsolidé ou serré."
-    }
-   ]
-  },
-  {
-   "id": "ch1-alpha",
-   "titre": "Coefficient rhéologique et état du sol",
-   "difficulte": 1,
-   "graine": 1845478228,
-   "enonce": "Dans un argile, l'essai pressiométrique donne EM = 38 MPa et pl = 2,0 MPa.",
-   "donnees": [
-    {
-     "label": "Nature",
-     "valeur": "argile"
+     "explication": "Le même tableau donne, pour la classe A, qc moins de 5 MPa. Les deux essais classent le même sol ; les fourchettes ne sont pas jointives, comme pour pl."
     },
     {
-     "label": "EM",
-     "valeur": "38 MPa"
-    },
-    {
-     "label": "pl",
-     "valeur": "2,0 MPa"
-    }
-   ],
-   "questions": [
-    {
-     "texte": "Rapport EM/pl ?",
-     "type": "nombre",
-     "unite": "",
-     "reponse": 19,
-     "explication": "EM/pl = 38 / 2,0 = 19,00.",
-     "toleranceRel": 0.01
-    },
-    {
-     "texte": "État du sol d'après le tableau de α ?",
+     "texte": "À l'Eurocode 7, ce sol se range…",
      "type": "choix",
      "options": [
-      "surconsolidé",
-      "sous-consolidé, altéré, remanié",
-      "normalement consolidé"
+      "dans la catégorie des sols intermédiaires, faute de lettre",
+      "dans la catégorie des sables et graves, sans lettre",
+      "dans une catégorie fixée par la valeur de pl",
+      "dans la classe A de la NF P94-261"
      ],
-     "reponse": 0,
-     "explication": "Le tableau du coefficient rhéologique (F62 annexe C.5 ; NF P94-261 tableau H.2.1.1.1 corrigé) classe ce rapport dans « surconsolidé »."
-    },
-    {
-     "texte": "Coefficient α à retenir ?",
-     "type": "choix",
-     "options": [
-      "2/3",
-      "1/2",
-      "1/3",
-      "1"
-     ],
-     "reponse": 3,
-     "explication": "α = 1. Il sert au tassement (chapitre 9) et au module de réaction transversal des pieux (chapitre 14)."
+     "reponse": 1,
+     "explication": "Les catégories conventionnelles de la NF P94-261 et de la NF P94-262 ne décrivent que la nature du sol : la résistance entre directement par pl* ou qc dans les formules."
     }
    ]
   },
@@ -268,16 +150,16 @@
      "explication": "La norme a créé une catégorie « sols intermédiaires » entre les argiles-limons et les sables-graves. Le choix entre les catégories reste un jugement sur la nature dominante du sol."
     },
     {
-     "texte": "Le coefficient rhéologique α se lit…",
+     "texte": "Sous une semelle isolée de 2,5 m de côté, l'annexe B.3 de la NF EN 1997-2 recommande de reconnaître le terrain sous l'assise sur au moins…",
      "type": "choix",
      "options": [
-      "sur la seule pression limite pl",
-      "sur la résistance de pointe qc",
-      "sur le rapport EM/pl, selon la nature du sol",
-      "sur l'indice de plasticité"
+      "3,75 m : 1,5 bF",
+      "6 m, quelle que soit la semelle",
+      "7,5 m : le plus grand de 6 m et 3 bF",
+      "2,5 m : une largeur"
      ],
      "reponse": 2,
-     "explication": "Un rapport EM/pl élevé indique un sol surconsolidé (argile) ou serré (sable) ; le tableau donne α selon la nature et ce rapport."
+     "explication": "Pour une semelle, za ≥ 6 m et za ≥ 3 bF, bF étant son petit côté : ici max(6 ; 7,5) = 7,5 m sous l'assise."
     },
     {
      "texte": "Dans les tableaux pressiométriques des pieux (NF P94-262), un sol intermédiaire à dominante argileuse est traité comme…",
@@ -294,54 +176,112 @@
    ]
   },
   {
-   "id": "ch1-penetro",
-   "titre": "Pénétromètre et pressiomètre : deux regards sur un sable",
+   "id": "ch1-contraintes",
+   "titre": "Contraintes effectives et nappe",
    "difficulte": 1,
-   "graine": 3412994669,
-   "enonce": "Dans un sable, le pénétromètre statique donne qc = 4,5 MPa et, à la même profondeur, le pressiomètre pl = 0,25 MPa.",
+   "graine": 507195894,
+   "enonce": "Une couche de 2 m (γ = 17 kN/m³ hors d'eau, γsat = 19 kN/m³ sous la nappe) repose sur une seconde couche (γ = 20 kN/m³, γsat = 21 kN/m³). La nappe est à 1 m de profondeur ; γw = 10 kN/m³. On s'intéresse au point situé à 5,5 m.",
    "donnees": [
     {
-     "label": "qc",
-     "valeur": "4,5 MPa"
+     "label": "Couche 1",
+     "valeur": "2 m · γ 17 · γsat 19 kN/m³"
     },
     {
-     "label": "pl",
-     "valeur": "0,25 MPa"
+     "label": "Couche 2",
+     "valeur": "γ 20 · γsat 21 kN/m³"
+    },
+    {
+     "label": "Nappe",
+     "valeur": "1 m"
+    },
+    {
+     "label": "Profondeur du point",
+     "valeur": "5,5 m"
     }
    ],
    "questions": [
     {
-     "texte": "Classe d'après qc ?",
-     "type": "choix",
-     "options": [
-      "Sables et graves compacts (C)",
-      "Sables et graves moyennement compacts (B)",
-      "Sables et graves lâches (A)"
-     ],
-     "reponse": 2,
-     "explication": "Sables : A pour qc < 5 MPa, B de 8 à 15 MPa, C au-delà de 20 MPa. qc = 4,5 MPa → classe A."
+     "texte": "Contrainte verticale totale σv0 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 109.5,
+     "explication": "σv0 = 17 × 1 + 19 × 1 + 21 × 3,5 = 109,5 kPa.",
+     "toleranceRel": 0.01
     },
     {
-     "texte": "Classe d'après pl ?",
-     "type": "choix",
-     "options": [
-      "Sables et graves moyennement compacts (B)",
-      "Sables et graves compacts (C)",
-      "Sables et graves lâches (A)"
-     ],
-     "reponse": 2,
-     "explication": "Sables : A pour pl < 0,5 MPa, B de 1 à 2 MPa, C au-delà de 2,5 MPa. pl = 0,25 MPa → classe A."
+     "texte": "Pression de l'eau u0 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 45,
+     "explication": "u0 = γw (z − zw) = 10 × 4,5 = 45 kPa.",
+     "toleranceRel": 0.01
     },
     {
-     "texte": "Lequel des deux essais donne aussi un module de déformation utilisable pour les tassements de Ménard ?",
+     "texte": "Contrainte verticale effective σ'v0 ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 64.5,
+     "explication": "σ'v0 = σv0 − u0 = 109,5 − 45 = 64,5 kPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Et si la nappe remontait jusqu'au terrain naturel, σ'v0 deviendrait ?",
+     "type": "nombre",
+     "unite": "kPa",
+     "reponse": 56.5,
+     "explication": "Tout le terrain est alors saturé : σv0 = 19 × 2 + 21 × 3,5 = 111,5 kPa, u0 = 10 × 5,5 = 55 kPa, σ'v0 = 56,5 kPa. La contrainte effective baisse de 8 kPa : une nappe haute affaiblit le sol.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch1-reconnaissance",
+   "titre": "Jusqu'où reconnaître ?",
+   "difficulte": 1,
+   "graine": 2498102732,
+   "enonce": "On prépare la reconnaissance de un radier de 17 m de petit côté, fondé à 2,5 m, d'après les recommandations de l'annexe B.3 de la NF EN 1997-2.",
+   "donnees": [
+    {
+     "label": "Fondation",
+     "valeur": "radier"
+    },
+    {
+     "label": "Petit côté",
+     "valeur": "17 m"
+    },
+    {
+     "label": "Assise",
+     "valeur": "2,5 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Profondeur za à reconnaître sous l'assise ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 25.5,
+     "explication": "za ≥ 1,5 bB : za = max(1,5 bB = 25,5 m) = 25,5 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Profondeur minimale des sondages sous le terrain ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 28,
+     "explication": "2,5 + 25,5 = 28 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Quel espacement la même annexe suggère-t-elle entre les points de reconnaissance sous un bâtiment ?",
      "type": "choix",
      "options": [
-      "le pressiomètre (EM)",
-      "aucun des deux",
-      "le pénétromètre (qc)"
+      "une maille de 15 à 40 m",
+      "un seul point au centre",
+      "une maille de 100 à 200 m",
+      "un point tous les 5 m"
      ],
      "reponse": 0,
-     "explication": "La méthode de Ménard utilise EM. Au pénétromètre, le tassement se calcule par Schmertmann, avec un module empirique 2,5 à 3,5 qc qui n'est pas un module d'Young."
+     "explication": "L'annexe B.3 propose 15 à 40 m sous les bâtiments et ouvrages industriels, 60 m au plus sous les grands ouvrages de surface, 20 à 200 m le long des ouvrages linéaires."
     }
    ]
   }

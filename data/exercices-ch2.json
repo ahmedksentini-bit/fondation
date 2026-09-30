@@ -503,6 +503,58 @@
      "explication": "RQD = 96 % : qualité excellente (seuils 25, 50, 75, 90 %)."
     }
    ]
+  },
+  {
+   "id": "ch2-penetro",
+   "titre": "Pénétromètre et pressiomètre : deux regards sur un sable",
+   "difficulte": 1,
+   "graine": 3511212544,
+   "enonce": "Dans un sable, le pénétromètre statique donne qc = 2,5 MPa et, à la même profondeur, le pressiomètre pl = 0,35 MPa.",
+   "donnees": [
+    {
+     "label": "qc",
+     "valeur": "2,5 MPa"
+    },
+    {
+     "label": "pl",
+     "valeur": "0,35 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Classe d'après qc ?",
+     "type": "choix",
+     "options": [
+      "Sables et graves compacts (C)",
+      "Sables et graves lâches (A)",
+      "Sables et graves moyennement compacts (B)"
+     ],
+     "reponse": 1,
+     "explication": "Sables : A pour qc < 5 MPa, B de 8 à 15 MPa, C au-delà de 20 MPa. qc = 2,5 MPa → classe A."
+    },
+    {
+     "texte": "Classe d'après pl ?",
+     "type": "choix",
+     "options": [
+      "Sables et graves lâches (A)",
+      "Sables et graves moyennement compacts (B)",
+      "Sables et graves compacts (C)"
+     ],
+     "reponse": 0,
+     "explication": "Sables : A pour pl < 0,5 MPa, B de 1 à 2 MPa, C au-delà de 2,5 MPa. pl = 0,35 MPa → classe A."
+    },
+    {
+     "texte": "Lequel des deux essais donne aussi un module de déformation utilisable pour les tassements de Ménard ?",
+     "type": "choix",
+     "options": [
+      "le pressiomètre (EM)",
+      "le pénétromètre (qc)",
+      "aucun des deux"
+     ],
+     "reponse": 0,
+     "explication": "La méthode de Ménard utilise EM. Au pénétromètre, le tassement se calcule par Schmertmann, avec un module empirique 2,5 à 3,5 qc qui n'est pas un module d'Young."
+    }
+   ]
   }
  ]
 }

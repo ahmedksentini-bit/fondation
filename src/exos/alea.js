@@ -66,3 +66,7 @@ export function choixMelange(a, texte, [bonne, ...fausses], explication) {
 
 /** Ligne de données de l'énoncé. */
 export const donnee = (label, valeur) => ({ label, valeur });
+
+/** Fractions usuelles du coefficient rhéologique α, et leur écriture. */
+export const FRACTIONS = [[1, "1"], [2 / 3, "2/3"], [1 / 2, "1/2"], [1 / 3, "1/3"], [1 / 4, "1/4"]];
+export const fraction = (x) => FRACTIONS.find(([v]) => Math.abs(v - x) < 1e-6)?.[1] ?? fr(x);

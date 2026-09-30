@@ -33,19 +33,19 @@
       "number": 1,
       "partie": "A",
       "title": "Le sol de fondation et sa reconnaissance",
-      "description": "Pressiomètre Ménard, pénétromètre statique, essais de laboratoire ; pression limite nette, catégories de sols du Fascicule 62 et de l'Eurocode 7, coefficient rhéologique.",
+      "description": "Modèle de terrain, contraintes effectives, programme de reconnaissance, essais de laboratoire, classes du Fascicule 62 et catégories de l'Eurocode 7, valeurs caractéristiques.",
       "notions": [
-        "essai pressiométrique : EM, pf, pl",
-        "pression limite nette pl* = pl − p0",
-        "pénétromètre statique : qc",
+        "modèle géotechnique et catégorie géotechnique",
+        "contraintes totales, pression de l'eau, contraintes effectives",
+        "profondeur et maille de reconnaissance",
+        "quel essai pour quel calcul",
+        "œdomètre, triaxial, droite de Coulomb",
         "classes A, B, C du Fascicule 62",
         "catégories conventionnelles de l'EC7",
-        "sols intermédiaires",
-        "coefficient rhéologique α",
         "valeurs caractéristiques",
         "formation homogène"
       ],
-      "exercices": 6,
+      "exercices": 5,
       "cours": true
     },
     {
@@ -64,7 +64,7 @@
         "Lefranc, Lugeon, pompage",
         "sismique réfraction, Vs,30"
       ],
-      "exercices": 9,
+      "exercices": 10,
       "cours": true
     },
     {
@@ -82,9 +82,10 @@
         "pression de fluage pf",
         "pl à Vs + 2V1, extrapolée",
         "pl*, pf*, EM/pl*",
+        "coefficient rhéologique α",
         "profil pressiométrique"
       ],
-      "exercices": 7,
+      "exercices": 8,
       "cours": true
     },
     {

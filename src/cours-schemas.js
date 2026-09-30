@@ -3,8 +3,9 @@
 // restent dans le script de leur chapitre ; ceux-ci illustrent le texte.
 
 import * as essais from "./schemas-essais.js";
+import * as cours from "./schemas-cours.js";
 
-const SCHEMAS = { ...essais };
+const SCHEMAS = { ...essais, ...cours };
 
 for (const f of document.querySelectorAll("figure[data-schema]")) {
   const dessin = SCHEMAS[f.dataset.schema];

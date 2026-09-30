@@ -1,6 +1,15 @@
 // Exercices du chapitre 2 : dépouillement des essais en place.
 import { fr, frd, nombre, choixMelange, donnee } from "./alea.js";
 import * as E from "../geotech/essais.js";
+import { proposerClasseF62, CLASSES_F62 } from "../geotech/sols.js";
+
+/** Classe F62 d'après qc, avec la même prudence que pour pl (trou du tableau → classe inférieure). */
+function classeQc(famille, qc) {
+  const lignes = Object.entries(CLASSES_F62).filter(([, c]) => c.famille === famille && c.qc);
+  let retenue = lignes[0];
+  for (const l of lignes) if (qc >= l[1].qc[0]) retenue = l;
+  return retenue;
+}
 
 const GW = 9.81;
 
@@ -172,6 +181,31 @@ export default [
           nombre("Taux de récupération (%) ?", r.recuperation, "%", `${somme}/${L} = ${frd(r.recuperation, 1)} %.`, { abs: 1 }),
           choixMelange(a, "Qualité du rocher selon le RQD ?", [r.qualite, ...qualites.filter((q) => q !== r.qualite).slice(0, 3)],
             `RQD = ${frd(r.RQD, 0)} % : qualité ${r.qualite} (seuils 25, 50, 75, 90 %).`),
+        ],
+      };
+    },
+  },
+  {
+    id: "ch2-penetro", titre: "Pénétromètre et pressiomètre : deux regards sur un sable", difficulte: 1,
+    generer(a) {
+      const [cleQ, cQ] = a.choix(Object.entries(CLASSES_F62).filter(([, c]) => c.famille === "sable"));
+      const qc = a.entre(Math.max(cQ.qc[0], 1) + 0.5, Number.isFinite(cQ.qc[1]) ? cQ.qc[1] - 0.5 : cQ.qc[0] + 10, 0.5);
+      const pl = a.entre(Math.max(cQ.pl[0], 0.2) + 0.05, Number.isFinite(cQ.pl[1]) ? cQ.pl[1] - 0.05 : cQ.pl[0] + 1.5, 0.05);
+      const [, parQc] = classeQc("sable", qc);
+      const parPl = proposerClasseF62("sable", pl);
+      const nomClasse = (x) => `${x.nom} (${x.lettre})`;
+      const classes = Object.values(CLASSES_F62).filter((x) => x.famille === "sable");
+      return {
+        enonce: `Dans un sable, le pénétromètre statique donne qc = ${frd(qc, 1)} MPa et, à la même profondeur, le pressiomètre pl = ${frd(pl, 2)} MPa.`,
+        donnees: [donnee("qc", `${frd(qc, 1)} MPa`), donnee("pl", `${frd(pl, 2)} MPa`)],
+        questions: [
+          choixMelange(a, "Classe d'après qc ?", [nomClasse(parQc), ...classes.filter((x) => x.lettre !== parQc.lettre).map(nomClasse)],
+            `Sables : A pour qc < 5 MPa, B de 8 à 15 MPa, C au-delà de 20 MPa. qc = ${frd(qc, 1)} MPa → classe ${parQc.lettre}.`),
+          choixMelange(a, "Classe d'après pl ?", [nomClasse(parPl), ...classes.filter((x) => x.lettre !== parPl.lettre).map(nomClasse)],
+            `Sables : A pour pl < 0,5 MPa, B de 1 à 2 MPa, C au-delà de 2,5 MPa. pl = ${frd(pl, 2)} MPa → classe ${parPl.lettre}${parPl.entre ? " (entre deux classes : la plus faible)" : ""}.`),
+          choixMelange(a, "Lequel des deux essais donne aussi un module de déformation utilisable pour les tassements de Ménard ?",
+            ["le pressiomètre (EM)", "le pénétromètre (qc)", "aucun des deux"],
+            "La méthode de Ménard utilise EM. Au pénétromètre, le tassement se calcule par Schmertmann, avec un module empirique 2,5 à 3,5 qc qui n'est pas un module d'Young."),
         ],
       };
     },

@@ -1,7 +1,7 @@
 // Exercices du chapitre 14 : pieux sous efforts transversaux.
 import { fr, frd, nombre, choixMelange, donnee } from "./alea.js";
 import { moduleKf, pieuLongAnalytique, pieuSouple, minorationSurface } from "../geotech/lateral.js";
-import { fraction } from "./ch01.js";
+import { fraction } from "./alea.js";
 
 const EI = (E, B) => E * 1000 * (Math.PI * B ** 4) / 64;
 

@@ -1,7 +1,7 @@
 // Exercices du chapitre 9 : tassements et module de réaction.
 import { fr, frd, nombre, choixMelange, donnee } from "./alea.js";
 import { tassementMenard, moduleEd, moduleReaction, schmertmann, tassementOedometrique, tassementElastique, coefficientCf, lambdas } from "../geotech/tassements.js";
-import { fraction } from "./ch01.js";
+import { fraction } from "./alea.js";
 
 export default [
   {

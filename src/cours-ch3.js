@@ -4,7 +4,7 @@
 import { el, num, f, fd, esc, verdict, brancher, garde, lireTableau } from "./ui.js";
 import { graphe, schemaPressio, profilPressio, COULEURS } from "./figures.js";
 import * as P from "./geotech/pressio.js";
-import { alphaMenard } from "./geotech/sols.js";
+import { alphaMenard, pressionNette } from "./geotech/sols.js";
 import { profilPoints } from "./geotech/outils.js";
 import { pleF62 } from "./geotech/superficielles.js";
 import { ESSAIS, TUBE, AIR, SONDE, texteReleves, texteCouples, sondage, etalonnagesExemple } from "./pressio-exemples.js";
@@ -297,3 +297,31 @@ const majProfil = garde("psOutProfil", () => {
     <p class="method-note">E<sub>M</sub>, p<sub>f</sub>* et p<sub>l</sub>* en MPa. Chaque essai du sondage a été dépouillé par l'assistant ci-dessus, avec les étalonnages de la sonde d'exemple ; ⚠ signale un essai que les contrôles automatiques invitent à relire.</p>`;
 });
 brancher(["psSite", "psSemB", "psSemD", "psConv"], majProfil);
+
+// ── p0 et pl* d'un essai isolé ───────────────────────────────────────────
+const majPl = garde("plOut", () => {
+  const z = num("plZ"), pl = num("plMes") * 1000, g = num("plGamma"), zw = num("plNappe"), gs = num("plGsat"), K0 = num("plK0");
+  if (!(z > 0 && pl > 0 && g > 0)) { el("plOut").textContent = "Renseigner z, pl et γ."; return; }
+  const hSec = Math.min(z, Math.max(zw, 0)), hSat = Math.max(0, z - Math.max(zw, 0));
+  const sv = g * hSec + gs * hSat;
+  const u = 10 * hSat;
+  const { p0, plNette } = pressionNette({ pl, sigmaV0eff: sv - u, u, K0 });
+  el("plOut").innerHTML =
+    `σv0 = ${f(sv, 4)} kPa · u = ${f(u, 3)} kPa · σ'v0 = ${f(sv - u, 4)} kPa<br>
+     p0 = u + K0 σ'v0 = <strong>${f(p0, 3)} kPa</strong> →
+     pl* = pl − p0 = <strong>${fd(plNette / 1000, 3)} MPa</strong>
+     <small>p0 représente ${f((100 * p0) / pl, 2)} % de la pression limite mesurée.</small>`;
+});
+brancher(["plZ", "plMes", "plGamma", "plNappe", "plGsat", "plK0"], majPl);
+
+// ── État du sol et coefficient rhéologique α ─────────────────────────────
+const FRACTION = [[1, "1"], [2 / 3, "2/3"], [1 / 2, "1/2"], [1 / 3, "1/3"], [1 / 4, "1/4"]];
+const majAlpha = garde("alOut", () => {
+  const nature = el("alNature").value, EM = num("alEM"), pl = num("alPl");
+  if (!(EM > 0 && pl > 0)) { el("alOut").textContent = "Renseigner EM et pl*."; return; }
+  const a = alphaMenard(nature, EM, pl);
+  const txt = FRACTION.find(([v]) => Math.abs(v - a.alpha) < 1e-9)?.[1] ?? fd(a.alpha, 2);
+  el("alOut").innerHTML = `EM/pl* = ${fd(a.rapport, 1)} → sol ${a.etat}, <strong>α = ${txt}</strong>
+    ${a.dansTableau ? "" : "<small>Rapport sous la plus petite ligne du tableau : sol probablement remanié, ou forage de mauvaise qualité — à examiner avant de s'en servir.</small>"}`;
+});
+brancher(["alNature", "alEM", "alPl"], majAlpha);

@@ -70,6 +70,7 @@
      <span class="ref">[F62 A.2.2]</span>. Tout le reste du cours suppose ce modèle établi. Il
      est pourtant la principale source d'incertitude : une couche molle manquée à 6 m pèse
      plus que tous les coefficients de sécurité réunis.</p>
+  <figure class="figure-cours" data-schema="schemaModeleTerrain"><figcaption>Du sondage au modèle. Les sondages ne voient le terrain qu'en quelques points ; entre eux, le géotechnicien interprète la continuité des couches. La lentille d'argile molle n'a été traversée que par SP3 : son extension vers SP2 est une hypothèse, et le pieu voisin la traverse peut-être. Une couche qui échappe aux sondages échappe aussi à tous les calculs.</figcaption></figure>
   <p>L'Eurocode 7 le formalise par la <strong>catégorie géotechnique</strong> : un ouvrage
      fondé sur pieux relève au moins de la catégorie 2 (reconnaissances et calculs
      nécessaires) ; un site instable, un sol évolutif ou un risque sismique fort le font
@@ -77,68 +78,118 @@
      rappelle qu'une semelle, même « simple », ne se justifie pas sur la seule
      expérience : il faut des mesures <em>quantitatives</em> des propriétés mécaniques.</p>
 
-  <h3>L'essai pressiométrique Ménard</h3>
-  <p>On fore un trou, on y descend une sonde cylindrique dilatable, et l'on gonfle cette
-     sonde par paliers de pression, en mesurant à chaque palier le volume injecté. L'essai
-     se répète en général <strong>tous les mètres</strong>. La courbe pression–volume
-     présente trois phases : une remise en contact avec la paroi du forage, une phase
-     quasi linéaire, puis une phase plastique où le volume croît de plus en plus vite.</p>
-  <table class="resultats"><thead><tr><th>Grandeur</th><th>Définition</th><th>Rôle dans les calculs</th></tr></thead>
-    <tbody>
-      <tr><td><strong>E<sub>M</sub></strong> (MPa)</td><td class="motif">module pressiométrique, pente de la phase pseudo-élastique</td><td class="motif">tassements, module de réaction, effort transversal</td></tr>
-      <tr><td><strong>p<sub>f</sub></strong> (MPa)</td><td class="motif">pression de fluage, fin de la phase pseudo-élastique</td><td class="motif">palier de la réaction latérale des pieux</td></tr>
-      <tr><td><strong>p<sub>l</sub></strong> (MPa)</td><td class="motif">pression limite : volume de la cavité doublé (convention)</td><td class="motif">portance des semelles et des pieux, frottement latéral</td></tr>
-    </tbody></table>
-  <p>Le rapport <strong>E<sub>M</sub>/p<sub>l</sub></strong> renseigne sur l'état du sol : grand
-     (supérieur à 12–16) pour un sol surconsolidé ou très serré, petit (5 à 8) pour un sol
-     remanié ou lâche. Il sert à choisir le coefficient rhéologique α plus loin.</p>
+  <h3>L'état initial : contraintes totales, eau et contraintes effectives</h3>
+  <p>Avant la fondation, le sol porte déjà son propre poids. À la profondeur z, la
+     <strong>contrainte verticale totale</strong> σ<sub>v0</sub> est le poids des terres qui
+     la surmontent ; sous la nappe, l'eau des pores est à la pression hydrostatique
+     u<sub>0</sub>. Le squelette solide ne porte que la différence, la <strong>contrainte
+     effective</strong> : c'est elle qui gouverne la résistance et la déformation du sol
+     (principe de Terzaghi). Horizontalement, le squelette reçoit une fraction K<sub>0</sub>
+     de la contrainte verticale effective, l'eau toute sa pression :</p>
+  <p class="formula">σ<sub>v0</sub> = Σ γ<sub>i</sub> h<sub>i</sub>&nbsp;&nbsp;·&nbsp;&nbsp;u<sub>0</sub> = γ<sub>w</sub> (z − z<sub>w</sub>)&nbsp;&nbsp;·&nbsp;&nbsp;σ'<sub>v0</sub> = σ<sub>v0</sub> − u<sub>0</sub>&nbsp;&nbsp;·&nbsp;&nbsp;σ<sub>h0</sub> = K<sub>0</sub> σ'<sub>v0</sub> + u<sub>0</sub></p>
+  <p>Ces grandeurs reviennent partout dans le cours : la pression des terres au niveau de la
+     base d'une semelle, q'<sub>0</sub> (chapitre 6) ; la pression horizontale au repos
+     p<sub>0</sub> qu'on retranche d'une pression limite (chapitre 3) ; la contrainte
+     initiale d'un calcul de tassement (chapitre 9) ; le frottement négatif (chapitre 13).
+     K<sub>0</sub> vaut environ 1 − sin φ' dans un sol normalement consolidé, davantage dans
+     un sol surconsolidé ; à défaut de mesure, les deux référentiels prennent 0,5. Une nappe
+     qui monte fait <em>baisser</em> la contrainte effective, donc la résistance du sol : le
+     niveau d'eau du modèle est le plus défavorable qu'on puisse raisonnablement attendre, pas
+     celui du jour du sondage.</p>
 
-  <h3>La pression limite nette : ce que le sol « ajoute »</h3>
-  <p>Avant l'essai, la paroi du forage est déjà soumise à la contrainte horizontale des
-     terres au repos. La part de p<sub>l</sub> qui mesure la résistance du sol est donc
-     <strong>ce qui dépasse</strong> cette pression initiale :</p>
-  <p class="formula">p<sub>l</sub>* = p<sub>l</sub> − p<sub>0</sub>&nbsp;&nbsp;avec&nbsp;&nbsp;p<sub>0</sub> = u + K<sub>0</sub> · σ'<sub>v0</sub>
-     <span class="ref">[F62 E.1 § 2.2,1]</span></p>
-  <p>u est la pression interstitielle au niveau de l'essai, σ'<sub>v0</sub> la contrainte
-     verticale effective, et K<sub>0</sub> le coefficient des terres au repos, pris à
-     <strong>0,5</strong> à défaut d'autre indication. Toutes les formules de portance
-     utilisent <strong>p<sub>l</sub>*</strong>, jamais p<sub>l</sub> : la différence est faible
-     près de la surface, mais elle atteint couramment 0,1 à 0,2 MPa à 15 m — soit 20 à 40 %
-     d'une pression limite d'argile molle.</p>
-
-  <div class="calc" id="calcPl">
-    <h3>De p<sub>l</sub> mesurée à p<sub>l</sub>* nette</h3>
+  <div class="calc" id="calcSv">
+    <h3>Profil des contraintes dans un terrain à deux couches</h3>
+    <p class="method-note">Faites glisser la nappe ou la profondeur de calcul : les profils et
+       les valeurs à la cote choisie suivent. γ<sub>w</sub> = 10 kN/m³.</p>
     <div class="data-grid">
-      <div class="field"><label for="plZ">Profondeur de l'essai z</label>
-        <div class="input-wrap"><input id="plZ" type="text" inputmode="decimal" value="12"><span class="unit">m</span></div></div>
-      <div class="field"><label for="plMes">Pression limite mesurée p<sub>l</sub></label>
-        <div class="input-wrap"><input id="plMes" type="text" inputmode="decimal" value="0.85"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="plGamma">Poids volumique γ</label>
-        <div class="input-wrap"><input id="plGamma" type="text" inputmode="decimal" value="19"><span class="unit">kN/m³</span></div></div>
-      <div class="field"><label for="plNappe">Profondeur de la nappe</label>
-        <div class="input-wrap"><input id="plNappe" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
-      <div class="field"><label for="plGsat">γ saturé sous la nappe</label>
-        <div class="input-wrap"><input id="plGsat" type="text" inputmode="decimal" value="20"><span class="unit">kN/m³</span></div></div>
-      <div class="field"><label for="plK0">K<sub>0</sub></label>
-        <div class="input-wrap"><input id="plK0" type="text" inputmode="decimal" value="0.5"><span class="unit">—</span></div></div>
+      <div class="field"><label for="svH1">Épaisseur de la couche 1</label>
+        <div class="input-wrap"><input id="svH1" type="text" inputmode="decimal" value="4" data-curseur="0.5 12 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="svG1">γ de la couche 1</label>
+        <div class="input-wrap"><input id="svG1" type="text" inputmode="decimal" value="18" data-curseur="14 22 0.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="svGs1">γ<sub>sat</sub> de la couche 1</label>
+        <div class="input-wrap"><input id="svGs1" type="text" inputmode="decimal" value="20" data-curseur="16 23 0.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="svG2">γ de la couche 2</label>
+        <div class="input-wrap"><input id="svG2" type="text" inputmode="decimal" value="19" data-curseur="14 22 0.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="svGs2">γ<sub>sat</sub> de la couche 2</label>
+        <div class="input-wrap"><input id="svGs2" type="text" inputmode="decimal" value="21" data-curseur="16 23 0.5"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="svZw">Profondeur de la nappe</label>
+        <div class="input-wrap"><input id="svZw" type="text" inputmode="decimal" value="2" data-curseur="0 15 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="svZ">Profondeur de calcul z</label>
+        <div class="input-wrap"><input id="svZ" type="text" inputmode="decimal" value="8" data-curseur="0.5 15 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="svK0">K<sub>0</sub></label>
+        <div class="input-wrap"><input id="svK0" type="text" inputmode="decimal" value="0.5" data-curseur="0.3 1.2 0.05"><span class="unit">—</span></div></div>
     </div>
-    <p class="final-result" id="plOut"></p>
+    <div class="figure" id="svFig"></div>
+    <p class="final-result" id="svOut"></p>
   </div>
 
-  <h3>Le pénétromètre statique</h3>
-  <p>On enfonce à vitesse constante (2 cm/s) une pointe conique et l'on mesure en continu
-     la <strong>résistance de pointe q<sub>c</sub></strong>, souvent aussi le frottement
-     latéral local f<sub>s</sub>. On obtient un diagramme continu, beaucoup plus détaillé
-     qu'un profil pressiométrique, mais aussi beaucoup plus « bruité » : les calculs
-     utilisent un diagramme <strong>lissé</strong>, et les grandeurs équivalentes sont des
-     moyennes <strong>écrêtées</strong> pour que les pics isolés ne dominent pas
-     <span class="ref">[F62 E.2 § 3]</span>. Le pénétromètre ne traverse pas les sols très
-     résistants (graves compactes, roches) : il complète le pressiomètre plus qu'il ne le
-     remplace.</p>
-  <div class="hint">Les coefficients des méthodes pénétrométriques ont été calés sur un type
-     de pointe donné. La NF P94-262 s'appuie sur le pénétromètre à pointe électrique sans
-     jupe ; avec une pointe mécanique, le guide Cerema conseille de diviser q<sub>c</sub> par
-     un coefficient de l'ordre de 1,3 pour ne pas surestimer la portance.</div>
+  <h3>Programmer la reconnaissance : où, combien, jusqu'où</h3>
+  <p>Une reconnaissance se programme d'après l'ouvrage — sa taille, ses charges, la
+     sensibilité de sa structure aux tassements — et d'après ce qu'on sait déjà du site. Les
+     normes ne fixent pas de nombre de sondages, mais l'annexe B.3 de la NF EN 1997-2 donne
+     des ordres de grandeur, à adapter au contexte géologique
+     <span class="ref">[NF EN 1997-2 annexe B.3]</span> :</p>
+  <ul>
+    <li>pour l'<strong>espacement</strong> des points de reconnaissance : une maille de 15 à
+        40 m sous les bâtiments et les ouvrages industriels, de 60 m au plus sous les ouvrages
+        de grande surface, de 20 à 200 m le long d'un ouvrage linéaire, et de deux à six
+        points par appui pour un pont ou une fondation singulière ;</li>
+    <li>pour la <strong>profondeur</strong> z<sub>a</sub> sous le niveau d'assise : au moins
+        6 m et 3 b<sub>F</sub> sous une semelle (b<sub>F</sub> son petit côté) ;
+        1,5 b<sub>B</sub> sous un radier, ou sous des semelles assez proches pour que leurs
+        bulbes de contraintes se superposent (b<sub>B</sub> le petit côté de l'ouvrage) ; sous
+        la pointe des pieux, au moins b<sub>g</sub>, 5 m et 3 D<sub>F</sub> (b<sub>g</sub> le
+        petit côté du rectangle qui circonscrit le groupe, D<sub>F</sub> le diamètre de la
+        base).</li>
+  </ul>
+  <figure class="figure-cours" data-schema="schemaProfondeurs"><figcaption>Profondeurs de reconnaissance recommandées sous le niveau d'assise (NF EN 1997-2, annexe B.3). Le sondage, en tirets, doit dépasser z<sub>a</sub>.</figcaption></figure>
+  <p>Les méthodes de calcul ont leurs propres besoins, qui vont dans le même sens : la
+     pression limite équivalente d'une semelle se calcule sur 1,5 B sous la base
+     (chapitre 6), son tassement pressiométrique mobilise le terrain jusqu'à 8 B
+     (chapitre 9), et la pression limite équivalente d'un pieu se prend de part et d'autre de
+     sa pointe, jusqu'à 3a au-dessous (chapitre 11). Un sondage arrêté trop tôt interdit ces
+     calculs — et on le découvre toujours trop tard. Quand le rocher sain est atteint et
+     reconnu comme tel, il devient la référence, et le sondage peut s'y arrêter plus tôt.</p>
+
+  <div class="calc" id="calcZa">
+    <h3>Jusqu'où reconnaître ?</h3>
+    <div class="data-grid">
+      <div class="field"><label for="zaType">Fondation</label>
+        <div class="input-wrap"><select id="zaType">
+          <option value="semelle">semelle isolée ou filante</option>
+          <option value="radier">radier, semelles rapprochées</option>
+          <option value="pieux">pieux</option></select></div></div>
+      <div class="field"><label for="zaB">Petit côté b<sub>F</sub>, b<sub>B</sub> ou b<sub>g</sub></label>
+        <div class="input-wrap"><input id="zaB" type="text" inputmode="decimal" value="2.5" data-curseur="0.5 40 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="zaD">Profondeur de l'assise ou des pointes</label>
+        <div class="input-wrap"><input id="zaD" type="text" inputmode="decimal" value="1" data-curseur="0 40 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="zaDF">Diamètre de la base des pieux D<sub>F</sub></label>
+        <div class="input-wrap"><input id="zaDF" type="text" inputmode="decimal" value="0.8" data-curseur="0.3 2.5 0.05"><span class="unit">m</span></div></div>
+    </div>
+    <p class="final-result" id="zaOut"></p>
+  </div>
+
+  <h3>Quel paramètre, pour quel calcul</h3>
+  <p>Chaque vérification demande ses paramètres, et chaque paramètre son essai. La pratique
+     française s'est construite autour de deux essais en place : le <strong>pressiomètre
+     Ménard</strong>, qui donne à la fois un module E<sub>M</sub> et une résistance
+     p<sub>l</sub>, et le <strong>pénétromètre statique</strong>, qui donne un profil presque
+     continu de la résistance de pointe q<sub>c</sub>. Les méthodes de portance du Fascicule 62
+     comme des normes NF P94-261 et NF P94-262 reposent sur eux. Le chapitre 2 présente ces
+     essais avec tous les autres ; le chapitre 3 suit le dépouillement pressiométrique jusqu'aux
+     pressions nettes p<sub>l</sub>* et p<sub>f</sub>* et au coefficient rhéologique α.</p>
+  <div class="table-large"><table class="resultats"><thead><tr><th>Vérification</th><th>Paramètres</th><th>Essais</th><th>Chapitres</th></tr></thead>
+    <tbody>
+      <tr><td>Portance d'une semelle</td><td class="motif">p<sub>l</sub>*, q<sub>c</sub> ; ou c', φ', c<sub>u</sub></td><td class="motif">pressiomètre, pénétromètre ; laboratoire</td><td>6, 7</td></tr>
+      <tr><td>Tassement d'une semelle</td><td class="motif">E<sub>M</sub> et α ; ou σ'<sub>p</sub>, C<sub>c</sub>, C<sub>s</sub></td><td class="motif">pressiomètre ; œdomètre ; pénétromètre (Schmertmann)</td><td>3, 9</td></tr>
+      <tr><td>Glissement</td><td class="motif">φ', c' ; c<sub>u</sub></td><td class="motif">laboratoire (boîte, triaxial)</td><td>8</td></tr>
+      <tr><td>Portance d'un pieu</td><td class="motif">p<sub>l</sub>*, q<sub>c</sub></td><td class="motif">pressiomètre, pénétromètre ; essai de chargement</td><td>11, 12</td></tr>
+      <tr><td>Tassement d'un pieu</td><td class="motif">E<sub>M</sub></td><td class="motif">pressiomètre</td><td>12</td></tr>
+      <tr><td>Frottement négatif</td><td class="motif">épaisseur et compressibilité de la couche molle, γ</td><td class="motif">sondages, œdomètre</td><td>13</td></tr>
+      <tr><td>Effort transversal sur pieu</td><td class="motif">E<sub>M</sub>, α, p<sub>f</sub>*</td><td class="motif">pressiomètre</td><td>14</td></tr>
+      <tr><td>Séisme</td><td class="motif">V<sub>s</sub> et classe de sol ; c<sub>u</sub>, φ'</td><td class="motif">géophysique ; laboratoire</td><td>15</td></tr>
+      <tr><td>Nappe, perméabilité</td><td class="motif">z<sub>w</sub>, k</td><td class="motif">piézomètres, essais d'eau</td><td>2</td></tr>
+    </tbody></table></div>
 
   <h3>Les essais de laboratoire</h3>
   <p>Sur échantillons intacts, le laboratoire fournit les paramètres de la
@@ -153,6 +204,7 @@
         préconsolidation σ'<sub>p</sub>, indices de compression C<sub>c</sub> et de
         gonflement C<sub>s</sub>.</li>
   </ul>
+  <figure class="figure-cours" data-schema="schemaLabo"><figcaption>À gauche, la courbe œdométrique : tant que la contrainte reste sous la contrainte de préconsolidation σ'<sub>p</sub>, le sol se recomprime peu (pente C<sub>s</sub>) ; au-delà, il se comprime sur sa courbe vierge (pente C<sub>c</sub>, bien plus forte), et un déchargement le ramène sur une pente C<sub>s</sub>. À droite, trois essais triaxiaux menés jusqu'à la rupture : leurs cercles de Mohr ont pour enveloppe la droite de Coulomb, qui donne c' et φ'.</figcaption></figure>
   <p class="method-note">Le Fascicule 62 met en garde : même dans le meilleur des cas, la
      cohésion ne s'apprécie pas à moins de 10 kPa près et l'angle de frottement à moins de
      1 ou 2 degrés près <span class="ref">[F62 E.1 § 1.2]</span>. D'où la méfiance des deux
@@ -200,30 +252,11 @@
           <option value="craie">Craies</option><option value="marne">Marnes, marno-calcaires</option>
           <option value="roche">Roches altérées, fragmentées</option></select></div></div>
       <div class="field"><label for="clPl">Pression limite p<sub>l</sub></label>
-        <div class="input-wrap"><input id="clPl" type="text" inputmode="decimal" value="0.9"><span class="unit">MPa</span></div></div>
-      <div class="field"><label for="clEM">Module E<sub>M</sub></label>
-        <div class="input-wrap"><input id="clEM" type="text" inputmode="decimal" value="9"><span class="unit">MPa</span></div></div>
+        <div class="input-wrap"><input id="clPl" type="text" inputmode="decimal" value="0.9" data-curseur="0.05 6 0.05"><span class="unit">MPa</span></div></div>
     </div>
+    <div class="figure" id="clFig"></div>
     <p class="final-result" id="clOut"></p>
   </div>
-
-  <h3>Le coefficient rhéologique α</h3>
-  <p>Le module pressiométrique n'est pas un module d'Young : la sonde cisaille le sol plus
-     qu'elle ne le comprime. Ménard a introduit un <strong>coefficient rhéologique α</strong>
-     qui fait le pont entre E<sub>M</sub> et le comportement réel ; il intervient dans les
-     tassements (chapitre 9) et dans la réaction latérale des pieux (chapitre 14). Il se lit
-     d'après la nature du sol et le rapport E<sub>M</sub>/p<sub>l</sub>
-     <span class="ref">[F62 C.5 § 3.1 ; 261 tableau H.2.1.1.1]</span> :</p>
-  <table class="resultats"><thead><tr><th>État</th><th>Tourbe</th><th>Argile</th><th>Limon</th><th>Sable</th><th>Grave</th></tr></thead>
-    <tbody>
-      <tr><td>Surconsolidé, très serré</td><td class="motif">—</td><td>1 <small>E<sub>M</sub>/p<sub>l</sub> &gt; 16</small></td><td>2/3 <small>&gt; 14</small></td><td>1/2 <small>&gt; 12</small></td><td>1/3 <small>&gt; 10</small></td></tr>
-      <tr><td>Normalement consolidé ou serré</td><td>1</td><td>2/3 <small>9 – 16</small></td><td>1/2 <small>8 – 14</small></td><td>1/3 <small>7 – 12</small></td><td>1/4 <small>6 – 10</small></td></tr>
-      <tr><td>Sous-consolidé, remanié, lâche</td><td class="motif">—</td><td>1/2 <small>7 – 9</small></td><td>1/2 <small>5 – 8</small></td><td>1/3 <small>5 – 7</small></td><td class="motif">—</td></tr>
-    </tbody></table>
-  <p class="method-note">Le tableau H.2.1.1.1 de la première édition de la NF P94-261 contenait
-     des erreurs ; le tableau ci-dessus reprend la version corrigée par le guide Cerema, qui
-     coïncide avec celui du Fascicule 62. Pour les roches : 2/3 (très peu fracturée ou très
-     altérée), 1/2 (normalement fracturée), 1/3 (très fracturée).</p>
 
   <h3>Valeurs caractéristiques et formation homogène</h3>
   <p>Aucun des deux textes ne demande d'utiliser la moyenne des mesures. La valeur
@@ -238,10 +271,12 @@
      <strong>deux fois</strong> les minimales <span class="ref">[F62 E.2 § 1.2]</span>. Aucun
      critère équivalent n'existe pour le pénétromètre, dont les diagrammes sont trop
      irréguliers : l'homogénéité s'y apprécie.</p>
+  <figure class="figure-cours" data-schema="schemaValeursCaracteristiques"><figcaption>Huit essais dans une même argile. La moyenne prudente convient quand un grand volume de sol travaille ; la valeur basse, quand un petit volume décide. Elles sont estimées ici par les formules statistiques de l'annexe D de la NF EN 1990 (loi de Student, huit valeurs) : un ordre de grandeur, que le jugement sur le site et sur l'ouvrage vient corriger. Le rapport du maximum au minimum reste sous 2 : la couche peut être traitée comme une formation homogène.</figcaption></figure>
   <div class="piege"><strong>Piège fréquent</strong>
-    <p>Prendre p<sub>l</sub> au lieu de p<sub>l</sub>*, ou mélanger dans une même moyenne des
-       essais d'une couche molle et de la couche porteuse sous-jacente. La moyenne d'une argile
-       à 0,4 MPa et d'une marne à 3 MPa ne décrit aucun des deux sols.</p></div>
+    <p>Mélanger dans une même moyenne des essais d'une couche molle et de la couche porteuse
+       sous-jacente : la moyenne d'une argile à 0,4 MPa et d'une marne à 3 MPa ne décrit aucun
+       des deux sols. Et, dans les formules, prendre p<sub>l</sub> au lieu de la pression
+       limite nette p<sub>l</sub>* (chapitre 3).</p></div>
 
   <div class="actions"><a class="primary" href="index.html#ch1">Exercices du chapitre</a>
     <a class="secondary" href="exerciseur.html#ch1">Exerciseur</a></div>
@@ -360,6 +395,14 @@
      c<sub>u</sub> = (q<sub>t</sub> − σ<sub>v0</sub>)/N<sub>kt</sub>, N<sub>kt</sub> valant 10 à 20
      selon le site. En projet, q<sub>c</sub> entre directement dans les méthodes
      pénétrométriques des semelles (k<sub>c</sub>·q<sub>ce</sub>, chapitre 6) et des pieux (chapitre 11).</p>
+  <p>Le diagramme de q<sub>c</sub> est bien plus détaillé qu'un profil pressiométrique, mais
+     aussi plus « bruité » : les calculs utilisent un diagramme <strong>lissé</strong>, et les
+     grandeurs équivalentes sont des moyennes <strong>écrêtées</strong>, pour que les pics
+     isolés ne dominent pas <span class="ref">[F62 E.2 § 3]</span>.</p>
+  <div class="hint">Les coefficients des méthodes pénétrométriques ont été calés sur un type
+     de pointe donné. La NF P94-262 s'appuie sur le pénétromètre à pointe électrique sans
+     jupe ; avec une pointe mécanique, le guide Cerema conseille de diviser q<sub>c</sub> par
+     un coefficient de l'ordre de 1,3 pour ne pas surestimer la portance.</div>
 
   <div class="calc" id="esCptCalc">
     <h3>Une mesure au piézocône sur l'abaque de Robertson</h3>
@@ -815,8 +858,18 @@
 <section id="ch3" class="card">
   <h2>3 · L'essai pressiométrique, du relevé au profil</h2>
 
-  <p>Le chapitre 1 a présenté les trois résultats de l'essai — E<sub>M</sub>, p<sub>f</sub>,
-     p<sub>l</sub> — comme des données du rapport géotechnique. Ce chapitre les fabrique. Il
+  <p>Le pressiomètre Ménard est l'essai sur lequel reposent les méthodes françaises de calcul
+     des fondations. Il donne trois résultats, qui entrent dans presque tous les chapitres
+     suivants :</p>
+  <table class="resultats"><thead><tr><th>Grandeur</th><th>Définition</th><th>Rôle dans les calculs</th></tr></thead>
+    <tbody>
+      <tr><td><strong>E<sub>M</sub></strong> (MPa)</td><td class="motif">module pressiométrique, pente de la phase pseudo-élastique</td><td class="motif">tassements, module de réaction, effort transversal</td></tr>
+      <tr><td><strong>p<sub>f</sub></strong> (MPa)</td><td class="motif">pression de fluage, fin de la phase pseudo-élastique</td><td class="motif">palier de la réaction latérale des pieux</td></tr>
+      <tr><td><strong>p<sub>l</sub></strong> (MPa)</td><td class="motif">pression limite : volume de la cavité doublé (convention)</td><td class="motif">portance des semelles et des pieux, frottement latéral</td></tr>
+    </tbody></table>
+  <p>Le rapport <strong>E<sub>M</sub>/p<sub>l</sub></strong> renseigne sur l'état du sol : grand
+     (au-delà de 12 à 16) pour un sol surconsolidé ou très serré, petit (5 à 8) pour un sol
+     remanié ou lâche. Ce chapitre fabrique ces trois résultats. Il
      part des lectures brutes du contrôleur, applique les étalonnages et les corrections,
      lit la courbe, puis assemble les essais d'un forage en <strong>profil
      pressiométrique</strong>. L'ordre suit celui des logiciels de dépouillement (ELK et
@@ -1063,12 +1116,38 @@
   </div>
 
   <h3>Pressions nettes et rapport E<sub>M</sub>/p<sub>l</sub>*</h3>
-  <p>Comme au chapitre 1, on retranche la contrainte horizontale totale qui régnait avant
-     l'essai, p<sub>0</sub> = K<sub>0</sub>·σ'<sub>v0</sub> + u<sub>0</sub>, avec
-     K<sub>0</sub> = 0,5 à défaut de mesure <span class="ref">[F62 E.1 § 2.2,1]</span> :</p>
-  <p class="formula">p<sub>l</sub>* = p<sub>l</sub> − p<sub>0</sub>&nbsp;&nbsp;·&nbsp;&nbsp;p<sub>f</sub>* = p<sub>f</sub> − p<sub>0</sub></p>
+  <p>Avant l'essai, la paroi du forage est déjà soumise à la contrainte horizontale des
+     terres au repos. La part de la pression limite qui mesure la résistance du sol est donc
+     <strong>ce qui dépasse</strong> cette pression initiale ; de même pour la pression de
+     fluage <span class="ref">[F62 E.1 § 2.2,1]</span> :</p>
+  <p class="formula">p<sub>l</sub>* = p<sub>l</sub> − p<sub>0</sub>&nbsp;&nbsp;·&nbsp;&nbsp;p<sub>f</sub>* = p<sub>f</sub> − p<sub>0</sub>&nbsp;&nbsp;avec&nbsp;&nbsp;p<sub>0</sub> = K<sub>0</sub> σ'<sub>v0</sub> + u<sub>0</sub></p>
+  <p>u<sub>0</sub> est la pression interstitielle au niveau de l'essai, σ'<sub>v0</sub> la
+     contrainte verticale effective (chapitre 1), et K<sub>0</sub> le coefficient des terres
+     au repos, pris à <strong>0,5</strong> à défaut d'autre indication. Toutes les formules de
+     portance utilisent <strong>p<sub>l</sub>*</strong>, jamais p<sub>l</sub> : la différence
+     est faible près de la surface, mais elle atteint couramment 0,1 à 0,2 MPa à 15 m — soit
+     20 à 40 % d'une pression limite d'argile molle.</p>
+
+  <div class="calc" id="calcPl">
+    <h3>De p<sub>l</sub> mesurée à p<sub>l</sub>* nette</h3>
+    <div class="data-grid">
+      <div class="field"><label for="plZ">Profondeur de l'essai z</label>
+        <div class="input-wrap"><input id="plZ" type="text" inputmode="decimal" value="12"><span class="unit">m</span></div></div>
+      <div class="field"><label for="plMes">Pression limite mesurée p<sub>l</sub></label>
+        <div class="input-wrap"><input id="plMes" type="text" inputmode="decimal" value="0.85"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="plGamma">Poids volumique γ</label>
+        <div class="input-wrap"><input id="plGamma" type="text" inputmode="decimal" value="19"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="plNappe">Profondeur de la nappe</label>
+        <div class="input-wrap"><input id="plNappe" type="text" inputmode="decimal" value="3"><span class="unit">m</span></div></div>
+      <div class="field"><label for="plGsat">γ saturé sous la nappe</label>
+        <div class="input-wrap"><input id="plGsat" type="text" inputmode="decimal" value="20"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="plK0">K<sub>0</sub></label>
+        <div class="input-wrap"><input id="plK0" type="text" inputmode="decimal" value="0.5"><span class="unit">—</span></div></div>
+    </div>
+    <p class="final-result" id="plOut"></p>
+  </div>
   <p>Le rapport E<sub>M</sub>/p<sub>l</sub>* situe l'état du sol et fixe le coefficient
-     rhéologique α (tableau du chapitre 1). Un rapport bas, sous 5 à 7, désigne un sol
+     rhéologique α (tableau ci-dessous). Un rapport bas, sous 5 à 7, désigne un sol
      lâche ou sous-consolidé — ou un <strong>forage de mauvaise qualité</strong> qui a
      écrasé E<sub>M</sub> ; un rapport très élevé, au-delà de 16 à 20, un sol surconsolidé
      ou un forage trop serré. Avant d'interpréter le sol, on interroge donc le forage.</p>
@@ -1094,6 +1173,40 @@
       <li>mélanger bar, kPa et MPa : 1 bar = 0,1 MPa = 100 kPa ;</li>
       <li>porter p<sub>l</sub> au lieu de p<sub>l</sub>* dans les formules de calcul.</li>
     </ul>
+  </div>
+
+  <h3>Le coefficient rhéologique α</h3>
+  <p>Le module pressiométrique n'est pas un module d'Young : la sonde cisaille le sol plus
+     qu'elle ne le comprime. Ménard a introduit un <strong>coefficient rhéologique α</strong>
+     qui fait le pont entre E<sub>M</sub> et le comportement réel ; il intervient dans les
+     tassements (chapitre 9) et dans la réaction latérale des pieux (chapitre 14). Il se lit
+     d'après la nature du sol et le rapport E<sub>M</sub>/p<sub>l</sub>
+     <span class="ref">[F62 C.5 § 3.1 ; 261 tableau H.2.1.1.1]</span> :</p>
+  <table class="resultats"><thead><tr><th>État</th><th>Tourbe</th><th>Argile</th><th>Limon</th><th>Sable</th><th>Grave</th></tr></thead>
+    <tbody>
+      <tr><td>Surconsolidé, très serré</td><td class="motif">—</td><td>1 <small>E<sub>M</sub>/p<sub>l</sub> &gt; 16</small></td><td>2/3 <small>&gt; 14</small></td><td>1/2 <small>&gt; 12</small></td><td>1/3 <small>&gt; 10</small></td></tr>
+      <tr><td>Normalement consolidé ou serré</td><td>1</td><td>2/3 <small>9 – 16</small></td><td>1/2 <small>8 – 14</small></td><td>1/3 <small>7 – 12</small></td><td>1/4 <small>6 – 10</small></td></tr>
+      <tr><td>Sous-consolidé, remanié, lâche</td><td class="motif">—</td><td>1/2 <small>7 – 9</small></td><td>1/2 <small>5 – 8</small></td><td>1/3 <small>5 – 7</small></td><td class="motif">—</td></tr>
+    </tbody></table>
+  <p class="method-note">Le tableau H.2.1.1.1 de la première édition de la NF P94-261 contenait
+     des erreurs ; le tableau ci-dessus reprend la version corrigée par le guide Cerema, qui
+     coïncide avec celui du Fascicule 62. Pour les roches : 2/3 (très peu fracturée ou très
+     altérée), 1/2 (normalement fracturée), 1/3 (très fracturée).</p>
+
+  <div class="calc" id="calcAlpha">
+    <h3>État du sol et coefficient α</h3>
+    <div class="data-grid">
+      <div class="field"><label for="alNature">Nature du sol</label>
+        <div class="input-wrap"><select id="alNature">
+          <option value="argile">argile</option><option value="limon">limon</option>
+          <option value="sable">sable</option><option value="grave">grave</option>
+          <option value="tourbe">tourbe</option></select></div></div>
+      <div class="field"><label for="alEM">Module E<sub>M</sub></label>
+        <div class="input-wrap"><input id="alEM" type="text" inputmode="decimal" value="9" data-curseur="1 60 0.5"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="alPl">Pression limite nette p<sub>l</sub>*</label>
+        <div class="input-wrap"><input id="alPl" type="text" inputmode="decimal" value="0.9" data-curseur="0.1 5 0.05"><span class="unit">MPa</span></div></div>
+    </div>
+    <p class="final-result" id="alOut"></p>
   </div>
 
   <h3>Du sondage au profil pressiométrique</h3>
@@ -1878,7 +1991,7 @@
      &nbsp;&nbsp;·&nbsp;&nbsp; s<sub>f</sub> = s<sub>c</sub> + s<sub>d</sub> <span class="ref">[F62 F.2 § 3 ; 261 H.2.1.1.1]</span></p>
   <p>q' est la contrainte effective moyenne appliquée par la semelle, σ'<sub>v0</sub> la contrainte
      effective avant travaux au niveau de la base, B<sub>0</sub> = 0,60 m une largeur de référence, α le
-     coefficient rhéologique du chapitre 1. Le terme déviatorique n'est pas proportionnel à B mais
+     coefficient rhéologique du chapitre 3. Le terme déviatorique n'est pas proportionnel à B mais
      à B<sup>α</sup> : dans une argile surconsolidée (α = 1), doubler la largeur double le tassement ;
      dans un sable (α = 1/3), il ne l'augmente que de 26 %.</p>
   <table class="resultats"><thead><tr><th>L/B</th><th class="num">cercle</th><th class="num">1 (carré)</th><th class="num">2</th><th class="num">3</th><th class="num">5</th><th class="num">20 (filante)</th></tr></thead>
@@ -2643,6 +2756,7 @@ marquerSectionLue();
 <script type="module" src="src/impression.js"></script>
 <script type="module" src="src/socle.js"></script>
 <script type="module" src="src/cours-schemas.js"></script>
+<script type="module" src="src/curseurs.js"></script>
 <script type="module" src="src/cours-ch1.js"></script>
 <script type="module" src="src/cours-ch2.js"></script>
 <script type="module" src="src/cours-ch3.js"></script>

@@ -334,6 +334,59 @@
      "toleranceRel": 0.04
     }
    ]
+  },
+  {
+   "id": "ch3-alpha",
+   "titre": "Coefficient rhéologique et état du sol",
+   "difficulte": 1,
+   "graine": 3039644838,
+   "enonce": "Dans un grave, l'essai pressiométrique donne EM = 4,8 MPa et pl = 0,6 MPa.",
+   "donnees": [
+    {
+     "label": "Nature",
+     "valeur": "grave"
+    },
+    {
+     "label": "EM",
+     "valeur": "4,8 MPa"
+    },
+    {
+     "label": "pl",
+     "valeur": "0,6 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rapport EM/pl ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 8,
+     "explication": "EM/pl = 4,8 / 0,6 = 8,00.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "État du sol d'après le tableau de α ?",
+     "type": "choix",
+     "options": [
+      "très serré",
+      "normalement serré"
+     ],
+     "reponse": 1,
+     "explication": "Le tableau du coefficient rhéologique (F62 annexe C.5 ; NF P94-261 tableau H.2.1.1.1 corrigé) classe ce rapport dans « normalement serré »."
+    },
+    {
+     "texte": "Coefficient α à retenir ?",
+     "type": "choix",
+     "options": [
+      "1/2",
+      "1",
+      "1/4",
+      "2/3"
+     ],
+     "reponse": 2,
+     "explication": "α = 1/4. Il sert au tassement (chapitre 9) et au module de réaction transversal des pieux (chapitre 14)."
+    }
+   ]
   }
  ]
 }

@@ -118,3 +118,14 @@ test("RQD, réfraction et Vs,30", () => {
   proche(v.Vs30, 30 / (5 / 150 + 10 / 300 + 15 / 600), 1e-9, "Vs,30");
   assert.equal(v.classe, "C");
 });
+
+test("profondeur de reconnaissance (NF EN 1997-2 annexe B.3)", async () => {
+  const { profondeurReconnaissance: za } = await import("../src/geotech/sols.js");
+  assert.equal(za({ type: "semelle", b: 1.5 }).za, 6);
+  assert.equal(za({ type: "semelle", b: 3 }).za, 9);
+  assert.equal(za({ type: "semelle", b: 3 }).gouvernant, "3 bF");
+  assert.equal(za({ type: "radier", b: 20 }).za, 30);
+  assert.equal(za({ type: "pieux", b: 3.2, DF: 1.2 }).za, 5);
+  assert.equal(za({ type: "pieux", b: 8, DF: 1.2 }).za, 8);
+  assert.equal(za({ type: "pieux", b: 2, DF: 2 }).gouvernant, "3 DF");
+});

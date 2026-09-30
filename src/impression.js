@@ -5,6 +5,8 @@
 if (new URLSearchParams(location.search).has("impression")) {
   document.documentElement.classList.add("impression");
   window.addEventListener("load", () => setTimeout(() => {
+    // Les réglettes de calcul en direct doublent leur case : seule la case s'imprime.
+    for (const r of document.querySelectorAll(".curseur")) r.remove();
     // Un tableau de relevés s'imprime tel quel, en chasse fixe.
     for (const zone of document.querySelectorAll(".calc textarea")) {
       const pre = document.createElement("pre");

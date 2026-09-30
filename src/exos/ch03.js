@@ -1,7 +1,7 @@
 // Exercices du chapitre 3 : dépouillement de l'essai pressiométrique.
-import { fr, frd, nombre, choixMelange, donnee } from "./alea.js";
+import { fr, frd, nombre, choixMelange, donnee, FRACTIONS, fraction } from "./alea.js";
 import * as P from "../geotech/pressio.js";
-import { alphaMenard } from "../geotech/sols.js";
+import { alphaMenard, ALPHA_MENARD } from "../geotech/sols.js";
 import { graphe, COULEURS } from "../figures.js";
 
 export default [
@@ -143,6 +143,30 @@ export default [
         figure: fig,
         questions: [
           nombre("Pression de fluage pf (intersection des deux droites) ?", r.pf, "MPa", `Droite basse : ΔV ≈ ${frd(r.bas.a, 2)} + ${frd(r.bas.b, 2)} p ; droite montante : ΔV ≈ ${frd(r.haut.a, 2)} + ${frd(r.haut.b, 2)} p ; elles se coupent à pf = ${frd(r.pf, 3)} MPa.`, { rel: 0.04 }),
+        ],
+      };
+    },
+  },
+  {
+    id: "ch3-alpha", titre: "Coefficient rhéologique et état du sol", difficulte: 1,
+    generer(a) {
+      const nature = a.choix(["argile", "limon", "sable", "grave"]);
+      const lignes = ALPHA_MENARD[nature];
+      const l = a.choix(lignes);
+      const r = a.entre(l.rapport[0] + 0.5, Number.isFinite(l.rapport[1]) ? l.rapport[1] - 0.5 : l.rapport[0] + 6, 0.5);
+      const pl = a.entre(0.6, 2.5, 0.1);
+      const EM = +(r * pl).toFixed(1);
+      const al = alphaMenard(nature, EM, pl);
+      const etats = [...new Set(lignes.map((x) => x.etat))];
+      return {
+        enonce: `Dans un ${nature}, l'essai pressiométrique donne EM = ${fr(EM, 3)} MPa et pl = ${frd(pl, 1)} MPa.`,
+        donnees: [donnee("Nature", nature), donnee("EM", `${fr(EM, 3)} MPa`), donnee("pl", `${frd(pl, 1)} MPa`)],
+        questions: [
+          nombre("Rapport EM/pl ?", EM / pl, "", `EM/pl = ${fr(EM, 3)} / ${frd(pl, 1)} = ${frd(EM / pl, 2)}.`, { rel: 0.01 }),
+          choixMelange(a, "État du sol d'après le tableau de α ?", [al.etat, ...etats.filter((e) => e !== al.etat)],
+            `Le tableau du coefficient rhéologique (F62 annexe C.5 ; NF P94-261 tableau H.2.1.1.1 corrigé) classe ce rapport dans « ${al.etat} ».`),
+          choixMelange(a, "Coefficient α à retenir ?", [fraction(al.alpha), ...FRACTIONS.map(([, t]) => t).filter((t) => t !== fraction(al.alpha))].slice(0, 4),
+            `α = ${fraction(al.alpha)}. Il sert au tassement (chapitre 9) et au module de réaction transversal des pieux (chapitre 14).`),
         ],
       };
     },

@@ -1,43 +1,8 @@
 // Exercices du chapitre 1 : le sol de fondation et sa reconnaissance.
 import { fr, frd, nombre, choixMelange, donnee } from "./alea.js";
-import { pressionNette, proposerClasseF62, alphaMenard, ALPHA_MENARD, CLASSES_F62 } from "../geotech/sols.js";
-
-export const FRACTIONS = [[1, "1"], [2 / 3, "2/3"], [1 / 2, "1/2"], [1 / 3, "1/3"], [1 / 4, "1/4"]];
-export const fraction = (x) => FRACTIONS.find(([v]) => Math.abs(v - x) < 1e-6)?.[1] ?? fr(x);
-
-/** Classe F62 d'après qc, avec la même prudence que pour pl (trou du tableau → classe inférieure). */
-function classeQc(famille, qc) {
-  const lignes = Object.entries(CLASSES_F62).filter(([, c]) => c.famille === famille && c.qc);
-  let retenue = lignes[0];
-  for (const l of lignes) if (qc >= l[1].qc[0]) retenue = l;
-  return retenue;
-}
+import { proposerClasseF62, sigmaV0, profondeurReconnaissance, CLASSES_F62 } from "../geotech/sols.js";
 
 export default [
-  {
-    id: "ch1-pnette", titre: "Pression limite nette d'un essai sous la nappe", difficulte: 1,
-    generer(a) {
-      const z = a.entre(4, 12, 0.5), zw = a.entre(1, 3, 0.5), g = a.entre(18, 20, 0.5), gs = a.entre(20, 21.5, 0.5);
-      const pl = a.entre(0.8, 2.4, 0.05);
-      const sv = g * zw + gs * (z - zw), u = 10 * (z - zw), s1 = sv - u;
-      const { p0, plNette } = pressionNette({ pl: pl * 1000, sigmaV0eff: s1, u, K0: 0.5 });
-      return {
-        enonce: `Un essai pressiométrique mené à ${fr(z)} m de profondeur donne une pression limite pl = ${frd(pl, 2)} MPa. La nappe est à ${fr(zw)} m de profondeur ; le sol pèse ${fr(g)} kN/m³ au-dessus et ${fr(gs)} kN/m³ (saturé) au-dessous. On prend K0 = 0,5 et γw = 10 kN/m³.`,
-        donnees: [donnee("Profondeur de l'essai", `${fr(z)} m`), donnee("pl mesurée", `${frd(pl, 2)} MPa`), donnee("Nappe", `${fr(zw)} m`), donnee("γ / γsat", `${fr(g)} / ${fr(gs)} kN/m³`)],
-        questions: [
-          nombre("Contrainte verticale effective σ'v0 au niveau de l'essai ?", s1, "kPa",
-            `σv0 = ${fr(g)} × ${fr(zw)} + ${fr(gs)} × ${fr(z - zw)} = ${fr(sv, 4)} kPa ; u = 10 × ${fr(z - zw)} = ${fr(u, 3)} kPa ; σ'v0 = σv0 − u = ${fr(s1, 4)} kPa.`, { rel: 0.01 }),
-          nombre("Pression horizontale totale au repos p0 ?", p0, "kPa",
-            `p0 = u + K0 σ'v0 = ${fr(u, 3)} + 0,5 × ${fr(s1, 4)} = ${fr(p0, 4)} kPa : l'eau compte entière, le squelette pour moitié.`),
-          nombre("Pression limite nette pl* ?", plNette / 1000, "MPa",
-            `pl* = pl − p0 = ${frd(pl, 2)} − ${frd(p0 / 1000, 3)} = ${frd(plNette / 1000, 3)} MPa. La correction représente ${fr((100 * p0) / (pl * 1000), 2)} % de pl : elle n'est pas négligeable en profondeur et sous la nappe.`, { rel: 0.01 }),
-          choixMelange(a, "Quelle pression entre dans les formules de portance des deux référentiels ?",
-            ["la pression limite nette pl*", "la pression limite mesurée pl", "la pression de fluage pf", "la pression p0 au repos"],
-            "Les facteurs de portance kp multiplient la pression limite nette, qui mesure ce que le sol peut reprendre au-delà de son état initial. Les classes du Fascicule 62, elles, sont tabulées en pl."),
-        ],
-      };
-    },
-  },
   {
     id: "ch1-classe", titre: "Classer un sol au Fascicule 62", difficulte: 1,
     generer(a) {
@@ -46,46 +11,23 @@ export default [
       const bas = Math.max(c.pl[0], famille === "argile" ? 0.3 : 0.2);
       const haut = Number.isFinite(c.pl[1]) ? c.pl[1] : c.pl[0] + 1.5;
       const pl = a.entre(bas + 0.05, haut - 0.05, 0.05);
-      const rapport = a.entre(famille === "argile" ? 8 : 6, famille === "argile" ? 18 : 14, 0.5);
-      const EM = +(rapport * pl).toFixed(1);
       const prop = proposerClasseF62(famille, pl);
-      const al = alphaMenard(famille, EM, pl);
       const classes = Object.values(CLASSES_F62).filter((x) => x.famille === famille);
       const nomClasse = (x) => `${x.nom} (${x.lettre})`;
+      const fourchette = (x) => (Number.isFinite(x.qc[1]) ? (x.qc[0] ? `de ${fr(x.qc[0])} à ${fr(x.qc[1])} MPa` : `moins de ${fr(x.qc[1])} MPa`) : `plus de ${fr(x.qc[0])} MPa`);
       return {
-        enonce: `Un ${famille === "argile" ? "sol argileux" : "sol sableux"} donne au pressiomètre pl = ${frd(pl, 2)} MPa et EM = ${fr(EM, 3)} MPa.`,
-        donnees: [donnee("Nature", famille === "argile" ? "argile" : "sable"), donnee("pl", `${frd(pl, 2)} MPa`), donnee("EM", `${fr(EM, 3)} MPa`)],
+        enonce: `Un ${famille === "argile" ? "sol argileux" : "sol sableux"} donne au pressiomètre pl = ${frd(pl, 2)} MPa.`,
+        donnees: [donnee("Nature", famille === "argile" ? "argile" : "sable"), donnee("pl", `${frd(pl, 2)} MPa`)],
         questions: [
           choixMelange(a, "Classe du sol au Fascicule 62 (annexe E.1) ?",
             [nomClasse(prop), ...classes.filter((x) => x.lettre !== prop.lettre).map(nomClasse)],
             `Le tableau donne pour ${famille === "argile" ? "les argiles" : "les sables"} : ${classes.map((x) => `${x.lettre} pour pl ${Number.isFinite(x.pl[1]) ? (x.pl[0] ? `de ${frd(x.pl[0], 1)} à ${frd(x.pl[1], 1)}` : `< ${frd(x.pl[1], 1)}`) : `> ${frd(x.pl[0], 1)}`} MPa`).join(", ")}. Avec ${frd(pl, 2)} MPa, on retient la classe ${prop.lettre}${prop.entre ? " — pl tombe entre deux classes : on garde la plus faible, par prudence" : ""}.`),
-          nombre("Rapport EM/pl ?", EM / pl, "", `EM/pl = ${fr(EM, 3)} / ${frd(pl, 2)} = ${frd(EM / pl, 2)}.`, { rel: 0.01 }),
-          choixMelange(a, "Coefficient rhéologique α ?", [fraction(al.alpha), ...FRACTIONS.map(([, t]) => t).filter((t) => t !== fraction(al.alpha))].slice(0, 4),
-            `Pour ${famille === "argile" ? "une argile" : "un sable"}, EM/pl = ${frd(al.rapport, 2)} correspond à l'état « ${al.etat} » : α = ${fraction(al.alpha)}. Un grand rapport EM/pl signale un sol surconsolidé ou serré.`),
-        ],
-      };
-    },
-  },
-  {
-    id: "ch1-alpha", titre: "Coefficient rhéologique et état du sol", difficulte: 1,
-    generer(a) {
-      const nature = a.choix(["argile", "limon", "sable", "grave"]);
-      const lignes = ALPHA_MENARD[nature];
-      const l = a.choix(lignes);
-      const r = a.entre(l.rapport[0] + 0.5, Number.isFinite(l.rapport[1]) ? l.rapport[1] - 0.5 : l.rapport[0] + 6, 0.5);
-      const pl = a.entre(0.6, 2.5, 0.1);
-      const EM = +(r * pl).toFixed(1);
-      const al = alphaMenard(nature, EM, pl);
-      const etats = [...new Set(lignes.map((x) => x.etat))];
-      return {
-        enonce: `Dans un ${nature}, l'essai pressiométrique donne EM = ${fr(EM, 3)} MPa et pl = ${frd(pl, 1)} MPa.`,
-        donnees: [donnee("Nature", nature), donnee("EM", `${fr(EM, 3)} MPa`), donnee("pl", `${frd(pl, 1)} MPa`)],
-        questions: [
-          nombre("Rapport EM/pl ?", EM / pl, "", `EM/pl = ${fr(EM, 3)} / ${frd(pl, 1)} = ${frd(EM / pl, 2)}.`, { rel: 0.01 }),
-          choixMelange(a, "État du sol d'après le tableau de α ?", [al.etat, ...etats.filter((e) => e !== al.etat)],
-            `Le tableau du coefficient rhéologique (F62 annexe C.5 ; NF P94-261 tableau H.2.1.1.1 corrigé) classe ce rapport dans « ${al.etat} ».`),
-          choixMelange(a, "Coefficient α à retenir ?", [fraction(al.alpha), ...FRACTIONS.map(([, t]) => t).filter((t) => t !== fraction(al.alpha))].slice(0, 4),
-            `α = ${fraction(al.alpha)}. Il sert au tassement (chapitre 9) et au module de réaction transversal des pieux (chapitre 14).`),
+          choixMelange(a, "Quelle résistance de pointe qc attendrait-on au pénétromètre statique dans cette classe ?",
+            [fourchette(prop), ...classes.filter((x) => x.lettre !== prop.lettre).map(fourchette)],
+            `Le même tableau donne, pour la classe ${prop.lettre}, qc ${fourchette(prop)}. Les deux essais classent le même sol ; les fourchettes ne sont pas jointives, comme pour pl.`),
+          choixMelange(a, "À l'Eurocode 7, ce sol se range…",
+            [`dans la catégorie des ${famille === "argile" ? "argiles et limons" : "sables et graves"}, sans lettre`, `dans la classe ${prop.lettre} de la NF P94-261`, "dans la catégorie des sols intermédiaires, faute de lettre", "dans une catégorie fixée par la valeur de pl"],
+            "Les catégories conventionnelles de la NF P94-261 et de la NF P94-262 ne décrivent que la nature du sol : la résistance entre directement par pl* ou qc dans les formules."),
         ],
       };
     },
@@ -130,8 +72,8 @@ export default [
           "Les tableaux pressiométriques n'ont pas de colonne « intermédiaire » : ces sols y rejoignent la colonne de leur nature dominante. Les tableaux pénétrométriques, eux, en ont une."],
         ["Quelle catégorie de terrain la NF P94-262 ne traite-t-elle plus ?", ["les roches dures (mécanique des roches)", "les craies", "les marnes et calcaires marneux", "les sols intermédiaires"],
           "Le guide Cerema le note : les roches dures relèvent des méthodes de la mécanique des roches et sortent du domaine de la norme."],
-        ["Le coefficient rhéologique α se lit…", ["sur le rapport EM/pl, selon la nature du sol", "sur la seule pression limite pl", "sur l'indice de plasticité", "sur la résistance de pointe qc"],
-          "Un rapport EM/pl élevé indique un sol surconsolidé (argile) ou serré (sable) ; le tableau donne α selon la nature et ce rapport."],
+        ["Sous une semelle isolée de 2,5 m de côté, l'annexe B.3 de la NF EN 1997-2 recommande de reconnaître le terrain sous l'assise sur au moins…", ["7,5 m : le plus grand de 6 m et 3 bF", "3,75 m : 1,5 bF", "2,5 m : une largeur", "6 m, quelle que soit la semelle"],
+          "Pour une semelle, za ≥ 6 m et za ≥ 3 bF, bF étant son petit côté : ici max(6 ; 7,5) = 7,5 m sous l'assise."],
         ["Quel essai fournit à la fois un module (EM) et une résistance (pl) ?", ["l'essai pressiométrique Ménard", "l'essai au pénétromètre statique", "l'essai de cisaillement à la boîte", "l'essai œdométrique"],
           "Le pressiomètre donne EM (tassements, modules de réaction) et pl (portance) : c'est pourquoi la pratique française s'est construite autour de lui."],
       ];
@@ -142,26 +84,49 @@ export default [
     },
   },
   {
-    id: "ch1-penetro", titre: "Pénétromètre et pressiomètre : deux regards sur un sable", difficulte: 1,
+    id: "ch1-contraintes", titre: "Contraintes effectives et nappe", difficulte: 1,
     generer(a) {
-      const [cleQ, cQ] = a.choix(Object.entries(CLASSES_F62).filter(([, c]) => c.famille === "sable"));
-      const qc = a.entre(Math.max(cQ.qc[0], 1) + 0.5, Number.isFinite(cQ.qc[1]) ? cQ.qc[1] - 0.5 : cQ.qc[0] + 10, 0.5);
-      const pl = a.entre(Math.max(cQ.pl[0], 0.2) + 0.05, Number.isFinite(cQ.pl[1]) ? cQ.pl[1] - 0.05 : cQ.pl[0] + 1.5, 0.05);
-      const [, parQc] = classeQc("sable", qc);
-      const parPl = proposerClasseF62("sable", pl);
-      const nomClasse = (x) => `${x.nom} (${x.lettre})`;
-      const classes = Object.values(CLASSES_F62).filter((x) => x.famille === "sable");
+      const h1 = a.entre(2, 5, 0.5), g1 = a.entre(17, 19, 0.5), gs1 = +(g1 + a.entre(1, 2, 0.5)).toFixed(1);
+      const g2 = a.entre(18, 20, 0.5), gs2 = +(g2 + a.entre(1, 2, 0.5)).toFixed(1);
+      const zw = a.entre(1, h1, 0.5), z = +(h1 + a.entre(2, 8, 0.5)).toFixed(1);
+      const couches = [{ z0: 0, z1: h1, gamma: g1, gammaSat: gs1 }, { z0: h1, z1: 1e6, gamma: g2, gammaSat: gs2 }];
+      const r = sigmaV0({ couches, z, zNappe: zw }), haute = sigmaV0({ couches, z, zNappe: 0 });
       return {
-        enonce: `Dans un sable, le pénétromètre statique donne qc = ${frd(qc, 1)} MPa et, à la même profondeur, le pressiomètre pl = ${frd(pl, 2)} MPa.`,
-        donnees: [donnee("qc", `${frd(qc, 1)} MPa`), donnee("pl", `${frd(pl, 2)} MPa`)],
+        enonce: `Une couche de ${fr(h1)} m (γ = ${fr(g1)} kN/m³ hors d'eau, γsat = ${fr(gs1)} kN/m³ sous la nappe) repose sur une seconde couche (γ = ${fr(g2)} kN/m³, γsat = ${fr(gs2)} kN/m³). La nappe est à ${fr(zw)} m de profondeur ; γw = 10 kN/m³. On s'intéresse au point situé à ${fr(z)} m.`,
+        donnees: [donnee("Couche 1", `${fr(h1)} m · γ ${fr(g1)} · γsat ${fr(gs1)} kN/m³`), donnee("Couche 2", `γ ${fr(g2)} · γsat ${fr(gs2)} kN/m³`), donnee("Nappe", `${fr(zw)} m`), donnee("Profondeur du point", `${fr(z)} m`)],
         questions: [
-          choixMelange(a, "Classe d'après qc ?", [nomClasse(parQc), ...classes.filter((x) => x.lettre !== parQc.lettre).map(nomClasse)],
-            `Sables : A pour qc < 5 MPa, B de 8 à 15 MPa, C au-delà de 20 MPa. qc = ${frd(qc, 1)} MPa → classe ${parQc.lettre}.`),
-          choixMelange(a, "Classe d'après pl ?", [nomClasse(parPl), ...classes.filter((x) => x.lettre !== parPl.lettre).map(nomClasse)],
-            `Sables : A pour pl < 0,5 MPa, B de 1 à 2 MPa, C au-delà de 2,5 MPa. pl = ${frd(pl, 2)} MPa → classe ${parPl.lettre}${parPl.entre ? " (entre deux classes : la plus faible)" : ""}.`),
-          choixMelange(a, "Lequel des deux essais donne aussi un module de déformation utilisable pour les tassements de Ménard ?",
-            ["le pressiomètre (EM)", "le pénétromètre (qc)", "aucun des deux"],
-            "La méthode de Ménard utilise EM. Au pénétromètre, le tassement se calcule par Schmertmann, avec un module empirique 2,5 à 3,5 qc qui n'est pas un module d'Young."),
+          nombre("Contrainte verticale totale σv0 ?", r.sigmaV, "kPa",
+            `σv0 = ${fr(g1)} × ${fr(zw)} + ${fr(gs1)} × ${fr(h1 - zw)} + ${fr(gs2)} × ${fr(z - h1)} = ${fr(r.sigmaV, 4)} kPa.`, { rel: 0.01 }),
+          nombre("Pression de l'eau u0 ?", r.u, "kPa", `u0 = γw (z − zw) = 10 × ${fr(z - zw)} = ${fr(r.u, 3)} kPa.`, { rel: 0.01 }),
+          nombre("Contrainte verticale effective σ'v0 ?", r.sigmaVeff, "kPa", `σ'v0 = σv0 − u0 = ${fr(r.sigmaV, 4)} − ${fr(r.u, 3)} = ${fr(r.sigmaVeff, 4)} kPa.`, { rel: 0.01 }),
+          nombre("Et si la nappe remontait jusqu'au terrain naturel, σ'v0 deviendrait ?", haute.sigmaVeff, "kPa",
+            `Tout le terrain est alors saturé : σv0 = ${fr(gs1)} × ${fr(h1)} + ${fr(gs2)} × ${fr(z - h1)} = ${fr(haute.sigmaV, 4)} kPa, u0 = 10 × ${fr(z)} = ${fr(haute.u, 3)} kPa, σ'v0 = ${fr(haute.sigmaVeff, 4)} kPa. La contrainte effective baisse de ${fr(r.sigmaVeff - haute.sigmaVeff, 3)} kPa : une nappe haute affaiblit le sol.`, { rel: 0.01 }),
+        ],
+      };
+    },
+  },
+  {
+    id: "ch1-reconnaissance", titre: "Jusqu'où reconnaître ?", difficulte: 1,
+    generer(a) {
+      const type = a.choix(["semelle", "radier", "pieux"]);
+      const b = type === "semelle" ? a.entre(1.2, 3.5, 0.1) : type === "radier" ? a.entre(10, 24, 1) : a.entre(1.5, 9, 0.5);
+      const DF = type === "pieux" ? a.entre(0.5, 2, 0.1) : 0;
+      const D = type === "pieux" ? a.entre(8, 25, 1) : a.entre(0.8, 2.5, 0.1);
+      const r = profondeurReconnaissance({ type, b, DF });
+      const quoi = type === "semelle" ? `une semelle isolée de ${fr(b)} m de petit côté, fondée à ${fr(D)} m`
+        : type === "radier" ? `un radier de ${fr(b)} m de petit côté, fondé à ${fr(D)} m`
+          : `un groupe de pieux inscrit dans un rectangle de ${fr(b)} m de petit côté, pieux de ${fr(DF)} m de diamètre à la base, pointes à ${fr(D)} m`;
+      const regle = type === "semelle" ? "za ≥ 6 m et za ≥ 3 bF" : type === "radier" ? "za ≥ 1,5 bB" : "za ≥ bg, za ≥ 5 m et za ≥ 3 DF, sous les pointes";
+      return {
+        enonce: `On prépare la reconnaissance de ${quoi}, d'après les recommandations de l'annexe B.3 de la NF EN 1997-2.`,
+        donnees: [donnee("Fondation", type), donnee("Petit côté", `${fr(b)} m`), donnee(type === "pieux" ? "Pointes" : "Assise", `${fr(D)} m`), ...(type === "pieux" ? [donnee("DF", `${fr(DF)} m`)] : [])],
+        questions: [
+          nombre(`Profondeur za à reconnaître ${type === "pieux" ? "sous les pointes" : "sous l'assise"} ?`, r.za, "m",
+            `${regle} : za = max(${r.criteres.map(([n, v]) => `${n} = ${fr(v)} m`).join(" ; ")}) = ${fr(r.za)} m.`, { rel: 0.01 }),
+          nombre("Profondeur minimale des sondages sous le terrain ?", D + r.za, "m", `${fr(D)} + ${fr(r.za)} = ${fr(D + r.za)} m.`, { rel: 0.01 }),
+          choixMelange(a, "Quel espacement la même annexe suggère-t-elle entre les points de reconnaissance sous un bâtiment ?",
+            ["une maille de 15 à 40 m", "un point tous les 5 m", "une maille de 100 à 200 m", "un seul point au centre"],
+            "L'annexe B.3 propose 15 à 40 m sous les bâtiments et ouvrages industriels, 60 m au plus sous les grands ouvrages de surface, 20 à 200 m le long des ouvrages linéaires."),
         ],
       };
     },

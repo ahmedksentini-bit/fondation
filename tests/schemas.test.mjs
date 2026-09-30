@@ -5,10 +5,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import * as S from "../src/schemas-essais.js";
+import * as E from "../src/schemas-essais.js";
+import * as C from "../src/schemas-cours.js";
 import { boiteTexte } from "../src/figures.js";
 
-const schemas = Object.entries(S).filter(([nom, f]) => nom.startsWith("schema") && typeof f === "function");
+const S = { ...E, ...C };
+const schemas = Object.entries(S).filter(([nom, f]) => /^(schema|figure)/.test(nom) && typeof f === "function");
 
 /** Boîtes des textes horizontaux ; la taille vient du style (12 px par défaut). */
 function boites(svg) {

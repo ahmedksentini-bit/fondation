@@ -140,3 +140,18 @@ export function sigmaV0({ couches, z, zNappe = Infinity }) {
   if (z > zNappe) u = 10 * (z - zNappe);
   return { sigmaV: total, u, sigmaVeff: total - u };
 }
+
+/**
+ * Profondeur de reconnaissance recommandée sous le niveau d'assise (NF EN
+ * 1997-2 annexe B.3, informative) : semelle, za ≥ 6 m et 3 bF (bF petit côté
+ * de la semelle) ; radier ou fondations rapprochées, za ≥ 1,5 bB (bB petit
+ * côté de l'ouvrage) ; pieux, sous la pointe, za ≥ bg, 5 m et 3 DF (bg petit
+ * côté du rectangle circonscrit au groupe, DF diamètre de la base).
+ */
+export function profondeurReconnaissance({ type, b, DF = 0 }) {
+  const criteres = type === "semelle" ? [["6 m", 6], ["3 bF", 3 * b]]
+    : type === "radier" ? [["1,5 bB", 1.5 * b]]
+      : [["bg", b], ["5 m", 5], ["3 DF", 3 * DF]];
+  const za = Math.max(...criteres.map(([, v]) => v));
+  return { za, criteres, gouvernant: criteres.find(([, v]) => v === za)[0] };
+}
