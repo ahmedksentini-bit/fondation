@@ -15,9 +15,9 @@ d'hydrologie.
 | Ressource | Fichier | Rôle |
 |---|---|---|
 | Accueil | `index.html` | ressources, parties, chapitres, banques d'exercices (3 modes) |
-| Cours interactif | `cours.html` | 16 chapitres, dont les sols compressibles et les remblais ; une cinquantaine de schémas explicatifs (dont les appareils d'essai), 55 calculateurs à curseurs de calcul en direct, dont l'assistant de dépouillement pressiométrique |
+| Cours interactif | `cours.html` | 16 chapitres, dont les sols compressibles et les remblais ; une cinquantaine de schémas explicatifs (dont les appareils d'essai), 55 calculateurs à curseurs de calcul en direct, dont l'assistant de dépouillement pressiométrique ; 7 bancs d'essai animés : pénétromètre dynamique, piézocône (avec dissipation), SPT, scissomètre, pressiomètre, œdomètre et triaxial (UU, CU, CD) |
 | Exerciseur | `exerciseur.html` | 105 modèles d'exercices à données tirées au hasard, corrigés pas à pas |
-| Bureau de calcul | `bureau.html` | projet et tableau de bord, sondage pressiométrique, semelle, pieu, frottement négatif, groupe, effort transversal, remblai sur sol compressible (consolidation multicouche, drains, étapes, tassement résiduel) — étapes numérotées, étude paramétrique, note de calcul avec cartouche |
+| Bureau de calcul | `bureau.html` | projet et tableau de bord, sondage pressiométrique (dépouillement de chaque essai déplié étape par étape, avec toutes ses courbes), semelle, pieu, frottement négatif, groupe, effort transversal, remblai sur sol compressible (consolidation multicouche, drains, étapes, tassement résiduel) — étapes numérotées, étude paramétrique, note de calcul avec cartouche |
 | Polycopié | `polycopie/fondations-polycopie.pdf` | le cours complet, produit à partir de `cours.html` |
 
 ## Déploiement — Cloudflare Pages
@@ -51,6 +51,8 @@ src/geotech/        solveurs purs et testés (aucun accès au DOM)
   cphi.js             méthode c–φ (EN 1997-1 annexe D, NF P94-261 annexe F)
   tassements.js       Ménard, Schmertmann, Giroud, œdomètre, module de réaction
   consolidation.js    Terzaghi, drains (Barron–Hansbo, Carrillo), Osterberg, fluage, étapes, Asaoka, multicouche
+  oedometre.js        essai œdométrique simulé et dépouillé : Casagrande, Taylor, σ'p, Cc, Cs, cv
+  camclay.js          Cam-Clay modifié du triaxial virtuel : chemins drainés et non drainés, Mohr, enveloppe
   pieux.js            portance F62 (C.3, C.4) et NF P94-262 (F, G), ξ, pieu modèle
   frottement-negatif.js, groupes.js, lateral.js, tassement-pieu.js
 src/cours-chN.js    calculateurs du chapitre N du cours
@@ -63,6 +65,8 @@ src/figures.js      figures SVG (coupes, diagrammes, graphes) communes à tout l
 src/schemas-essais.js, src/schemas-cours.js  schémas des appareils d'essai et schémas explicatifs du cours
 src/cours-schemas.js  pose chaque schéma dans sa <figure data-schema>
 src/curseurs.js     curseurs de calcul en direct (champs marqués data-curseur)
+src/bancs.js        chargeur des bancs d'essai ; src/bancs/ : moteur d'animation, terrain virtuel, un module par essai
+src/figures-pressio.js  figures du dépouillement pressiométrique, communes au chapitre 3 et au bureau
 data/chapitres.json plan du cours ; data/exercices-chN.json banques figées
 tests/              contrôles numériques (exemples des guides Cerema, feuille CSTB)
 tools/              génération des banques, du service worker et du polycopié

@@ -16,6 +16,8 @@ import { alphaMenard } from "./geotech/sols.js";
 import { profilPressio } from "./figures.js";
 import { TUBE, AIR, SONDE, sondage, texteReleves, texteCouples } from "./pressio-exemples.js";
 import { lireTableau } from "./ui.js";
+import { figureTube, figureAir, figureCorrections, figureCourbe, figureFluage, figureInverse, figurePentes, figureHyperbole } from "./figures-pressio.js";
+import { pentes } from "./geotech/pressio.js";
 import { couchesDepuisSondage, balayage, tauxMaximaux } from "./bureau/projet.js";
 import { etudierRemblai } from "./bureau/remblai.js";
 
@@ -795,7 +797,8 @@ function lireEssais(texte) {
 function depouillerSondage(v) {
   const convention = v.conv === "shg" ? "shg" : "norme";
   const hc = nombre(v.hc, 0), zw = nombre(v.zw, Infinity), K0 = nombre(v.K0, 0.5);
-  const tube = calibrageAppareil(lireTableau(v.tube).filter((r) => r.length >= 2).map(([p, V]) => ({ p, V })), { pmin: nombre(v.pminTube, null), di: nombre(v.di, null), ls: nombre(v.ls, null) });
+  const tubePts = lireTableau(v.tube).filter((r) => r.length >= 2).map(([p, V]) => ({ p, V }));
+  const tube = calibrageAppareil(tubePts, { pmin: nombre(v.pminTube, null), di: nombre(v.di, null), ls: nombre(v.ls, null) });
   const Vs = nombre(v.Vs) > 0 ? nombre(v.Vs) : tube.Vs > 0 ? tube.Vs : 535;
   const a = tube.applicable ? tube.a : 0;
   const air = etalonnageSonde(lireTableau(v.air).filter((r) => r.length >= 2).map(([p, V]) => ({ p, V })), { dz: nombre(v.dzAir, 0), Vs, gammaW: CONVENTIONS[convention].gammaW });
@@ -818,11 +821,65 @@ function depouillerSondage(v) {
     const al = r.applicable && r.plNette > 0 ? alphaMenard(c.nature, r.EM, r.plNette) : null;
     return { ...e, r, c, al };
   });
-  return { convention, hc, zw, K0, tube, Vs, air, couches, res };
+  return { convention, hc, zw, K0, tube, tubePts, Vs, a, air, couches, res };
 }
 
+/** Droite a + b p écrite avec ses signes. */
+const droiteTxt = (d) => `${fd(d.a, 2).replace("-", "−")} ${d.b < 0 ? "−" : "+"} ${fd(Math.abs(d.b), 2)} p`;
+
+/** Dépouillement d'un essai, étape par étape, avec toutes ses courbes : rien n'est caché. */
+function detailEssai(e, Vs, a, hc) {
+  const r = e.r, lus = e.paliers.filter((q) => Number.isFinite(q.p) && Number.isFinite(q.V60));
+  const titre = `<strong>z = ${fd(e.z, 1)} m</strong> · ${esc(e.c.nom)}`;
+  if (!r.applicable) {
+    return `<details class="essai-detail"><summary>${titre} · <span class="verdict ko">non dépouillable</span> ${esc(r.motif)}</summary>
+      ${r.courbe ? figureCorrections(lus, r.courbe) : ""}</details>`;
+  }
+  const c = r.courbe, ph = r.phase, lim = r.limite, pt = pentes(c);
+  const lignes = c.map((q, i) => {
+    const l = lus[i] ?? {};
+    return `<tr${i >= ph.i1 && i <= ph.i2 ? ' class="ligne-retenue"' : ""}><td>${q.n}</td><td class="n">${fd(q.pr, 3)}</td><td class="n">${Number.isFinite(l.V15) ? fd(l.V15, 1) : "—"}</td>
+      <td class="n">${Number.isFinite(l.V30) ? fd(l.V30, 1) : "—"}</td><td class="n">${fd(l.V60, 1)}</td><td class="n">${fd(q.ph, 4)}</td><td class="n">${fd(q.pe, 4)}</td>
+      <td class="n"><strong>${fd(q.p, 4)}</strong></td><td class="n"><strong>${fd(q.V, 1)}</strong></td><td class="n">${Number.isFinite(q.fluage) ? fd(q.fluage, 1) : "—"}</td><td class="n">${i ? f(pt[i - 1], 4) : ""}</td></tr>`;
+  }).join("");
+  const plInv = lim.inverse?.applicable ? lim.inverse.pl : NaN, plHyp = lim.hyperbole?.applicable ? lim.hyperbole.pl : NaN;
+  return `<details class="essai-detail"><summary>${titre} · E<sub>M</sub> = ${fd(r.EM, 1)} MPa · p<sub>f</sub> = ${fd(r.pf, 2)} MPa · p<sub>l</sub> = ${fd(r.pl, 2)} MPa${lim.extrapolee ? " (extrapolée)" : ""} · p<sub>l</sub>* = ${fd(r.plNette, 2)} MPa${r.avertissements.length ? ' · <span class="verdict ko">à relire</span>' : ""}</summary>
+    <h4>a · Lectures et corrections, palier par palier</h4>
+    <p class="formula">p<sub>h</sub> = γ<sub>w</sub> (h<sub>c</sub> + z) = ${fd(c[0].ph, 4)} MPa · V = V<sub>r,60</sub> − a·p<sub>r</sub> (a = ${fd(a, 3)} cm³/MPa) · p = p<sub>r</sub> + p<sub>h</sub> − p<sub>e</sub>(V)</p>
+    <div class="table-large"><table class="resultats"><thead><tr><th>n°</th><th class="num">p<sub>r</sub></th><th class="num">V<sub>15</sub></th><th class="num">V<sub>30</sub></th><th class="num">V<sub>60</sub></th>
+      <th class="num">p<sub>h</sub></th><th class="num">p<sub>e</sub>(V)</th><th class="num">p</th><th class="num">V</th><th class="num">ΔV<sub>60/30</sub></th><th class="num">ΔV/Δp</th></tr></thead><tbody>${lignes}</tbody></table></div>
+    <p class="method-note">Pressions en MPa, volumes en cm³, pentes en cm³/MPa ; en vert, la plage retenue pour E<sub>M</sub>.</p>
+    ${figureCorrections(lus, c)}
+    <h4>b · La courbe corrigée et ses trois phases</h4>
+    ${figureCourbe(r, Vs)}
+    <h4>c · Le module pressiométrique</h4>
+    ${figurePentes(r)}
+    <p class="formula">E<sub>M</sub> = 2 (1 + ν) (V<sub>s</sub> + V<sub>m</sub>) Δp/ΔV = 2,66 × (${fd(Vs, 1)} + ${fd(r.Vm, 1)}) × ${fd(ph.p2 - ph.p1, 4)} / ${fd(ph.V2 - ph.V1, 1)} = <strong>${fd(r.EM, 2)} MPa</strong></p>
+    <p>Plage ${ph.auto ? "proposée par le calcul (pentes les plus faibles et régulières)" : "imposée"} : paliers ${ph.i1 + 1} à ${ph.i2 + 1}, p<sub>1</sub> = ${fd(ph.p1, 3)} MPa, V<sub>1</sub> = ${fd(ph.V1, 1)} cm³, p<sub>2</sub> = ${fd(ph.p2, 3)} MPa, V<sub>2</sub> = ${fd(ph.V2, 1)} cm³, V<sub>m</sub> = (V<sub>1</sub> + V<sub>2</sub>)/2 ; G = E<sub>M</sub>/2,66 = ${fd(r.G, 2)} MPa.</p>
+    <h4>d · La pression de fluage</h4>
+    ${figureFluage(r)}
+    <p>p<sub>f</sub> = <strong>${fd(r.pf, 3)} MPa</strong> : ${esc(r.fluage.methode ?? "")}${r.fluage.pfi ? ` (cassure à ${fd(r.fluage.pfi, 3)} MPa)` : ""}${r.fluage.motif ? ` — ${esc(r.fluage.motif)}` : ""}.
+      ${r.fluage.bas && r.fluage.haut ? `Droite basse ΔV = ${droiteTxt(r.fluage.bas)} ; droite haute ΔV = ${droiteTxt(r.fluage.haut)}.` : ""}</p>
+    <h4>e · La pression limite</h4>
+    ${figureInverse(r)}
+    ${figureHyperbole(r)}
+    <p>V<sub>l</sub> = V<sub>s</sub> + 2 V<sub>1</sub> = ${fd(Vs, 1)} + 2 × ${fd(ph.V1, 1)} = ${fd(lim.Vl, 1)} cm³.
+      ${lim.extrapolee
+        ? `Le dernier palier n'atteint pas V<sub>l</sub> : on extrapole sur les paliers au-delà de p<sub>f</sub>${lim.points ? ` (n° ${lim.points.join(", ")})` : ""}.
+           Inverse du volume, 1/V = A p + B : p<sub>l</sub> = ${fd(plInv, 3)} MPa${lim.inverse?.applicable ? ` (R² = ${fd(lim.inverse.r2, 4)})` : ""} ;
+           hyperbole : p<sub>l</sub> = ${fd(plHyp, 3)} MPa${lim.hyperbole?.applicable ? ` (R² = ${fd(lim.hyperbole.r2, 4)})` : ""}
+           ${Number.isFinite(lim.ecart) ? ` ; écart ${fd(100 * lim.ecart, 1)} %` : ""} ; on retient la plus faible, <strong>${fd(lim.pl, 3)} MPa</strong>.`
+        : `V<sub>l</sub> est atteint entre les paliers ${lim.entre.join(" et ")} : p<sub>l</sub> = <strong>${fd(lim.pl, 3)} MPa</strong>, lue par interpolation.`}</p>
+    <h4>f · Pressions nettes et rapport E<sub>M</sub>/p<sub>l</sub>*</h4>
+    <p class="formula">σ'<sub>v0</sub> = ${fd(r.contraintes.sigmaVeff, 1)} kPa · u<sub>0</sub> = ${fd(r.contraintes.u, 1)} kPa · p<sub>0</sub> = K<sub>0</sub> σ'<sub>v0</sub> + u<sub>0</sub> = ${fd(1000 * r.p0, 1)} kPa
+      · p<sub>l</sub>* = ${fd(r.pl, 3)} − ${fd(r.p0, 3)} = <strong>${fd(r.plNette, 3)} MPa</strong> · p<sub>f</sub>* = ${fd(r.pfNette, 3)} MPa · E<sub>M</sub>/p<sub>l</sub>* = ${fd(r.rapport, 1)}${e.al ? ` · α = ${fd(e.al.alpha, 2)} (${esc(e.al.etat ?? "")})` : ""}</p>
+    ${r.avertissements.length ? `<p class="final-result bureau-verdict ko">À relire : ${esc(r.avertissements.join(" ; "))}.</p>` : '<p class="method-note">Contrôles automatiques passés : nombre de paliers, plage pseudo-élastique, V<sub>1</sub>, extrapolation, rapport p<sub>l</sub>/p<sub>f</sub>.</p>'}
+  </details>`;
+}
+
+
 function calculerSondage(v) {
-  const { convention, hc, zw, K0, tube, Vs, air, couches, res } = depouillerSondage(v);
+  const { convention, hc, zw, K0, tube, tubePts, Vs, a, air, couches, res } = depouillerSondage(v);
   const ok = res.filter((e) => e.r.applicable);
   const seuils = couches.map((c) => ({ z0: c.z0, z1: c.z1, valeurs: c.nature === "argile" ? [9, 16] : c.nature === "limon" ? [8, 14] : c.nature === "grave" ? [6, 10] : [7, 12] }));
   const figure = profilPressio({ couches, essais: ok.map((e) => ({ z: e.z, EM: e.r.EM, plNette: e.r.plNette, pfNette: e.r.pfNette })), seuils, largeur: 640, hauteur: 500 });
@@ -851,13 +908,20 @@ function calculerSondage(v) {
       Étalonnage à l'air : ${air.applicable ? `${air.table.length} points, p<sub>el</sub> = p<sub>e</sub>(1,2 V<sub>s</sub>) = ${fd(air.pel, 3)} MPa` : "absent (p<sub>e</sub> = 0)"}.
       Manomètre à h<sub>c</sub> = ${fd(hc, 2)} m ; conventions : ${esc(CONVENTIONS[convention].nom)}.</p>
     <p class="formula">V = V<sub>r</sub> − a·${convention === "shg" ? "p" : "p<sub>r</sub>"} · p = p<sub>r</sub> + γ<sub>w</sub>(h<sub>c</sub> + z) − p<sub>e</sub>(${convention === "shg" ? "V<sub>r</sub>" : "V"}) · E<sub>M</sub> = 2,66 (V<sub>s</sub> + V<sub>m</sub>) Δp/ΔV · p<sub>l</sub> à V<sub>s</sub> + 2V<sub>1</sub></p>
+    <h4>Étalonnage de l'appareillage dans le tube d'acier</h4>
+    ${tubePts.length >= 2 ? figureTube(tubePts, tube) : "<p>Pas d'étalonnage en tube : a = 0.</p>"}
+    <h4>Étalonnage de la sonde à l'air libre</h4>
+    ${air.applicable ? figureAir(air, Vs) : "<p>Pas d'étalonnage à l'air : p<sub>e</sub> = 0.</p>"}
     <h3>2 · Coupe et état initial</h3>
     <p>${couches.map((c) => `${fd(c.z0, 1)}–${fd(c.z1, 1)} m : ${esc(c.nom)} (γ = ${f(c.gamma, 3)}, γ<sub>sat</sub> = ${f(c.gammaSat, 3)} kN/m³)`).join(" ; ")}.
       Nappe ${Number.isFinite(zw) ? `à ${fd(zw, 2)} m` : "absente"} ; p<sub>0</sub> = K<sub>0</sub> σ'<sub>v0</sub> + u<sub>0</sub> avec K<sub>0</sub> = ${fd(K0, 2)}.</p>
     <h3>3 · Dépouillement des essais</h3>
     <div class="table-large"><table class="resultats"><thead><tr><th>z (m)</th><th class="num">paliers</th><th class="num">plage E<sub>M</sub></th><th class="num">V<sub>1</sub> (cm³)</th><th class="num">E<sub>M</sub> (MPa)</th>
       <th class="num">p<sub>f</sub> (MPa)</th><th class="num">p<sub>l</sub> (MPa)</th><th>p<sub>l</sub> obtenue par</th><th class="num">p<sub>0</sub> (kPa)</th></tr></thead><tbody>${res.map(ligneEssai).join("")}</tbody></table></div>
-    <h3>4 · Critique des essais</h3>
+    <h3>4 · Dépouillement détaillé, essai par essai</h3>
+    <p class="method-note">Chaque essai se déplie : lectures et corrections, courbe corrigée, pentes et module, fluage et p<sub>f</sub>, extrapolations de p<sub>l</sub>, pressions nettes. Tout est ouvert à l'impression de la note.</p>
+    <div class="essais-details">${res.map((e) => detailEssai(e, Vs, a, hc)).join("")}</div>
+    <h3>5 · Critique des essais</h3>
     ${signales.length ? `<ul>${signales.map((e) => `<li>z = ${fd(e.z, 1)} m : ${esc(e.r.applicable ? e.r.avertissements.join(" ; ") : e.r.motif)}</li>`).join("")}</ul>` : "<p>Aucune anomalie relevée par les contrôles automatiques (nombre de paliers, plage pseudo-élastique, V<sub>1</sub>, extrapolation de p<sub>l</sub>, rapport p<sub>l</sub>/p<sub>f</sub>).</p>"}
     <p class="method-note">Les valeurs de calcul (p<sub>le</sub>*, modules des tranches) se tirent de ce profil couche par couche, après élimination motivée des essais douteux.</p>`;
   return { figure, synthese, note, verdict: signales.length ? null : true, etat: `${ok.length} essais dépouillés${signales.length ? `, ${signales.length} à relire` : ""}` };
@@ -1075,5 +1139,9 @@ function calculerRemblai(v) {
     <p class="formula">tassement résiduel = ${fd(r.service.sFin, 0)} − ${fd(r.service.s, 0)} = ${fd(r.service.residuel, 0)} mm ${r.service.ok ? "≤" : ">"} ${fd(d.sAdmissible, 0)} mm ${pastille(r.service.ok)}</p>`;
   return { figure, synthese, note, verdict, etat: `s∞ = ${fd(r.final.centre, 0)} mm · résiduel ${fd(r.service.residuel, 0)} mm` };
 }
+
+// À l'impression de la note, les essais repliés se déplient, puis reprennent leur état.
+window.addEventListener("beforeprint", () => document.querySelectorAll("details.essai-detail:not([open])").forEach((d) => { d.open = true; d.dataset.replie = "1"; }));
+window.addEventListener("afterprint", () => document.querySelectorAll('details.essai-detail[data-replie="1"]').forEach((d) => { d.open = false; delete d.dataset.replie; }));
 
 rendre();
