@@ -10,6 +10,17 @@ const MODULES = {
   pressiometre: () => import("./bancs/pressiometre.js"),
   oedometre: () => import("./bancs/oedometre.js"),
   triaxial: () => import("./bancs/triaxial.js"),
+  forage: () => import("./bancs/forage.js"),
+  piezometre: () => import("./bancs/piezometre.js"),
+  dmt: () => import("./bancs/dmt.js"),
+  cisaillement: () => import("./bancs/cisaillement.js"),
+  plaque: () => import("./bancs/plaque.js"),
+  pieu: () => import("./bancs/pieu.js"),
+  lefranc: () => import("./bancs/lefranc.js"),
+  lugeon: () => import("./bancs/lugeon.js"),
+  pompage: () => import("./bancs/pompage.js"),
+  refraction: () => import("./bancs/refraction.js"),
+  crosshole: () => import("./bancs/crosshole.js"),
 };
 
 for (const banc of document.querySelectorAll(".banc[data-banc]")) {

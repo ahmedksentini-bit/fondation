@@ -332,6 +332,13 @@
         tailler des blocs intacts, mais sur quelques mètres seulement.</li>
   </ul>
   <figure class="figure-cours" data-schema="schemaForage"><figcaption>Sondage carotté. Le fluide injecté par les tiges remonte les déblais par l'espace annulaire ; dans le carottier double, le tube intérieur ne tourne pas et protège la carotte. À droite, sur le même axe des profondeurs, les paramètres enregistrés pendant la foration : au toit du rocher, la vitesse d'avance chute pendant que la poussée et le couple montent ; une chute d'outil trahit la cavité.</figcaption></figure>
+  <div class="banc" data-banc="forage">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le sondage carotté et ses paramètres de forage</h3>
+      <p>La foreuse descend passe après passe : la vitesse d'avance, la poussée et le couple s'enregistrent en continu et dessinent déjà la coupe, et l'outil chute dans la cavité. Au rocher, chaque passe de 1,5 m est remontée et rangée dans la caisse à carottes, qui donne la récupération et le RQD.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
   <table class="resultats"><thead><tr><th>Classe</th><th>L'échantillon a conservé</th><th>On peut y mesurer</th></tr></thead>
     <tbody>
       <tr><td>1</td><td class="motif">structure, teneur en eau, densité, état de contraintes relâché seulement</td><td class="motif">identification, et résistance, compressibilité, perméabilité (c', φ', c<sub>u</sub>, C<sub>c</sub>, σ'<sub>p</sub>, k)</td></tr>
@@ -369,6 +376,13 @@
      temps caractéristique T<sub>0</sub> = A/(F·k), où A est la section du tube, F le facteur
      de forme de la crépine et k la perméabilité.</p>
   <figure class="figure-cours" data-schema="schemaPiezometres"><figcaption>Le piézomètre ouvert mesure un niveau : pour suivre une variation de pression, l'eau doit entrer dans le tube ou en sortir par la crépine, ce qui prend du temps dans un sol peu perméable. Le piézomètre fermé mesure la pression sur place, isolé de la surface par un bouchon d'argile.</figcaption></figure>
+  <div class="banc" data-banc="piezometre">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · piézomètre ouvert et piézomètre à cellule</h3>
+      <p>Choisissez le terrain et le diamètre du tube, posez les deux piézomètres à la même profondeur, puis purgez le tube ouvert : son niveau remonte vers celui de la nappe, lentement dans un sol peu perméable, alors que la cellule répond aussitôt. La remontée donne le temps de réponse T<sub>0</sub>, donc k.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esPzCalc">
     <h3>Temps de réponse d'un piézomètre ouvert</h3>
@@ -577,6 +591,13 @@
      puis trois indices <span class="ref">[NF EN ISO 22476-11]</span> :</p>
   <p class="formula">I<sub>D</sub> = (p<sub>1</sub> − p<sub>0</sub>)/(p<sub>0</sub> − u<sub>0</sub>)&nbsp;&nbsp;·&nbsp;&nbsp;K<sub>D</sub> = (p<sub>0</sub> − u<sub>0</sub>)/σ'<sub>v0</sub>&nbsp;&nbsp;·&nbsp;&nbsp;E<sub>D</sub> = 34,7 (p<sub>1</sub> − p<sub>0</sub>)</p>
   <figure class="figure-cours" data-schema="schemaDmt"><figcaption>La lame est foncée par arrêts de 20 cm. À chaque arrêt, le gaz gonfle la membrane : on lit A quand elle décolle, B quand son centre a avancé de 1,1 mm (déplacement agrandi sur le profil).</figcaption></figure>
+  <div class="banc" data-banc="dmt">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le dilatomètre plat</h3>
+      <p>La lame est foncée par arrêts de 20 cm ; à chaque arrêt, la membrane se gonfle, on lit A puis B. Les profils de I<sub>D</sub>, K<sub>D</sub> et E<sub>D</sub> se tracent arrêt après arrêt, et chaque couche est reconnue à la fin.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
   <p>I<sub>D</sub> classe le sol (argile sous 0,6, limon jusqu'à 1,8, sable au-delà) ;
      K<sub>D</sub> reflète la contrainte horizontale et la surconsolidation ; E<sub>D</sub> est un
      module. Les corrélations de Marchetti en tirent le module œdométrique M = R<sub>M</sub>·E<sub>D</sub>,
@@ -646,6 +667,13 @@
      forage puis arrachée. Plusieurs essais sous des contraintes normales différentes placent
      des points (σ, τ) qu'une droite de Coulomb ajuste.</p>
 
+  <div class="banc" data-banc="cisaillement">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · la boîte de cisaillement</h3>
+      <p>Choisissez le matériau et la contrainte normale σ, puis cisaillez : la force de cisaillement et le mouvement vertical se tracent au fil du déplacement. Un sable dense passe par un pic et se dilate, un sable lâche se contracte. Trois éprouvettes sous trois contraintes placent trois points (σ, τ<sub>max</sub>) : la droite de Coulomb donne c' et φ'.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
   <div class="calc" id="esCoulCalc">
     <h3>Droite de Coulomb sur des essais de cisaillement</h3>
     <div class="data-grid">
@@ -668,6 +696,13 @@
      classe la plate-forme (PF1 à PF4). L'essai n'intéresse que les 0,9 m sous la plaque :
      c'est un essai de plate-forme et de couche d'assise, non de fondation profonde.</p>
   <figure class="figure-cours" data-schema="schemaPlaque"><figcaption>Le camion lesté fournit la réaction ; le vérin charge la plaque rigide, et le comparateur, porté par une poutre de référence dont les appuis sont hors de la zone influencée, mesure l'enfoncement.</figcaption></figure>
+  <div class="banc" data-banc="plaque">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai de plaque à deux cycles</h3>
+      <p>Choisissez la plateforme : le vérin charge la plaque par paliers jusqu'à 0,25 MPa, décharge, puis recharge jusqu'à 0,20 MPa ; le comparateur suit l'enfoncement. Les deux cycles donnent E<sub>V1</sub>, E<sub>V2</sub> et leur rapport, qui juge le compactage.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
   <p>L'<strong>essai de chargement statique d'un pieu</strong> est l'essai de fondation par
      excellence : on charge un vrai pieu par paliers en suivant l'enfoncement de sa tête, et,
      s'il est instrumenté, l'effort à plusieurs niveaux du fût <span class="ref">[NF P94-150-1]</span>.
@@ -677,6 +712,13 @@
      résultats d'essais de pieux entrent dans l'Eurocode 7 par les facteurs de corrélation ξ
      (chapitre 12).</p>
   <figure class="figure-cours" data-schema="schemaChargementPieu"><figcaption>Le vérin prend appui sur une poutre ancrée à des pieux de réaction ; le capteur de force mesure la charge, les comparateurs l'enfoncement de la tête. Instrumenté, le fût donne l'effort à plusieurs niveaux, donc le partage entre frottement q<sub>s</sub> et pointe q<sub>b</sub>.</figcaption></figure>
+  <div class="banc" data-banc="pieu">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le chargement statique d'un pieu</h3>
+      <p>Le pieu est chargé par paliers d'une heure ; l'enfoncement de la tête se lit de 1 à 60 minutes. La courbe charge – enfoncement et le fluage de chaque palier se tracent au fil de l'essai : on y lit la charge de fluage Q<sub>c</sub> et la charge limite.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esPlqCalc">
     <h3>Module à la plaque : E<sub>V1</sub>, E<sub>V2</sub> et compactage</h3>
@@ -734,6 +776,13 @@
   </ul>
 
   <figure class="figure-cours" data-schema="schemaLefranc"><figcaption>Sous la nappe, au fond d'un tubage étanche, une cavité de longueur L et de diamètre D échange de l'eau avec le terrain. À charge constante on mesure le débit Q ; à charge variable, la vitesse à laquelle h retombe.</figcaption></figure>
+  <div class="banc" data-banc="lefranc">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai Lefranc</h3>
+      <p>Choisissez le terrain au droit de la cavité et la méthode : à charge constante, on règle le débit qui maintient le niveau dans le tube ; à charge variable, on remplit le tube et le niveau retombe. Le facteur de forme de la cavité relie débit, charge et perméabilité k.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esLefCalc">
     <h3>Essai Lefranc</h3>
@@ -759,6 +808,13 @@
   </div>
 
   <figure class="figure-cours" data-schema="schemaLugeon"><figcaption>Deux obturateurs isolent une passe de longueur L. On y injecte de l'eau par paliers de pression montants puis descendants ; le débit absorbé par les fissures, rapporté à la longueur de la passe et à la pression, donne les unités Lugeon.</figcaption></figure>
+  <div class="banc" data-banc="lugeon">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai Lugeon</h3>
+      <p>Les obturateurs isolent la passe ; l'eau est injectée par paliers de pression montants puis descendants, et chaque palier donne une valeur en unités Lugeon. Selon le rocher choisi, leur évolution d'un palier à l'autre révèle un écoulement laminaire ou turbulent, l'ouverture des fissures, leur débourrage ou leur colmatage.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esLugCalc">
     <h3>Essai Lugeon</h3>
@@ -785,6 +841,13 @@
   </div>
 
   <figure class="figure-cours" data-schema="schemaPompage"><figcaption>On pompe à débit constant Q ; la nappe se déprime en un cône de rabattement. Les rabattements s<sub>1</sub> et s<sub>2</sub>, lus dans des piézomètres à r<sub>1</sub> et r<sub>2</sub> du puits, donnent la transmissivité T et le coefficient d'emmagasinement.</figcaption></figure>
+  <div class="banc" data-banc="pompage">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai de pompage</h3>
+      <p>Choisissez l'aquifère et le débit : la pompe démarre, le cône de rabattement s'élargit, et les deux piézomètres tracent leur rabattement en temps logarithmique. Les droites de Jacob donnent T et S ; on arrête ensuite la pompe et l'on suit la remontée.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esPompCalc">
     <h3>Essai de pompage : la droite de Jacob</h3>
@@ -826,6 +889,13 @@
   </ul>
 
   <figure class="figure-cours" data-schema="schemaRefraction"><figcaption>Près de la source, l'onde directe arrive la première ; plus loin, l'onde réfractée, qui a parcouru la couche 2 plus rapide, la dépasse. La cassure de l'hodochrone donne l'épaisseur h de la couche 1.</figcaption></figure>
+  <div class="banc" data-banc="refraction">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · la sismique réfraction</h3>
+      <p>Un coup de masse, et l'onde part au ralenti : l'onde directe atteint les premiers géophones, puis l'onde réfractée, plus rapide, la dépasse. L'hodochrone se trace géophone après géophone ; ses deux pentes et son temps d'intercept donnent V<sub>1</sub>, V<sub>2</sub> et l'épaisseur h.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esRefCalc">
     <h3>Sismique réfraction à deux couches</h3>
@@ -850,6 +920,13 @@
   </div>
 
   <figure class="figure-cours" data-schema="schemaOndesS"><figcaption>Deux façons de mesurer V<sub>s</sub> : entre deux forages, en chronométrant à chaque mètre une onde de cisaillement d'un forage à l'autre ; depuis la surface, en analysant la dispersion des ondes de surface, dont la pénétration croît avec la longueur d'onde.</figcaption></figure>
+  <div class="banc" data-banc="crosshole">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai cross-hole</h3>
+      <p>Les deux sondes descendent mètre par mètre ; à chaque cote, la source frappe vers le haut puis vers le bas, et les deux traces de polarités opposées font ressortir l'arrivée de l'onde S. Le profil de V<sub>s</sub> se construit, puis V<sub>s,30</sub> et la classe de sol.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esVsCalc">
     <h3>V<sub>s,30</sub> et classe de sol sismique</h3>

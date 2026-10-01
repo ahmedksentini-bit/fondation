@@ -173,6 +173,7 @@ export function droiteCoulomb(points) {
   const mx = points.reduce((s, p) => s + p.sigma, 0) / n, my = points.reduce((s, p) => s + p.tau, 0) / n;
   let sxx = 0, sxy = 0;
   for (const p of points) { sxx += (p.sigma - mx) ** 2; sxy += (p.sigma - mx) * (p.tau - my); }
+  if (!(sxx > 0)) return horsDomaine("il faut au moins deux contraintes normales différentes");
   const t = sxy / sxx;
   return { applicable: true, c: my - t * mx, phi: (Math.atan(t) * 180) / Math.PI };
 }

@@ -293,6 +293,10 @@ a.brand strong,a.brand small{text-decoration:none}
 .banc-etat.ko{color:var(--bad)}
 .banc-etapes{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .banc-etapes button[disabled]{opacity:.45}
+.lugeon-barres{display:flex;gap:8px;padding:12px 12px 8px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.lugeon-barre{flex:1;display:grid;grid-template-rows:120px auto;justify-items:center;gap:4px}
+.lugeon-barre span{align-self:end;width:min(46px,70%);min-height:2px;background:#0369a1;border-radius:6px 6px 0 0}
+.lugeon-barre small{font-size:11px;line-height:1.25;text-align:center;color:#334155;font-variant-numeric:tabular-nums}
 @media print{.banc-ouvrir,.banc-corps{display:none!important}.banc-imprime{display:block;margin:6px 0 0;color:#475569;font-size:12px}.banc{break-inside:avoid;background:#fff}}
 
 /* Dépouillement pressiométrique détaillé (bureau de calcul) */

@@ -10,6 +10,12 @@ export const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&am
 export const f = (x, c = 3) => (Number.isFinite(x) ? Number(x).toLocaleString("fr-FR", { maximumSignificantDigits: c }) : "—");
 export const fd = (x, d = 2) => (Number.isFinite(x) ? Number(x).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d }) : "—");
 export const r1 = (x) => (Number.isFinite(x) ? x.toFixed(1) : "0");
+/** Écriture scientifique lisible : 6,1·10⁻⁶. */
+export const sci = (x, c = 2) => {
+  if (!Number.isFinite(x) || x <= 0) return "—";
+  const n = Math.floor(Math.log10(x)), m = x / 10 ** n;
+  return `${f(m, c)}·10${String(n).replace("-", "⁻").replace(/\d/g, (d) => "⁰¹²³⁴⁵⁶⁷⁸⁹"[d])}`;
+};
 
 /** Durée d'essai lisible. */
 export function duree(s) {
@@ -55,7 +61,7 @@ export function charpente(banc, { commandes = "", vitesses = [1, 10, 100, 1000],
  * d'essai et renvoie false quand il est fini ; dessiner() met la scène à jour
  * (à chaque image) ; dessinerLent() les courbes, au plus quelques fois par seconde.
  */
-export function boucle({ avancer, dessiner, dessinerLent = () => {}, surFin = () => {}, surEtat = () => {} }) {
+export function boucle({ avancer, dessiner, dessinerLent = () => {}, surFin = () => {}, surEtat = () => {}, pasMax = 1 }) {
   let enCours = false, fini = false, vitesse = 1, dernier = null, dernierLent = 0, id = null, parMinuteur = false;
   // Page cachée : requestAnimationFrame ne tourne plus ; un minuteur prend le relais, et
   // un long essai continue pendant qu'on lit autre chose.
@@ -69,8 +75,8 @@ export function boucle({ avancer, dessiner, dessinerLent = () => {}, surFin = ()
     const dt = dernier === null ? 0 : Math.min(parMinuteur ? 1 : 0.1, (t - dernier) / 1000);
     dernier = t;
     let reste = dt * vitesse, continuer = true;
-    // Pas de calcul bornés : une seconde d'essai au plus par appel.
-    while (reste > 1e-9 && continuer !== false) { const h = Math.min(reste, 1); continuer = avancer(h); reste -= h; }
+    // Pas de calcul bornés (une seconde d'essai par défaut) : les essais à événements discrets en ont besoin.
+    while (reste > 1e-9 && continuer !== false) { const h = Math.min(reste, pasMax); continuer = avancer(h); reste -= h; }
     dessiner();
     if (t - dernierLent > 140 || continuer === false) { dernierLent = t; dessinerLent(); }
     if (continuer === false) { enCours = false; fini = true; surEtat(); surFin(); return; }
@@ -83,9 +89,9 @@ export function boucle({ avancer, dessiner, dessinerLent = () => {}, surFin = ()
     pause() { enCours = false; annuler(); surEtat(); },
     vitesse(v) { vitesse = v; },
     /** Termine l'essai sans animation (avance par grands pas). */
-    finir(pasMax = 5) {
+    finir(pasFin = Math.max(5, pasMax)) {
       annuler(); enCours = false;
-      for (let k = 0; k < 2e6 && !fini; k++) if (avancer(pasMax) === false) fini = true;
+      for (let k = 0; k < 2e6 && !fini; k++) if (avancer(pasFin) === false) fini = true;
       fini = true; dessiner(); dessinerLent(); surEtat(); surFin();
     },
     raz() { annuler(); enCours = false; fini = false; dernier = null; surEtat(); },

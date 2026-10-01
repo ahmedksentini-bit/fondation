@@ -126,7 +126,7 @@ test("chaque curseur de calcul encadre la valeur de départ de sa case", () => {
 test("chaque banc d'essai du cours a son module", () => {
   const html = lire("cours.html");
   const bancs = [...html.matchAll(/class="banc" data-banc="([^"]+)"/g)].map((m) => m[1]);
-  assert.ok(bancs.length >= 7, "les bancs d'essai sont placés dans le cours");
+  assert.ok(bancs.length >= 18 && new Set(bancs).size === bancs.length, "les dix-huit bancs d'essai sont placés dans le cours, chacun une fois");
   assert.ok(html.includes('src="src/bancs.js"'), "le chargeur des bancs est appelé par la page");
   const chargeur = lire("src/bancs.js");
   for (const b of bancs) {
