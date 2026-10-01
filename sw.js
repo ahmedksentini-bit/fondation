@@ -6,7 +6,7 @@
 // pour que le cours, l'exerciseur et le bureau de calcul marchent hors ligne.
 // Ce fichier est produit par tools/generer-sw.py ; tests/pages.test.mjs vérifie
 // qu'aucun fichier de src/ ou de data/ ne manque à la coquille.
-const VERSION = "fond-v10";
+const VERSION = "fond-v11";
 const COQUILLE = [
   "./", "./index.html", "./cours.html", "./exerciseur.html", "./bureau.html",
   "./cours", "./exerciseur", "./bureau", "./styles.css", "./enhancements.css",
@@ -39,11 +39,11 @@ const COQUILLE = [
   "./src/geotech/combinaisons.js", "./src/geotech/consolidation.js", "./src/geotech/cphi.js",
   "./src/geotech/essais.js", "./src/geotech/frottement-negatif.js", "./src/geotech/groupes.js",
   "./src/geotech/lateral.js", "./src/geotech/oedometre.js", "./src/geotech/outils.js",
-  "./src/geotech/pieux.js", "./src/geotech/pressio.js", "./src/geotech/sismique.js",
-  "./src/geotech/sols.js", "./src/geotech/superficielles.js", "./src/geotech/tassement-pieu.js",
-  "./src/geotech/tassements.js", "./src/impression.js", "./src/pressio-exemples.js",
-  "./src/schemas-cours.js", "./src/schemas-essais.js", "./src/socle.js",
-  "./src/tableaux.js", "./src/ui.js",
+  "./src/geotech/pieux.js", "./src/geotech/pressio-qualite.js", "./src/geotech/pressio.js",
+  "./src/geotech/sismique.js", "./src/geotech/sols.js", "./src/geotech/superficielles.js",
+  "./src/geotech/tassement-pieu.js", "./src/geotech/tassements.js", "./src/impression.js",
+  "./src/pressio-exemples.js", "./src/schemas-cours.js", "./src/schemas-essais.js",
+  "./src/socle.js", "./src/tableaux.js", "./src/ui.js",
   // Les données : un chapitre sans son fichier est un chapitre vide hors ligne.
   "./data/chapitres.json", "./data/exercices-ch1.json", "./data/exercices-ch10.json",
   "./data/exercices-ch11.json", "./data/exercices-ch12.json", "./data/exercices-ch13.json",

@@ -11,7 +11,7 @@
 //    indéfiniment l'ancienne version, avec ses anciens défauts. D'où
 //    l'enregistrement depuis chaque page.
 
-const VERSION_ATTENDUE = "fond-v10";
+const VERSION_ATTENDUE = "fond-v11";
 
 function banniere(titre, detail) {
   let boite = document.getElementById("bandeau-panne");

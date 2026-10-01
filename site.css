@@ -316,3 +316,17 @@ a.brand strong,a.brand small{text-decoration:none}
 .essai-detail>*:not(summary){margin-left:12px;margin-right:12px}
 .essai-detail h4{margin:14px 12px 6px;color:#075985;font-size:14px}
 .essai-detail svg{display:block;width:100%;max-width:640px;height:auto}
+/* Contrôle qualité et plage pseudo-élastique choisie par l'opérateur */
+.verdict.alerte{background:#fef3c7;color:#92400e}
+.essai-detail summary .verdict{font-size:12px;padding:1px 8px}
+.controles td{vertical-align:top}
+.controles tr.groupe th{background:#f1f5f9;color:#075985;text-align:left;font-size:12.5px;letter-spacing:.02em}
+.controles .verdict{font-size:12px;white-space:nowrap}
+.decompte{color:#475569;font-weight:700}
+.plage-choix{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:4px 12px 10px;padding:10px 12px;border:1px dashed #0369a1;border-radius:10px;background:#f0f9ff}
+.plage-choix p{flex:1 1 100%;margin:0;font-size:13.5px}
+.plage-choix label{display:flex;gap:6px;align-items:center;font-size:13.5px;font-weight:700;white-space:nowrap}
+.plage-choix select{max-width:14em}
+.plage-etat{font-size:12.5px;font-weight:800;color:#166534}
+.plage-etat.impose{color:#b45309}
+@media print{.plage-choix{display:none}}

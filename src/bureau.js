@@ -12,6 +12,7 @@ import { K_TAN_DELTA, lambdaCombarieu, muIsole, frottementNegatif, rayonInfluenc
 import { converseLabarre, efficaciteCoherentF62, efficaciteEC7, verifGroupeEC7, blocMonolithique } from "./geotech/groupes.js";
 import { moduleKf, minorationSurface, pieuLongAnalytique, pieuDifferencesFinies, pieuSouple } from "./geotech/lateral.js";
 import { calibrageAppareil, etalonnageSonde, depouiller, CONVENTIONS } from "./geotech/pressio.js";
+import { controlerAppareillage, controlerEssai, bilanControles } from "./geotech/pressio-qualite.js";
 import { alphaMenard } from "./geotech/sols.js";
 import { profilPressio } from "./figures.js";
 import { TUBE, AIR, SONDE, sondage, texteReleves, texteCouples } from "./pressio-exemples.js";
@@ -605,6 +606,8 @@ function calculer(m) {
     if (!e) return;
     e.className = `etat ${classe}`; e.textContent = texte;
   };
+  // Le recalcul redessine la note : les essais dépliés le restent.
+  const ouverts = new Set([...app.querySelectorAll("details[open][data-cle]")].map((d) => d.dataset.cle));
   try {
     const r = m.calculer(v);
     zones.figure.innerHTML = r.figure ?? "";
@@ -612,10 +615,12 @@ function calculer(m) {
     zones.note.innerHTML = `${cartouche(m.titre)}<h2>Note de calcul — ${esc(m.titre)}</h2>
       <p class="method-note">Établie le ${new Date().toLocaleDateString("fr-FR")} avec le bureau de calcul du cours « Fondations des ouvrages ». Les valeurs sont celles de la saisie.</p>
       ${r.note}${historique()}`;
+    app.querySelectorAll("details[data-cle]").forEach((d) => { if (ouverts.has(d.dataset.cle)) d.open = true; });
     for (const e of etapesDe(m)) marquer(e.cible, "ok", "✓");
     if (r.verdict === false) marquer("resultats", "ko", "✕");
     else if (r.verdict !== true) marquer("resultats", "na", "·");
     app.querySelectorAll("[data-envoyer]").forEach((b) => b.addEventListener("click", () => envoyerSondage(v, b.dataset.envoyer)));
+    brancherPlages(m, v);
   } catch (e) {
     console.error(e);
     zones.figure.innerHTML = "";
@@ -625,6 +630,37 @@ function calculer(m) {
     marquer(/couche|essai/.test(e.message) && m.couches ? "gc" : "resultats", "ko", "!");
     marquer("note", "na", "—");
   }
+}
+
+/**
+ * Plage pseudo-élastique choisie par l'opérateur, essai par essai : elle est
+ * rangée dans les données du module (donc dans le projet enregistré), puis
+ * tout est recalculé ; la vue et le focus restent où ils étaient.
+ */
+function brancherPlages(m, v) {
+  app.querySelectorAll(".plage-choix").forEach((bloc) => {
+    const cle = bloc.dataset.cleEssai, s1 = bloc.querySelector('[data-plage="i1"]'), s2 = bloc.querySelector('[data-plage="i2"]');
+    const dernier = s2.options.length; // indice du dernier palier
+    const recalculer = (focus) => {
+      const y = window.scrollY;
+      ecrireEtat(); calculer(m);
+      window.scrollTo(0, y);
+      app.querySelector(`.plage-choix[data-cle-essai="${cle}"] ${focus}`)?.focus();
+    };
+    const appliquer = (quel) => {
+      let i1 = Number(s1.value), i2 = Number(s2.value);
+      // Au moins deux paliers : on décale l'autre borne si besoin (le contrôle qualité en réclame trois).
+      if (i2 <= i1) { if (quel === "i1") i2 = Math.min(i1 + 2, dernier); else i1 = Math.max(i2 - 2, 0); }
+      v.plages = { ...(v.plages ?? {}), [cle]: { i1, i2 } };
+      recalculer(`[data-plage="${quel}"]`);
+    };
+    s1.addEventListener("change", () => appliquer("i1"));
+    s2.addEventListener("change", () => appliquer("i2"));
+    bloc.querySelector("[data-plage-auto]")?.addEventListener("click", () => {
+      if (v.plages) delete v.plages[cle];
+      recalculer('[data-plage="i1"]');
+    });
+  });
 }
 
 // ─────────────────────── Du sondage aux couches de calcul ─────────────────
@@ -815,14 +851,36 @@ function depouillerSondage(v) {
   const essais = lireEssais(v.essais);
   if (!essais.length) throw new Error("saisir au moins un essai : une ligne « z = … » puis ses paliers");
   const coucheDe = (z) => couches.find((c) => z >= c.z0 && z < c.z1) ?? couches[couches.length - 1];
-  const res = essais.map((e) => {
-    const r = depouiller({ paliers: e.paliers, Vs, z: e.z, hc, pe, a, sol: { zw, couches, K0 }, convention, pel: air.pel });
+  const res = essais.map((e, i) => {
+    // Plage pseudo-élastique imposée par l'opérateur pour cet essai, s'il en a choisi une.
+    const cle = cleEssai(e.z), choix = v.plages?.[cle] ?? {};
+    const r = depouiller({ paliers: e.paliers, Vs, z: e.z, hc, pe, a, sol: { zw, couches, K0 }, convention, pel: air.pel, choix });
     const c = coucheDe(e.z);
     const al = r.applicable && r.plNette > 0 ? alphaMenard(c.nature, r.EM, r.plNette) : null;
-    return { ...e, r, c, al };
+    const qc = controlerEssai({ r, paliers: e.paliers, Vs, pel: air.pel, z: e.z, voisins: essais.filter((_, j) => j !== i).map((x) => x.z) });
+    return { ...e, cle, r, c, al, qc, bilan: bilanControles(qc) };
   });
-  return { convention, hc, zw, K0, tube, tubePts, Vs, a, air, couches, res };
+  const Vmax = Math.max(...essais.flatMap((e) => e.paliers.map((q) => q.V60)).filter(Number.isFinite));
+  const qcApp = controlerAppareillage({ tube, air, Vs, Vmax, VsImpose: nombre(v.Vs) > 0 });
+  return { convention, hc, zw, K0, tube, tubePts, Vs, a, air, couches, res, qcApp, bilanApp: bilanControles(qcApp) };
 }
+
+/** Clé d'un essai : sa profondeur, au centimètre (les choix de l'opérateur y sont rangés). */
+const cleEssai = (z) => Number(z).toFixed(2);
+
+const PASTILLES = { ok: ["ok", "✓ conforme"], alerte: ["alerte", "⚠ à surveiller"], ko: ["ko", "✕ non conforme"], nv: ["na", "– non vérifiable"] };
+/** Tous les contrôles, groupe par groupe, avec leur exigence, leur mesure et leur source. */
+function tableControles(liste) {
+  let groupe = "", lignes = "";
+  for (const c of liste) {
+    if (c.groupe !== groupe) { groupe = c.groupe; lignes += `<tr class="groupe"><th colspan="5">${esc(groupe)}</th></tr>`; }
+    const [cls, txt] = PASTILLES[c.statut];
+    lignes += `<tr><td>${esc(c.libelle)}</td><td class="motif">${esc(c.exigence)}</td><td class="motif">${esc(c.mesure)}</td><td><span class="verdict ${cls}">${txt}</span></td><td class="motif"><small>${esc(c.reference)}</small></td></tr>`;
+  }
+  return `<div class="table-large"><table class="resultats controles"><thead><tr><th>Contrôle</th><th>Exigence</th><th>Mesure</th><th>Statut</th><th>Source</th></tr></thead><tbody>${lignes}</tbody></table></div>`;
+}
+/** Verdict d'une liste de contrôles, et le décompte par statut. */
+const pastilleBilan = (b, court = false) => `<span class="verdict ${b.statut}">${{ ok: "✓", alerte: "⚠", ko: "✕" }[b.statut]} ${b.libelle}</span>${court ? "" : ` <small class="decompte">${b.ok} ✓ · ${b.alerte} ⚠ · ${b.ko} ✕ · ${b.nv} non vérifiables</small>`}`;
 
 /** Droite a + b p écrite avec ses signes. */
 const droiteTxt = (d) => `${fd(d.a, 2).replace("-", "−")} ${d.b < 0 ? "−" : "+"} ${fd(Math.abs(d.b), 2)} p`;
@@ -832,8 +890,9 @@ function detailEssai(e, Vs, a, hc) {
   const r = e.r, lus = e.paliers.filter((q) => Number.isFinite(q.p) && Number.isFinite(q.V60));
   const titre = `<strong>z = ${fd(e.z, 1)} m</strong> · ${esc(e.c.nom)}`;
   if (!r.applicable) {
-    return `<details class="essai-detail"><summary>${titre} · <span class="verdict ko">non dépouillable</span> ${esc(r.motif)}</summary>
-      ${r.courbe ? figureCorrections(lus, r.courbe) : ""}</details>`;
+    return `<details class="essai-detail" data-cle="essai-${e.cle}"><summary>${titre} · <span class="verdict ko">non dépouillable</span> ${esc(r.motif)}</summary>
+      ${r.courbe ? figureCorrections(lus, r.courbe) : ""}
+      <h4>Contrôle qualité de l'essai</h4>${pastilleBilan(e.bilan)}${tableControles(e.qc)}</details>`;
   }
   const c = r.courbe, ph = r.phase, lim = r.limite, pt = pentes(c);
   const lignes = c.map((q, i) => {
@@ -843,7 +902,15 @@ function detailEssai(e, Vs, a, hc) {
       <td class="n"><strong>${fd(q.p, 4)}</strong></td><td class="n"><strong>${fd(q.V, 1)}</strong></td><td class="n">${Number.isFinite(q.fluage) ? fd(q.fluage, 1) : "—"}</td><td class="n">${i ? f(pt[i - 1], 4) : ""}</td></tr>`;
   }).join("");
   const plInv = lim.inverse?.applicable ? lim.inverse.pl : NaN, plHyp = lim.hyperbole?.applicable ? lim.hyperbole.pl : NaN;
-  return `<details class="essai-detail"><summary>${titre} · E<sub>M</sub> = ${fd(r.EM, 1)} MPa · p<sub>f</sub> = ${fd(r.pf, 2)} MPa · p<sub>l</sub> = ${fd(r.pl, 2)} MPa${lim.extrapolee ? " (extrapolée)" : ""} · p<sub>l</sub>* = ${fd(r.plNette, 2)} MPa${r.avertissements.length ? ' · <span class="verdict ko">à relire</span>' : ""}</summary>
+  // Choix de la plage pseudo-élastique : premier et dernier palier retenus pour EM.
+  const option = (i, retenu) => `<option value="${i}"${i === retenu ? " selected" : ""}>n° ${i + 1} · p = ${fd(c[i].p, 3)} MPa</option>`;
+  const plage = `<div class="plage-choix" data-cle-essai="${e.cle}">
+      <p><strong>Plage pseudo-élastique</strong> — elle fixe E<sub>M</sub>, V<sub>1</sub> donc V<sub>l</sub>, p<sub>f</sub> et p<sub>l</sub> :</p>
+      <label>du palier <select data-plage="i1" aria-label="Premier palier de la plage, essai à ${fd(e.z, 1)} m">${c.slice(0, -1).map((_, i) => option(i, ph.i1)).join("")}</select></label>
+      <label>au palier <select data-plage="i2" aria-label="Dernier palier de la plage, essai à ${fd(e.z, 1)} m">${c.map((_, i) => (i ? option(i, ph.i2) : "")).join("")}</select></label>
+      ${ph.auto ? '<span class="plage-etat">plage proposée par le calcul</span>' : '<span class="plage-etat impose">plage imposée</span> <button type="button" class="ghost" data-plage-auto>Revenir à la plage proposée</button>'}
+    </div>`;
+  return `<details class="essai-detail" data-cle="essai-${e.cle}"><summary>${titre} · E<sub>M</sub> = ${fd(r.EM, 1)} MPa · p<sub>f</sub> = ${fd(r.pf, 2)} MPa · p<sub>l</sub> = ${fd(r.pl, 2)} MPa${lim.extrapolee ? " (extrapolée)" : ""} · p<sub>l</sub>* = ${fd(r.plNette, 2)} MPa${ph.auto ? "" : " · plage imposée"} · ${pastilleBilan(e.bilan, true)}</summary>
     <h4>a · Lectures et corrections, palier par palier</h4>
     <p class="formula">p<sub>h</sub> = γ<sub>w</sub> (h<sub>c</sub> + z) = ${fd(c[0].ph, 4)} MPa · V = V<sub>r,60</sub> − a·p<sub>r</sub> (a = ${fd(a, 3)} cm³/MPa) · p = p<sub>r</sub> + p<sub>h</sub> − p<sub>e</sub>(V)</p>
     <div class="table-large"><table class="resultats"><thead><tr><th>n°</th><th class="num">p<sub>r</sub></th><th class="num">V<sub>15</sub></th><th class="num">V<sub>30</sub></th><th class="num">V<sub>60</sub></th>
@@ -853,6 +920,7 @@ function detailEssai(e, Vs, a, hc) {
     <h4>b · La courbe corrigée et ses trois phases</h4>
     ${figureCourbe(r, Vs)}
     <h4>c · Le module pressiométrique</h4>
+    ${plage}
     ${figurePentes(r)}
     <p class="formula">E<sub>M</sub> = 2 (1 + ν) (V<sub>s</sub> + V<sub>m</sub>) Δp/ΔV = 2,66 × (${fd(Vs, 1)} + ${fd(r.Vm, 1)}) × ${fd(ph.p2 - ph.p1, 4)} / ${fd(ph.V2 - ph.V1, 1)} = <strong>${fd(r.EM, 2)} MPa</strong></p>
     <p>Plage ${ph.auto ? "proposée par le calcul (pentes les plus faibles et régulières)" : "imposée"} : paliers ${ph.i1 + 1} à ${ph.i2 + 1}, p<sub>1</sub> = ${fd(ph.p1, 3)} MPa, V<sub>1</sub> = ${fd(ph.V1, 1)} cm³, p<sub>2</sub> = ${fd(ph.p2, 3)} MPa, V<sub>2</sub> = ${fd(ph.V2, 1)} cm³, V<sub>m</sub> = (V<sub>1</sub> + V<sub>2</sub>)/2 ; G = E<sub>M</sub>/2,66 = ${fd(r.G, 2)} MPa.</p>
@@ -873,22 +941,28 @@ function detailEssai(e, Vs, a, hc) {
     <h4>f · Pressions nettes et rapport E<sub>M</sub>/p<sub>l</sub>*</h4>
     <p class="formula">σ'<sub>v0</sub> = ${fd(r.contraintes.sigmaVeff, 1)} kPa · u<sub>0</sub> = ${fd(r.contraintes.u, 1)} kPa · p<sub>0</sub> = K<sub>0</sub> σ'<sub>v0</sub> + u<sub>0</sub> = ${fd(1000 * r.p0, 1)} kPa
       · p<sub>l</sub>* = ${fd(r.pl, 3)} − ${fd(r.p0, 3)} = <strong>${fd(r.plNette, 3)} MPa</strong> · p<sub>f</sub>* = ${fd(r.pfNette, 3)} MPa · E<sub>M</sub>/p<sub>l</sub>* = ${fd(r.rapport, 1)}${e.al ? ` · α = ${fd(e.al.alpha, 2)} (${esc(e.al.etat ?? "")})` : ""}</p>
-    ${r.avertissements.length ? `<p class="final-result bureau-verdict ko">À relire : ${esc(r.avertissements.join(" ; "))}.</p>` : '<p class="method-note">Contrôles automatiques passés : nombre de paliers, plage pseudo-élastique, V<sub>1</sub>, extrapolation, rapport p<sub>l</sub>/p<sub>f</sub>.</p>'}
+    <h4>g · Contrôle qualité de l'essai</h4>
+    <p>${pastilleBilan(e.bilan)}</p>
+    ${tableControles(e.qc)}
+    <p class="method-note">Tous les contrôles sont listés, qu'ils passent ou non. « Non vérifiable » : la saisie ne contient pas la donnée (temps des lectures, réglages du CPV, méthode et heures de forage) ; ces points se vérifient sur la feuille d'essai.</p>
   </details>`;
 }
 
 
 function calculerSondage(v) {
-  const { convention, hc, zw, K0, tube, tubePts, Vs, a, air, couches, res } = depouillerSondage(v);
+  const { convention, hc, zw, K0, tube, tubePts, Vs, a, air, couches, res, qcApp, bilanApp } = depouillerSondage(v);
   const ok = res.filter((e) => e.r.applicable);
   const seuils = couches.map((c) => ({ z0: c.z0, z1: c.z1, valeurs: c.nature === "argile" ? [9, 16] : c.nature === "limon" ? [8, 14] : c.nature === "grave" ? [6, 10] : [7, 12] }));
   const figure = profilPressio({ couches, essais: ok.map((e) => ({ z: e.z, EM: e.r.EM, plNette: e.r.plNette, pfNette: e.r.pfNette })), seuils, largeur: 640, hauteur: 500 });
-  const signales = res.filter((e) => !e.r.applicable || e.r.avertissements.length);
-  const synthese = `<table class="resultats"><thead><tr><th>z (m)</th><th class="num">E<sub>M</sub></th><th class="num">p<sub>f</sub>*</th><th class="num">p<sub>l</sub>*</th><th class="num">E<sub>M</sub>/p<sub>l</sub>*</th><th>α</th></tr></thead><tbody>
-    ${res.map((e) => (e.r.applicable ? `<tr class="${e.r.avertissements.length ? "ko" : ""}"><td>${fd(e.z, 1)}</td><td class="n">${fd(e.r.EM, 1)}</td><td class="n">${fd(e.r.pfNette, 2)}</td><td class="n">${fd(e.r.plNette, 2)}${e.r.limite.extrapolee ? "<small>e</small>" : ""}</td>
-      <td class="n">${fd(e.r.rapport, 1)}</td><td>${e.al ? fd(e.al.alpha, 2) : "—"}</td></tr>` : `<tr class="ko"><td>${fd(e.z, 1)}</td><td colspan="5">${esc(e.r.motif)}</td></tr>`)).join("")}
+  const signales = res.filter((e) => e.bilan.statut !== "ok");
+  const imposees = res.filter((e) => e.r.applicable && !e.r.phase.auto).length;
+  const synthese = `<table class="resultats"><thead><tr><th>z (m)</th><th class="num">E<sub>M</sub></th><th class="num">p<sub>f</sub>*</th><th class="num">p<sub>l</sub>*</th><th class="num">E<sub>M</sub>/p<sub>l</sub>*</th><th>α</th><th>Contrôle</th></tr></thead><tbody>
+    ${res.map((e) => (e.r.applicable ? `<tr class="${e.bilan.statut === "ko" ? "ko" : ""}"><td>${fd(e.z, 1)}</td><td class="n">${fd(e.r.EM, 1)}${e.r.phase.auto ? "" : "<small>i</small>"}</td><td class="n">${fd(e.r.pfNette, 2)}</td><td class="n">${fd(e.r.plNette, 2)}${e.r.limite.extrapolee ? "<small>e</small>" : ""}</td>
+      <td class="n">${fd(e.r.rapport, 1)}</td><td>${e.al ? fd(e.al.alpha, 2) : "—"}</td><td>${pastilleBilan(e.bilan, true)}</td></tr>` : `<tr class="ko"><td>${fd(e.z, 1)}</td><td colspan="5">${esc(e.r.motif)}</td><td>${pastilleBilan(e.bilan, true)}</td></tr>`)).join("")}
     </tbody></table>
-    <p class="method-note">MPa ; « e » : p<sub>l</sub> extrapolée. ${signales.length ? `${signales.length} essai(s) à relire (lignes marquées, détail dans la note).` : "Aucun essai signalé par les contrôles."}</p>
+    <p class="method-note">MPa ; « e » : p<sub>l</sub> extrapolée ; « i » : plage pseudo-élastique imposée par l'opérateur. Contrôle qualité de l'appareillage : ${pastilleBilan(bilanApp, true)} ;
+      ${signales.length ? `${signales.length} essai(s) avec réserves ou non conformes : le détail des contrôles est dans la note, essai par essai.` : "tous les essais sont conformes."}
+      ${imposees ? `${imposees} plage(s) imposée(s).` : "La plage pseudo-élastique de chaque essai se choisit dans son détail (note, partie 4)."}</p>
     <div class="actions envoi-sondage"><button class="secondary" data-envoyer="semelle">Calculer une semelle sur ce sondage</button>
       <button class="secondary" data-envoyer="pieu">Calculer un pieu sur ce sondage</button></div>
     <p class="method-note">Les couches passent au module choisi avec p<sub>l</sub>* (moyenne géométrique des essais de chaque couche),
@@ -912,6 +986,9 @@ function calculerSondage(v) {
     ${tubePts.length >= 2 ? figureTube(tubePts, tube) : "<p>Pas d'étalonnage en tube : a = 0.</p>"}
     <h4>Étalonnage de la sonde à l'air libre</h4>
     ${air.applicable ? figureAir(air, Vs) : "<p>Pas d'étalonnage à l'air : p<sub>e</sub> = 0.</p>"}
+    <h4>Contrôle qualité de l'appareillage</h4>
+    <p>${pastilleBilan(bilanApp)}</p>
+    ${tableControles(qcApp)}
     <h3>2 · Coupe et état initial</h3>
     <p>${couches.map((c) => `${fd(c.z0, 1)}–${fd(c.z1, 1)} m : ${esc(c.nom)} (γ = ${f(c.gamma, 3)}, γ<sub>sat</sub> = ${f(c.gammaSat, 3)} kN/m³)`).join(" ; ")}.
       Nappe ${Number.isFinite(zw) ? `à ${fd(zw, 2)} m` : "absente"} ; p<sub>0</sub> = K<sub>0</sub> σ'<sub>v0</sub> + u<sub>0</sub> avec K<sub>0</sub> = ${fd(K0, 2)}.</p>
@@ -921,10 +998,18 @@ function calculerSondage(v) {
     <h3>4 · Dépouillement détaillé, essai par essai</h3>
     <p class="method-note">Chaque essai se déplie : lectures et corrections, courbe corrigée, pentes et module, fluage et p<sub>f</sub>, extrapolations de p<sub>l</sub>, pressions nettes. Tout est ouvert à l'impression de la note.</p>
     <div class="essais-details">${res.map((e) => detailEssai(e, Vs, a, hc)).join("")}</div>
-    <h3>5 · Critique des essais</h3>
-    ${signales.length ? `<ul>${signales.map((e) => `<li>z = ${fd(e.z, 1)} m : ${esc(e.r.applicable ? e.r.avertissements.join(" ; ") : e.r.motif)}</li>`).join("")}</ul>` : "<p>Aucune anomalie relevée par les contrôles automatiques (nombre de paliers, plage pseudo-élastique, V<sub>1</sub>, extrapolation de p<sub>l</sub>, rapport p<sub>l</sub>/p<sub>f</sub>).</p>"}
-    <p class="method-note">Les valeurs de calcul (p<sub>le</sub>*, modules des tranches) se tirent de ce profil couche par couche, après élimination motivée des essais douteux.</p>`;
-  return { figure, synthese, note, verdict: signales.length ? null : true, etat: `${ok.length} essais dépouillés${signales.length ? `, ${signales.length} à relire` : ""}` };
+    <h3>5 · Contrôle qualité : synthèse</h3>
+    <p>Appareillage : ${pastilleBilan(bilanApp)}</p>
+    <div class="table-large"><table class="resultats"><thead><tr><th>z (m)</th><th>Plage E<sub>M</sub></th><th class="num">✓</th><th class="num">⚠</th><th class="num">✕</th><th class="num">–</th><th>Verdict</th><th>Points à revoir</th></tr></thead><tbody>
+      ${res.map((e) => `<tr><td>${fd(e.z, 1)}</td><td>${e.r.applicable ? `${e.r.phase.i1 + 1}–${e.r.phase.i2 + 1} ${e.r.phase.auto ? "(proposée)" : "(imposée)"}` : "—"}</td>
+        <td class="n">${e.bilan.ok}</td><td class="n">${e.bilan.alerte}</td><td class="n">${e.bilan.ko}</td><td class="n">${e.bilan.nv}</td><td>${pastilleBilan(e.bilan, true)}</td>
+        <td class="motif">${esc(e.qc.filter((x) => x.statut === "ko" || x.statut === "alerte").map((x) => `${x.statut === "ko" ? "✕" : "⚠"} ${x.libelle} (${x.mesure})`).join(" ; ") || "—")}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="method-note">✓ conforme · ⚠ à surveiller · ✕ non conforme · – non vérifiable avec les données saisies. Les exigences et leur source figurent dans le tableau de chaque essai (partie 4) ;
+      les seuils sont ceux de la NF P94-110-1 et de la NF EN ISO 22476-4, les « indicateurs » sont des contrôles de vraisemblance. Un essai non conforme ne s'écarte pas d'office :
+      il se discute, et les valeurs de calcul (p<sub>le</sub>*, modules des tranches) se tirent du profil couche par couche, après élimination motivée des essais douteux.</p>`;
+  const nKo = res.filter((e) => e.bilan.statut === "ko").length, nAl = res.filter((e) => e.bilan.statut === "alerte").length;
+  return { figure, synthese, note, verdict: signales.length ? null : true, etat: `${ok.length} essais dépouillés${nKo ? `, ${nKo} non conforme(s)` : ""}${nAl ? `, ${nAl} avec réserves` : ""}` };
 }
 
 function calculerGroupe(v) {
