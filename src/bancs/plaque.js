@@ -6,6 +6,7 @@
 import { svg, ligne, texte, couche, COULEURS, graphe } from "../figures.js";
 import { plaqueEV } from "../geotech/essais.js";
 import { charpente, boucle, brancherMarche, lectures, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, blocSol, fleche, etiquette, W as WL, H as HL, ROUGE, ACIER, ACIER_SOMBRE, TRAIT } from "./loupe.js";
 
 const PLATEFORMES = {
   bonne: { nom: "couche de forme bien compactée", EV1: 75, EV2: 125 },
@@ -22,6 +23,7 @@ export function monter(banc) {
     vitesse: 10, vitesses: [1, 10, 100],
     commandes: `<div class="field"><label>Plateforme essayée</label><div class="input-wrap"><select data-r="pf">${Object.entries(PLATEFORMES).map(([k, x]) => `<option value="${k}">${esc(x.nom)}</option>`).join("")}</select></div></div>`,
   });
+  const loupe = fenetreLoupe(c, "le sol sous la plaque", { echelle: { px: 30, libelle: "10 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -96,6 +98,36 @@ export function monter(banc) {
     if (p > 0) for (const dx of [-30, 0, 30]) s += ligne(315 + dx, yPl + 10, 315 + dx, yPl + 24, COULEURS.effort, 2, "");
     svgEl.querySelector(".dyn-plaque").innerHTML = s;
     c.lectures.innerHTML = lectures([["Cycle", e.fini ? "terminé" : e.i <= 5 ? "1er chargement" : e.i <= 7 ? "déchargement" : "2e chargement", ""], ["Pression", fd(p, 3), "MPa"], ["Enfoncement", fd(z, 2), "mm"], ["Temps", duree(e.t), ""]]);
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : la demi-plaque et le sol qu'elle enfonce (déplacements ×10) ───
+  const KL = 300, XA = 6, RP = 0.3 * KL, YS = 46, EXAG = 10; // px/m, axe, rayon de la plaque, surface du sol
+  function vueLoupe() {
+    const p = e.fini ? PROGRAMME.at(-1) : PROGRAMME[e.i] ?? 0, z = e.points.at(-1).s;
+    const sp = (z / 1000) * KL * EXAG; // enfoncement dessiné (px)
+    // Déplacement vertical du sol : entier sous la plaque, amorti en profondeur et au-delà du bord.
+    const w = (x, y) => { const r = x - XA, prof = Math.max(0, y - YS); return sp * (r <= RP ? 1 : Math.exp(-(r - RP) / 22)) / (1 + (prof / 75) ** 2) ** 1.2; };
+    let s = `<rect width="${WL}" height="${HL}" fill="#f8fafc"/>`;
+    s += blocSol("remblai", { x0: 0, x1: WL, y0: YS, y1: HL + 30, k: 1000, deplacer: (x, y) => [x, y + w(x, y)] });
+    // Surface déformée : cuvette sous la plaque.
+    let surf = `M0 ${YS + sp}`;
+    for (let x = XA; x <= WL; x += 4) surf += `L${x} ${r1(YS + w(x, YS))}`;
+    s += `<path d="${surf}L${WL} 0H0Z" fill="#f8fafc"/><path d="${surf.replace("M0", "M" + XA)}" fill="none" stroke="${TRAIT}" stroke-width="1.4"/>`;
+    // Bulbe des contraintes : isobares d'autant plus marquées que la pression est forte.
+    for (const [a, b] of [[0.95, 1.1], [1.45, 2], [2.1, 3.2]]) s += `<path d="M${XA} ${r1(YS + sp)}A${r1(a * RP)} ${r1(b * RP)} 0 0 1 ${XA} ${r1(YS + sp + 2 * b * RP)}" fill="none" stroke="${ROUGE}" stroke-width="1.1" stroke-dasharray="4 3" opacity="${r1(Math.min(1, p / 0.25) * 0.8)}"/>`;
+    // Plaque rigide, vérin, pression appliquée.
+    s += `<rect x="0" y="${r1(YS - 12 + sp)}" width="${XA + RP}" height="12" fill="${ACIER_SOMBRE}" stroke="#1e293b"/>`;
+    s += `<rect x="0" y="0" width="${XA + 30}" height="${r1(YS - 12 + sp)}" fill="${ACIER}" stroke="${ACIER_SOMBRE}"/>`;
+    if (p > 0) for (const x of [52, 72, 92]) s += fleche(x, YS - 14 + sp - 6 - 22 * (p / 0.25), x, YS - 14 + sp, ROUGE, 1.8, 5);
+    s += `<path d="M${XA} 0V${HL}" stroke="#475569" stroke-dasharray="8 3 2 3"/>`;
+    s += etiquette(WL - 6, 13, `déplacements ×${EXAG}`, { ancre: "end", couleur: "#475569" }) + etiquette(XA + RP + 4, YS - 16 + sp, "bord", { couleur: "#475569" });
+    const cyc = e.fini ? 3 : e.i <= 5 ? 1 : e.i <= 7 ? 0 : 2;
+    const legende = e.t === 0 && e.i === 0 ? "plaque posée sur la plateforme, avant chargement"
+      : cyc === 1 ? `1er chargement : la plaque enfonce et serre le sol (${fd(z, 2)} mm)`
+        : cyc === 0 ? "déchargement : le sol ne remonte qu'en partie, le tassement reste"
+          : cyc === 2 ? "2e chargement : le sol, déjà serré, est plus raide" : "deux cycles lus : EV1, EV2 et leur rapport";
+    return [s, legende];
   }
 
   function dessinerLent() {

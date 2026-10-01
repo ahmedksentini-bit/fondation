@@ -7,6 +7,7 @@
 import { svg, ligne, texte, couche, COULEURS, graphe } from "../figures.js";
 import { facteurForme, lefrancConstant, lefrancVariable } from "../geotech/essais.js";
 import { charpente, boucle, brancherMarche, lectures, f, fd, r1, esc, duree, sci } from "./moteur.js";
+import { fenetreLoupe, blocSol, fleche, etiquette, horloge, W as WL, H as HL, BLEU, ACIER, ACIER_SOMBRE } from "./loupe.js";
 
 const SOLS = {
   "sable-grossier": { nom: "sable grossier", k: 2e-4, sol: "sable" },
@@ -25,6 +26,7 @@ export function monter(banc) {
       <div class="field"><label>Méthode</label><div class="input-wrap"><select data-r="methode"><option value="constante">charge constante</option><option value="variable">charge variable</option></select></div></div>
       <p class="method-note" style="grid-column:1/-1">Cavité L = ${fd(L, 2)} m, D = ${fd(D, 2)} m à ${f(ZCAV, 2)} m de profondeur, nappe à ${f(ZW, 2)} m ; tubage Ø ${f(DTUBE * 1000, 3)} mm ; F = ${fd(facteurForme(L, D), 3)} m (Hvorslev).</p>`,
   });
+  const loupe = fenetreLoupe(c, "la cavité", { echelle: { px: 30, libelle: "10 cm" } });
   let e, b, etatBoutons;
   const F = facteurForme(L, D);
 
@@ -99,6 +101,34 @@ export function monter(banc) {
       e.methode === "constante" ? ["Débit", f(mesure(Math.max(e.t, 1)) * 60000, 3), "L/min"] : ["Charge h", fd(h, 3), "m"],
       ["Charge imposée", e.methode === "constante" ? fd(e.h0, 2) : "—", "m"],
     ]);
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : le bas du tubage et la cavité, d'où l'eau part dans le terrain ──
+  const KL = 300, XC = 88, RC = (D / 2) * KL, YB = 40; // px/m, axe, rayon de la cavité, bas du tubage
+  function vueLoupe() {
+    const t = horloge(), cst = e.methode === "constante";
+    // Intensité de l'écoulement : débit relatif (charge constante) ou charge restante (charge variable).
+    const r = e.t === 0 && !cst ? 1 : cst ? mesure(Math.max(e.t, 1)) / (1.55 * e.Q) : mesure(e.t) / e.h0;
+    let s = blocSol(e.s.sol, { x0: 0, x1: WL, y0: 0, y1: HL, k: KL });
+    // Tubage étanche, cavité nue sous lui ; eau partout dedans.
+    s += `<rect x="${r1(XC - RC)}" y="0" width="${r1(2 * RC)}" height="${HL}" fill="#7dd3fc"/>`;
+    for (const sg of [-1, 1]) s += `<rect x="${r1(sg < 0 ? XC - RC - 7 : XC + RC)}" y="0" width="7" height="${YB}" fill="${ACIER}" stroke="${ACIER_SOMBRE}"/>`;
+    s += `<path d="M${r1(XC - RC)} ${YB}V${HL}M${r1(XC + RC)} ${YB}V${HL}" stroke="#0369a1" stroke-width="1" stroke-dasharray="3 2"/>`;
+    if (e.t > 0 || cst) {
+      // L'eau s'échappe par les parois de la cavité, d'autant plus vite que la charge est forte.
+      for (let i = 0; i < 4; i++) for (const sg of [-1, 1]) {
+        const y = YB + 22 + i * 30;
+        s += fleche(XC + sg * (RC + 2), y, XC + sg * (RC + 8 + 22 * Math.min(1, r)), y, BLEU, 1.6, 4.5);
+        for (let j = 0; j < 3; j++) { const q = (t * (0.25 + 0.6 * r) + j / 3 + i * 0.17) % 1; s += `<circle cx="${r1(XC + sg * (RC + 34 + q * 50))}" cy="${r1(y + (q - 0.5) * 18 * (j - 1))}" r="1.6" fill="${BLEU}" opacity="${r1(Math.min(1, r) * (1 - q))}"/>`; }
+      }
+      if (cst) s += fleche(XC, 6, XC, 30, BLEU, 2, 6);
+    }
+    s += etiquette(6, 13, e.s.nom) + etiquette(XC + RC + 10, YB - 6, "tubage", { couleur: "#475569" });
+    const legende = e.t === 0 ? (cst ? "cavité sous la nappe : on va injecter à charge constante" : "tube rempli : la charge va retomber")
+      : cst ? `charge constante : on injecte ${f(mesure(Math.max(e.t, 1)) * 60000, 3)} L/min pour garder h = ${fd(e.h0, 2)} m`
+        : `charge variable : l'eau s'infiltre, h = ${fd(mesure(e.t), 2)} m`;
+    return [s, legende];
   }
 
   function dessinerLent() {

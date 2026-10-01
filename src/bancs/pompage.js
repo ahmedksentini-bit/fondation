@@ -7,6 +7,7 @@
 import { svg, ligne, texte, couche, COULEURS, graphe } from "../figures.js";
 import { Wtheis, jacob } from "../geotech/essais.js";
 import { charpente, boucle, brancherMarche, lectures, f, fd, r1, esc, duree, sci } from "./moteur.js";
+import { fenetreLoupe, blocSol, fleche, etiquette, horloge, W as WL, H as HL, BLEU, ACIER_SOMBRE } from "./loupe.js";
 
 const AQUIFERES = {
   sable: { nom: "sable et graviers", T: 8e-3, S: 4e-4 },
@@ -24,6 +25,7 @@ export function monter(banc) {
       <div class="field"><label>Débit de pompage</label><div class="input-wrap"><select data-r="Q"><option value="0.01">10 L/s</option><option value="0.005">5 L/s</option><option value="0.02">20 L/s</option></select></div></div>
       <p class="method-note" style="grid-column:1/-1">Nappe captive sous une couche d'argile ; piézomètres à 10 et 30 m du puits ; 8 h de pompage, puis 4 h de remontée.</p>`,
   });
+  const loupe = fenetreLoupe(c, "la crépine du puits");
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -87,6 +89,39 @@ export function monter(banc) {
       ["Temps", duree(e.t), ""], ["Phase", e.t < POMPAGE ? "pompage" : "remontée", ""],
       ["s à 10 m", fd(s(R[0], Math.max(e.t, 1)), 3), "m"], ["s à 30 m", fd(s(R[1], Math.max(e.t, 1)), 3), "m"],
     ]);
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : la crépine du puits, vers laquelle l'eau de la nappe converge ──
+  const YT = 28, YM = 146, XP = 22; // toit et mur de la nappe captive, paroi de la crépine
+  function vueLoupe() {
+    const t = horloge(), pompe = e.t > 0 && e.t < POMPAGE;
+    // Écoulement vers le puits : plein pendant le pompage ; à la remontée, il s'éteint avec le rabattement résiduel.
+    const r = e.t === 0 ? 0 : pompe ? 1 : Math.min(1, s(R[0], e.t) / Math.max(1e-6, s(R[0], POMPAGE)));
+    const solNappe = e.aq === AQUIFERES.calcaire ? "roche" : e.aq === AQUIFERES.sable ? "grave" : "sable";
+    let s2 = blocSol("argile", { x0: 0, x1: WL, y0: 0, y1: YT, k: 400 }) + blocSol(solNappe, { x0: 0, x1: WL, y0: YT, y1: YM, k: 400 }) + blocSol("marne", { x0: 0, x1: WL, y0: YM, y1: HL, k: 400 });
+    s2 += `<path d="M0 ${YT}H${WL}M0 ${YM}H${WL}" stroke="#334155" stroke-width="1.2"/>`;
+    // Massif de gravier autour de la crépine, crépine fendue, tubage plein au-dessus.
+    s2 += `<rect x="${XP}" y="${YT}" width="14" height="${YM - YT}" fill="#e3d3a0"/>` + blocSol("grave", { x0: XP, x1: XP + 14, y0: YT, y1: YM, k: 400, fond: false });
+    s2 += `<rect x="0" y="0" width="${XP}" height="${HL}" fill="#bae6fd"/><rect x="${XP - 3}" y="0" width="3" height="${YT}" fill="${ACIER_SOMBRE}"/>`;
+    for (let y = YT + 4; y < YM; y += 9) s2 += `<rect x="${XP - 3}" y="${y}" width="3" height="5" fill="${ACIER_SOMBRE}"/>`;
+    s2 += `<rect x="${XP - 3}" y="${YM}" width="3" height="${HL - YM}" fill="${ACIER_SOMBRE}"/>`;
+    // Pompe immergée dans le puits.
+    s2 += `<rect x="4" y="58" width="12" height="40" rx="3" fill="#f59e0b" stroke="#92400e"/><path d="M10 58V0" stroke="#1e293b" stroke-width="2"/>`;
+    if (pompe) s2 += fleche(10, 52, 10, 20, BLEU, 2, 5);
+    if (r > 0.005) for (const y of [46, 72, 98, 124]) {
+      // Les filets d'eau accélèrent en approchant du puits (la vitesse croît comme 1/r).
+      for (let j = 0; j < 4; j++) {
+        const q = (t * 0.35 * (0.3 + r) + j / 4) % 1, x = XP + 16 + (WL - XP - 16) * (1 - q) ** 2;
+        s2 += `<circle cx="${r1(x)}" cy="${y}" r="1.8" fill="${BLEU}" opacity="${r1(r * (0.4 + 0.6 * q))}"/>`;
+      }
+      s2 += fleche(WL - 8, y, WL - 8 - 16 - 14 * r, y, BLEU, 1.6, 4.5);
+    }
+    s2 += etiquette(WL - 6, 13, "toit argileux", { ancre: "end" }) + etiquette(WL - 6, YM - 6, "nappe captive", { ancre: "end", couleur: "#0369a1" }) + etiquette(XP + 18, 72, "gravier", { couleur: "#78350f" });
+    const legende = e.t === 0 ? "puits crépiné dans la nappe captive ; pompe à l'arrêt"
+      : pompe ? `pompage à ${fd(e.Q * 1000, 0)} L/s : l'eau converge vers la crépine` : e.fini ? "essai terminé"
+        : "pompe arrêtée : l'eau afflue encore, la nappe remonte";
+    return [s2, legende];
   }
 
   function dessinerLent() {

@@ -5,8 +5,10 @@
 // l'on dépouille par Casagrande et par Taylor ; la courbe e – lg σ' se
 // construit point par point, jusqu'à la contrainte de préconsolidation.
 import { svg, ligne, texte, COULEURS, graphe } from "../figures.js";
-import { MATERIAUX_OEDO, simulerOedometre, casagrande, taylor, cvDeT50, cvDeT90, compressibilite, TEMPS_LECTURE } from "../geotech/oedometre.js";
+import { MATERIAUX_OEDO, simulerOedometre, casagrande, taylor, cvDeT50, cvDeT90, compressibilite } from "../geotech/oedometre.js";
 import { charpente, boucle, lectures, f, fd, r1, esc, duree } from "./moteur.js";
+import { facteurTemps, surpressionRelative } from "../geotech/consolidation.js";
+import { fenetreLoupe, blocSol, fleche, etiquette, horloge, W as WL, H as HL, ROUGE, BLEU, ACIER, ACIER_SOMBRE } from "./loupe.js";
 
 const PROGRAMME = "10, 20, 40, 80, 160, 320, 640, 1280, 320, 80, 20";
 const SECTION = Math.PI * 0.035 ** 2; // m², éprouvette Ø 70 mm
@@ -27,6 +29,7 @@ export function monter(banc) {
       <button type="button" class="secondary" data-action="tout">Tout l'essai</button>
       <span class="banc-vitesses" role="group" aria-label="Vitesse de l'essai">${[100, 1000, 10000, 100000].map((v) => `<button type="button" class="ghost${v === 10000 ? " actif" : ""}" data-vitesse="${v}">×${f(v, 6)}</button>`).join("")}</span>
       <button type="button" class="ghost" data-action="raz">Recommencer</button></div>`);
+  const loupe = fenetreLoupe(c, "l'éprouvette", { echelle: { px: 21, libelle: "5 mm" } });
   let e, b, vitesse = 10000;
 
   const reinit = () => {
@@ -133,6 +136,49 @@ export function monter(banc) {
       ["Temps du palier", e.i >= 0 ? duree(e.t * 60) : "—", ""], ["Comparateur", fd(d, 3), "mm"],
       ["Épaisseur", fd(20 - d, 3), "mm"], ["e", e.i >= 0 ? fd(palier().eDe(Math.max(e.t, 1e-6)), 3) : fd(e.sim.eAssise, 3), ""],
     ]) + (e.enCours ? `<p class="banc-etat">${palier().charge ? "consolidation sous le nouveau palier" : "gonflement au déchargement"}</p>` : "");
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : la demi-éprouvette dans sa bague, entre les pierres poreuses ──
+  const KH = 4.2, YB = 128, XA = 12, XR = 150; // px par mm de hauteur, bas de l'éprouvette, axe, bague
+  function vueLoupe() {
+    const t = horloge(), d = tassement(), h = 20 - d, hp = h * KH, yT = YB - hp;
+    const p = e.i >= 0 ? palier() : null;
+    // Degré de consolidation du palier, puis isochrone de Terzaghi (drainage par les deux faces).
+    let U = 1;
+    if (p && e.enCours && Math.abs(p.eDebut - p.eFin) > 1e-6) U = Math.min(0.995, Math.max(0, (p.eDebut - p.eDe(Math.max(e.t, 1e-6))) / (p.eDebut - p.eFin)));
+    const Tv = facteurTemps(U), actif = p && e.enCours && U < 0.99;
+    let s = `<rect width="${WL}" height="${HL}" fill="#f1f5f9"/>`;
+    // Éprouvette : les feuillets d'argile se resserrent à mesure qu'elle tasse.
+    s += `<rect x="${XA}" y="${r1(yT)}" width="${XR - XA}" height="${r1(hp)}" fill="#c9b08f"/>`;
+    s += `<g transform="translate(0 ${YB}) scale(1 ${(h / 20).toFixed(4)}) translate(0 ${-YB})">${blocSol("argile", { x0: XA, x1: XR, y0: YB - 20 * KH, y1: YB, k: 1000, fond: false })}</g>`;
+    // Surpression interstitielle : bleue au chargement, orangée (succion) au déchargement.
+    if (actif) for (let j = 0; j < 12; j++) {
+      const u = surpressionRelative(Tv, ((j + 0.5) / 12) * 2);
+      s += `<rect x="${XA}" y="${(yT + (j * hp) / 12).toFixed(2)}" width="${XR - XA}" height="${(hp / 12).toFixed(2)}" fill="${p.charge ? BLEU : "#f97316"}" opacity="${(0.5 * u).toFixed(2)}" shape-rendering="crispEdges"/>`;
+    }
+    // Pierres poreuses, bague, embase, piston.
+    const pierre = (y) => `<rect x="${XA}" y="${r1(y)}" width="${XR - XA}" height="10" fill="#cbd5e1" stroke="#94a3b8"/>` + Array.from({ length: 14 }, (_, i) => `<circle cx="${XA + 6 + i * 10}" cy="${r1(y + 5)}" r="1.3" fill="#94a3b8"/>`).join("");
+    s += pierre(YB) + pierre(yT - 10);
+    s += `<rect x="${XA}" y="${r1(yT - 24)}" width="${XR - XA - 4}" height="14" fill="${ACIER_SOMBRE}" stroke="#334155"/>`;
+    s += `<rect x="${XR}" y="${r1(Math.min(yT - 6, YB - 20 * KH - 6))}" width="10" height="${r1(YB + 10 - Math.min(yT - 6, YB - 20 * KH - 6))}" fill="${ACIER}" stroke="${ACIER_SOMBRE}"/>`;
+    s += `<rect x="0" y="${YB + 10}" width="${WL}" height="${HL - YB - 10}" fill="#94a3b8"/>`;
+    s += `<path d="M${XA} 0V${HL}" stroke="#475569" stroke-width="1" stroke-dasharray="8 3 2 3"/>`;
+    // L'eau quitte l'éprouvette par les deux pierres (ou y rentre au déchargement).
+    if (actif) {
+      const n = 3 + Math.round(8 * (1 - U));
+      for (let i = 0; i < n; i++) {
+        const q = (t * 0.8 + i / n) % 1, x = XA + 10 + ((i * 53) % 120), dir = p.charge ? 1 : -1, pas2 = (p.charge ? q : 1 - q) * 13;
+        s += `<circle cx="${x}" cy="${r1(yT - pas2)}" r="1.8" fill="${BLEU}" opacity="${r1(1 - 0.6 * q)}"/><circle cx="${x + 5}" cy="${r1(YB + pas2)}" r="1.8" fill="${BLEU}" opacity="${r1(1 - 0.6 * q)}"/>`;
+        if (i === 0) s += fleche(XR - 22, yT - 4 - (dir > 0 ? 0 : 14), XR - 22, yT - 4 - (dir > 0 ? 14 : 0), BLEU, 1.4, 4);
+      }
+    }
+    if (p) s += fleche(60, Math.max(4, yT - 54), 60, yT - 25, ROUGE, 2.6, 7) + etiquette(68, Math.max(14, yT - 40), `σ = ${f(p.sigma, 4)} kPa`, { couleur: ROUGE });
+    s += etiquette(XR - 2, YB + 22, "pierre poreuse", { ancre: "end" }) + etiquette(XR - 4, Math.max(yT + 14, 40), "argile", { ancre: "end" });
+    const legende = !p ? "éprouvette saturée, en attente du premier palier"
+      : e.enCours ? (p.charge ? `consolidation : U = ${fd(100 * U, 0)} %, l'eau s'échappe par les pierres poreuses` : "déchargement : l'argile gonfle, l'eau rentre")
+        : `palier terminé : sous ${f(p.sigma, 4)} kPa, la surpression est dissipée`;
+    return [s, legende];
   }
 
   /** Courbe du palier en cours : lectures en lg t, puis Casagrande et Taylor. */

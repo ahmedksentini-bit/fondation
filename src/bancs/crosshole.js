@@ -8,6 +8,7 @@ import { svg, texte, COULEURS, graphe } from "../figures.js";
 import { vs30 } from "../geotech/essais.js";
 import { SITES, terrain } from "./terrain.js";
 import { charpente, boucle, brancherMarche, lectures, coupe, axeProfondeur, panneau, points, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, vueTerrain, fleche, etiquette, horloge, H as HL, ROUGE, BLEU } from "./loupe.js";
 
 const D = 4; // m entre les forages
 const VS_BASE = { remblai: 180, argile: 120, limon: 200, sable: 260, grave: 350, marne: 450, craie: 420 };
@@ -18,6 +19,7 @@ export function monter(banc) {
     vitesse: 10, vitesses: [1, 10, 100],
     commandes: `<div class="field"><label>Terrain</label><div class="input-wrap"><select data-r="site">${Object.values(SITES).map((s) => `<option value="${s.cle}">${esc(s.nom)}</option>`).join("")}</select></div></div>`,
   });
+  const loupe = fenetreLoupe(c, "entre les deux forages");
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -101,6 +103,40 @@ export function monter(banc) {
     const m = e.mesures.at(-1);
     c.lectures.innerHTML = lectures([["Profondeur", fd(e.z, 1), "m"], ["Dernier temps S", m ? fd(m.tS * 1000, 2) : "—", "ms"], ["Dernière Vs", m ? f(m.Vs, 3) : "—", "m/s"], ["Temps", duree(e.t), ""]])
       + `<p class="banc-etat">${e.phase === "coups" ? "coups vers le haut puis vers le bas" : "descente des sondes"}</p>`;
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : entre les deux forages, l'onde S fait vibrer le sol de haut en bas ──
+  const KL = 33, YP = 84, XG1 = 17, XG2 = 159, T_COUP = 1.6; // px/m, profondeur des sondes, axes des forages, période d'un coup (écran)
+  function vueLoupe() {
+    const t = horloge(), coups = e.phase === "coups" && !e.fini;
+    const Yl = (z) => YP + (z - e.z) * KL, zH = e.z - YP / KL, zB = e.z + (HL - YP) / KL;
+    let s = vueTerrain({ couches: e.site.couches, Y: Yl, k: KL, zHaut: zH, zBas: zB });
+    // Forages tubés et cimentés ; source plaquée à gauche, géophone à droite.
+    for (const x of [XG1, XG2]) s += `<rect x="${x - 9}" y="0" width="18" height="${HL}" fill="#e5e7eb" stroke="#475569"/>`;
+    s += `<rect x="${XG1 - 6}" y="${YP - 10}" width="12" height="20" rx="3" fill="#f59e0b" stroke="#92400e"/><rect x="${XG2 - 6}" y="${YP - 10}" width="12" height="20" rx="3" fill="#475569"/>`;
+    s += `<path d="M${XG1} ${YP - 10}V0M${XG2} ${YP - 10}V0" stroke="#1e293b" stroke-width="1.4"/>`;
+    let haut = true;
+    if (coups) {
+      const n = Math.floor(t / T_COUP), tau = (t % T_COUP) / T_COUP;
+      haut = n % 2 === 0;
+      const sg = haut ? -1 : 1, xf = XG1 + 10 + tau * 1.3 * (XG2 - XG1 - 20), xp = XG1 + 10 + tau * 3.4 * (XG2 - XG1 - 20);
+      s += fleche(XG1, YP + sg * 4, XG1, YP + sg * 24, ROUGE, 2.4, 6);
+      // Onde P, rapide mais faible : elle arrive la première.
+      if (xp < XG2 - 9) s += `<path d="M${r1(xp)} ${YP - 26}V${YP + 26}" stroke="${BLEU}" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>` + etiquette(xp + 2, YP - 28, "P", { couleur: BLEU });
+      // Onde S : chaque particule oscille verticalement après le passage du front.
+      for (let i = 0; i < 10; i++) {
+        const x = XG1 + 16 + i * 12.4, retard = xf - x, a = retard > 0 ? 7 * Math.sin(retard / 6) * Math.exp(-retard / 70) * sg : 0;
+        s += `<circle cx="${r1(x)}" cy="${r1(YP + a)}" r="3" fill="#7c2d12" stroke="#fff" stroke-width=".8"/>`;
+      }
+      if (xf < XG2 - 9) s += `<path d="M${r1(xf)} ${YP - 22}V${YP + 22}" stroke="${ROUGE}" stroke-width="1.2" stroke-dasharray="2 2"/>` + etiquette(xf + 2, YP + 32, "S", { couleur: ROUGE });
+      s += fleche(46, YP - 40, 120, YP - 40, "#0f172a", 1.4, 5) + etiquette(83, YP - 46, "propagation", { ancre: "middle" });
+      s += `<path d="M64 ${YP + 30}v16M64 ${YP + 30}l-3 4M64 ${YP + 30}l3 4M64 ${YP + 46}l-3 -4M64 ${YP + 46}l3 -4" stroke="#7c2d12" stroke-width="1.4" fill="none"/>` + etiquette(70, YP + 42, "particules", { couleur: "#7c2d12" });
+    } else for (let i = 0; i < 10; i++) s += `<circle cx="${r1(XG1 + 16 + i * 12.4)}" cy="${YP}" r="3" fill="#7c2d12" stroke="#fff" stroke-width=".8"/>`;
+    s += etiquette(6, 13, e.T.couche(Math.max(0.01, Math.min(e.z, e.zMax))).nom);
+    const legende = e.t === 0 ? "sondes en tête de forage" : e.fini ? "mesures terminées"
+      : coups ? `coup vers le ${haut ? "haut" : "bas"} : l'onde S fait vibrer le sol verticalement, elle avance à Vs` : `descente des sondes vers ${fd(e.cible, 0)} m`;
+    return [s, legende];
   }
 
   function dessinerLent() {

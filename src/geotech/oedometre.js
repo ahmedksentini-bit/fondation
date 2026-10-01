@@ -80,10 +80,12 @@ export function simulerOedometre(m, paliers, { H0 = 20, duree = 1440, remaniemen
     const imm = 0.03 * de;
     const tp = (facteurTemps(0.95) * Hd * Hd) / cv * ANNEE_MIN; // min
     const Cae = charge && sig > vierge0 * 0.9 ? m.Cae : charge ? m.Cae * 0.2 : 0;
+    // e change d'un palier au suivant : eDe garde celui du début de ce palier-ci.
+    const eDebut = e;
     const eDe = (t) => {
       const U = degreConsolidation((cv * (t / ANNEE_MIN)) / (Hd * Hd));
       const sec = t > tp ? Cae * Math.log10(t / tp) : 0;
-      return e - imm - (de - imm) * U - sec;
+      return eDebut - imm - (de - imm) * U - sec;
     };
     const lectures = [{ t: 0, d: +dCumul.toFixed(3) }];
     for (const t of TEMPS_LECTURE.filter((x) => x <= duree + 1e-9)) {

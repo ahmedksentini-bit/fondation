@@ -8,6 +8,7 @@
 import { svg, ligne, texte, couche, COULEURS, graphe } from "../figures.js";
 import { lugeon } from "../geotech/essais.js";
 import { charpente, boucle, brancherMarche, lectures, f, fd, r1, esc, duree, sci } from "./moteur.js";
+import { fenetreLoupe, blocSol, fleche, etiquette, horloge, W as WL, H as HL, ROUGE } from "./loupe.js";
 
 const PALIERS = [0.2, 0.5, 1.0, 0.5, 0.2]; // MPa au manomètre
 const DUREE = 600; // s par palier
@@ -27,6 +28,7 @@ export function monter(banc) {
       <div class="field" style="grid-column:span 2"><label>Rocher</label><div class="input-wrap"><select data-r="comp">${Object.entries(COMPORTEMENTS).map(([k, x]) => `<option value="${k}">${esc(x.nom)}</option>`).join("")}</select></div></div>
       <p class="method-note" style="grid-column:1/-1">Passe de ${f(LPASSE, 2)} m centrée à ${fd(ZPASSE, 1)} m ; manomètre à ${f(HM, 2)} m au-dessus du sol ; nappe à ${f(ZW, 2)} m. Paliers ${PALIERS.map((p) => fd(p, 1)).join(" → ")} MPa, dix minutes chacun.</p>`,
   });
+  const loupe = fenetreLoupe(c, "la passe entre les obturateurs", { echelle: { px: 30, libelle: "5 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -97,6 +99,42 @@ export function monter(banc) {
     svgEl.querySelector(".dyn-passe").innerHTML = s;
     c.lectures.innerHTML = lectures([["Palier", e.fini ? "terminé" : `${i + 1} / ${PALIERS.length}`, ""], ["Pression au manomètre", fd(p, 2), "MPa"],
       ["Débit", e.fini ? "—" : fd(debit(i), 1), "L/min"], ["Temps", duree(e.t), ""]]);
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : la paroi du forage entre les obturateurs, et les fissures où l'eau s'engouffre ──
+  const XC = 88, RB = 23, FISSURES = [[64, -0.2], [104, 0.13], [140, -0.07]]; // axe, rayon du forage (Ø 76 mm), fissures (ordonnée, pente)
+  function vueLoupe() {
+    const t = horloge(), cle = Object.entries(COMPORTEMENTS).find(([, x]) => x === e.comp)[0];
+    const i = Math.min(e.i, PALIERS.length - 1), p = e.fini || e.t === 0 ? 0 : PALIERS[i], pMax = Math.max(...PALIERS);
+    const qMax = Math.max(...PALIERS.map((_, j) => debit(j))), r = p > 0 ? debit(i) / qMax : 0;
+    let s = blocSol("roche", { x0: 0, x1: WL, y0: 0, y1: HL, k: 600 });
+    // Ouverture et remplissage des fissures selon le rocher choisi.
+    const ouv = cle === "dilatation" && p >= pMax - 1e-9 ? 4.5 : 2.2;
+    const avance = e.t === 0 ? 0 : (e.i + Math.min(1, (e.t % DUREE) / DUREE)) / PALIERS.length; // avancement de l'essai
+    for (const [y0, pente] of FISSURES) for (const sg of [-1, 1]) {
+      const xa = XC + sg * RB, xb = sg < 0 ? 0 : WL, ya = y0, yb = y0 + pente * (xb - xa) * sg;
+      s += `<path d="M${xa} ${ya}L${xb} ${r1(yb)}" stroke="#1e293b" stroke-width="${ouv + 1.6}"/>`;
+      if (cle === "debourrage" && avance < 1) { const l = 46 * (1 - avance); s += `<path d="M${xa} ${ya}L${r1(xa + sg * l)} ${r1(ya + pente * l)}" stroke="#92400e" stroke-width="${ouv}" opacity=".9"/>`; }
+      if (r > 0) {
+        // Filets d'eau qui partent dans la fissure, d'autant plus vite que le débit est fort.
+        for (let j = 0; j < 4; j++) { const q = (t * (0.3 + 0.9 * r) + j / 4) % 1, x = xa + sg * q * Math.abs(xb - xa); s += `<circle cx="${r1(x)}" cy="${r1(ya + pente * sg * (x - xa))}" r="${r1(Math.min(2.2, ouv / 2 + 0.4))}" fill="#38bdf8" opacity="${r1(1 - 0.7 * q)}"/>`; }
+        if (cle === "turbulent" && p >= 0.5) s += `<path d="M${r1(xa + sg * 8)} ${ya - 6}c${sg * 5} -4 ${sg * 9} 2 ${sg * 4} 5" stroke="#0369a1" stroke-width="1.2" fill="none"/>`;
+      }
+      if (cle === "colmatage" && avance > 0) for (let j = 0; j < Math.round(7 * avance); j++) s += `<circle cx="${r1(xa + sg * (3 + j * 4))}" cy="${r1(ya + pente * (3 + j * 4))}" r="1.6" fill="#92400e"/>`;
+    }
+    // Forage plein d'eau sous pression ; obturateur gonflé en haut de la passe.
+    s += `<rect x="${XC - RB}" y="0" width="${2 * RB}" height="${HL}" fill="#7dd3fc"/>`;
+    s += `<rect x="${XC - RB - 1}" y="0" width="${2 * RB + 2}" height="26" rx="5" fill="#111827"/><rect x="${XC - 6}" y="0" width="12" height="30" fill="#94a3b8"/>`;
+    if (p > 0) for (const y of [52, 92, 128]) for (const sg of [-1, 1]) s += fleche(XC + sg * 4, y, XC + sg * (6 + 14 * (p / pMax)), y, ROUGE, 1.5, 4.5);
+    s += etiquette(XC + RB + 4, 20, "obturateur") + etiquette(6, 13, "rocher fissuré");
+    const pas = `palier ${i + 1} : ${fd(p, 1)} MPa — `;
+    const legendes = {
+      laminaire: "le débit suit la pression", turbulent: p >= 0.5 ? "à forte pression, l'écoulement devient turbulent" : "à faible pression, l'écoulement reste laminaire",
+      dilatation: p >= pMax - 1e-9 ? "sous la plus forte pression, les fissures s'ouvrent" : "les fissures restent fermées",
+      debourrage: "l'eau lave le remplissage des fissures", colmatage: "les fines bouchent peu à peu les fissures",
+    };
+    return [s, e.t === 0 ? "passe isolée par les obturateurs, prête" : e.fini ? "essai terminé : passe dégonflée" : pas + legendes[cle]];
   }
 
   function dessinerLent() {

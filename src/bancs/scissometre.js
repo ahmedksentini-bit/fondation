@@ -8,6 +8,7 @@ import { svg, ligne, texte, COULEURS, graphe } from "../figures.js";
 import { constanteMoulinet, scissometre } from "../geotech/essais.js";
 import { SITES, terrain, estFin, natureDe } from "./terrain.js";
 import { charpente, boucle, brancherMarche, lectures, coupe, axeProfondeur, panneau, points, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, vueTerrain, tige, fleche, etiquette, horloge, W as WL, H as HL, ROUGE, ACIER_SOMBRE } from "./loupe.js";
 
 const D = 70, H = 140, K = constanteMoulinet(D, H); // mm, mm, m³
 const VROT = 0.1; // °/s, soit 6° par minute
@@ -21,6 +22,7 @@ export function monter(banc) {
       <div class="field"><label>Terrain</label><div class="input-wrap"><select data-r="site">${Object.values(SITES).map((s) => `<option value="${s.cle}">${esc(s.nom)}</option>`).join("")}</select></div></div>
       <div class="field"><label>Moulinet</label><div class="input-wrap"><select disabled><option>D = 70 mm, H = 140 mm (rapport 2)</option></select></div></div>`,
   });
+  const loupe = fenetreLoupe(c, "le moulinet", { echelle: { px: 42.5, libelle: "5 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -136,6 +138,58 @@ export function monter(banc) {
       ["Rotation", e.phase === "rotation" || e.phase === "residuel" ? fd(e.theta, 1) : "—", "°"], ["Couple", Number.isFinite(M) ? fd(M, 1) : "—", "N·m"],
       ["Temps", duree(e.t), ""],
     ]) + `<p class="banc-etat">${libelles[e.phase] ?? ""}</p>`;
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : le moulinet vu de côté, et le cylindre d'argile qu'il cisaille ──
+  const KL = 850, XC = 88, RV = (D / 2000) * KL, HV = (H / 1000) * KL, YH = 28; // rayon, hauteur, haut des pales
+  function vueLoupe() {
+    const x = e.i < e.cotes.length ? essaiCourant() : null;
+    if (!e.cotes.length) {
+      // Pas d'argile molle : le moulinet reste dans son sabot, au-dessus d'un terrain qu'il ne saurait cisailler.
+      const Yv = (z) => 60 + (z - 1) * KL;
+      return [vueTerrain({ couches: e.site.couches, Y: Yv, k: KL, zHaut: 1 - 60 / KL, zBas: 1 + (HL - 60) / KL }) + etiquette(6, 13, e.T.couche(1).nom),
+        "pas de couche assez molle pour le moulinet sur ce site"];
+    }
+    let zV = x?.z ?? e.cotes.at(-1);
+    if (e.phase === "fonçage" && x) zV = (e.i ? e.cotes[e.i - 1] : 0) + (x.z - (e.i ? e.cotes[e.i - 1] : 0)) * (1 - e.minuteur / DUREES.fonçage);
+    const YM = YH + HV / 2, Yl = (z) => YM + (z - zV) * KL, yB = YH + HV;
+    let s = vueTerrain({ couches: e.site.couches, Y: Yl, k: KL, zHaut: zV - YM / KL, zBas: zV + (HL - YM) / KL }) + tige(XC, 0, YH, 14);
+    if (e.phase === "fonçage") {
+      // Pendant le fonçage, les pales restent rentrées dans le sabot qui les protège.
+      s += `<rect x="${r1(XC - RV - 5)}" y="${YH - 6}" width="${r1(2 * RV + 10)}" height="${r1(HV + 12)}" rx="6" fill="${ACIER_SOMBRE}" stroke="#1e293b"/>`;
+      s += `<path d="M${r1(XC - RV - 5)} ${r1(yB + 6)}L${XC} ${r1(yB + 30)}L${r1(XC + RV + 5)} ${r1(yB + 6)}Z" fill="#475569" stroke="#1e293b"/>`;
+      return [s + etiquette(WL - 8, HL - 9, e.T.couche(zV).nom, { ancre: "end" }), "fonçage : le moulinet est rentré dans son sabot"];
+    }
+    const ang = e.phase === "remaniement" ? horloge() * 540 : e.theta, M = e.mesures.at(-1)?.M ?? 0, mob = x ? Math.min(1.2, M / x.Mp) : 0;
+    const apresPic = (e.phase === "rotation" && e.theta > ROT_PIC) || e.phase === "remaniement" || e.phase === "residuel" || e.phase === "fini";
+    // Coquille d'argile remaniée autour du cylindre cisaillé.
+    if (apresPic) {
+      const op = e.phase === "rotation" ? Math.min(0.35, (e.theta - ROT_PIC) / 150) : 0.4;
+      s += `<path d="M${r1(XC - RV - 5)} ${YH - 4}V${r1(yB + 4)}H${r1(XC - RV + 2)}V${YH - 4}ZM${r1(XC + RV - 2)} ${YH - 4}V${r1(yB + 4)}H${r1(XC + RV + 5)}V${YH - 4}Z" fill="#7c2d12" opacity="${r1(op)}"/>`;
+    }
+    // Pales : celles de derrière d'abord, plus pâles ; la projection de chacune suit la rotation.
+    const pales = [0, 1, 2, 3].map((j) => { const a = ((ang + 45 + 90 * j) * Math.PI) / 180; return { px: RV * Math.cos(a), devant: Math.sin(a) }; }).sort((p, q) => p.devant - q.devant);
+    for (const p of pales) {
+      const xa = XC + p.px, devant = p.devant >= 0;
+      s += `<path d="M${XC} ${YH}H${r1(xa)}V${r1(yB - 9)}L${XC} ${r1(yB)}Z" fill="${devant ? "#e2e8f0" : "#94a3b8"}" stroke="${devant ? "#334155" : "#64748b"}" stroke-width="${devant ? 1.2 : 0.8}" opacity="${devant ? 1 : 0.85}"/>`;
+      if (Math.abs(p.px) < 2) s += `<path d="M${r1(xa)} ${YH}V${r1(yB - 4)}" stroke="#334155" stroke-width="2"/>`;
+    }
+    // Surface cisaillée : le cylindre circonscrit aux pales, couleur selon la mobilisation de cu.
+    const coul = apresPic ? "#9a3412" : mob > 0.85 ? ROUGE : "#d97706";
+    s += `<rect x="${r1(XC - RV)}" y="${YH}" width="${r1(2 * RV)}" height="${r1(HV)}" fill="none" stroke="${coul}" stroke-width="1.6" stroke-dasharray="5 3"/>`;
+    s += `<ellipse cx="${XC}" cy="${YH}" rx="${r1(RV)}" ry="6" fill="none" stroke="${coul}" stroke-width="1.2" stroke-dasharray="4 3"/><ellipse cx="${XC}" cy="${r1(yB)}" rx="${r1(RV)}" ry="6" fill="none" stroke="${coul}" stroke-width="1.2" stroke-dasharray="4 3"/>`;
+    if (e.phase === "rotation" || e.phase === "residuel" || e.phase === "remaniement") {
+      // Sens de rotation et couple appliqué par la tête.
+      s += `<path d="M${r1(XC - RV - 6)} ${YH - 12}Q${XC} ${YH - 2} ${r1(XC + RV + 2)} ${YH - 12}" fill="none" stroke="${ROUGE}" stroke-width="1.8"/>` + fleche(XC + RV - 4, YH - 9, XC + RV + 6, YH - 14, ROUGE, 1.8, 6);
+      if (e.phase !== "remaniement") s += etiquette(XC + RV + 8, YH + 14, `${fd(M, 1)} N·m`, { couleur: ROUGE });
+    }
+    s += etiquette(WL - 8, HL - 9, e.T.couche(zV).nom, { ancre: "end" });
+    const legende = e.phase === "attente" ? "moulinet sorti : l'argile se rééquilibre avant la rotation"
+      : e.phase === "rotation" ? (e.theta <= ROT_PIC ? `rotation à 6°/min : le couple monte, θ = ${fd(e.theta, 1)}°` : "pic dépassé : l'argile se radoucit le long du cylindre")
+        : e.phase === "remaniement" ? "dix tours rapides : l'argile du cylindre est remaniée"
+          : e.phase === "residuel" ? "couple résiduel : l'argile remaniée résiste moins" : "essais terminés";
+    return [s, legende];
   }
 
   function dessinerLent() {

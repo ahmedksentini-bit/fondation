@@ -7,6 +7,7 @@
 import { svg, ligne, texte, couche, COULEURS, graphe } from "../figures.js";
 import { tempsReponsePiezometre } from "../geotech/essais.js";
 import { charpente, boucle, brancherMarche, lectures, f, fd, r1, esc, duree, sci } from "./moteur.js";
+import { fenetreLoupe, blocSol, fleche, etiquette, horloge, W as WL, H as HL, BLEU, ACIER, ACIER_SOMBRE } from "./loupe.js";
 
 const SOLS = {
   sable: { nom: "sable moyen", k: 1e-4, sol: "sable" },
@@ -24,6 +25,7 @@ export function monter(banc) {
       <div class="field"><label>Diamètre du tube ouvert</label><div class="input-wrap"><select data-r="tube"><option value="0.05">50 mm</option><option value="0.025">25 mm</option><option value="0.1">100 mm</option></select></div></div>
       <p class="method-note" style="grid-column:1/-1">Cellule filtrante L = ${f(L, 2)} m, D = ${fd(D, 2)} m, centrée à ${f(ZC, 2)} m ; nappe à ${fd(ZW, 1)} m. On purge le tube ouvert jusqu'à 2 m sous la nappe.</p>`,
   });
+  const loupe = fenetreLoupe(c, "les deux crépines");
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -85,6 +87,42 @@ export function monter(banc) {
     s += texte(x2, yS - 29, `${fd(uCell, 1)} kPa`, 'text-anchor="middle" style="font-size:11px;font-weight:800;font-family:ui-monospace,Consolas,monospace;fill:#67e8f9"');
     svgEl.querySelector(".dyn-niveaux").innerHTML = s;
     c.lectures.innerHTML = lectures([["Temps", duree(e.t), ""], ["Niveau du tube / nappe", fd(h, 3), "m"], ["Remontée", fd(100 * (1 - h / e.h0), 1), "%"], ["Capteur à cellule", fd(9.81 * (ZC - ZW), 1), "kPa"]]);
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : à gauche la crépine du tube ouvert, où l'eau entre ; à droite la cellule ──
+  const XT = 58, XS = 140; // axes du tube ouvert et du capteur à cellule
+  function vueLoupe() {
+    const t = horloge(), h = niveau(e.t), r = Math.max(0, h / e.h0); // part de la charge qui manque encore
+    let s = blocSol(e.s.sol, { x0: 0, x1: WL, y0: 0, y1: HL, k: 400 });
+    // Massif filtrant de sable autour des deux crépines.
+    s += `<rect x="${XT - 30}" y="0" width="60" height="${HL}" fill="#f3e5ae"/>` + blocSol("sable", { x0: XT - 30, x1: XT + 30, y0: 0, y1: HL, k: 400, fond: false });
+    s += `<rect x="${XS - 20}" y="40" width="40" height="${HL - 40}" fill="#f3e5ae"/>` + blocSol("sable", { x0: XS - 20, x1: XS + 20, y0: 40, y1: HL, k: 400, fond: false });
+    s += `<path d="M112 0V${HL}" stroke="#0f172a" stroke-width="1" stroke-dasharray="3 3"/>`;
+    // Tube ouvert : crépine fendue, eau qui monte dans le tube.
+    s += `<rect x="${XT - 10}" y="0" width="20" height="${HL}" fill="#bae6fd"/>`;
+    for (const sg of [-1, 1]) {
+      s += `<rect x="${XT + sg * 10 - (sg < 0 ? 2 : 0)}" y="0" width="2" height="${HL}" fill="${ACIER_SOMBRE}"/>`;
+      for (let y = 8; y < HL; y += 12) s += `<rect x="${XT + sg * 10 - (sg < 0 ? 2 : 0)}" y="${y}" width="2" height="5" fill="#bae6fd"/>`;
+    }
+    if (r > 0.01) {
+      // L'eau du terrain converge vers les fentes, d'autant plus vite qu'il manque de charge.
+      for (let i = 0; i < 6; i++) for (const sg of [-1, 1]) {
+        const y = 14 + i * 26, q = (t * (0.3 + 0.9 * r) + i / 6 + (sg > 0 ? 0.5 : 0)) % 1, x = XT + sg * (52 - q * 40);
+        s += `<circle cx="${r1(x)}" cy="${y}" r="1.8" fill="${BLEU}" opacity="${r1(0.3 + 0.7 * r)}"/>`;
+      }
+      for (const y of [28, 80, 132]) for (const sg of [-1, 1]) s += fleche(XT + sg * (14 + 6 + 16 * r), y, XT + sg * 13, y, BLEU, 1.6, 4.5);
+      s += fleche(XT, 120, XT, 120 - 8 - 26 * r, BLEU, 2, 5);
+    }
+    // Capteur à cellule : pierre poreuse, membrane, corde vibrante ; l'eau n'a presque rien à déplacer.
+    s += `<rect x="${XS - 12}" y="62" width="24" height="70" rx="5" fill="${ACIER}" stroke="${ACIER_SOMBRE}"/>`;
+    s += `<rect x="${XS - 12}" y="122" width="24" height="12" rx="3" fill="#94a3b8"/>` + Array.from({ length: 5 }, (_, i) => `<circle cx="${XS - 8 + i * 4}" cy="128" r="1" fill="#475569"/>`).join("");
+    s += `<path d="M${XS - 10} 116Q${XS} 110 ${XS + 10} 116" stroke="#1d4ed8" stroke-width="1.6" fill="none"/><path d="M${XS} 113V72" stroke="#b45309" stroke-width="1.2"/>`;
+    s += `<path d="M${XS} 62V0" stroke="#1e293b" stroke-width="1.6"/>`;
+    s += etiquette(6, 13, "tube ouvert") + etiquette(WL - 6, 13, "cellule", { ancre: "end" }) + etiquette(WL - 6, 154, `${fd(9.81 * (ZC - ZW), 0)} kPa`, { ancre: "end", couleur: BLEU });
+    const legende = e.t === 0 ? "tube purgé : son niveau est à 2 m sous la nappe"
+      : r > 0.02 ? `l'eau entre par la crépine ; il manque encore ${fd(-h, 2)} m dans le tube` : "équilibre : plus d'écoulement, le tube suit la nappe";
+    return [s, legende];
   }
 
   function dessinerLent() {

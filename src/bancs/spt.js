@@ -9,6 +9,7 @@ import { SPT, sptCorrige } from "../geotech/essais.js";
 import { creerAlea } from "../exos/alea.js";
 import { SITES, terrain } from "./terrain.js";
 import { charpente, boucle, brancherMarche, lectures, coupe, axeProfondeur, panneau, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, vueTerrain, blocSol, trepan, choc, fleche, etiquette, horloge, W as WL, H as HL, ROUGE, BLEU, ACIER, ACIER_SOMBRE } from "./loupe.js";
 
 const PAS_ESSAI = 1.5; // m entre deux essais
 const CYCLE = 2, MONTEE = 1.3, CHUTE = 0.4; // s par coup
@@ -25,6 +26,7 @@ export function monter(banc) {
       <div class="field"><label>Terrain</label><div class="input-wrap"><select data-r="site">${Object.values(SITES).map((s) => `<option value="${s.cle}">${esc(s.nom)}</option>`).join("")}</select></div></div>
       <div class="field"><label>Mouton</label><div class="input-wrap"><select data-r="mouton">${Object.entries(MOUTONS).map(([k, n]) => `<option value="${k}">${esc(n)}</option>`).join("")}</select></div></div>`,
   });
+  const loupe = fenetreLoupe(c, "l'outil, puis le carottier", { echelle: { px: 35, libelle: "5 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -163,6 +165,59 @@ export function monter(banc) {
       ["Coups par tranche", k && (e.phase === "battage" || e.essais.at(-1)?.z === k.z) ? k.coups.join(" · ") : "—", "/ 15 cm"],
       ["N = N2 + N3", e.essais.length ? String(e.essais.at(-1).N) : "—", "coups"], ["Temps", duree(e.t), ""],
     ]) + `<p class="banc-etat">${libelles[e.phase] ?? ""}</p>`;
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : l'outil au fond du forage, puis le carottier fendu que l'on bat ──
+  const KL = 700, XC = 88, RT = 0.05 * KL, RE = 0.0255 * KL, RI = 0.0175 * KL; // trou, carottier (extérieur, intérieur)
+  function vueLoupe() {
+    const t = horloge(), k = e.courant, couches = e.site.couches;
+    if (e.phase === "ouverture") {
+      // Carottier ouvert sur la table : les deux demi-coquilles, l'échantillon dans l'une.
+      const sol = e.essais.at(-1).couche.sol;
+      let s = `<rect width="${WL}" height="${HL}" fill="#f1f5f9"/>`;
+      s += `<clipPath id="loupe-spt-ech"><rect x="16" y="45" width="144" height="16" rx="3"/></clipPath>`;
+      for (const [y, plein] of [[38, true], [96, false]]) {
+        s += `<rect x="12" y="${y}" width="152" height="30" rx="6" fill="${ACIER}" stroke="${ACIER_SOMBRE}"/>`;
+        s += plein ? `<g clip-path="url(#loupe-spt-ech)">${blocSol(sol, { x0: 16, x1: 160, y0: y + 7, y1: y + 23, k: KL })}</g>` : `<rect x="16" y="${y + 7}" width="144" height="16" rx="3" fill="#e2e8f0"/>`;
+      }
+      s += etiquette(14, 30, "échantillon (remanié)") + etiquette(14, 88, "demi-coquille vide");
+      return [s, "carottier ouvert : l'échantillon, remanié, sert à identifier le sol"];
+    }
+    const battage = e.phase === "battage";
+    const zVue = battage ? k.z + k.pen : e.fond, YV = battage ? 132 : 118, Yl = (z) => YV + (z - zVue) * KL;
+    const zH = zVue - YV / KL, zB = zVue + (HL - YV) / KL, yFond = Yl(e.fond);
+    let s = vueTerrain({ couches, Y: Yl, k: KL, zHaut: zH, zBas: zB, x0: 0, x1: XC - RT })
+      + vueTerrain({ couches, Y: Yl, k: KL, zHaut: zH, zBas: zB, x0: XC + RT, x1: WL })
+      + vueTerrain({ couches, Y: Yl, k: KL, zHaut: Math.max(zH, e.fond), zBas: zB, x0: XC - RT, x1: XC + RT });
+    if (e.phase === "forage" || e.phase === "nettoyage") {
+      s += trepan({ cx: XC, yFond: yFond - (e.phase === "nettoyage" ? 10 : 0), largeur: 2 * RT, t: e.phase === "forage" ? t : 0 });
+      if (e.phase === "nettoyage") for (const sg of [-1, 1]) s += fleche(XC + sg * (RT - 5), yFond - 20, XC + sg * (RT - 5), yFond - 52, BLEU, 1.6, 5);
+    } else {
+      s += `<rect x="${r1(XC - RT)}" y="0" width="${r1(2 * RT)}" height="${r1(Math.max(0, yFond))}" fill="#e2e8f0"/>`;
+      // Carottier fendu : sabot biseauté, tube ouvert ; l'échantillon y entre pendant le battage.
+      const yS = battage ? YV : e.phase === "descente" ? yFond - (e.minuteur / DUREES.descente) * 190 : yFond - (1 - e.minuteur / DUREES.remontee) * 190;
+      if (battage && k.pen > 0) s += vueTerrain({ couches, Y: Yl, k: KL, zHaut: k.z, zBas: k.z + k.pen, x0: XC - RI, x1: XC + RI }) + `<rect x="${r1(XC - RI)}" y="${r1(yFond)}" width="${r1(2 * RI)}" height="${r1(Math.max(0, yS - yFond))}" fill="#0f172a" opacity=".1"/>`;
+      if (!battage && e.phase === "remontee") s += blocSol(e.essais.at(-1).couche.sol, { x0: XC - RI, x1: XC + RI, y0: yS - 0.45 * KL, y1: yS, k: KL });
+      for (const sg of [-1, 1]) {
+        s += `<path d="M${r1(XC + sg * RI)} 0V${r1(yS)}L${r1(XC + sg * (RE - 1))} ${r1(yS - 9)}V0Z" fill="${ACIER}" stroke="${ACIER_SOMBRE}"/>`;
+        s += `<path d="M${r1(XC + sg * RE)} 0V${r1(yS - 9)}" stroke="${ACIER_SOMBRE}" stroke-width="1"/>`;
+      }
+      if (battage) {
+        for (let j = 1; j <= 2; j++) { const y = yS - j * 0.15 * KL; if (y > 4) s += `<path d="M${r1(XC + RE)} ${r1(y)}h7" stroke="${ROUGE}" stroke-width="1.6"/>` + etiquette(XC + RE + 9, y + 3, `${15 * j} cm`, { couleur: ROUGE }); }
+        if (k.phase >= MONTEE + CHUTE - 0.02 && k.phase < MONTEE + CHUTE + 0.16) s += choc(XC, yS - 28, RE + 6) + fleche(XC, 4, XC, 26, ROUGE, 3, 8);
+      }
+    }
+    s += etiquette(6, 13, e.T.couche(Math.min(zVue + 0.01, e.zMax)).nom);
+    const tr = battage ? Math.min(k.tranche, 2) : 0;
+    const legendes = {
+      forage: `forage jusqu'à ${fd(e.zEssai, 1)} m : l'outil tourne, les déblais remontent`,
+      nettoyage: "nettoyage du fond : le fluide évacue les déblais",
+      descente: "descente du carottier fendu au fond du forage",
+      battage: battage ? `${["amorce (non comptée)", "2e tranche", "3e tranche"][tr]} : ${k.coups[tr]} coups, l'échantillon entre dans le tube` : "",
+      remontee: "remontée du carottier plein",
+    };
+    return [s, e.t === 0 ? "l'outil attend le début du forage" : legendes[e.phase] ?? ""];
   }
 
   function dessinerLent() {

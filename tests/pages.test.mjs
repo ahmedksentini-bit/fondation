@@ -134,5 +134,6 @@ test("chaque banc d'essai du cours a son module", () => {
     assert.ok(chargeur.includes(`${cle} import("./bancs/${b}.js")`), `${b} : absent du chargeur src/bancs.js`);
     assert.ok(existsSync(join(racine, `src/bancs/${b}.js`)), `src/bancs/${b}.js absent`);
     assert.match(lire(`src/bancs/${b}.js`), /export function monter\(/, `${b} : pas de fonction monter`);
+    assert.match(lire(`src/bancs/${b}.js`), /fenetreLoupe\(c, /, `${b} : pas de loupe sur l'organe de l'essai`);
   }
 });

@@ -7,6 +7,7 @@
 import { svg, ligne, texte, couche, COULEURS, graphe } from "../figures.js";
 import { refraction } from "../geotech/essais.js";
 import { charpente, boucle, brancherMarche, lectures, f, fd, r1, esc } from "./moteur.js";
+import { fenetreLoupe, blocSol, etiquette, horloge, W as WL, H as HL } from "./loupe.js";
 
 const SITES_SISMIQUES = {
   calcaire: { nom: "limon sur calcaire", V1: 500, V2: 2600, h: 6, sol1: "limon", sol2: "roche" },
@@ -21,6 +22,7 @@ export function monter(banc) {
     commandes: `<div class="field" style="grid-column:span 2"><label>Site</label><div class="input-wrap"><select data-r="site">${Object.entries(SITES_SISMIQUES).map(([k, s]) => `<option value="${k}">${esc(s.nom)}</option>`).join("")}</select></div></div>
       <p class="method-note" style="grid-column:1/-1">Douze géophones tous les 5 m ; la scène se déroule au ralenti : quelques dizaines de millisecondes en tout.</p>`,
   });
+  const loupe = fenetreLoupe(c, "la réfraction critique");
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -82,6 +84,34 @@ export function monter(banc) {
     for (const a of e.arrivees) if (a.t <= t) s += `<circle cx="${r1(X(a.x))}" cy="${yS - 20}" r="4" fill="${a.type === "directe" ? COULEURS.bleu : COULEURS.effort}"/>`;
     svgEl.querySelector(".dyn-ondes").innerHTML = s;
     c.lectures.innerHTML = lectures([["Temps depuis le coup", fd(t * 1000, 1), "ms"], ["Géophones atteints", `${e.arrivees.filter((a) => a.t <= t).length} / ${N}`, ""]]);
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : au toit de la couche rapide, l'onde arrive sous l'angle critique et longe l'interface ──
+  const YI = 96, XA = 46; // interface, point de réfraction critique
+  function vueLoupe() {
+    const { V1, V2 } = e.s, ic = Math.asin(V1 / V2), sn = Math.sin(ic), cs = Math.cos(ic);
+    let s = blocSol(e.s.sol1, { x0: 0, x1: WL, y0: 0, y1: YI, k: 300 }) + blocSol(e.s.sol2, { x0: 0, x1: WL, y0: YI, y1: HL, k: 300 });
+    s += `<path d="M0 ${YI}H${WL}" stroke="#0f172a" stroke-width="1.6"/>`;
+    // Rayons : incident sous l'angle critique, réfracté le long de l'interface, réémis vers la surface.
+    const S = [XA - 100 * sn, YI - 100 * cs], B = [148, YI], Hh = [148 + 100 * sn, YI - 100 * cs];
+    s += `<path d="M${XA} ${YI - 58}V${YI + 40}" stroke="#475569" stroke-width="1" stroke-dasharray="4 3"/>`;
+    s += `<path d="M${r1(S[0])} ${r1(S[1])}L${XA} ${YI}L${B[0]} ${YI}L${r1(Hh[0])} ${r1(Hh[1])}" fill="none" stroke="#dc2626" stroke-width="2.2"/>`;
+    s += `<path d="M${XA} ${YI}L${r1(XA + 100 * sn)} ${r1(YI - 100 * cs)}" stroke="#dc2626" stroke-width="1.1" stroke-dasharray="4 3" opacity=".6"/>`;
+    for (const x of [78, 112]) s += `<path d="M${x} ${YI}L${r1(x + 26 * sn)} ${r1(YI - 26 * cs)}" stroke="#dc2626" stroke-width="1.1" stroke-dasharray="3 2"/>`;
+    // Angle critique entre la normale et le rayon incident.
+    const ra = 26, a0 = -Math.PI / 2, a1 = -Math.PI / 2 - ic;
+    s += `<path d="M${r1(XA + ra * Math.cos(a0))} ${r1(YI + ra * Math.sin(a0))}A${ra} ${ra} 0 0 0 ${r1(XA + ra * Math.cos(a1))} ${r1(YI + ra * Math.sin(a1))}" fill="none" stroke="#0f172a" stroke-width="1.3"/>`;
+    s += etiquette(XA + 4, YI - ra - 5, `ic = ${fd((ic * 180) / Math.PI, 1)}°`);
+    // L'impulsion parcourt le chemin pendant que l'essai tourne.
+    if (e.t > 0) {
+      const L1 = 100, L2 = B[0] - XA, tot = 2 * L1 + L2, q = ((horloge() * 0.45) % 1) * tot;
+      const P = q < L1 ? [S[0] + (XA - S[0]) * (q / L1), S[1] + (YI - S[1]) * (q / L1)] : q < L1 + L2 ? [XA + (q - L1), YI] : [B[0] + (Hh[0] - B[0]) * ((q - L1 - L2) / L1), YI + (Hh[1] - YI) * ((q - L1 - L2) / L1)];
+      s += `<circle cx="${r1(P[0])}" cy="${r1(P[1])}" r="4.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.4"/>`;
+    }
+    s += etiquette(WL - 6, 14, `V1 = ${f(V1, 4)} m/s`, { ancre: "end" }) + etiquette(WL - 6, YI + 16, `V2 = ${f(V2, 4)} m/s`, { ancre: "end" });
+    s += etiquette(8, HL - 10, "sin ic = V1 / V2", { couleur: "#b91c1c" });
+    return [s, `réfraction critique : sin ic = V1/V2, ic = ${fd((ic * 180) / Math.PI, 1)}° ; l'onde longe le toit de la couche 2 à V2`];
   }
 
   function dessinerLent() {

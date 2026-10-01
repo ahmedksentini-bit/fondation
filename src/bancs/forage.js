@@ -7,6 +7,7 @@ import { svg, texte, COULEURS, solDe } from "../figures.js";
 import { rqd } from "../geotech/essais.js";
 import { creerAlea } from "../exos/alea.js";
 import { charpente, boucle, brancherMarche, lectures, coupe, axeProfondeur, panneau, points, f, fd, r1, duree } from "./moteur.js";
+import { fenetreLoupe, vueTerrain, etiquette, horloge, W as WL, H as HL, BLEU, ACIER, ACIER_SOMBRE } from "./loupe.js";
 
 const COUCHES = [
   { z0: 0, z1: 1.2, sol: "remblai", nom: "remblai" }, { z0: 1.2, z1: 4.5, sol: "argile", nom: "argile molle" },
@@ -22,6 +23,7 @@ export function monter(banc) {
     vitesse: 100,
     commandes: '<p class="method-note" style="grid-column:1/-1">Sondage carotté au carottier double, jusqu\'à 15 m : remblai, argile molle, sable, puis un calcaire fracturé qui cache une cavité.</p>',
   });
+  const loupe = fenetreLoupe(c, "la couronne du carottier", { echelle: { px: 30, libelle: "5 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -118,6 +120,63 @@ export function monter(banc) {
     const d = e.enreg.at(-1);
     c.lectures.innerHTML = lectures([["Profondeur", fd(e.z, 2), "m"], ["Vitesse", d ? f(d.VIT, 3) : "—", "m/h"], ["Poussée · couple", d ? `${f(d.PO, 3)} · ${f(d.CR, 3)}` : "—", "bar"],
       ["Passes remontées", String(e.passes.length), ""], ["Temps", duree(e.t), ""]]) + `<p class="banc-etat">${e.phase === "extraction" ? "remontée de la passe et rangement de la carotte" : dansCavite(e.z) ? "chute d'outil !" : "carottage"}</p>`;
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : la couronne du carottier double, qui découpe la carotte ───────
+  const KL = 600, YP = 112, XC = 88, RT = 0.056 * KL, RE = 0.043 * KL, RI = 0.031 * KL, RK = 0.027 * KL; // trou, tubes extérieur et intérieur, carotte
+  /** Fractures du calcaire, attachées à la profondeur : serrées autour de la cavité. */
+  const fractures = (zH, zB, Yl) => {
+    let s = "";
+    for (let z = 7.5, j = 0; z < zB && j < 400; j++) {
+      z += (z > 8.6 && z < 10.4 ? 0.04 : z < 8.6 ? 0.07 : 0.14) * (0.6 + 0.8 * Math.abs(Math.sin(z * 91.7)));
+      if (z < zH || dansCavite(z)) continue;
+      const y = Yl(z), tl = 6 * Math.sin(z * 37.1);
+      s += `<path d="M0 ${r1(y - tl)}L${WL} ${r1(y + tl)}" stroke="#334155" stroke-width=".9" opacity=".7"/>`;
+    }
+    return s;
+  };
+  function vueLoupe() {
+    const t = horloge(), ext = e.phase === "extraction", cav = dansCavite(e.z);
+    const Yl = (z) => YP + (z - e.z) * KL, zH = e.z - YP / KL, zB = e.z + (HL - YP) / KL;
+    let s = vueTerrain({ couches: COUCHES, Y: Yl, k: KL, zHaut: zH, zBas: zB, x0: 0, x1: XC - RT }) + vueTerrain({ couches: COUCHES, Y: Yl, k: KL, zHaut: zH, zBas: zB, x0: XC + RT, x1: WL })
+      + vueTerrain({ couches: COUCHES, Y: Yl, k: KL, zHaut: Math.max(zH, e.z), zBas: zB, x0: XC - RT, x1: XC + RT });
+    s += fractures(zH, zB, Yl);
+    if (CAVITE[1] > zH && CAVITE[0] < zB) s += `<rect x="0" y="${r1(Yl(CAVITE[0]))}" width="${WL}" height="${r1((CAVITE[1] - CAVITE[0]) * KL)}" fill="#0f172a" opacity=".82"/>` + etiquette(WL - 8, Math.min(HL - 30, Math.max(24, Yl(CAVITE[0]) + 16)), "cavité", { ancre: "end", couleur: "#f8fafc" }).replace("halo", "");
+    // Trou foré au-dessus de la couronne : boue et déblais qui remontent.
+    s += `<rect x="${r1(XC - RT)}" y="0" width="${r1(2 * RT)}" height="${YP}" fill="#cbd5e1"/>`;
+    if (!ext) for (let i = 0; i < 10; i++) {
+      const q = (t * 0.5 + i / 10) % 1, x = XC + (i % 2 ? 1 : -1) * (RE + (RT - RE) / 2);
+      s += `<circle cx="${r1(x)}" cy="${r1(YP - q * YP)}" r="${i % 3 ? 1.2 : 1.7}" fill="#78716c"/>`;
+    }
+    // Carottier : il remonte pendant l'extraction ; la carotte de la passe est dans le tube intérieur.
+    const dy = ext ? -(1 - e.minuteur / EXTRACTION) * 220 : 0, passe = e.passes.at(-1);
+    const z0 = ext ? passe.z0 : e.debutPasse, z1 = ext ? passe.z1 : e.z;
+    if (z1 > z0) {
+      const Yc = (z) => Yl(z) + dy;
+      for (const [a, b] of [[z0, Math.min(z1, CAVITE[0])], [Math.max(z0, CAVITE[1]), z1]]) if (b > a) s += vueTerrain({ couches: COUCHES, Y: Yc, k: KL, zHaut: a, zBas: b, x0: XC - RK, x1: XC + RK });
+    }
+    const yC = YP + dy;
+    // Tube extérieur (qui tourne : ses génératrices défilent) et tube intérieur (fixe).
+    for (const sg of [-1, 1]) {
+      s += `<rect x="${r1(sg < 0 ? XC - RE : XC + RI + 2)}" y="${r1(Math.min(0, yC - 260))}" width="${r1(RE - RI - 2)}" height="${r1(yC - 10 - Math.min(0, yC - 260))}" fill="${ACIER}" stroke="${ACIER_SOMBRE}"/>`;
+      s += `<rect x="${r1(sg < 0 ? XC - RI : XC + RK + 0.5)}" y="${r1(Math.min(0, yC - 260))}" width="${r1(RI - RK - 0.5)}" height="${r1(yC - 6 - Math.min(0, yC - 260))}" fill="#94a3b8"/>`;
+      if (!ext && !cav) for (let i = 0; i < 4; i++) { const x = (sg < 0 ? XC - RE : XC + RI + 2) + ((t * 18 + i * 7) % (RE - RI - 2)); s += `<path d="M${r1(x)} ${r1(yC - 14)}V0" stroke="#64748b" stroke-width=".8" opacity=".6"/>`; }
+    }
+    // Couronne diamantée : un anneau dont les grains défilent quand elle tourne.
+    s += `<rect x="${r1(XC - RE - 1)}" y="${r1(yC - 10)}" width="${r1(2 * RE + 2)}" height="10" fill="#475569" stroke="#1e293b"/>`;
+    s += `<rect x="${r1(XC - RK - 1)}" y="${r1(yC - 10)}" width="${r1(2 * RK + 2)}" height="10" fill="#cbd5e1"/>`;
+    for (let i = 0; i < 6; i++) {
+      const q = ((t * (ext || cav ? 0 : 1.5) + i / 6) % 1), x = XC - RE + q * (RE - RK - 1);
+      s += `<circle cx="${r1(x)}" cy="${r1(yC - 1)}" r="1.4" fill="#e2e8f0"/><circle cx="${r1(XC + RK + 1 + q * (RE - RK - 1))}" cy="${r1(yC - 1)}" r="1.4" fill="#e2e8f0"/>`;
+    }
+    if (!ext && !cav) for (const sg of [-1, 1]) s += `<path d="M${r1(XC + sg * (RE + (RT - RE) / 2))} ${YP - 6}v-22" stroke="${BLEU}" stroke-width="1.4" marker-end=""/><path d="M${r1(XC + sg * (RE + (RT - RE) / 2) - 3)} ${YP - 24}l3 -5l3 5z" fill="${BLEU}"/>`;
+    const k = COUCHES.find((q) => e.z >= q.z0 && e.z < q.z1) ?? COUCHES.at(-1);
+    s += etiquette(6, 13, k.nom);
+    const legende = e.t === 0 ? "le carottier attend en surface" : e.fini ? "sondage terminé"
+      : ext ? "remontée du carottier : la carotte est dans le tube intérieur" : cav ? "chute d'outil : la couronne ne rencontre plus rien"
+        : k.sol === "roche" ? "la couronne use le calcaire ; la carotte monte dans le tube intérieur, qui ne tourne pas" : "carottage du sol : le tube intérieur protège la carotte du fluide";
+    return [s, legende];
   }
 
   function dessinerLent() {

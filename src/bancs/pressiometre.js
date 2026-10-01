@@ -11,6 +11,7 @@ import { depouiller } from "../geotech/pressio.js";
 import { sondage, etalonnagesExemple } from "../pressio-exemples.js";
 import { SITES } from "./terrain.js";
 import { charpente, boucle, brancherMarche, lectures, coupe, axeProfondeur, panneau, points, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, vueTerrain, trepan, fleche, etiquette, horloge, W as WL, H as HL, ROUGE, ACIER, ACIER_SOMBRE } from "./loupe.js";
 
 const PALIER = 60; // s
 const VITESSE_FORAGE = { remblai: 1.2, argile: 1.6, limon: 1.4, sable: 1.0, grave: 0.5, marne: 0.4, craie: 0.6 }; // m/min
@@ -24,6 +25,7 @@ export function monter(banc) {
       <div class="field"><label>Sonde</label><div class="input-wrap"><select disabled><option>Ø 58 mm, cellule centrale de 210 mm</option></select></div></div>`,
   });
   const etal = etalonnagesExemple();
+  const loupe = fenetreLoupe(c, "la sonde", { echelle: { px: 35, libelle: "5 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -156,6 +158,52 @@ export function monter(banc) {
       ["Palier", e.phase === "paliers" && x ? `${e.palier + 1} · ${fd(p, 2)} MPa` : "—", ""],
       ["Volume lu", fd(V, 1), "cm³"], ["Temps du palier", e.phase === "paliers" ? `${fd(e.tPalier, 0)} s` : "—", ""], ["Temps total", duree(e.t), ""],
     ]) + `<p class="banc-etat">${libelles[e.phase] ?? ""}</p>`;
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : la cellule centrale de la sonde, qui repousse la paroi du forage ──
+  const KL = 700, XC = 88, R0S = 0.029 * KL, RF = 0.0315 * KL, LC = 0.21 * KL, YC = 84; // sonde, forage, cellule centrale
+  /** Palier où le fluage s'emballe — repère de pf : au-delà, le sol se plastifie autour de la sonde. */
+  const palierFluage = (x) => {
+    const fl = x.paliers.map((q) => q.V60 - q.V30);
+    let mini = Infinity;
+    for (let i = 0; i < fl.length; i++) { if (i >= 2 && fl[i] > 2.5 * mini && fl[i] > 4) return i; mini = Math.min(mini, Math.max(fl[i], 0.5)); }
+    return fl.length;
+  };
+  function vueLoupe() {
+    const x = essai() ?? e.S.essais.at(-1), t = horloge(), couches = e.site.couches;
+    if (e.phase === "forage") {
+      const Yl = (z) => 118 + (z - e.fond) * KL, zH = e.fond - 118 / KL, zB = e.fond + (HL - 118) / KL;
+      const s = vueTerrain({ couches, Y: Yl, k: KL, zHaut: zH, zBas: zB, x0: 0, x1: XC - RF }) + vueTerrain({ couches, Y: Yl, k: KL, zHaut: zH, zBas: zB, x0: XC + RF, x1: WL })
+        + vueTerrain({ couches, Y: Yl, k: KL, zHaut: e.fond, zBas: zB, x0: XC - RF, x1: XC + RF }) + trepan({ cx: XC, yFond: 118, largeur: 2 * RF, t });
+      return [s, e.t === 0 ? "l'outil attend le début du forage" : `forage jusqu'à ${fd(x.z + 0.45, 2)} m, juste sous la cote d'essai`];
+    }
+    // Sonde : rayon de la membrane d'après le volume injecté dans la cellule centrale (L = 210 mm).
+    const V = e.fini ? 0 : volume(), rmm = Math.sqrt(29 * 29 + (V * 1000) / (Math.PI * 210)), rc = (rmm / 1000) * KL, dil = Math.max(0, rc * rc - RF * RF);
+    const dy = e.fini ? -240 : e.phase === "descente" ? -(e.minuteur / DUREES.descente) * 200 : e.phase === "remontee" ? -(1 - e.minuteur / DUREES.remontee) * 200 : 0;
+    const Yl = (z) => YC + (z - x.z) * KL, zH = x.z - YC / KL, zB = x.z + (HL - YC) / KL;
+    // Le sol est repoussé radialement : à volume constant, r'² = r² + (rc² − rf²).
+    const deplacer = (px, py) => { const d = px - XC, r = Math.abs(d); return [XC + Math.sign(d) * Math.sqrt(r * r + dil), py]; };
+    let s = vueTerrain({ couches, Y: Yl, k: KL, zHaut: zH, zBas: zB, x0: 0, x1: XC - RF, deplacer }) + vueTerrain({ couches, Y: Yl, k: KL, zHaut: zH, zBas: zB, x0: XC + RF, x1: WL, deplacer });
+    s += `<rect x="${r1(XC - RF)}" y="0" width="${r1(2 * RF)}" height="${HL}" fill="#e2e8f0"/>`;
+    const p = e.phase === "paliers" ? x.paliers[e.palier].p : 0, iPf = palierFluage(x);
+    if (e.phase === "paliers" && e.palier >= iPf) {
+      // Au-delà de pf, un anneau de sol plastifié s'étend autour de la cellule.
+      const fr = (e.palier - iPf + e.tPalier / PALIER) / Math.max(1, x.paliers.length - iPf), rp = rc + 6 + 24 * fr;
+      s += `<path d="M${r1(XC - rp)} ${r1(YC - LC / 2 - 8)}H${r1(XC + rp)}V${r1(YC + LC / 2 + 8)}H${r1(XC - rp)}Z" fill="${ROUGE}" opacity=".16"/>` + etiquette(8, HL - 27, "zone plastique", { couleur: ROUGE });
+    }
+    // Cellules de garde (en haut et en bas, coupées par la vue) et cellule centrale.
+    const cell = (y0, y1, teinte) => `<rect x="${r1(XC - rc)}" y="${r1(y0 + dy)}" width="${r1(2 * rc)}" height="${r1(y1 - y0)}" rx="${r1(Math.min(8, rc / 2))}" fill="${teinte}" stroke="#1d4ed8" stroke-width="1.1"/>`;
+    s += cell(-20, YC - LC / 2 - 2, "#bfdbfe") + cell(YC + LC / 2 + 2, HL + 20, "#bfdbfe") + cell(YC - LC / 2, YC + LC / 2, "#93c5fd");
+    s += `<rect x="${XC - 5}" y="${r1(-20 + dy)}" width="10" height="${HL + 40}" fill="${ACIER}" stroke="${ACIER_SOMBRE}"/>`;
+    if (p > 0) for (const yy of [YC - 40, YC, YC + 40]) for (const sg of [-1, 1]) s += fleche(XC + sg * 7, yy + dy, XC + sg * (rc - 2), yy + dy, ROUGE, 1.5, 4.5);
+    s += etiquette(XC + rc + 3, YC + dy + 3, "mesure") + etiquette(XC + rc + 3, 12 + dy, "garde");
+    const n = e.palier + 1, tp = e.tPalier;
+    const legende = e.fini ? "sondage terminé : la sonde est remontée" : e.phase === "descente" ? "descente de la sonde à la cote d'essai" : e.phase === "remontee" ? "remontée de la sonde dégonflée"
+      : e.phase === "degonflage" ? "dégonflage : la membrane revient sur la sonde"
+        : e.palier >= iPf ? `palier ${n}, p = ${fd(p, 2)} MPa : au-delà de pf, le sol se plastifie`
+          : tp < 15 ? `palier ${n} : p = ${fd(p, 2)} MPa, la membrane se gonfle` : tp < 30 ? `palier ${n} : lectures à 15 et 30 s` : `palier ${n} : de 30 à 60 s, on lit le fluage`;
+    return [s, legende];
   }
 
   function dessinerLent() {

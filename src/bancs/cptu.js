@@ -4,10 +4,11 @@
 // fil de l'enfoncement. On peut arrêter le fonçage pour un essai de
 // dissipation : la surpression retombe vers u0, et son temps de
 // demi-dissipation t50 donne ch (Teh et Houlsby).
-import { svg, ligne, texte, COULEURS, graphe } from "../figures.js";
+import { svg, texte, COULEURS, graphe } from "../figures.js";
 import { t50Dissipation, ZONES_IC } from "../geotech/essais.js";
 import { SITES, terrain, natureDe, estFin } from "./terrain.js";
 import { charpente, boucle, brancherMarche, lectures, coupe, axeProfondeur, panneau, points, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, vueTerrain, tige, fleche, etiquette, horloge, H as HL, ROUGE, BLEU } from "./loupe.js";
 
 const VITESSE = 0.02; // m/s
 const PAS = 0.02; // m entre deux lectures
@@ -24,6 +25,7 @@ export function monter(banc) {
   });
   // Bouton de dissipation, à côté des boutons de marche.
   c.q(".banc-marche").insertAdjacentHTML("beforeend", '<button type="button" class="secondary" data-action="dissipation" disabled>Dissipation ici</button>');
+  const loupe = fenetreLoupe(c, "le cône", { echelle: { px: 40, libelle: "5 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -130,12 +132,56 @@ export function monter(banc) {
       ["Profondeur", fd(e.z, 2), "m"], ["qc", m ? fd(m.qc, 2) : "—", "MPa"], ["fs", m ? f(m.fs, 3) : "—", "kPa"],
       ["u2", e.dissip ? f(e.dissip.mesures.at(-1).u, 3) : m ? f(m.u2, 3) : "—", "kPa"], ["Temps d'essai", duree(e.t), ""],
     ]) + (e.dissip ? `<p class="banc-etat">dissipation à ${fd(e.dissip.z, 2)} m : ${duree(e.dissip.t)}</p>` : e.pauseTige > 0 ? '<p class="banc-etat">ajout d\'une tige…</p>' : "");
+    loupe(...vueLoupe());
     const boutonD = c.q('[data-action="dissipation"]');
     if (boutonD) {
       const m2 = e.mesures.at(-1);
       boutonD.disabled = e.fini || !!e.dissip || !m2 || !estFin(e.T.couche(e.z)) || m2.u2 - m2.u0 < 30;
       boutonD.textContent = e.dissip ? "Dissipation en cours…" : "Dissipation ici";
     }
+  }
+
+  // ── Loupe : le cône, le filtre u2 et le manchon, dans le terrain qui défile ──
+  const KL = 800, YP = 150, XC = 88, RC = R0 * KL; // px/m, pointe, axe, rayon du cône
+  function vueLoupe() {
+    const Yl = (z) => YP + (z - e.z) * KL;
+    const hC = RC / Math.tan(Math.PI / 6), yBase = YP - hC, yFiltre = yBase - 4, yManchon = yFiltre - 0.1337 * KL;
+    const m = e.mesures.at(-1), d = e.dissip, k = e.T.couche(Math.min(e.z + 0.01, e.zMax - 0.01));
+    let s = vueTerrain({ couches: e.site.couches, Y: Yl, k: KL, zHaut: e.z - YP / KL, zBas: e.z + (HL - YP) / KL });
+    // Dissipation : la surpression autour du filtre s'efface, l'eau s'éloigne.
+    if (d) {
+      const u = d.mesures.at(-1).u, r = Math.max(0, Math.min(1, (u - d.u0) / Math.max(1, d.ui - d.u0))), t = horloge();
+      s += `<ellipse cx="${XC}" cy="${r1(yFiltre + 2)}" rx="${r1(RC + 8 + 40 * r)}" ry="${r1(10 + 34 * r)}" fill="${BLEU}" opacity="${r1(0.08 + 0.3 * r)}"/>`;
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * 2 * Math.PI, p = (t * 0.6 + i / 8) % 1, ra = RC + 4 + p * (16 + 30 * r);
+        s += `<circle cx="${r1(XC + ra * Math.cos(a))}" cy="${r1(yFiltre + 2 + 0.7 * ra * Math.sin(a))}" r="1.8" fill="${BLEU}" opacity="${r1(r * (1 - p))}"/>`;
+      }
+    }
+    s += tige(XC, 0, yManchon, 2 * RC);
+    s += `<rect x="${r1(XC - RC)}" y="${r1(yManchon)}" width="${r1(2 * RC)}" height="${r1(yFiltre - yManchon)}" fill="#94a3b8" stroke="#334155"/>`;
+    s += `<rect x="${r1(XC - RC)}" y="${r1(yFiltre)}" width="${r1(2 * RC)}" height="4" fill="#38bdf8" stroke="#0369a1" stroke-width=".8"/>`;
+    s += `<path d="M${r1(XC - RC)} ${r1(yBase)}H${r1(XC + RC)}L${XC} ${YP}Z" fill="#475569" stroke="#1e293b"/>`;
+    if (m) {
+      // qc : le sol presse les faces du cône ; fs : il frotte sur le manchon ; u2 : l'eau presse le filtre.
+      const lq = 5 + (15 * Math.min(m.qc, 25)) / 25, lf = 4 + (12 * Math.min(m.fs, 250)) / 250, lu = 4 + (13 * Math.max(0, Math.min(m.u2, 600))) / 600;
+      const nx = Math.cos(Math.PI / 6), ny = Math.sin(Math.PI / 6); // normale aux faces du cône de 60°
+      for (const f2 of [0.3, 0.65]) for (const sg of [-1, 1]) {
+        const x = XC + sg * RC * (1 - f2), y = yBase + hC * f2;
+        s += fleche(x + sg * (lq + 2) * nx, y + (lq + 2) * ny, x + sg * 1.5 * nx, y + 1.5 * ny, ROUGE, 2, 5.5);
+      }
+      for (let i = 0; i < 4; i++) for (const sg of [-1, 1]) {
+        const y = yManchon + 12 + i * 26;
+        s += fleche(XC + sg * (RC + 4), y + lf, XC + sg * (RC + 4), y - 1, COULEURS.violet, 1.8, 5);
+      }
+      if (!d) for (const sg of [-1, 1]) s += fleche(XC + sg * (RC + 3 + lu), yFiltre + 2, XC + sg * (RC + 1), yFiltre + 2, BLEU, 1.8, 5);
+      s += etiquette(XC + RC + 12, YP + 4, "qc", { couleur: ROUGE }) + etiquette(XC + RC + 18, yManchon + 44, "fs", { couleur: COULEURS.violet })
+        + etiquette(XC - RC - 18, yFiltre - 3, "u₂", { couleur: BLEU, ancre: "end" });
+    }
+    s += etiquette(6, 13, k.nom);
+    const legende = e.t === 0 ? "le cône attend le fonçage" : d ? `arrêt : la surpression se dissipe, u₂ = ${f(d.mesures.at(-1).u, 3)} kPa`
+      : e.pauseTige > 0 ? "ajout d'une tige : le cône attend" : e.fini ? "fonçage terminé"
+        : estFin(k) ? "sol fin : qc faible, l'eau ne s'échappe pas, u₂ monte" : "sol grenu : qc fort, l'eau s'échappe, u₂ ≈ u₀";
+    return [s, legende];
   }
 
   function dessinerLent() {

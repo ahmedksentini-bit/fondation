@@ -46,14 +46,17 @@ export function charpente(banc, { commandes = "", vitesses = [1, 10, 100, 1000],
     </div>
     <div class="banc-vue">
       <div class="banc-scene"></div>
-      <div class="banc-lectures" aria-live="off"></div>
+      <div class="banc-cote">
+        <div class="banc-lectures" aria-live="off"></div>
+        <div class="banc-loupe"></div>
+      </div>
     </div>
     <div class="banc-courbes"></div>
     <div class="banc-bilan"></div>`;
   banc.appendChild(corps);
   poserCurseurs(corps);
   const q = (s) => corps.querySelector(s);
-  return { corps, commandes: q(".banc-commandes"), scene: q(".banc-scene"), lectures: q(".banc-lectures"), courbes: q(".banc-courbes"), bilan: q(".banc-bilan"), q };
+  return { corps, commandes: q(".banc-commandes"), scene: q(".banc-scene"), lectures: q(".banc-lectures"), loupe: q(".banc-loupe"), courbes: q(".banc-courbes"), bilan: q(".banc-bilan"), q };
 }
 
 /**

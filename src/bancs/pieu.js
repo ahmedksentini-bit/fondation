@@ -7,6 +7,7 @@
 import { svg, ligne, texte, couche, COULEURS, graphe } from "../figures.js";
 import { chargeFluagePieu } from "../geotech/essais.js";
 import { charpente, boucle, brancherMarche, lectures, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, blocSol, fleche, etiquette, W as WL, H as HL, ROUGE } from "./loupe.js";
 
 const PIEUX = {
   fore: { nom: "pieu foré Ø 600, L = 12 m", B: 0.6, Qu: 2600, Qc: 1700, Kel: 520 },
@@ -21,6 +22,7 @@ export function monter(banc) {
     commandes: `<div class="field" style="grid-column:span 2"><label>Pieu d'essai</label><div class="input-wrap"><select data-r="pieu">${Object.entries(PIEUX).map(([k, x]) => `<option value="${k}">${esc(x.nom)}</option>`).join("")}</select></div></div>
       <p class="method-note" style="grid-column:1/-1">Paliers de 10 % de la charge maximale d'essai, une heure chacun (NF P94-150-1).</p>`,
   });
+  const loupe = fenetreLoupe(c, "la pointe du pieu", { echelle: { px: 32, libelle: "20 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -101,6 +103,39 @@ export function monter(banc) {
     d += ligne(270, yS - 78, 270 + 10 * Math.cos(a), yS - 78 + 10 * Math.sin(a), COULEURS.effort, 1.8);
     svgEl.querySelector(".dyn-verin").innerHTML = d;
     c.lectures.innerHTML = lectures([["Palier", `${Math.min(e.i + 1, e.paliers.length)} / ${e.paliers.length}`, ""], ["Charge", f(Q, 4), "kN"], ["Enfoncement", fd(s, 2), "mm"], ["Temps du palier", e.fini ? "—" : `${fd(tp, 1)} min`, ""], ["Temps total", duree(e.t), ""]]);
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : le bas du pieu, son frottement et sa pointe (enfoncements ×2) ──
+  const KL = 160, XC = 88, YT = 92, VERT = "#0f766e"; // px/m, axe, pointe au repos
+  function vueLoupe() {
+    const i = Math.min(e.i, e.paliers.length - 1), tp = (e.t - e.i * PALIER) / 60;
+    const s0 = e.t === 0 ? 0 : e.fini ? e.resultats.at(-1).s60 : enf(i, Math.max(tp, 0.01)), Q = e.t === 0 ? 0 : e.fini ? e.resultats.at(-1).Q : e.paliers[i];
+    const sp = s0 * 0.32, rb = (e.pi.B / 2) * KL, yP = YT + sp; // enfoncement dessiné : 1 mm → 0,32 px
+    // Le sol est entraîné le long du fût, et refoulé sous la pointe.
+    const deplacer = (x, y) => {
+      const dl = Math.max(0, Math.abs(x - XC) - rb), dp = Math.max(0, y - YT);
+      return [x, y + sp * Math.exp(-dl / 14) * Math.exp(-dp / 26)];
+    };
+    let s = blocSol("limon", { x0: 0, x1: WL, y0: -20, y1: HL + 20, k: 1000, deplacer });
+    // Zone plastique sous la pointe à l'approche de la rupture.
+    if (Q >= 0.85 * e.pi.Qu) for (const sg of [-1, 1]) s += `<path d="M${r1(XC + sg * rb)} ${r1(yP)}Q${r1(XC + sg * (rb + 30))} ${r1(yP + 42)} ${r1(XC + sg * (rb + 46))} ${r1(yP - 4)}" fill="none" stroke="${ROUGE}" stroke-width="1.4" stroke-dasharray="4 3"/>`;
+    s += `<ellipse cx="${XC}" cy="${r1(yP + 10)}" rx="${r1(rb * 1.1)}" ry="${r1(14 + 22 * Math.min(1, Q / e.pi.Qu))}" fill="#0f172a" opacity="${r1(0.05 + 0.18 * Math.min(1, Q / e.pi.Qu))}"/>`;
+    s += `<rect x="${r1(XC - rb)}" y="-2" width="${r1(2 * rb)}" height="${r1(yP + 2)}" fill="#d6d3d1" stroke="#57534e" stroke-width="1.2"/>`;
+    for (let j = 0; j < 14; j++) s += `<circle cx="${r1(XC - rb + 6 + ((j * 37) % Math.max(8, 2 * rb - 12)))}" cy="${r1(8 + ((j * 53) % Math.max(10, yP - 14)))}" r="1.3" fill="#a8a29e"/>`;
+    // Frottement latéral : mobilisé dès quelques millimètres ; résistance de pointe : beaucoup plus tard.
+    const mf = Math.min(1, s0 / 6), mp = Math.min(1, s0 / (e.pi.B * 100)) ** 0.6;
+    if (s0 > 0.05) {
+      for (const y of [20, 46, 72]) for (const sg of [-1, 1]) s += fleche(XC + sg * (rb + 5), y + 4 + 12 * mf, XC + sg * (rb + 5), y, VERT, 1.8, 5);
+      for (const x of [-0.6, 0, 0.6]) s += fleche(XC + x * rb, yP + 8 + 24 * mp, XC + x * rb, yP + 2, VERT, 2, 6);
+      s += etiquette(XC, 28, "frottement latéral", { ancre: "middle", couleur: VERT }) + etiquette(XC, yP - 8, "pointe", { ancre: "middle", couleur: VERT });
+    }
+    s += etiquette(6, 13, `Q = ${f(Q, 4)} kN`, { couleur: ROUGE }) + etiquette(WL - 6, HL - 9, "enfoncements ×2", { ancre: "end", couleur: "#475569" });
+    const legende = e.t === 0 ? "le pieu attend la première charge"
+      : Q < e.pi.Qc ? "le frottement latéral porte l'essentiel de la charge"
+        : Q < e.pi.Qu ? "au-delà de Qc : la pointe se mobilise, le pieu flue"
+          : "rupture : la pointe poinçonne le sol (B/10 atteint)";
+    return [s, legende];
   }
 
   function dessinerLent() {

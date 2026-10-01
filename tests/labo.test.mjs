@@ -22,6 +22,17 @@ test("œdomètre — la courbe e – lg σ' rend Cc, Cs et σ'p", () => {
   }
 });
 
+test("œdomètre — pendant chaque palier, e va de son début à sa fin (le banc lit eDe en direct)", () => {
+  const s = O.simulerOedometre(O.MATERIAUX_OEDO["argile-molle"], PROGRAMME);
+  for (const p of s.paliers) {
+    // Au tout début, seul le tassement immédiat (3 % de celui du palier) est acquis.
+    proche(p.eDe(1e-6), p.eDebut, 0.05 * Math.abs(p.eDebut - p.eFin) + 1e-4, `σ' = ${p.sigma} kPa : e au début du palier`);
+    proche(p.eDe(1440), p.eFin, 1e-9, `σ' = ${p.sigma} kPa : e à la fin du palier`);
+    const milieu = p.eDe(30);
+    assert.ok(milieu <= Math.max(p.eDebut, p.eFin) + 1e-9 && milieu >= Math.min(p.eDebut, p.eFin) - 0.01, `σ' = ${p.sigma} kPa : e à 30 min entre le début et la fin`);
+  }
+});
+
 test("œdomètre — un échantillon remanié sous-estime σ'p", () => {
   const m = O.MATERIAUX_OEDO["argile-molle"];
   const sp = (rem) => O.compressibilite(O.simulerOedometre(m, PROGRAMME, { remaniement: rem }).paliers.map((p) => ({ sigma: p.sigma, e: p.eFin }))).sp;

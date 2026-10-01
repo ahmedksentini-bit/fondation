@@ -11,6 +11,7 @@ import { MATERIAUX_TRIAX, etatConsolide, etatEnPlace, cisailler, rupture, envelo
 import { degreConsolidation, facteurTemps } from "../geotech/consolidation.js";
 import { poserCurseurs } from "../curseurs.js";
 import { charpente, boucle, lectures, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, blocSol, fondSol, fleche, etiquette, horloge, W as WL, H as HL, ROUGE, BLEU } from "./loupe.js";
 
 const H0 = 76, D0 = 38; // mm
 const A0 = (Math.PI * (D0 / 1000) ** 2) / 4; // m²
@@ -37,6 +38,7 @@ export function monter(banc) {
       <button type="button" class="ghost" data-action="fin">Finir l'étape</button>
       <button type="button" class="ghost" data-action="raz">Nouvelle série</button></div>`);
   poserCurseurs(c.commandes);
+  const loupe = fenetreLoupe(c, "un élément de l'éprouvette");
   let e, b;
 
   const reglages = () => {
@@ -193,6 +195,58 @@ export function monter(banc) {
       ["Éprouvette", k ? `n° ${k.n} · ${k.type}` : "—", ""], ["εa", fd(100 * ea, 2), "%"], ["Force", f(F, 4), "N"],
       ["q", pt ? f(pt.q, 4) : "—", "kPa"], [e.draine ? "εv" : "Δu", pt ? (e.draine ? fd(100 * pt.ev, 2) : f(pt.u, 4)) : "—", e.draine ? "%" : "kPa"], ["Temps", duree(e.t), ""],
     ]) + `<p class="banc-etat">${libelles[e.phase] ?? ""}</p>`;
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : un élément de l'éprouvette, ses contraintes effectives et son eau ──
+  const XC = 88, YC = 90, DM = 44; // centre et demi-côté de l'élément (px)
+  function vueLoupe() {
+    const k = e.courante, t = horloge(), sol = e.m.famille === "sable" ? "sable" : "argile";
+    const pt = k && (e.phase === "cisaillement" || e.phase === "fini") ? k.points[Math.min(k.i, k.points.length - 1)] : null;
+    const ea = pt ? k.ea : 0, ev = pt ? pt.ev : 0;
+    const consoU = !k ? 0 : e.phase === "consolidation" ? degreConsolidation((k.cv * e.tPhase) / (k.Hd * k.Hd)) : e.conso && ["consolide", "cisaillement", "fini"].includes(e.phase) ? 1 : 0;
+    // Déformations exagérées (×1,5) ; la consolidation contracte l'élément dans toutes les directions.
+    const V0 = Math.PI * (D0 / 20) ** 2 * (H0 / 10), ec = k ? (k.dV / V0 / 3) * consoU * 2 : 0;
+    const fh = (1 - ec) * (1 - 1.5 * ea), fw = (1 - ec) * Math.sqrt((1 - 1.5 * ev) / Math.max(1 - 1.5 * ea, 0.4));
+    const tr = (x, y) => [XC + (x - XC) * fw, YC + (y - YC) * fh];
+    const x0 = XC - DM * fw, x1 = XC + DM * fw, y0 = YC - DM * fh, y1 = YC + DM * fh;
+    let s = `<rect width="${WL}" height="${HL}" fill="#e0f2fe"/><clipPath id="loupe-triax"><rect x="${r1(x0)}" y="${r1(y0)}" width="${r1(x1 - x0)}" height="${r1(y1 - y0)}"/></clipPath>`;
+    s += `<rect x="${r1(x0)}" y="${r1(y0)}" width="${r1(x1 - x0)}" height="${r1(y1 - y0)}" fill="${fondSol(sol)}"/>`;
+    s += `<g clip-path="url(#loupe-triax)">${blocSol(sol, { x0: XC - 1.4 * DM, x1: XC + 1.4 * DM, y0: YC - DM, y1: YC + DM, k: 1000, deplacer: tr, fond: false })}`;
+    // L'eau des pores : elle monte pendant la saturation ; en non drainé, sa surpression Δu.
+    const S = k ? (k.Smax ??= Math.max(10, k.s3eff, ...k.points.map((x) => x.p + (2 * x.q) / 3))) : 1;
+    if (e.phase === "saturation") { const r = Math.min(1, e.tPhase / (SATURATION * 0.3)); s += `<rect x="${r1(x0)}" y="${r1(y1 - (y1 - y0) * r)}" width="${r1(x1 - x0)}" height="${r1((y1 - y0) * r)}" fill="${BLEU}" opacity=".28"/>`; }
+    else if (k && e.phase !== "pret") s += `<rect x="${r1(x0)}" y="${r1(y0)}" width="${r1(x1 - x0)}" height="${r1(y1 - y0)}" fill="${pt && pt.u < 0 ? "#f97316" : BLEU}" opacity="${(0.1 + (pt && !e.draine ? Math.min(0.4, (0.5 * Math.abs(pt.u)) / S) : 0)).toFixed(2)}"/>`;
+    // Bande de cisaillement après le pic d'un sol dilatant.
+    if (pt) {
+      let qPic = 0;
+      for (let j = 0; j <= k.i && j < k.points.length; j++) qPic = Math.max(qPic, k.points[j].q);
+      if (pt.q < qPic * 0.97) { const a = Math.PI / 4 + (phiCritique(e.m.M) * Math.PI) / 360, dx = (y1 - y0) / 2 / Math.tan(a); s += `<path d="M${r1(XC - dx)} ${r1(y1)}L${r1(XC + dx)} ${r1(y0)}" stroke="#7f1d1d" stroke-width="7" opacity=".45"/>`; }
+    }
+    s += `</g><rect x="${r1(x0)}" y="${r1(y0)}" width="${r1(x1 - x0)}" height="${r1(y1 - y0)}" fill="none" stroke="#1f2937" stroke-width="1.6"/>`;
+    // Contraintes effectives : σ'1 verticale, σ'3 latérale, en longueur de flèche.
+    let s3 = 0, s1 = 0;
+    if (k) {
+      if (pt) { s3 = pt.p - pt.q / 3; s1 = pt.p + (2 * pt.q) / 3; }
+      else if (e.phase !== "pret") s1 = s3 = k.avant.p + ((e.conso ? k.s3eff : k.avant.p) - k.avant.p) * consoU;
+      const L = (x) => 4 + (30 * Math.max(0, x)) / S;
+      s += fleche(XC, y0 - 4 - L(s1), XC, y0 - 2, ROUGE, 2.2, 6) + fleche(XC, y1 + 4 + L(s1), XC, y1 + 2, ROUGE, 2.2, 6);
+      s += fleche(x0 - 4 - L(s3), YC, x0 - 2, YC, ROUGE, 2.2, 6) + fleche(x1 + 4 + L(s3), YC, x1 + 2, YC, ROUGE, 2.2, 6);
+      s += etiquette(XC + 6, 11, `σ'1 = ${f(s1, 3)} kPa`, { couleur: ROUGE }) + etiquette(4, YC - 15, `σ'3 = ${f(s3, 3)}`, { couleur: ROUGE });
+      // Eau qui sort (contraction) ou qui rentre (dilatance) par les pierres poreuses.
+      const dEv = pt && e.draine ? pt.ev - k.points[Math.max(0, k.i - 3)].ev : e.phase === "consolidation" ? 1 - consoU : 0;
+      if (Math.abs(dEv) > 1e-7) for (const [xa, ya, sg] of [[x0 + 10, y0, -1], [x1 - 10, y1, 1]]) {
+        const ph = (t * 0.9) % 1, l = 12;
+        s += dEv > 0 ? fleche(xa, ya + sg * (2 + ph * 4), xa, ya + sg * (2 + l + ph * 4), BLEU, 1.6, 4.5) : fleche(xa, ya + sg * (2 + l + ph * 4), xa, ya + sg * (2 + ph * 4), BLEU, 1.6, 4.5);
+      }
+      if (pt && !e.draine) s += etiquette(WL - 8, HL - 9, "drainage fermé", { ancre: "end", couleur: BLEU });
+    }
+    const legende = !k || e.phase === "pret" ? "un élément du sol, avant tout chargement"
+      : e.phase === "saturation" ? "saturation : l'eau chasse l'air des pores" : e.phase === "sature" ? `saturé : B = ${fd(k.B, 2)}`
+        : e.phase === "consolidation" ? `consolidation : σ'3 monte, l'eau sort (U = ${fd(100 * consoU, 0)} %)` : e.phase === "consolide" ? "consolidé : σ'1 = σ'3"
+          : e.draine ? `drainé : σ'3 reste constante, le volume ${ev < 0 ? "augmente (dilatance)" : "diminue"}`
+            : `non drainé : volume constant, Δu = ${f(pt.u, 3)} kPa`;
+    return [s, legende];
   }
 
   function dessinerLent() {

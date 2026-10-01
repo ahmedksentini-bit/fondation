@@ -8,6 +8,7 @@
 import { svg, ligne, texte, COULEURS, graphe } from "../figures.js";
 import { droiteCoulomb } from "../geotech/essais.js";
 import { charpente, boucle, lectures, f, fd, r1, esc } from "./moteur.js";
+import { fenetreLoupe, blocSol, fleche, etiquette, W as WL, H as HL, ROUGE, ACIER_SOMBRE } from "./loupe.js";
 
 const RAD = Math.PI / 180;
 const MATERIAUX = {
@@ -34,6 +35,7 @@ export function monter(banc) {
       <span class="banc-vitesses" role="group" aria-label="Vitesse de l'essai">${[10, 100, 1000].map((v) => `<button type="button" class="ghost${v === 100 ? " actif" : ""}" data-vitesse="${v}">×${f(v, 4)}</button>`).join("")}</span>
       <button type="button" class="ghost" data-action="fin">Finir l'éprouvette</button>
       <button type="button" class="ghost" data-action="raz">Nouvelle série</button></div>`);
+  const loupe = fenetreLoupe(c, "le plan de cisaillement");
   let e, b;
 
   const reinit = () => {
@@ -117,6 +119,53 @@ export function monter(banc) {
     svgEl.querySelector(".dyn-boite").innerHTML = s;
     c.lectures.innerHTML = lectures([["Éprouvette", k ? `n° ${e.eprouvettes.length + 1}` : "—", ""], ["σ", k ? f(k.sigma, 3) : "—", "kPa"], ["Déplacement", fd(d, 2), "mm"],
       ["τ", k ? fd(last.tau, 1) : "—", "kPa"], ["Mouvement vertical", k ? fd(last.v, 3) : "—", "mm"]]);
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : les grains de part et d'autre du plan de cisaillement ─────────
+  const KX = 6, KV = 25, YPL = 88; // px par mm (horizontal, vertical exagéré), plan de cisaillement
+  function vueLoupe() {
+    const k = e.courante ?? e.eprouvettes.at(-1), m = e.m;
+    const pt = k?.points.at(-1) ?? { d: 0, tau: 0, v: 0 }, d = k ? (e.courante ? k.d : DMAX) : 0, v = pt.v ?? 0;
+    const sol = m === MATERIAUX.eboulis ? "grave" : m === MATERIAUX["argile-sc"] ? "argile" : "sable";
+    const dx = d * KX, dv = -v * KV; // la demi-boîte du bas glisse ; celle du haut monte (dilatance) ou descend
+    let s = `<rect width="${WL}" height="${HL}" fill="#f1f5f9"/>`;
+    s += blocSol(sol, { x0: 0, x1: WL, y0: 22 + dv, y1: YPL + dv, k: 1000, decalageY: 3 });
+    s += blocSol(sol, { x0: 0, x1: WL, y0: YPL, y1: 154, k: 1000, decalageX: dx, decalageY: 41 });
+    // Grains du plan : ils roulent (sable), s'orientent (argile) ou s'enchevêtrent (éboulis).
+    const tauMax = Math.max(1, ...(k?.points ?? []).map((q) => q.tau));
+    for (let i = -1; i < 16; i++) {
+      const x = ((i * 12 + dx / 2) % (WL + 12) + WL + 12) % (WL + 12) - 6, y = YPL + dv / 2;
+      if (sol === "argile") {
+        const a = (i % 2 ? 1 : -1) * 32 * Math.exp(-d / (2 * m.dp)), c2 = Math.cos((a * Math.PI) / 180) * 5, s2 = Math.sin((a * Math.PI) / 180) * 5;
+        s += `<path d="M${r1(x - c2)} ${r1(y - s2)}L${r1(x + c2)} ${r1(y + s2)}" stroke="#7c2d12" stroke-width="2" stroke-linecap="round"/>`;
+      } else if (i % 2 === 0) {
+        // Un grain sur deux, de taille et de hauteur variables : ils roulent à mi-vitesse.
+        const h = Math.abs(Math.sin(i * 12.9898)), r = (sol === "grave" ? 5.5 : 3.8) + 2.2 * h, yy = y + (h - 0.5) * 4, a = dx / 2 / r + i;
+        s += `<circle cx="${r1(x)}" cy="${r1(yy)}" r="${r1(r)}" fill="${sol === "grave" ? "#d6c48f" : "#e9d38a"}" stroke="#78350f" stroke-width="1"/>`;
+        s += `<path d="M${r1(x)} ${r1(yy)}L${r1(x + r * Math.cos(a))} ${r1(yy + r * Math.sin(a))}" stroke="#78350f" stroke-width="1"/>`;
+      }
+    }
+    // Trait repère, continu avant l'essai : sa partie basse suit la demi-boîte qui glisse.
+    s += `<path d="M40 ${r1(22 + dv)}V${r1(YPL + dv)}M${r1(40 + dx)} ${YPL}V154" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="5 3"/>`;
+    s += `<path d="M0 ${r1(YPL + dv / 2)}H${WL}" stroke="${ROUGE}" stroke-width="1.2" stroke-dasharray="5 3" opacity=".8"/>`;
+    // Piston de chargement, contrainte normale ; déplacement imposé en bas, réaction τ en haut.
+    s += `<rect x="0" y="${r1(10 + dv)}" width="${WL}" height="12" fill="${ACIER_SOMBRE}"/>`;
+    for (const x of [44, 88, 132]) s += fleche(x, 0, x, 9 + dv, ROUGE, 1.8, 5);
+    if (k) {
+      s += fleche(24, 140, 24 + 10 + Math.min(40, dx), 140, "#0f766e", 2.2, 6) + etiquette(28, 158, `d = ${fd(d, 1)} mm`, { couleur: "#0f766e" });
+      const lt = 6 + 30 * (pt.tau / tauMax);
+      s += fleche(WL - 20, 46 + dv, WL - 20 - lt, 46 + dv, ROUGE, 2, 6) + etiquette(WL - 8, 62 + dv, `τ = ${f(pt.tau, 3)} kPa`, { ancre: "end", couleur: ROUGE });
+    }
+    s += etiquette(WL - 8, 34 + dv, `σ = ${f(k?.sigma ?? lireSigma(), 3)} kPa`, { ancre: "end", couleur: ROUGE });
+    const pic = k && d > m.dp;
+    const legende = !k ? "posez une éprouvette, puis cisaillez-la"
+      : !pic ? "le cisaillement se mobilise : les grains se serrent"
+        : sol === "argile" ? "pic franchi : les feuillets s'orientent dans le plan de cisaillement"
+          : sol === "grave" ? "pic franchi : les blocs enchevêtrés se chevauchent, l'éboulis se dilate"
+          : m.psi > 0 ? "pic franchi : les grains roulent les uns sur les autres, le sol se dilate"
+            : "les grains se rangent dans les vides : le sable lâche se contracte";
+    return [s, legende];
   }
 
   function dessinerCourbes() {

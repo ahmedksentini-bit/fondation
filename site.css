@@ -284,7 +284,17 @@ a.brand strong,a.brand small{text-decoration:none}
 @media(max-width:760px){.banc-vue{grid-template-columns:1fr}.banc-lectures{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .banc-scene svg,.banc-courbes svg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
 .banc-courbes{display:grid;gap:10px}
+.banc-cote{display:grid;gap:10px;align-content:start}
 .banc-lectures{display:grid;gap:6px}
+.banc-loupe:empty{display:none}
+.banc-loupe-cadre{margin:0}
+.banc-loupe-cadre svg{display:block;width:100%;height:auto}
+.banc-loupe-cadre text{font-family:Inter,-apple-system,"Segoe UI",sans-serif;font-size:9.5px;font-weight:700;fill:#0f172a}
+.banc-loupe-cadre .halo{paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.banc-loupe-cadre figcaption{margin-top:5px;font-size:11.5px;line-height:1.3;color:#334155}
+.banc-loupe-cadre figcaption strong{display:block;color:#0f172a}
+.banc-loupe-cadre figcaption span{display:block;margin-top:2px;color:#b45309;font-weight:700}
+@media(max-width:760px){.banc-loupe{max-width:260px}}
 .afficheur{display:flex;flex-direction:column;padding:6px 9px;border-radius:10px;background:#0f172a;color:#e2e8f0;font-variant-numeric:tabular-nums}
 .afficheur span{font-size:11px;color:#94a3b8}
 .afficheur strong{font-size:17px;line-height:1.25;color:#67e8f9;font-family:ui-monospace,Consolas,monospace}

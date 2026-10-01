@@ -7,6 +7,7 @@ import { svg, ligne, texte, COULEURS } from "../figures.js";
 import { creerAlea } from "../exos/alea.js";
 import { SITES, terrain } from "./terrain.js";
 import { charpente, boucle, brancherMarche, lectures, coupe, axeProfondeur, panneau, points, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, vueTerrain, tige, choc, fleche, etiquette, H, ACIER_SOMBRE, ROUGE } from "./loupe.js";
 
 const APPAREILS = {
   pdb: { nom: "PDB : 64 kg, 0,75 m, 20 cm²", M: 64, H: 0.75, A: 20, mt: 6, me: 18 },
@@ -25,6 +26,7 @@ export function monter(banc) {
       <div class="field"><label>Terrain</label><div class="input-wrap"><select data-r="site">${Object.values(SITES).map((s) => `<option value="${s.cle}">${esc(s.nom)}</option>`).join("")}</select></div></div>
       <div class="field"><label>Appareil</label><div class="input-wrap"><select data-r="app">${Object.entries(APPAREILS).map(([k, a]) => `<option value="${k}">${esc(a.nom)}</option>`).join("")}</select></div></div>`,
   });
+  const loupe = fenetreLoupe(c, "la pointe", { echelle: { px: 45, libelle: "5 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -134,6 +136,31 @@ export function monter(banc) {
       ["qd précédent", e.intervalles.length ? fd(e.intervalles.at(-1).qd, 1) : "—", "MPa"],
       ["Tiges · M'", `${e.tiges} · ${f(e.app.me + e.app.mt * (e.z + e.hTete), 3)}`, "kg"], ["Temps d'essai", duree(e.t), ""],
     ]) + (e.pauseTige > 0 ? '<p class="banc-etat">ajout d\'une tige…</p>' : e.refus ? '<p class="banc-etat ko">refus</p>' : "");
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : la pointe, que chaque coup enfonce dans le terrain qui défile ──
+  const KL = 900, YP = 118, XC = 88; // px/m, ordonnée de la pointe, axe
+  function vueLoupe() {
+    const Yl = (z) => YP + (z - e.z) * KL;
+    const dc = (Math.sqrt((4 * e.app.A) / Math.PI) / 100) * KL, dt = (e.app.M > 30 ? 0.032 : 0.022) * KL;
+    const yBase = YP - dc / 2, yCyl = yBase - 9;
+    const t0 = MONTEE + CHUTE, impact = e.pauseTige <= 0 && e.coups > 0 && e.phase >= t0 - 0.02 && e.phase < t0 + 0.16;
+    let s = vueTerrain({ couches: e.site.couches, Y: Yl, k: KL, zHaut: e.z - YP / KL, zBas: e.z + (H - YP) / KL });
+    // Bulbe de sol comprimé sous la pointe, plus marqué au choc.
+    s += `<ellipse cx="${XC}" cy="${YP + 6}" rx="${r1(dc * 0.75)}" ry="${r1(dc * 0.55)}" fill="#0f172a" opacity="${impact ? 0.22 : 0.08}"/>`;
+    // Le cône est plus large que les tiges : derrière lui, le sol se referme mal.
+    s += `<rect x="${r1(XC - dc / 2)}" y="0" width="${r1(dc)}" height="${r1(yCyl)}" fill="#fff" opacity=".35"/>`;
+    s += tige(XC, 0, yCyl, dt);
+    s += `<rect x="${r1(XC - dc / 2)}" y="${r1(yCyl)}" width="${r1(dc)}" height="9" fill="${ACIER_SOMBRE}" stroke="#1e293b"/>`;
+    s += `<path d="M${r1(XC - dc / 2)} ${r1(yBase)}H${r1(XC + dc / 2)}L${XC} ${YP}Z" fill="#475569" stroke="#1e293b"/>`;
+    if (impact) s += choc(XC, YP - dc / 4, dc / 2 + 3) + fleche(XC, 4, XC, 26, ROUGE, 3, 8);
+    if (e.coups) s += etiquette(XC + dc / 2 + 5, YP - 2, `${fd(1000 * e.dernierePen, 1)} mm`, { couleur: ROUGE });
+    s += etiquette(6, 13, e.T.couche(Math.min(e.z + 0.01, e.zMax - 0.01)).nom);
+    const pen = `${fd(1000 * e.dernierePen, 1)} mm`;
+    const legende = e.t === 0 ? "la pointe attend le premier coup" : e.pauseTige > 0 ? "ajout d'une tige : la pointe attend" : e.refus ? "refus : la pointe ne s'enfonce plus"
+      : e.fini ? "fin de l'essai" : impact ? `choc : la pointe s'enfonce de ${pen}` : e.phase < MONTEE ? "le mouton remonte…" : e.phase < t0 ? "le mouton tombe…" : `enfoncement du dernier coup : ${pen}`;
+    return [s, legende];
   }
 
   function dessinerLent() {

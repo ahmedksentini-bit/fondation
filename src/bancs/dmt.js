@@ -8,6 +8,7 @@ import { svg, texte, COULEURS } from "../figures.js";
 import { dmt } from "../geotech/essais.js";
 import { SITES, terrain } from "./terrain.js";
 import { charpente, boucle, brancherMarche, lectures, coupe, axeProfondeur, panneau, points, f, fd, r1, esc, duree } from "./moteur.js";
+import { fenetreLoupe, vueTerrain, fleche, etiquette, H as HL, ROUGE, ACIER, ACIER_SOMBRE } from "./loupe.js";
 
 const DA = 15, DB = 40; // kPa, raideur de la membrane
 const PAS = 0.2, VITESSE = 0.02; // m, m/s
@@ -21,6 +22,7 @@ export function monter(banc) {
     vitesse: 100,
     commandes: `<div class="field"><label>Terrain</label><div class="input-wrap"><select data-r="site">${Object.values(SITES).map((s) => `<option value="${s.cle}">${esc(s.nom)}</option>`).join("")}</select></div></div>`,
   });
+  const loupe = fenetreLoupe(c, "la membrane (lame vue par la tranche)", { echelle: { px: 36, libelle: "3 cm" } });
   let e, b, etatBoutons;
 
   const reinit = () => {
@@ -100,6 +102,36 @@ export function monter(banc) {
     c.lectures.innerHTML = lectures([["Profondeur", fd(e.z, 2), "m"], ["A", enEssai && e.tArret >= T_A ? f(k.A, 3) : "—", "kPa"], ["B", enEssai && e.tArret >= T_B ? f(k.B, 3) : "—", "kPa"],
       ["ID · KD", e.mesures.length ? `${fd(e.mesures.at(-1).r.ID, 2)} · ${fd(e.mesures.at(-1).r.KD, 1)}` : "—", ""], ["Temps", duree(e.t), ""]])
       + `<p class="banc-etat">${enEssai ? (e.tArret < T_A ? "gonflement : décollement de la membrane…" : e.tArret < T_B ? "A lu ; gonflement jusqu'à 1,1 mm…" : "B lu ; dégonflement") : "fonçage de 20 cm"}</p>`;
+    loupe(...vueLoupe());
+  }
+
+  // ── Loupe : la lame par la tranche ; sa membrane se gonfle contre le sol ────
+  const KL = 1200, YP = 160, XG = 70, XD = 87, YM = YP - 0.095 * KL, RM = 0.03 * KL, EXAG = 12; // lame, membrane, exagération du gonflement
+  function vueLoupe() {
+    const enEssai = e.phase === "essai", ta = e.tArret, k = e.courante;
+    // Déplacement du centre de la membrane (mm) : décollement en A, 1,1 mm en B, puis dégonflement.
+    const delta = !enEssai ? 0 : ta < T_A ? 0.05 * (ta / T_A) : ta < T_B ? 0.05 + 1.05 * ((ta - T_A) / (T_B - T_A)) : ta < T_DEGONFLE - 8 ? 1.1 * (1 - (ta - T_B) / (T_DEGONFLE - 8 - T_B)) : 0;
+    const bombe = (delta / 1000) * KL * EXAG;
+    const Yl = (z) => YP + (z - e.z) * KL;
+    const deplacer = (x, y) => { if (x <= XD) return [x, y]; const f2 = Math.max(0, 1 - ((y - YM) / RM) ** 2); return [x + bombe * f2 * Math.exp(-(x - XD) / 16), y]; };
+    let s = vueTerrain({ couches: e.site.couches, Y: Yl, k: KL, zHaut: e.z - YP / KL, zBas: e.z + (HL - YP) / KL, deplacer });
+    // Lame d'acier, biseautée en pointe ; membrane sur la face droite.
+    s += `<path d="M${XG} 0V${r1(YP - 0.045 * KL)}L${r1((XG + XD) / 2)} ${YP}L${XD} ${r1(YP - 0.045 * KL)}V0Z" fill="${ACIER}" stroke="${ACIER_SOMBRE}" stroke-width="1.2"/>`;
+    s += `<path d="M${XD} ${r1(YM - RM)}Q${r1(XD + 2 * bombe)} ${r1(YM)} ${XD} ${r1(YM + RM)}" fill="#cbd5e1" stroke="#1e293b" stroke-width="1.6"/>`;
+    if (enEssai && ta < T_DEGONFLE - 8 && k) {
+      // Le gaz pousse la membrane : flèches d'autant plus longues que la pression lue monte.
+      const p = ta < T_A ? k.A * (ta / T_A) : ta < T_B ? k.A + (k.B - k.A) * ((ta - T_A) / (T_B - T_A)) : k.B * (1 - (ta - T_B) / 10);
+      const l = 4 + Math.min(12, Math.max(0, p) / 120);
+      for (const dy of [-16, 0, 16]) s += fleche(XG + 3, YM + dy, XG + 3 + l, YM + dy, ROUGE, 1.4, 4);
+    }
+    if (enEssai && ta >= T_A && ta < T_DEGONFLE - 8) s += etiquette(XD + bombe + 8, YM - 20, ta < T_B ? "A : décollée" : "B : 1,1 mm", { couleur: ROUGE });
+    if (bombe > 1) s += etiquette(XD + 8, YM + RM + 12, `gonflement ×${EXAG}`, { couleur: "#475569", taille: 8.5 });
+    s += etiquette(6, 13, e.T.couche(Math.min(e.z + 0.01, e.zMax)).nom);
+    const legende = e.t === 0 ? "la lame attend le premier fonçage" : e.fini ? "sondage terminé"
+      : !enEssai ? "fonçage de 20 cm : la membrane reste plaquée"
+        : ta < T_A ? "le gaz gonfle la membrane, qui va décoller du sol" : ta < T_B ? `A = ${f(k.A, 3)} kPa lu ; la membrane avance vers 1,1 mm`
+          : ta < T_DEGONFLE - 8 ? `B = ${f(k.B, 3)} kPa lu ; dégonflement` : "membrane revenue ; fonçage suivant";
+    return [s, legende];
   }
 
   function dessinerLent() {
