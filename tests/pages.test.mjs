@@ -122,3 +122,17 @@ test("chaque curseur de calcul encadre la valeur de départ de sa case", () => {
     assert.ok(valeur === "" || (v >= min && v <= max), `${id} : ${valeur} hors de la plage ${plage}`);
   }
 });
+
+test("chaque banc d'essai du cours a son module", () => {
+  const html = lire("cours.html");
+  const bancs = [...html.matchAll(/class="banc" data-banc="([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(bancs.length >= 7, "les bancs d'essai sont placés dans le cours");
+  assert.ok(html.includes('src="src/bancs.js"'), "le chargeur des bancs est appelé par la page");
+  const chargeur = lire("src/bancs.js");
+  for (const b of bancs) {
+    const cle = /^[a-z]+$/.test(b) ? `${b}: () =>` : `"${b}": () =>`;
+    assert.ok(chargeur.includes(`${cle} import("./bancs/${b}.js")`), `${b} : absent du chargeur src/bancs.js`);
+    assert.ok(existsSync(join(racine, `src/bancs/${b}.js`)), `src/bancs/${b}.js absent`);
+    assert.match(lire(`src/bancs/${b}.js`), /export function monter\(/, `${b} : pas de fonction monter`);
+  }
+});

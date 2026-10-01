@@ -266,3 +266,39 @@ a.brand strong,a.brand small{text-decoration:none}
 .tableau-bord td small{display:block;color:var(--muted);font-size:11.5px}
 .tableau-bord td button{padding:6px 10px;font-size:12.5px}
 @media print{.etapes,.etude,.envoi-sondage{display:none!important}.cartouche th{background:#eee}}
+
+/* Bancs d'essai : essais en place et de laboratoire animés, dans le cours. */
+.banc{margin:20px 0;padding:14px 16px;border:1px solid #bae6fd;border-radius:16px;background:linear-gradient(180deg,#f0f9ff,#fff 60%)}
+.banc-tete{display:flex;gap:12px;align-items:flex-start}
+.banc-marque{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#0369a1;color:#fff;font-weight:900;flex:none}
+.banc-tete h3{margin:0;font-size:16px;color:#075985}
+.banc-tete p{margin:4px 0 0;color:#334155;font-size:14px}
+.banc-ouvrir{margin-top:10px}
+.banc-imprime{display:none}
+.banc-corps{display:grid;gap:12px;margin-top:12px}
+.banc-commandes .data-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.banc-marche{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.banc-vitesses{display:inline-flex;flex-wrap:wrap;gap:3px}
+.banc-vitesses .actif{background:#e0f2fe;border-color:#0369a1;color:#075985}
+.banc-vue{display:grid;grid-template-columns:minmax(0,1fr) 178px;gap:10px;align-items:start}
+@media(max-width:760px){.banc-vue{grid-template-columns:1fr}.banc-lectures{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.banc-scene svg,.banc-courbes svg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.banc-courbes{display:grid;gap:10px}
+.banc-lectures{display:grid;gap:6px}
+.afficheur{display:flex;flex-direction:column;padding:6px 9px;border-radius:10px;background:#0f172a;color:#e2e8f0;font-variant-numeric:tabular-nums}
+.afficheur span{font-size:11px;color:#94a3b8}
+.afficheur strong{font-size:17px;line-height:1.25;color:#67e8f9;font-family:ui-monospace,Consolas,monospace}
+.afficheur small{font-size:11px;color:#94a3b8}
+.banc-etat{margin:2px 0;font-weight:800;color:#b45309}
+.banc-etat.ko{color:var(--bad)}
+.banc-etapes{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.banc-etapes button[disabled]{opacity:.45}
+@media print{.banc-ouvrir,.banc-corps{display:none!important}.banc-imprime{display:block;margin:6px 0 0;color:#475569;font-size:12px}.banc{break-inside:avoid;background:#fff}}
+
+/* Dépouillement pressiométrique détaillé (bureau de calcul) */
+.essai-detail{margin:8px 0;border:1px solid var(--line);border-radius:12px;background:#fff}
+.essai-detail>summary{padding:9px 12px;cursor:pointer;font-size:14px}
+.essai-detail[open]>summary{border-bottom:1px solid var(--line);background:#f0f9ff;border-radius:12px 12px 0 0}
+.essai-detail>*:not(summary){margin-left:12px;margin-right:12px}
+.essai-detail h4{margin:14px 12px 6px;color:#075985;font-size:14px}
+.essai-detail svg{display:block;width:100%;max-width:640px;height:auto}

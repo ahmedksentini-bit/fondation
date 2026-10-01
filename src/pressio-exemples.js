@@ -77,7 +77,7 @@ export const texteCouples = (couples) => couples.map(([x, y]) => `${x} ${y}`).jo
  * Sondages d'exemple : une coupe, et pour chaque couche la loi de ses
  * paramètres avec la profondeur ; un essai par mètre.
  */
-const SITES = {
+export const SITES = {
   A: {
     nom: "remblai, argile molle, sable, marne", zw: 2.4,
     couches: [

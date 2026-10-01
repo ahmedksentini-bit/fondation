@@ -205,6 +205,20 @@
         gonflement C<sub>s</sub>.</li>
   </ul>
   <figure class="figure-cours" data-schema="schemaLabo"><figcaption>À gauche, la courbe œdométrique : tant que la contrainte reste sous la contrainte de préconsolidation σ'<sub>p</sub>, le sol se recomprime peu (pente C<sub>s</sub>) ; au-delà, il se comprime sur sa courbe vierge (pente C<sub>c</sub>, bien plus forte), et un déchargement le ramène sur une pente C<sub>s</sub>. À droite, trois essais triaxiaux menés jusqu'à la rupture : leurs cercles de Mohr ont pour enveloppe la droite de Coulomb, qui donne c' et φ'.</figcaption></figure>
+  <div class="banc" data-banc="oedometre">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'œdomètre</h3>
+      <p>Choisissez l'argile et la qualité de l'échantillon, puis posez les masses palier après palier : l'éprouvette tasse, le comparateur tourne, chaque palier se dépouille par Casagrande et par Taylor (c<sub>v</sub>), et la courbe e – lg σ' se construit jusqu'à σ'<sub>p</sub>, C<sub>c</sub> et C<sub>s</sub>.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+  <div class="banc" data-banc="triaxial">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le triaxial : UU, CU ou CD</h3>
+      <p>Choisissez le matériau, puis consolidez ou non l'éprouvette et laissez-la drainer ou non pendant le cisaillement : c'est tout ce qui sépare les essais UU, CU et CD. Saturation, consolidation, puis la presse écrase l'éprouvette ; les courbes, le chemin des contraintes et, éprouvette après éprouvette, les cercles de Mohr et la droite intrinsèque se tracent.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
   <p class="method-note">Le Fascicule 62 met en garde : même dans le meilleur des cas, la
      cohésion ne s'apprécie pas à moins de 10 kPa près et l'angle de frottement à moins de
      1 ou 2 degrés près <span class="ref">[F62 E.1 § 1.2]</span>. D'où la méfiance des deux
@@ -381,6 +395,13 @@
      <span class="ref">[NF EN ISO 22476-1]</span>. L'essai est rapide, répétable et donne un profil
      presque continu ; il refuse en revanche les graves grossières, les blocs et le rocher.</p>
   <figure class="figure-cours" data-schema="schemaCptu"><figcaption>Le camion lesté fonce les tiges par vérin, à 2 cm/s. Le cône mesure q<sub>c</sub>, le manchon qui le suit f<sub>s</sub>, et le filtre placé juste derrière le cône la pression interstitielle u<sub>2</sub>.</figcaption></figure>
+  <div class="banc" data-banc="cptu">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le piézocône en action</h3>
+      <p>Le camion fonce le train de tiges à 2 cm/s ; qc, fs et u2 se tracent au fil de la profondeur, avec la colonne de comportement Ic. Dans une argile, arrêtez le fonçage pour un essai de dissipation : la surpression retombe vers u0, et t<sub>50</sub> donne c<sub>h</sub>.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
   <p>Le <strong>piézocône</strong> (CPTU) mesure en plus la pression interstitielle u<sub>2</sub>,
      juste derrière le cône. Dans une argile, l'enfoncement met l'eau en surpression ; comme
      cette pression agit aussi sur l'épaulement de la pointe, on corrige la résistance
@@ -460,6 +481,15 @@
   <p class="formula">q<sub>d</sub> = M² g H / [(M + M') · A · e]&nbsp;&nbsp;avec&nbsp;&nbsp;e = h/N, enfoncement moyen par coup
      <span class="ref">[NF EN ISO 22476-2]</span></p>
   <figure class="figure-cours" data-schema="schemaPenetroDyn"><figcaption>On compte les coups de mouton nécessaires pour enfoncer la pointe de 10 cm. La pointe, plus large que les tiges, limite leur frottement ; le diagramme N<sub>10</sub> se lit comme un profil de résistance, que la formule des Hollandais convertit en q<sub>d</sub>.</figcaption></figure>
+  <div class="banc" data-banc="penetro-dyn">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le pénétromètre dynamique en action</h3>
+      <p>Choisissez le terrain et l'appareil, puis lancez le battage : le mouton monte et retombe, le train de tiges
+         s'enfonce, une tige s'ajoute à chaque mètre, et le nombre de coups pour 10 cm, puis qd, se tracent au fil de la
+         profondeur, jusqu'au refus.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esDpCalc">
     <h3>Résistance dynamique de pointe (formule des Hollandais)</h3>
@@ -502,6 +532,13 @@
   <p class="formula">N<sub>60</sub> = N · C<sub>E</sub> · C<sub>B</sub> · C<sub>R</sub> · C<sub>S</sub>&nbsp;&nbsp;·&nbsp;&nbsp;(N<sub>1</sub>)<sub>60</sub> = C<sub>N</sub> · N<sub>60</sub>&nbsp;&nbsp;avec&nbsp;&nbsp;C<sub>N</sub> = √(100/σ'<sub>v0</sub>), entre 0,5 et 2
      <span class="ref">[NF EN 1998-5 annexe B]</span></p>
   <figure class="figure-cours" data-schema="schemaSpt"><figcaption>Au fond du forage, le carottier est battu sur 45 cm : les 15 premiers centimètres servent d'amorçage, N compte les coups des deux passes suivantes. Ouvert, le carottier livre un échantillon remanié pour l'identification.</figcaption></figure>
+  <div class="banc" data-banc="spt">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai SPT, du forage à l'échantillon</h3>
+      <p>La foreuse descend le forage, on nettoie le fond, on descend le carottier fendu et on le bat de trois fois 15 cm en comptant les coups ; remonté et ouvert, il livre son échantillon. Un essai tous les 1,5 m, et le profil de N se construit.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
   <p>Les corrélations tirées de N sont nombreuses et dispersées : pour un même sable, trois
      formules publiées donnent des angles de frottement qui s'écartent de 5 à 8°. Le SPT sert
      donc surtout à identifier, à comparer, et à juger le risque de liquéfaction ; pour
@@ -577,6 +614,13 @@
      les argiles plastiques, la vitesse de l'essai surestime c<sub>u</sub> : Bjerrum a proposé
      de la minorer d'un facteur μ qui décroît avec l'indice de plasticité.</p>
   <figure class="figure-cours" data-schema="schemaScissometre"><figcaption>Le moulinet tourne lentement au bas du tube de protection. Le couple maximal mobilise c<sub>u</sub> sur toute la surface du cylindre cisaillé ; après une dizaine de tours, le couple résiduel donne la résistance du sol remanié.</figcaption></figure>
+  <div class="banc" data-banc="scissometre">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le scissomètre dans l'argile molle</h3>
+      <p>Le moulinet est foncé à la cote d'essai, puis tourné à 6° par minute : le couple monte jusqu'au pic, retombe ; dix tours rapides remanient l'argile, et l'on mesure le couple résiduel. Chaque essai donne c<sub>u</sub>, c<sub>u,r</sub> et la sensibilité.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="esVstCalc">
     <h3>Cohésion non drainée au scissomètre</h3>
@@ -910,6 +954,14 @@
   <p class="method-note">Ordres de grandeur d'après Ménard, repris par le module de formation
      (en bar dans l'original : 1 bar = 0,1 MPa). Ils servent à choisir l'incrément des
      paliers avant l'essai, jamais à remplacer une mesure.</p>
+
+    <div class="banc" data-banc="pressiometre">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · un sondage pressiométrique complet</h3>
+      <p>La foreuse ouvre le forage, on descend la sonde, et le contrôleur pression-volume applique les paliers d'une minute : la sonde gonfle, on lit les volumes à 15, 30 et 60 s, et la courbe se trace. Chaque essai est dépouillé dès la sonde remontée, et le profil E<sub>M</sub>, p<sub>l</sub>* se construit mètre après mètre — avec les relevés que l'assistant ci-dessous dépouille pas à pas.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
 
   <div class="calc" id="psContexte">
     <h3>Assistant de dépouillement · l'essai à dépouiller</h3>
@@ -3130,6 +3182,7 @@ marquerSectionLue();
 <script type="module" src="src/socle.js"></script>
 <script type="module" src="src/cours-schemas.js"></script>
 <script type="module" src="src/curseurs.js"></script>
+<script type="module" src="src/bancs.js"></script>
 <script type="module" src="src/cours-ch1.js"></script>
 <script type="module" src="src/cours-ch2.js"></script>
 <script type="module" src="src/cours-ch3.js"></script>
