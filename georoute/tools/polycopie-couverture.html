@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<title>Terrassements routiers — couverture</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 297mm; }
+  body { font-family: Inter, -apple-system, "Segoe UI", sans-serif; color: #0f172a;
+    background: linear-gradient(160deg, #082f49 0%, #075985 58%, #0891b2 100%);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { position: relative; height: 297mm; padding: 34mm 22mm 24mm; color: #fff; overflow: hidden; }
+  .page:after { content: ""; position: absolute; right: -60mm; bottom: -70mm; width: 190mm; height: 190mm;
+    border: 30mm solid rgba(255,255,255,.07); border-radius: 50%; }
+  .eyebrow { margin: 0; color: #a5f3fc; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: 11pt; }
+  h1 { margin: 10mm 0 0; font-size: 44pt; line-height: 1.02; }
+  .sous { margin: 8mm 0 0; max-width: 150mm; color: #e0f2fe; font-size: 15pt; line-height: 1.4; }
+  .refs { display: flex; gap: 4mm; margin-top: 12mm; flex-wrap: wrap; }
+  .refs span { padding: 2.5mm 5mm; border-radius: 3mm; font-weight: 800; font-size: 11pt; }
+  .g92 { background: #fef3c7; color: #92400e; }
+  .g24 { background: #ccfbf1; color: #115e59; }
+  .icone { position: absolute; right: 24mm; top: 120mm; width: 62mm; height: 62mm; opacity: .95; }
+  .contenu { position: absolute; left: 22mm; right: 22mm; bottom: 58mm; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 10mm;
+    color: #e0f2fe; font-size: 10.5pt; line-height: 1.45; }
+  .contenu strong { display: block; color: #fff; font-size: 11pt; margin-bottom: 1mm; }
+  .signature { position: absolute; left: 22mm; bottom: 22mm; padding: 4mm 6mm; border-left: 1mm solid #67e8f9;
+    background: rgba(255,255,255,.08); border-radius: 0 3mm 3mm 0; color: #e0f2fe; font-size: 11pt; }
+  .signature strong { color: #fff; }
+  .edition { position: absolute; right: 22mm; bottom: 24mm; color: #bae6fd; font-size: 10pt; text-align: right; }
+</style>
+</head><body>
+<div class="page">
+  <p class="eyebrow">Génie civil · Routes · Géotechnique</p>
+  <h1>Terrassements<br>routiers</h1>
+  <p class="sous">Remblais et couches de forme selon le guide GTR 2024 du Cerema — identifier, classer,
+     utiliser, compacter, contrôler — en regard du GTR 1992 que citent encore tant de rapports.</p>
+  <div class="refs"><span class="g24">GTR 2024</span><span class="g24">NF EN 16907</span><span class="g92">GTR 1992</span><span class="g92">NF P11-300</span></div>
+  <svg class="icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="15" fill="rgba(255,255,255,.10)"/>
+    <path d="M5 50h54" stroke="#bae6fd" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M8 50l14-17h20l14 17z" fill="#fff" opacity=".92"/>
+    <path d="M15.5 41h33M11.8 45.5h40.4" stroke="#0891b2" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>
+    <rect x="21" y="27.5" width="22" height="5.5" rx="1.2" fill="#e0f2fe"/>
+    <path d="M25 30.2h4M31 30.2h4M37 30.2h3" stroke="#0369a1" stroke-width="1.3" stroke-linecap="round"/>
+    <circle cx="44" cy="16" r="5" fill="#fde68a"/>
+  </svg>
+  <div class="contenu">
+    <div><strong>A · Les matériaux</strong>Essais d'identification et d'état, roches, classification GTR 2024 et GTR 1992.</div>
+    <div><strong>B · Les remblais</strong>Conditions d'utilisation, compactage Q/S, contrôles en place, stabilité des talus.</div>
+    <div><strong>C · PST et couche de forme</strong>Arase et plateforme, couche de forme, traitement aux liants, gel.</div>
+    <div><strong>D · Le chantier</strong>Cubatures, épure de Lalanne, engins et rendements — et, en ligne, essais animés, exerciseur et bureau de calcul.</div>
+  </div>
+  <div class="signature">École Nationale d'Ingénieurs de Sfax<br><strong>Dr Ahmed Ksentini</strong></div>
+  <div class="edition" id="edition">Édition __DATE__</div>
+</div>
+</body></html>

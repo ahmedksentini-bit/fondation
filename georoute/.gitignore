@@ -1,0 +1,14 @@
+# Documents de référence fournis pour préparer le cours : guides du Cerema
+# (GTR 2024, GTR 1992, GTS), normes NF P11-300 et NF EN 16907, tableurs. Ils
+# sont soumis à droits et ne doivent pas être publiés avec le site.
+docs/
+
+# Fichiers de travail
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+__pycache__/
+tools/__pycache__/
+# Configuration locale de l'aperçu (Claude Code)
+.claude/

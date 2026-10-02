@@ -1,0 +1,14 @@
+{
+  "name": "terrassements-gtr-2024",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Terrassements routiers : cours, essais animés, exerciseur et bureau de calcul selon le guide GTR 2024 (remblais et couches de forme), comparé au GTR 1992",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "exercices": "node tools/generer-exercices.mjs",
+    "sw": "python tools/generer-sw.py",
+    "polycopie": "python tools/polycopie.py",
+    "serve": "npx serve ."
+  }
+}

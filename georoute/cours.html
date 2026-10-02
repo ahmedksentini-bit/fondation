@@ -1,0 +1,2190 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#075985">
+<meta name="description" content="Cours interactif de terrassements routiers : le guide GTR 2024 (remblais et couches de forme), ses essais animés, ses figures et ses calculateurs, comparé au GTR 1992">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="enhancements.css">
+<link rel="stylesheet" href="site.css">
+<title>Cours interactif — Terrassements</title>
+</head><body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Retour à l'accueil">
+    <span class="brand-mark">GR</span>
+    <span><strong>Terrassements</strong><small>Cours interactif</small></span>
+  </a>
+  <div class="header-actions">
+    <a class="ghost course-link" href="exerciseur.html">Exerciseur</a>
+    <a class="ghost course-link" href="bureau.html">Bureau de calcul</a>
+  </div>
+</header>
+
+<main id="app" tabindex="-1">
+<section class="chapter-banner"><span class="num">§</span>
+  <div><h1>Terrassements routiers</h1>
+  <p>Le guide des terrassements des remblais et des couches de forme (GTR 2024) au fil du texte, avec ses essais animés, ses figures et ses calculateurs.</p></div>
+</section>
+
+<div class="workspace cours-layout">
+<div>
+
+<section id="intro" class="card">
+  <h2>Avant de commencer</h2>
+  <p>Ce cours suit le <strong>guide des terrassements des remblais et des couches de forme</strong>
+     <span class="tag-gtr24">GTR 2024</span>, rédigé par l'IDRRIM et publié par le Cerema en deux
+     fascicules : le premier expose les principes, le second rassemble les tableaux qu'on applique —
+     classification des matériaux, conditions d'utilisation en remblai et en couche de forme,
+     modalités de compactage. Il remplace le guide technique de 1992, révisé en 2000, que tout le
+     monde appelle « le GTR » <span class="tag-gtr92">GTR 1992</span> et que citent encore une
+     multitude de rapports géotechniques, de cahiers des charges et de marchés hors de France.</p>
+  <p>La démarche, elle, n'a pas changé : on <strong>identifie</strong> un matériau par quelques
+     essais simples, on le <strong>classe</strong>, on lit dans les tableaux s'il peut aller en
+     remblai ou en couche de forme et dans quelles conditions selon la <strong>météo</strong> du jour,
+     on le <strong>compacte</strong> avec un atelier réglé par la méthode Q/S, et l'on
+     <strong>contrôle</strong>. Ce qui a changé, c'est surtout la classification, alignée sur la
+     norme européenne NF EN 16907-2 : nouvelles lettres, nouveaux tamis, nouveaux seuils.</p>
+  <div class="a-retenir"><strong>Fil conducteur</strong>
+    <p>À chaque chapitre : <em>ce que l'on mesure</em> (les essais, que l'on peut lancer en banc
+       animé), <em>ce que le GTR en fait</em> (seuils, classes, tableaux), et <em>ce que cela change
+       sur le chantier</em>. Quand l'édition de 2024 diffère de celle de 1992, les deux sont mises
+       côte à côte.</p></div>
+  <p class="method-note">Les références entre crochets renvoient aux textes :
+     <span class="ref">[F1 § 2.2]</span> pour le fascicule 1 du GTR 2024 (principes généraux),
+     <span class="ref">[F2 annexe 1]</span> pour son fascicule 2 (annexes techniques),
+     <span class="ref">[GTR 92]</span> pour l'édition de 1992-2000, et les normes par leur numéro.
+     Les tableaux du GTR utilisés par les calculateurs ont été transcrits du fascicule 2 et
+     contrôlés ; quelques incohérences imprimées dans le guide sont signalées là où elles servent.</p>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 1 ══════════════════════════ -->
+<section id="ch1" class="card">
+  <h2>1 · Les terrassements et le guide GTR</h2>
+
+  <h3>Déblais, remblais, profil en travers</h3>
+  <p>Une route suit un <strong>profil en long</strong> que la topographie ne respecte jamais : il
+     faut couper le terrain là où il est trop haut — le <strong>déblai</strong> — et le rehausser là
+     où il est trop bas — le <strong>remblai</strong>. Sur un même profil en travers, les deux
+     coexistent souvent : c'est un profil <em>mixte</em>. Un tracé économe équilibre ses déblais et
+     ses remblais : les matériaux extraits d'un côté servent de l'autre, ce qui suppose de savoir,
+     avant le chantier, <strong>lesquels sont réutilisables, où et comment</strong>. C'est la
+     question à laquelle répond le GTR.</p>
+  <figure class="figure-cours" data-schema="schemaProfilType"><figcaption>Profil en travers mixte. À gauche, le terrain est enlevé jusqu'à l'arase (déblai) ; à droite, des matériaux rapportés et compactés montent jusqu'à elle (remblai). La couche de forme pose la plateforme qui reçoit la chaussée ; sous l'arase, le mètre supérieur des terrassements — la PST — porte le tout.</figcaption></figure>
+
+  <h3>De la PST à la plateforme</h3>
+  <p>Quatre mots reviennent à chaque page <span class="ref">[F1 § 4.1.1]</span> :</p>
+  <ul>
+    <li>la <strong>partie supérieure des terrassements</strong> (PST) : le mètre supérieur environ
+        des terrains en place (en déblai) ou des matériaux rapportés (en remblai) ;</li>
+    <li>l'<strong>arase de terrassement</strong> (AR) : la surface de la PST, que les engins de
+        terrassement laissent derrière eux ;</li>
+    <li>la <strong>couche de forme</strong> : une structure d'adaptation, parfois absente, parfois
+        faite de plusieurs couches, entre l'arase et la chaussée ;</li>
+    <li>la <strong>plateforme support de chaussée</strong> (PF) : la surface de la couche de forme
+        — ou de l'arase s'il n'y a pas de couche de forme — sur laquelle on construit la chaussée.</li>
+  </ul>
+  <p>L'arase et la plateforme se classent par leur portance à long terme : <strong>AR0 à
+     AR3</strong> pour l'arase, <strong>PF1, PF2, PF2qs, PF3 et PF4</strong> pour la plateforme. Ces
+     classes, que l'on mesure à l'essai de plaque (EV2), relient le terrassier au projeteur de
+     chaussée : le dimensionnement de la chaussée part de la classe de plateforme
+     (chapitre 10).</p>
+
+  <h3>Les zones d'un remblai</h3>
+  <p>La série de normes européennes <strong>NF EN 16907</strong> « Terrassements », dont le GTR
+     est l'application française, découpe un remblai en zones aux fonctions distinctes
+     <span class="ref">[NF EN 16907-1 ; F1 § 1.6]</span>. Dans la plupart des remblais routiers, ces
+     zones se confondent et le remblai est dit <em>homogène</em> ; elles se distinguent dès que le
+     remblai est haut, qu'il est construit sur un sol mou, ou qu'il doit protéger un noyau sensible
+     à l'eau.</p>
+  <figure class="figure-cours" data-schema="schemaZonesRemblai"><figcaption>Les zones d'un remblai d'infrastructure selon la NF EN 16907-1. La base (A) est en contact avec le terrain ; le noyau (B) en forme le corps ; les encagements (C) en protègent les bords ; la zone supérieure (D) comprend la PST et la couche de forme, sous la superstructure (S), c'est-à-dire la chaussée.</figcaption></figure>
+
+  <h3>Deux objectifs de compactage : q4 et q3</h3>
+  <p>Compacter, c'est réduire les vides que l'extraction a créés — le <em>foisonnement</em> — pour
+     augmenter la masse volumique sèche du matériau et sa résistance au cisaillement. Le GTR fixe
+     deux objectifs, exprimés par rapport à la masse volumique sèche de l'<strong>optimum Proctor
+     normal</strong> ρ<sub>dOPN</sub> (chapitre 3), en moyenne sur la couche et au minimum en fond
+     de couche — les huit centimètres inférieurs, les plus difficiles à atteindre
+     <span class="ref">[F1 § 1.6]</span> :</p>
+  <table class="resultats"><thead><tr><th>Objectif</th><th>Usage</th><th class="num">Moyenne sur la couche</th><th class="num">Fond de couche</th></tr></thead>
+    <tbody>
+      <tr><td><strong>q4</strong></td><td class="motif">remblai (noyau, base, PST)</td><td class="n">ρ<sub>dm</sub> ≥ 95 % ρ<sub>dOPN</sub></td><td class="n">ρ<sub>dfc</sub> ≥ 92 % ρ<sub>dOPN</sub></td></tr>
+      <tr><td><strong>q3</strong></td><td class="motif">couche de forme</td><td class="n">ρ<sub>dm</sub> ≥ 98,5 % ρ<sub>dOPN</sub></td><td class="n">ρ<sub>dfc</sub> ≥ 96 % ρ<sub>dOPN</sub></td></tr>
+    </tbody></table>
+  <p>L'objectif q4 garantit, pour la grande majorité des remblais de moins de 15 m, l'absence de
+     fluage et de tassement sous le poids propre ; la couche de forme, qui porte directement la
+     chaussée, demande davantage. Le GTR ne demande pas de mesurer ces masses volumiques partout :
+     il donne, pour chaque matériau et chaque compacteur, le réglage qui les assure (chapitre 7).</p>
+
+  <div class="calc" id="calcObjectifs">
+    <h3>Objectifs de densification : ce qu'il faut atteindre</h3>
+    <p class="method-note">Saisissez ρ<sub>dOPN</sub> du matériau et les masses volumiques sèches
+       mesurées en place : moyenne de la couche et fond de couche.</p>
+    <div class="data-grid">
+      <div class="field"><label for="objOpn">ρ<sub>dOPN</sub> (Proctor normal)</label>
+        <div class="input-wrap"><input id="objOpn" type="text" inputmode="decimal" value="1.85" data-curseur="1.4 2.3 0.01"><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="objQ">Objectif</label>
+        <div class="input-wrap"><select id="objQ"><option value="q4">q4 — remblai</option><option value="q3">q3 — couche de forme</option></select></div></div>
+      <div class="field"><label for="objMoy">ρ<sub>d</sub> moyenne mesurée</label>
+        <div class="input-wrap"><input id="objMoy" type="text" inputmode="decimal" value="1.78" data-curseur="1.3 2.3 0.01"><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="objFond">ρ<sub>d</sub> en fond de couche</label>
+        <div class="input-wrap"><input id="objFond" type="text" inputmode="decimal" value="1.69" data-curseur="1.3 2.3 0.01"><span class="unit">Mg/m³</span></div></div>
+    </div>
+    <div class="figure" id="objFig"></div>
+    <p class="final-result" id="objOut"></p>
+  </div>
+
+  <h3>La démarche du GTR</h3>
+  <p>Le GTR organise le terrassement autour de trois outils <span class="ref">[F1 § 1.4]</span> : une
+     <strong>classification</strong> qui range ensemble les matériaux au comportement assez proche
+     pour qu'on les mette en œuvre de la même façon ; pour chaque classe et chaque état, des
+     <strong>conditions d'utilisation</strong> selon l'emploi (remblai ou couche de forme) et la
+     situation météorologique ; et des <strong>règles de compactage</strong> qui disent comment
+     régler l'atelier. Le contrôle suit : il vérifie que les règles ont été tenues.</p>
+  <figure class="figure-cours" data-schema="schemaDemarche"><figcaption>La démarche du GTR. Elle ne demande pas de calcul de dimensionnement : elle classe les matériaux et en déduit des règles de mise en œuvre, éprouvées sur des décennies de chantiers.</figcaption></figure>
+  <p>Ce choix a un nom dans les normes européennes : la <strong>spécification de la
+     méthode</strong> <span class="ref">[NF EN 16907-1 et -5]</span>. On impose la façon de faire
+     — le matériau, l'épaisseur des couches, le compacteur, sa vitesse, son nombre de passes — et
+     l'on contrôle qu'elle est respectée, notamment par le rapport Q/S du volume compacté à la
+     surface balayée. L'autre démarche, la <strong>spécification du produit fini</strong>, fixe des
+     performances à atteindre (densité, module) et laisse l'entreprise libre des moyens ; elle exige
+     des contrôles bien plus nombreux. Le GTR combine les deux : méthode pour les remblais, méthode
+     et contrôle de portance pour les plateformes.</p>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Le GTR n'est pas un guide de conception des ouvrages en terre : il ne traite ni de la
+       stabilité des talus, ni des remblais sur sols compressibles, ni du drainage, ni des remblais de
+       plus de 15 m <span class="ref">[F1 § 1.5]</span>. Ses conditions d'utilisation sont des
+       <em>règles de référence</em>, que le géotechnicien adapte aux particularités de son
+       chantier.</p></div>
+
+  <h3>Du GTR 1992 au GTR 2024</h3>
+  <p>L'édition 2024 conserve l'esprit et la structure du guide de 1992 — classification, tableaux
+     d'utilisation, tables de compactage — mais l'aligne sur la norme européenne NF EN 16907-2 et
+     intègre trente ans de notes et de retours d'expérience <span class="ref">[F1 § 1.1, § 2.5.1]</span>.</p>
+  <div class="comparaison">
+    <div class="gtr92"><h4>GTR 1992 (NF P11-300)</h4>
+      <p>Classes <strong>A</strong> (sols fins), <strong>B</strong> (sableux et graveleux avec
+         fines), <strong>C</strong> (avec gros éléments), <strong>D</strong> (insensibles à l'eau),
+         <strong>R</strong> (rocheux), <strong>F</strong> (organiques et sous-produits).</p>
+      <p>Tamis de <strong>80 µm</strong> et Dmax de <strong>50 mm</strong> ; seuil des sols
+         riches en fines à 12 % ; IP 12, 25, 40.</p>
+      <p>Plateformes PF1 à PF4.</p></div>
+    <div class="gtr24"><h4>GTR 2024 (NF EN 16907-2)</h4>
+      <p>Classes <strong>F</strong> (fine soil), <strong>I</strong> (intermediate),
+         <strong>S</strong> (sand), <strong>G</strong> (gravel), <strong>VC</strong> (very coarse),
+         roches <strong>CH, Li, Cl, Sa, Co, SR, Vo, Me</strong>, organiques <strong>O</strong>,
+         alternatifs <strong>AN, AM, AR</strong>.</p>
+      <p>Tamis de <strong>63 µm</strong> et Dmax de <strong>63 mm</strong> ; seuils de fines à 5,
+         15 et 35 % ; IP 12, <strong>22</strong>, 40, 55 ; coefficient d'uniformité Cu.</p>
+      <p>Plateformes PF1, PF2, <strong>PF2qs</strong>, PF3, PF4 ; PST0 à PST6 ; classes de gel
+         des matériaux de couche de forme ; nouveaux compacteurs.</p></div>
+  </div>
+  <div class="piege"><strong>Piège fréquent</strong>
+    <p>Les lettres ont changé de sens : la classe F désignait en 1992 les sols organiques et les
+       sous-produits industriels, elle désigne en 2024 les <em>sols fins</em> (les anciens A). Un
+       « F1 » de 1992 n'est donc pas un F1 de 2024. Dans un rapport, vérifiez toujours l'édition de
+       référence — et ne convertissez pas une classe en l'autre sans revenir aux essais : les
+       seuils n'étant pas les mêmes, la correspondance n'est qu'approchée (chapitre 5).</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 2 ══════════════════════════ -->
+<section id="ch2" class="card">
+  <h2>2 · Identifier un sol : granularité et argilosité</h2>
+
+  <h3>Nature, état, comportement</h3>
+  <p>Le GTR caractérise un sol par trois familles de paramètres <span class="ref">[F1 § 2.2.1]</span> :</p>
+  <ul>
+    <li>des paramètres de <strong>nature</strong> — la granularité et l'argilosité — qui ne varient
+        pas, ou peu, au cours du chantier ;</li>
+    <li>des paramètres d'<strong>état</strong>, en pratique l'<strong>état hydrique</strong>, qui
+        dépend de la météo et du moment (chapitre 3) ;</li>
+    <li>des paramètres de <strong>comportement mécanique</strong> — la résistance des grains au
+        trafic — qui ne servent qu'à juger l'emploi en couche de forme (chapitre 4).</li>
+  </ul>
+  <p>La norme européenne NF EN 16907-2 ne retient que la nature ; l'état hydrique et le
+     comportement sont des apports français, conservés par le GTR 2024. Tous ces paramètres se
+     mesurent sur la <strong>fraction 0/63 mm</strong>, la seule que les essais de laboratoire
+     courants savent traiter. La notion de <em>sensibilité à l'eau</em> qui revient sans cesse est
+     prise dans un sens étroit : la chute de portance d'un sol pour une petite hausse de sa teneur
+     en eau.</p>
+
+  <h3>La granularité : quatre paramètres et leurs seuils</h3>
+  <p>L'analyse granulométrique (NF EN ISO 17892-4) mesure la répartition des grains par taille :
+     par <strong>tamisage</strong> pour les grains de plus de 63 µm, par
+     <strong>sédimentométrie</strong> pour les plus fins. Le GTR en tire quatre paramètres
+     <span class="ref">[F1 § 2.2.1 A.1]</span> :</p>
+  <table class="resultats"><thead><tr><th>Paramètre</th><th>Ce qu'il dit</th><th>Seuils</th></tr></thead>
+    <tbody>
+      <tr><td><strong>L<sub>max</sub></strong>, plus grande longueur</td><td class="motif">épaisseur des couches, malaxage possible avec un liant, représentativité des essais</td><td>250 mm : sol ou matériau blocailleux, rocheux</td></tr>
+      <tr><td><strong>D<sub>max</sub></strong>, plus grand diamètre (≈ D<sub>95</sub>)</td><td class="motif">ce que le compacteur et le malaxeur peuvent traiter</td><td>63 mm : sols F, I, S, G ou sols VC</td></tr>
+      <tr><td><strong>Tamisat à 63 µm</strong></td><td class="motif">richesse en fines, donc sensibilité à l'eau</td><td>35 % (comportement régi par les fines), 15 %, 5 % ; 10 et 12 % pour l'insensibilité</td></tr>
+      <tr><td><strong>Fractions 0,063/2 et 2/63 mm</strong></td><td class="motif">tendance sableuse ou graveleuse</td><td>la plus grande l'emporte ; tamisat à 2 mm : 70 % pour les états des sables</td></tr>
+      <tr><td><strong>C<sub>u</sub> = D<sub>60</sub>/D<sub>10</sub></strong></td><td class="motif">forme de la courbe : étalée ou uniforme</td><td>6 : étalée si C<sub>u</sub> ≥ 6</td></tr>
+    </tbody></table>
+  <figure class="figure-cours" data-schema="schemaFractions"><figcaption>Lecture d'une courbe granulométrique au sens du GTR 2024. Le tamisat à 63 µm (ici 12 %) mesure les fines ; la comparaison des fractions 0,063/2 mm (sable) et 2/63 mm (grave) dit si le sol est plutôt sableux ou graveleux ; D<sub>10</sub> et D<sub>60</sub> donnent le coefficient d'uniformité.</figcaption></figure>
+  <p>Un sol à granulométrie étalée se compacte mieux qu'un sol uniforme : les petits grains comblent
+     les vides des gros. Quand les fines dépassent 10 %, D<sub>10</sub> n'est connu que par
+     sédimentométrie ; à défaut, le GTR tranche par D<sub>60</sub> : au-dessus de 400 µm, la courbe
+     est réputée étalée, en dessous elle est réputée uniforme <span class="ref">[F1 § 2.2.1 e]</span>.</p>
+  <div class="banc" data-banc="tamisage">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le tamisage</h3>
+      <p>Choisissez le sol : la prise d'essai, lavée sur le tamis de 63 µm puis séchée, est versée sur la colonne que la tamiseuse fait vibrer dix minutes. On pèse chaque refus, et la courbe granulométrique se construit tamis après tamis — D<sub>10</sub>, D<sub>30</sub>, D<sub>60</sub>, tamisats à 63 µm et à 2 mm — jusqu'à la famille F, I, S ou G du GTR 2024.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <div class="calc" id="calcGranulo">
+    <h3>Une courbe granulométrique, ses paramètres et sa famille</h3>
+    <p class="method-note">Une ligne par tamis : ouverture (mm) et passant cumulé (%), sur le matériau
+       total. Les passants sont ramenés à la fraction 0/63 mm quand le D<sub>max</sub> dépasse 63 mm.
+       On peut coller deux colonnes d'un tableur.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="grPoints">Tamis (mm) et passants (%)</label>
+        <textarea id="grPoints" rows="8" spellcheck="false">0.063 9
+0.125 12
+0.5 18
+2 31
+4 40
+8 52
+16 66
+31.5 85
+63 97
+80 100</textarea></div>
+    </div>
+    <div class="figure" id="grFig"></div>
+    <p class="final-result" id="grOut"></p>
+  </div>
+
+  <p>Sous 63 µm, les grains sont trop fins pour un tamis. On les laisse décanter dans une
+     éprouvette d'eau : un grain sphérique y tombe à vitesse constante, d'autant plus vite qu'il est
+     gros (loi de Stokes). Au temps t, à la profondeur H<sub>r</sub>, il ne reste en suspension que
+     les grains plus fins que</p>
+  <p class="formula">D = √( 18 η H<sub>r</sub> / ((ρ<sub>s</sub> − ρ<sub>w</sub>) g t) )</p>
+  <p>et la masse volumique de la suspension, que lit un densimètre, dit quelle proportion du sol
+     ils représentent. Quelques heures suffisent pour descendre à 2 µm, la limite conventionnelle de
+     l'argile.</p>
+  <div class="banc" data-banc="sedimentometrie">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · la sédimentométrie</h3>
+      <p>Choisissez le sol et la température du bain : la suspension de fines s'éclaircit par le haut et le densimètre s'enfonce. Chaque lecture, de 30 s à 24 h, donne par la loi de Stokes un diamètre et un pourcentage ; la courbe, raccordée au tamisage à 63 µm, livre D<sub>10</sub>, C<sub>u</sub> et la part d'argile sous 2 µm.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <h3>L'argilosité : indice de plasticité et valeur de bleu</h3>
+  <p>Deux paramètres mesurent la quantité et l'activité de l'argile <span class="ref">[F1 § 2.2.1 A.2]</span>.</p>
+  <p>L'<strong>indice de plasticité</strong> IP = w<sub>L</sub> − w<sub>P</sub> (NF EN ISO 17892-12)
+     est la largeur de l'intervalle de teneur en eau où le sol est plastique : entre la limite de
+     liquidité w<sub>L</sub>, où il coule, et la limite de plasticité w<sub>P</sub>, où il s'émiette.
+     Il se mesure sur la fraction 0/400 µm, et son interprétation devient délicate quand cette
+     fraction est faible ou quand IP descend sous 7. Seuils : <strong>12</strong> (sols faiblement
+     argileux), <strong>22</strong> (moyennement argileux), <strong>40</strong> (argileux),
+     <strong>55</strong> (très argileux).</p>
+  <div class="banc" data-banc="casagrande">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · les limites d'Atterberg</h3>
+      <p>Choisissez la méthode — coupelle de Casagrande ou cône — et le sol. À quatre teneurs en eau, la rainure se referme au N-ième choc (ou le cône s'enfonce), puis les rouleaux de 3 mm se fissurent. La droite donne w<sub>L</sub>, les rouleaux w<sub>P</sub>, et le sol se place sur l'abaque de Casagrande avec IP, I<sub>c</sub> et sa classe d'argilosité.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <div class="calc" id="calcAtterberg">
+    <h3>Limite de liquidité à la coupelle, indices et abaque</h3>
+    <p class="method-note">Une ligne par essai à la coupelle : nombre de coups N et teneur en eau (%).
+       La limite de liquidité se lit à 25 coups sur la droite w – lg N.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="atPoints">Essais à la coupelle (N, w %)</label>
+        <textarea id="atPoints" rows="4" spellcheck="false">16 47.9
+22 46.1
+29 44.6
+35 43.5</textarea></div>
+      <div class="field"><label for="atWp">Limite de plasticité w<sub>P</sub></label>
+        <div class="input-wrap"><input id="atWp" type="text" inputmode="decimal" value="23" data-curseur="5 60 0.5"><span class="unit">%</span></div></div>
+      <div class="field"><label for="atW">Teneur en eau naturelle w<sub>n</sub></label>
+        <div class="input-wrap"><input id="atW" type="text" inputmode="decimal" value="27" data-curseur="2 80 0.5"><span class="unit">%</span></div></div>
+    </div>
+    <div class="figure" id="atFig"></div>
+    <p class="final-result" id="atOut"></p>
+  </div>
+
+  <p>La <strong>valeur de bleu de méthylène</strong> VBS (NF EN 17542-3) est la masse de bleu,
+     en grammes, que peuvent adsorber les surfaces des particules de 100 g de sol : elle est
+     directement liée à la surface spécifique, donc à la quantité et à l'activité de l'argile. Elle
+     se mesure sur la fraction 0/5 mm et s'applique à tous les sols ; c'est une spécificité
+     française, que la norme européenne n'admet qu'en second. Seuils :
+     <strong>0,1</strong> (aucune activité mesurable des fines : avec au plus 10 % de fines, le sol
+     est insensible à l'eau), <strong>0,2</strong> (la sensibilité à l'eau apparaît),
+     <strong>1,5</strong> (sables limoneux / sables argileux), <strong>2,5</strong>,
+     <strong>6</strong> et <strong>8</strong> (limons peu plastiques, limons, argiles, argiles très
+     plastiques).</p>
+  <div class="banc" data-banc="bleu">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · la valeur de bleu</h3>
+      <p>Choisissez le sol : la fraction 0/5 mm, dispersée sous agitation, reçoit le bleu par 5 mL puis par 2 mL, et une tache par minute se dépose sur le papier filtre jusqu'à l'auréole bleu clair qui tient cinq minutes. Le volume injecté donne VB puis la VBS, placée sur la réglette des seuils du GTR 2024.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <div class="calc" id="calcVbs">
+    <h3>Valeur de bleu du sol</h3>
+    <p class="method-note">V : volume de solution de bleu à 10 g/L injecté jusqu'au test positif ;
+       m<sub>0</sub> : masse sèche de la prise d'essai 0/5 mm ; C : proportion de la fraction 0/5 mm
+       dans la fraction 0/63 mm du sol.</p>
+    <div class="data-grid">
+      <div class="field"><label for="vbV">Volume de bleu V</label>
+        <div class="input-wrap"><input id="vbV" type="text" inputmode="decimal" value="45" data-curseur="5 400 5"><span class="unit">cm³</span></div></div>
+      <div class="field"><label for="vbM0">Prise d'essai m<sub>0</sub></label>
+        <div class="input-wrap"><input id="vbM0" type="text" inputmode="decimal" value="60" data-curseur="20 200 1"><span class="unit">g</span></div></div>
+      <div class="field"><label for="vbC">Proportion de 0/5 mm, C</label>
+        <div class="input-wrap"><input id="vbC" type="text" inputmode="decimal" value="0.45" data-curseur="0.05 1 0.01"><span class="unit">—</span></div></div>
+    </div>
+    <div class="figure" id="vbFig"></div>
+    <p class="final-result" id="vbOut"></p>
+  </div>
+
+  <div class="a-retenir"><strong>IP ou VBS ?</strong>
+    <p>Les deux mesurent l'argilosité, mais pas avec la même finesse. Pour les sols peu plastiques,
+       l'IP est imprécis et la VBS plus sûre : le GTR 2024 utilise <strong>prioritairement la VBS</strong>
+       pour les limons F1, les sols intermédiaires I et les sables et graves S et G. Dès que l'IP
+       atteint 12, il devient le critère le mieux adapté — et il dit aussi quelque chose du
+       comportement : la plage de teneur en eau où le sol reste déformable sans perdre toute
+       résistance. Dans les tableaux, le critère à privilégier est en gras
+       <span class="ref">[F1 § 2.2.1 A.2]</span>.</p></div>
+
+  <h3>L'équivalent de sable</h3>
+  <p>L'<strong>équivalent de sable</strong> (NF EN 933-8) mesure la propreté de la fraction 0/2 mm :
+     après agitation dans une solution lavante, l'argile reste en suspension et forme un floculat
+     au-dessus du sable. ES = 100 h<sub>2</sub>/h<sub>1</sub>, rapport des hauteurs du sable et du
+     floculat. Ce n'est pas un paramètre de classement du GTR, mais un contrôle rapide, sur chantier,
+     des sables et des graves destinés aux couches de forme ou aux granulats.</p>
+  <div class="banc" data-banc="equivalent-sable">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'équivalent de sable</h3>
+      <p>Choisissez le sol : deux prises de 0/2 mm sont imbibées, agitées, lavées, puis laissées vingt minutes au repos. Le floculat d'argile se tasse au-dessus du sable ; on lit h<sub>1</sub> à la règle et h<sub>2</sub> au piston, et ES = 100 h<sub>2</sub>/h<sub>1</sub> dit la propreté du sable, à rapprocher de sa VBS.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <h3>Les matières organiques</h3>
+  <p>Au-delà de 2 % de matières organiques, un sol sort de la classification des sols
+     géotechniques <span class="ref">[F1 § 2.4.1]</span>. La teneur se mesure par perte au feu à
+     550 °C (NF EN 17685-1) — en se méfiant des matériaux qui perdent aussi de l'eau de
+     constitution à cette température : gypse, bétons concassés, certaines argiles.</p>
+  <table class="resultats"><thead><tr><th>Teneur</th><th>Classe</th><th>Remblai</th><th>Couche de forme</th></tr></thead>
+    <tbody>
+      <tr><td class="n">&lt; 2 %</td><td>sol ou roche</td><td class="motif">oui</td><td class="motif">oui</td></tr>
+      <tr><td class="n">2 à 6 %</td><td><strong>O1</strong> faible teneur</td><td class="motif">oui, remblais courants de moins de 10 m</td><td class="motif">avec étude particulière dès 3 %</td></tr>
+      <tr><td class="n">6 à 20 %</td><td><strong>O2</strong> teneur modérée</td><td class="motif">surfaces à enherber, merlons</td><td class="motif">non</td></tr>
+      <tr><td class="n">&gt; 20 %</td><td><strong>O3</strong> tourbe</td><td class="motif">non</td><td class="motif">non</td></tr>
+    </tbody></table>
+  <p>Un sol O1 ou O2 se classe ensuite comme un sol ordinaire, d'où un double symbole : O1F2,
+     O2I1… La matière organique perturbe aussi la prise des liants hydrauliques : un sol organique
+     se traite mal.</p>
+
+  <div class="comparaison">
+    <div class="gtr92"><h4>GTR 1992</h4>
+      <p>Fines au tamis de <strong>80 µm</strong>, sur la fraction 0/50 mm ; D<sub>max</sub> 50 mm.</p>
+      <p>Sols riches en fines au-delà de <strong>12 %</strong> ; sols fins au-delà de 35 %.</p>
+      <p>IP : 12, <strong>25</strong>, 40. VBS : 0,1 ; 0,2 ; 1,5 ; 2,5 ; 6 ; 8.</p>
+      <p>Pas de coefficient d'uniformité ; le tamisat à 2 mm (70 %) sépare sables et graves.</p></div>
+    <div class="gtr24"><h4>GTR 2024</h4>
+      <p>Fines au tamis de <strong>63 µm</strong>, sur la fraction 0/63 mm ; D<sub>max</sub> 63 mm.</p>
+      <p>Seuils de fines <strong>5, 15 et 35 %</strong> (et 10, 12 % pour l'insensibilité).</p>
+      <p>IP : 12, <strong>22</strong>, 40, 55. VBS : mêmes seuils.</p>
+      <p><strong>C<sub>u</sub></strong> (6) ; sables et graves séparés par leurs fractions 0,063/2 et 2/63 mm.</p></div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 3 ══════════════════════════ -->
+<section id="ch3" class="card">
+  <h2>3 · L'état hydrique, le Proctor et la portance</h2>
+
+  <h3>Cinq états hydriques</h3>
+  <p>Un même limon peut être un excellent matériau de remblai en août et une boue inutilisable en
+     février : ce qui a changé, c'est sa teneur en eau. Pour les sols sensibles à l'eau, le GTR
+     ajoute donc à la nature un paramètre d'<strong>état</strong>, l'état hydrique, en cinq
+     classes <span class="ref">[F1 § 2.2.1 C]</span> :</p>
+  <table class="resultats"><thead><tr><th>État</th><th>Ce qu'il signifie</th><th>Ce que l'on fait</th></tr></thead>
+    <tbody>
+      <tr><td><span class="etat-hydrique th">th</span> très humide</td><td class="motif">plus traficable ; l'objectif de densification ne peut guère être atteint</td><td class="motif">inutilisable en l'état ; réemploi seulement après étude qui ramène le sol en h ou m</td></tr>
+      <tr><td><span class="etat-hydrique h">h</span> humide</td><td class="motif">teneur en eau élevée, traficabilité difficile</td><td class="motif">compactage faible, traitement à la chaux, aération par beau temps, mélange avec un sol plus sec, remblais bas</td></tr>
+      <tr><td><span class="etat-hydrique m">m</span> moyen</td><td class="motif">proche de l'optimum Proctor : l'état idéal</td><td class="motif">mise en œuvre sans contrainte particulière</td></tr>
+      <tr><td><span class="etat-hydrique s">s</span> sec</td><td class="motif">teneur en eau faible, portance élevée trompeuse</td><td class="motif">humidification et malaxage, ou compactage intense ; attention aux remblais hauts</td></tr>
+      <tr><td><span class="etat-hydrique ts">ts</span> très sec</td><td class="motif">trop sec pour être compacté</td><td class="motif">inutilisable en l'état ; réemploi après étude d'humidification</td></tr>
+    </tbody></table>
+  <div class="piege"><strong>Piège fréquent</strong>
+    <p>Un sol sec porte très bien : l'IPI est élevé, les engins roulent, le compactage semble
+       facile. Mais un limon F1 ou F2 compacté sec, puis mouillé par la pluie ou une remontée de
+       nappe, peut s'effondrer et tasser dans un remblai de moyenne ou grande hauteur. Le
+       surcompactage d'un sol sec n'efface pas ce risque <span class="ref">[F1 § 2.2.1 C]</span>.</p></div>
+
+  <h3>L'essai Proctor : la teneur en eau qui compacte le mieux</h3>
+  <p>L'essai Proctor (NF EN 13286-2) compacte le sol dans un moule, couche par couche, à l'aide
+     d'une dame qui tombe d'une hauteur fixée, pour plusieurs teneurs en eau. Pour chacune, on
+     mesure la masse volumique sèche ρ<sub>d</sub>. La courbe ρ<sub>d</sub>(w) a la forme d'une
+     cloche : trop sec, le sol frotte et résiste au compactage ; trop humide, l'eau occupe les vides
+     que le compactage voudrait fermer. Le sommet est l'<strong>optimum Proctor</strong> :
+     w<sub>OPN</sub> et ρ<sub>dOPN</sub>. Aucun point ne peut passer au-dessus de la courbe de
+     saturation, où il n'y a plus d'air à chasser :</p>
+  <p class="formula">ρ<sub>d</sub> = ρ<sub>s</sub> / (1 + w ρ<sub>s</sub> / (S<sub>r</sub> ρ<sub>w</sub>))</p>
+  <table class="resultats"><thead><tr><th>Essai</th><th>Dame</th><th>Couches</th><th>Coups (moule A Ø 100 / B Ø 150)</th><th class="num">Énergie</th></tr></thead>
+    <tbody>
+      <tr><td>Proctor normal</td><td class="motif">2,5 kg, chute de 305 mm</td><td class="n">3</td><td class="n">25 / 56</td><td class="n">≈ 0,6 MJ/m³</td></tr>
+      <tr><td>Proctor modifié</td><td class="motif">4,5 kg, chute de 457 mm</td><td class="n">5</td><td class="n">25 / 56</td><td class="n">≈ 2,7 MJ/m³</td></tr>
+    </tbody></table>
+  <p>L'énergie du Proctor normal représente celle des compacteurs de terrassement ; le Proctor
+     modifié, quatre fois et demie plus énergique, celle des chaussées. Avec plus d'énergie,
+     l'optimum est plus dense et plus sec. Les objectifs q4 et q3 se rapportent au
+     <strong>Proctor normal</strong>.</p>
+  <div class="banc" data-banc="proctor">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai Proctor normal et modifié</h3>
+      <p>Choisissez le sol, l'énergie et le moule : pour cinq teneurs en eau, le sol est malaxé, compacté couche par couche à la dame, arasé, pesé, et chaque point (w, ρ<sub>d</sub>) se place sous les courbes de saturation à 100 et 80 %. La parabole donne l'optimum ; le bilan en tire l'état hydrique du sol en place (w<sub>n</sub>/w<sub>OPN</sub>) et les objectifs q4 et q3, et l'essai fait à l'autre énergie s'affiche en comparaison.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <div class="calc" id="calcProctor">
+    <h3>Optimum Proctor et courbes de saturation</h3>
+    <p class="method-note">Une ligne par point : teneur en eau w (%) et masse volumique sèche
+       ρ<sub>d</sub> (Mg/m³). La parabole est ajustée sur les points qui entourent le plus dense.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="prPoints">Points de l'essai (w %, ρd Mg/m³)</label>
+        <textarea id="prPoints" rows="6" spellcheck="false">11.6 1.712
+13.4 1.762
+15.3 1.786
+17.2 1.758
+19.0 1.700</textarea></div>
+      <div class="field"><label for="prRhoS">Masse volumique des grains ρ<sub>s</sub></label>
+        <div class="input-wrap"><input id="prRhoS" type="text" inputmode="decimal" value="2.68" data-curseur="2.5 2.9 0.01"><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="prWn">Teneur en eau naturelle w<sub>n</sub></label>
+        <div class="input-wrap"><input id="prWn" type="text" inputmode="decimal" value="17.6" data-curseur="2 40 0.1"><span class="unit">%</span></div></div>
+    </div>
+    <div class="figure" id="prFig"></div>
+    <p class="final-result" id="prOut"></p>
+  </div>
+
+  <h3>Trois paramètres pour situer l'état hydrique</h3>
+  <p>Le GTR caractérise l'état hydrique par l'un ou l'autre de trois paramètres, chacun fiable
+     dans une partie de la gamme <span class="ref">[F1 § 2.2.1 C]</span> :</p>
+  <ul>
+    <li>le rapport <strong>w<sub>n</sub>/w<sub>OPN</sub></strong> de la teneur en eau naturelle à
+        celle de l'optimum : le plus sûr pour les états <em>s</em> et <em>ts</em>, puisque la
+        difficulté de compactage en dépend directement, moins net pour <em>h</em> et <em>th</em> ;</li>
+    <li>l'<strong>indice de consistance</strong> I<sub>c</sub> = (w<sub>L</sub> − w<sub>n</sub>)/IP :
+        il décrit bien les cinq états, mais seulement pour les sols fins moyennement à très argileux,
+        presque entièrement inférieurs à 400 µm ;</li>
+    <li>l'<strong>indice portant immédiat</strong> IPI : le paramètre à privilégier pour les états
+        <em>h</em> et <em>th</em>, parce qu'il traduit concrètement la difficulté des engins à
+        circuler ; il perd son sens pour les états secs.</li>
+  </ul>
+  <p>Les seuils dépendent de la classe : un limon peu plastique bascule de l'état moyen à l'état
+     humide pour quelques points de teneur en eau, une argile beaucoup plus lentement. Le tableau
+     ci-dessous reprend ceux de l'annexe 1 du fascicule 2, avec, en regard, ceux du GTR 1992.</p>
+  <div class="calc" id="calcSeuilsEtats">
+    <h3>Seuils d'état hydrique d'une sous-classe</h3>
+    <div class="data-grid">
+      <div class="field"><label for="seClasse">Sous-classe</label>
+        <div class="input-wrap"><select id="seClasse">
+          <option value="F1">F1 — limons peu plastiques</option><option value="F2" selected>F2 — sols fins moyennement argileux</option>
+          <option value="F3">F3 — argiles</option><option value="F4">F4 — argiles très plastiques</option>
+          <option value="I1">I1 — sables et graves très silteux</option><option value="I2">I2 — sables et graves argileux</option>
+          <option value="S>70">S — sables, tamisat 2 mm &gt; 70 %</option><option value="S≤70">S — sables, tamisat 2 mm ≤ 70 %</option>
+          <option value="G">G — graves</option></select></div></div>
+    </div>
+    <div id="seTable"></div>
+  </div>
+
+  <h3>L'indice portant immédiat et le CBR</h3>
+  <p>Le poinçonnement (NF EN 13286-47) enfonce un piston de 19,3 cm² à 1,27 mm/min dans une
+     éprouvette compactée à l'énergie Proctor normal. On compare la force mesurée à 2,5 mm et à
+     5 mm d'enfoncement à celle d'un matériau de référence — 13,35 kN et 20 kN — et l'on retient
+     le plus grand des deux rapports, en %. Sans surcharge ni immersion, juste après le compactage
+     et à la teneur en eau du sol, c'est l'<strong>indice portant immédiat</strong> IPI ; après
+     quatre jours d'immersion sous surcharge, c'est le <strong>CBR immergé</strong> (CBR<sub>i</sub>),
+     qui dit ce qui reste de la portance quand le sol est mouillé.</p>
+  <p class="formula">IPI ou CBR = max( F<sub>2,5</sub>/13,35 ; F<sub>5</sub>/20 ) × 100</p>
+  <p>Le GTR se sert de l'IPI pour les états humides, et du CBR<sub>i</sub> pour reconnaître un
+     sable ou une grave <strong>insensible à l'eau</strong> : au-delà de 20, le matériau garde
+     assez de portance une fois mouillé <span class="ref">[F1 § 2.2.1 C]</span>.</p>
+  <div class="banc" data-banc="ipi">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'indice portant immédiat et le CBR</h3>
+      <p>Choisissez le sol, la teneur en eau de moulage et le mode : IPI, CBR immédiat sous surcharges, ou CBR après quatre jours d'immersion avec suivi du gonflement. Le piston s'enfonce à 1,27 mm/min, la courbe force–enfoncement se trace avec, si besoin, la correction d'origine ; chaque essai se place sur la courbe IPI–w, devant les bandes d'état hydrique du GTR.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <div class="calc" id="calcIpi">
+    <h3>Indice portant à partir des forces lues</h3>
+    <div class="data-grid">
+      <div class="field"><label for="ipF25">Force à 2,5 mm</label>
+        <div class="input-wrap"><input id="ipF25" type="text" inputmode="decimal" value="1.05" data-curseur="0.05 20 0.05"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="ipF5">Force à 5 mm</label>
+        <div class="input-wrap"><input id="ipF5" type="text" inputmode="decimal" value="1.6" data-curseur="0.05 30 0.05"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="ipMode">Essai</label>
+        <div class="input-wrap"><select id="ipMode"><option value="IPI">IPI (immédiat, sans surcharge)</option><option value="CBRi">CBR après immersion</option></select></div></div>
+    </div>
+    <p class="final-result" id="ipOut"></p>
+  </div>
+
+  <div class="calc" id="calcEtat">
+    <h3>État hydrique d'un sol</h3>
+    <p class="method-note">Laissez vide un paramètre non mesuré : l'état se déduit des autres, avec
+       la priorité du guide (IPI pour les états humides, w<sub>n</sub>/w<sub>OPN</sub> pour les états
+       secs). I<sub>c</sub> n'est utilisé que pour F2, F3, F4 et I2.</p>
+    <div class="data-grid">
+      <div class="field"><label for="etClasse">Sous-classe</label>
+        <div class="input-wrap"><select id="etClasse">
+          <option value="F1">F1</option><option value="F2">F2</option><option value="F3">F3</option><option value="F4">F4</option>
+          <option value="I1">I1</option><option value="I2">I2</option><option value="S>70">S (2 mm &gt; 70 %)</option><option value="S≤70">S (2 mm ≤ 70 %)</option><option value="G">G</option></select></div></div>
+      <div class="field"><label for="etW">Teneur en eau w<sub>n</sub></label>
+        <div class="input-wrap"><input id="etW" type="text" inputmode="decimal" value="17.6" data-curseur="1 45 0.1"><span class="unit">%</span></div></div>
+      <div class="field"><label for="etWopn">w<sub>OPN</sub></label>
+        <div class="input-wrap"><input id="etWopn" type="text" inputmode="decimal" value="15.5" data-curseur="3 35 0.1"><span class="unit">%</span></div></div>
+      <div class="field"><label for="etIpi">IPI (vide si non mesuré)</label>
+        <div class="input-wrap"><input id="etIpi" type="text" inputmode="decimal" value="6.5"><span class="unit">—</span></div></div>
+      <div class="field"><label for="etIc">I<sub>c</sub> (vide si non mesuré)</label>
+        <div class="input-wrap"><input id="etIc" type="text" inputmode="decimal" value=""><span class="unit">—</span></div></div>
+    </div>
+    <div class="figure" id="etFig"></div>
+    <p class="final-result" id="etOut"></p>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Les trois paramètres ne concordent pas toujours : un sol F1h, dont la teneur en eau est entre
+       1,1 et 1,25 w<sub>OPN</sub>, peut avoir un IPI qui n'est pas entre 3 et 8
+       <span class="ref">[F1 § 2.2.1 C]</span>. L'IPI dit ce que vivent les engins, w<sub>n</sub>/w<sub>OPN</sub>
+       ce que vivra le compacteur : en cas de désaccord, on privilégie l'IPI pour juger d'un état
+       humide, la teneur en eau pour un état sec.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 4 ══════════════════════════ -->
+<section id="ch4" class="card">
+  <h2>4 · Les matériaux rocheux</h2>
+
+  <h3>Prévoir ce que devient une roche une fois extraite</h3>
+  <p>Un déblai rocheux, une fois abattu, chargé, régalé et compacté, devient un matériau granulaire
+     qui peut se comporter comme un sol — parfois comme un sol fin très sensible à l'eau. La
+     classification des matériaux rocheux cherche donc à prévoir, à partir de la roche en place, ce
+     que sera le matériau après extraction <span class="ref">[F1 § 2.3]</span>. Le géotechnicien
+     procède en deux temps :</p>
+  <ol>
+    <li>il identifie la <strong>nature pétrographique</strong> de la roche, par la documentation et
+        le raisonnement géologique : craie, calcaire, marne, grès, granite… ;</li>
+    <li>il précise le <strong>comportement</strong> du matériau au cours du terrassement et dans
+        l'ouvrage, par des essais : se fragmente-t-il sous les engins, produit-il des fines, se
+        dégrade-t-il à l'eau, contient-il des éléments solubles ?</li>
+  </ol>
+  <p>Quatre questions guident ce second temps : l'aptitude du matériau à se fragmenter au cours de
+     l'extraction et de la mise en œuvre — et à produire assez de fines pour se comporter comme un sol
+     sensible à l'eau ; son évolution possible après la construction, sous les contraintes, l'eau et
+     le gel ; la teneur en eau des roches très fragmentables (craies, marnes), dont l'eau passera
+     aux fines produites ; la teneur en éléments solubles des roches salines.</p>
+
+  <h3>Huit familles, une classe de résistance</h3>
+  <p>Le GTR 2024 reprend les familles de la NF EN 16907-2. Le classement commence par la nature
+     géologique, mais le symbole commence par la <strong>classe de résistance</strong>, de R1
+     (extrêmement dure) à R5 (fragmentable) : « R3 Li » est un calcaire dur, « R4 Cld1 » une roche
+     argileuse peu fragmentable mais très dégradable. Seules les craies gardent un symbole propre,
+     CH1 à CH4.</p>
+  <table class="resultats"><thead><tr><th>Famille</th><th>Roches</th><th>Paramètres de classement</th><th>GTR 1992</th></tr></thead>
+    <tbody>
+      <tr><td><span class="classe gtr24">CH</span></td><td class="motif">craies</td><td class="motif">ρ<sub>d</sub>, puis w<sub>n</sub> pour les craies peu denses</td><td><span class="classe gtr92">R1</span></td></tr>
+      <tr><td><span class="classe gtr24">Li</span></td><td class="motif">calcaires : grossiers, travertins, tufs, encroûtements…</td><td class="motif">MDE, ρ<sub>d</sub></td><td><span class="classe gtr92">R2</span></td></tr>
+      <tr><td><span class="classe gtr24">Cl</span></td><td class="motif">roches argileuses : marnes, argilites, pélites, schistes sédimentaires</td><td class="motif">IFR, IDGa, MDE ; w<sub>n</sub> ou IPI si fragmentable</td><td><span class="classe gtr92">R3</span></td></tr>
+      <tr><td><span class="classe gtr24">Sa</span> <span class="classe gtr24">Co</span></td><td class="motif">grès ; brèches, poudingues, conglomérats</td><td class="motif">LA, MDE, IFR, IDGa</td><td><span class="classe gtr92">R4</span></td></tr>
+      <tr><td><span class="classe gtr24">SR</span></td><td class="motif">roches salines : gypse, anhydrite, sel gemme</td><td class="motif">teneur en gypse ou en sel</td><td><span class="classe gtr92">R5</span></td></tr>
+      <tr><td><span class="classe gtr24">Vo</span> <span class="classe gtr24">Me</span></td><td class="motif">roches magmatiques (granite, basalte) ; métamorphiques (gneiss, schistes, quartzites)</td><td class="motif">LA, MDE ; IFR si altérées</td><td><span class="classe gtr92">R6</span></td></tr>
+    </tbody></table>
+  <p>Deux précisions. Un matériau rocheux dur dont la plus grande dimension après extraction ne
+     dépasse pas 250 mm se classe comme un <strong>sol grossier</strong> (S, G ou VC)
+     <span class="ref">[F1 § 2.3.3]</span>. Et les schistes houillers non calcinés (noirs) forment un
+     groupe à part, celui des matériaux naturels particuliers AN.</p>
+
+  <h3>Les roches dures : Los Angeles et micro-Deval</h3>
+  <p>Pour les roches dures — granites, gneiss, calcaires et grès durs — deux essais de granulats
+     mesurent la résistance des grains, ce qui compte surtout pour un emploi en couche de forme où
+     les grains subissent le trafic de chantier <span class="ref">[F1 § 2.3.2]</span> :</p>
+  <ul>
+    <li>le <strong>Los Angeles</strong> (NF EN 1097-2) mesure la résistance aux <em>chocs</em> :
+        5 000 g de gravillons 10/14 mm tournent 500 tours dans un tambour avec onze boulets d'acier ;
+        LA est le pourcentage de la masse qui passe ensuite au tamis de 1,6 mm ;</li>
+    <li>le <strong>micro-Deval en présence d'eau</strong> (NF EN 1097-1) mesure la résistance à
+        l'<em>usure par frottement</em> : 500 g de gravillons 10/14 mm, 5 000 g de billes et 2,5 L
+        d'eau tournent 12 000 tours ; MDE est le pourcentage de la masse qui passe au tamis de 1,6 mm.</li>
+  </ul>
+  <p>Plus le coefficient est faible, plus la roche est résistante. Le seuil de 45 sépare les graves
+     dont les grains résistent au trafic (comportement G…1) de celles qui se fragmentent (G…2) ;
+     pour les sables, c'est la <strong>friabilité des sables</strong> FS (NF P18-576) qui joue ce rôle,
+     avec un seuil de 60 <span class="ref">[F2 annexe 1]</span>.</p>
+  <div class="banc" data-banc="losangeles">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai Los Angeles</h3>
+      <p>Choisissez la roche : 5 000 g de gravillons 10/14 et onze boulets font 500 tours dans le tambour, puis on lave sur le tamis de 1,6 mm, on sèche et on pèse. Le LA se compare aux seuils 25, 35 et 45 et donne, avec le MDE, la classe de la roche.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+  <div class="banc" data-banc="microdeval">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai micro-Deval en présence d'eau</h3>
+      <p>Choisissez la roche : 12 000 tours sur les rouleaux, les billes usent les gravillons et l'eau se trouble ; billes retirées à l'aimant, lavage, séchage, pesée. Le MDE se compare aux seuils et classe la roche avec le LA.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <div class="calc" id="calcLaMde">
+    <h3>Coefficients LA et MDE, classe de résistance</h3>
+    <div class="data-grid">
+      <div class="field"><label for="laP">Los Angeles : passant à 1,6 mm</label>
+        <div class="input-wrap"><input id="laP" type="text" inputmode="decimal" value="1450" data-curseur="300 3500 10"><span class="unit">g</span></div></div>
+      <div class="field"><label for="laM">Prise d'essai Los Angeles</label>
+        <div class="input-wrap"><input id="laM" type="text" inputmode="decimal" value="5000"><span class="unit">g</span></div></div>
+      <div class="field"><label for="mdR">Micro-Deval : refus à 1,6 mm</label>
+        <div class="input-wrap"><input id="mdR" type="text" inputmode="decimal" value="420" data-curseur="150 495 1"><span class="unit">g</span></div></div>
+      <div class="field"><label for="mdM">Prise d'essai micro-Deval</label>
+        <div class="input-wrap"><input id="mdM" type="text" inputmode="decimal" value="500"><span class="unit">g</span></div></div>
+    </div>
+    <div class="figure" id="laFig"></div>
+    <p class="final-result" id="laOut"></p>
+  </div>
+
+  <h3>Les roches évolutives : fragmentabilité et dégradabilité</h3>
+  <p>Les roches tendres — marnes, argilites, schistes, certains grès et calcaires — posent une autre
+     question : vont-elles se réduire en fines sous les engins, ou plus tard dans le remblai ? Pour
+     elles, LA et MDE manquent de sensibilité. Deux essais comparent le D<sub>10</sub> d'un
+     échantillon 10/20 mm avant et après une sollicitation conventionnelle
+     <span class="ref">[F1 § 2.3.2]</span> :</p>
+  <ul>
+    <li>le <strong>coefficient de fragmentabilité</strong> IFR (NF EN 17542-2), après un pilonnage
+        à la dame Proctor normal : il dit ce que deviendra la roche sous l'extraction, le régalage et
+        le compactage. Au-delà de <strong>7</strong>, la roche est fragmentable (classe R5) ;</li>
+    <li>le <strong>coefficient de dégradabilité</strong> IDGa (NF EN 17542-1), après des cycles
+        d'imbibition et de séchage : il dit si la roche continuera à se déliter dans le remblai, sous
+        l'effet de l'eau. Jusqu'à <strong>5</strong>, peu dégradable ; de 5 à 20, moyennement ;
+        au-delà de <strong>20</strong>, très dégradable.</li>
+  </ul>
+  <p>Une roche argileuse peu fragmentable mais très dégradable — une marne compacte qui se délite en
+     quelques semaines de pluie — est le cas le plus traître : elle se met en œuvre comme un
+     enrochement et se transforme ensuite en sol fin dans l'ouvrage, avec des tassements et des
+     glissements à la clé.</p>
+  <div class="banc" data-banc="fragmentabilite">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · fragmentabilité et dégradabilité des roches</h3>
+      <p>Choisissez l'essai et la roche : cent coups de dame dans le moule CBR, ou quatre cycles eau–étuve, puis la colonne de tamis construit la courbe granulométrique « après » à côté de celle d'avant, D<sub>10</sub> marqués. IFR ou IDGa se compare aux seuils 7, 5 et 20 : la roche se traitera-t-elle comme un sol, ou continuera-t-elle d'évoluer dans le remblai ?</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <div class="calc" id="calcIfr">
+    <h3>Une roche argileuse : IFR, IDGa et MDE</h3>
+    <div class="data-grid">
+      <div class="field"><label for="frA">D<sub>10</sub> avant pilonnage</label>
+        <div class="input-wrap"><input id="frA" type="text" inputmode="decimal" value="11.2" data-curseur="10 14 0.1"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="frB">D<sub>10</sub> après pilonnage</label>
+        <div class="input-wrap"><input id="frB" type="text" inputmode="decimal" value="2.6" data-curseur="0.1 11 0.1"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="dgA">D<sub>10</sub> avant cycles</label>
+        <div class="input-wrap"><input id="dgA" type="text" inputmode="decimal" value="11.0" data-curseur="10 14 0.1"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="dgB">D<sub>10</sub> après cycles</label>
+        <div class="input-wrap"><input id="dgB" type="text" inputmode="decimal" value="0.45" data-curseur="0.05 11 0.05"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="frMde">MDE</label>
+        <div class="input-wrap"><input id="frMde" type="text" inputmode="decimal" value="62" data-curseur="5 100 1"><span class="unit">—</span></div></div>
+    </div>
+    <div class="figure" id="frFig"></div>
+    <p class="final-result" id="frOut"></p>
+  </div>
+
+  <h3>Les craies : la densité, puis l'eau</h3>
+  <p>La craie est un empilement de particules de calcite de 1 à 10 µm. Plus cet empilement est
+     poreux — plus sa masse volumique sèche ρ<sub>d</sub> est faible —, plus il est fragile : au
+     terrassement, la craie produit des fines en proportion de sa fragilité. Si elle est saturée,
+     l'eau de ses pores passe aux fines, qui prennent la consistance d'une pâte : les engins ne
+     circulent plus et des pressions interstitielles apparaissent dans l'ouvrage. Sèche, au
+     contraire, la craie est rigide, très portante, mais difficile à compacter
+     <span class="ref">[F1 § 2.3.4]</span>.</p>
+  <p>D'où un classement en deux temps : la masse volumique sèche fixe la fragilité (CH1 très dense
+     au-delà de 1,95 Mg/m³, CH2 dense, CH3 de densité moyenne, CH4 peu dense sous 1,55 Mg/m³) ; pour
+     les craies CH3 et CH4, la teneur en eau naturelle fixe l'état, avec des seuils propres à
+     chacune. Une craie peu dense est presque toujours proche de la saturation : à
+     ρ<sub>d</sub> = 1,55 Mg/m³, ses pores pleins d'eau correspondent déjà à w ≈ 27 %.</p>
+
+  <div class="calc" id="calcCraie">
+    <h3>Classer une craie</h3>
+    <div class="data-grid">
+      <div class="field"><label for="crRho">Masse volumique sèche ρ<sub>d</sub></label>
+        <div class="input-wrap"><input id="crRho" type="text" inputmode="decimal" value="1.62" data-curseur="1.3 2.3 0.01"><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="crW">Teneur en eau naturelle w<sub>n</sub></label>
+        <div class="input-wrap"><input id="crW" type="text" inputmode="decimal" value="24" data-curseur="5 40 0.5"><span class="unit">%</span></div></div>
+    </div>
+    <div class="figure" id="crFig"></div>
+    <p class="final-result" id="crOut"></p>
+  </div>
+
+  <h3>Calcaires, roches siliceuses, roches salines</h3>
+  <p>Les <strong>calcaires</strong> (Li) ne sont généralement pas évolutifs et se mettent bien en
+     remblai ; leur friabilité peut toutefois, en couche de forme, produire par attrition des fines
+     qui rendent le matériau sensible à l'eau sous la circulation des engins. Ils se classent par le
+     micro-Deval et la masse volumique sèche : R3 Li si MDE ≤ 45, R4 Li si MDE &gt; 45 et
+     ρ<sub>d</sub> &gt; 1,8 Mg/m³, R5 Li (fragmentable) si ρ<sub>d</sub> ≤ 1,8 Mg/m³. Les
+     <strong>roches siliceuses</strong> (Sa, Co) et les <strong>roches magmatiques et
+     métamorphiques</strong> (Vo, Me) se classent par LA et MDE, puis, quand elles sont tendres ou
+     altérées, par IFR et IDGa. Les <strong>roches salines</strong> (SR) se classent par leur teneur
+     en éléments solubles : leur dissolution par les circulations d'eau peut créer des vides dans le
+     remblai.</p>
+  <div class="calc" id="calcRoche">
+    <h3>Classer un matériau rocheux</h3>
+    <p class="method-note">Laissez vides les essais non réalisés : le classement dit ce qui manque.
+       Les seuils sont ceux de l'annexe 1 du fascicule 2.</p>
+    <div class="data-grid">
+      <div class="field"><label for="roFam">Famille</label>
+        <div class="input-wrap"><select id="roFam">
+          <option value="CH">CH — craie</option><option value="Li">Li — calcaire</option><option value="Cl" selected>Cl — roche argileuse</option>
+          <option value="Sa">Sa — grès</option><option value="Co">Co — brèche, poudingue</option><option value="SR">SR — roche saline</option>
+          <option value="Vo">Vo — roche magmatique</option><option value="Me">Me — roche métamorphique</option></select></div></div>
+      <div class="field"><label for="roRho">ρ<sub>d</sub></label><div class="input-wrap"><input id="roRho" type="text" inputmode="decimal" value=""><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="roW">w<sub>n</sub></label><div class="input-wrap"><input id="roW" type="text" inputmode="decimal" value="14"><span class="unit">%</span></div></div>
+      <div class="field"><label for="roWopn">w<sub>OPN</sub> (après fragmentation)</label><div class="input-wrap"><input id="roWopn" type="text" inputmode="decimal" value="12"><span class="unit">%</span></div></div>
+      <div class="field"><label for="roLa">LA</label><div class="input-wrap"><input id="roLa" type="text" inputmode="decimal" value=""><span class="unit">—</span></div></div>
+      <div class="field"><label for="roMde">MDE</label><div class="input-wrap"><input id="roMde" type="text" inputmode="decimal" value="62"><span class="unit">—</span></div></div>
+      <div class="field"><label for="roIfr">IFR</label><div class="input-wrap"><input id="roIfr" type="text" inputmode="decimal" value="9"><span class="unit">—</span></div></div>
+      <div class="field"><label for="roIdg">IDGa</label><div class="input-wrap"><input id="roIdg" type="text" inputmode="decimal" value="24"><span class="unit">—</span></div></div>
+      <div class="field"><label for="roIpi">IPI</label><div class="input-wrap"><input id="roIpi" type="text" inputmode="decimal" value=""><span class="unit">—</span></div></div>
+      <div class="field"><label for="roGypse">Gypse</label><div class="input-wrap"><input id="roGypse" type="text" inputmode="decimal" value=""><span class="unit">%</span></div></div>
+      <div class="field"><label for="roSel">Sel gemme</label><div class="input-wrap"><input id="roSel" type="text" inputmode="decimal" value=""><span class="unit">%</span></div></div>
+    </div>
+    <p class="final-result" id="roOut"></p>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Pour une roche dure, on mesure la résistance des grains (LA, MDE) : elle décide de l'emploi en
+       couche de forme. Pour une roche tendre, on mesure ce qu'elle deviendra (IFR, IDGa, ρ<sub>d</sub>,
+       w<sub>n</sub>) : elle décide de l'emploi en remblai, et des précautions — fragmentation
+       complémentaire, couches minces, compactage intense — qui feront d'un matériau évolutif un
+       remblai stable.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 5 ══════════════════════════ -->
+<section id="ch5" class="card">
+  <h2>5 · Classer les matériaux : GTR 2024 et GTR 1992</h2>
+
+  <h3>Une classification faite pour les terrassements</h3>
+  <p>Les classifications universelles des sols — celle des Laboratoires des ponts et chaussées,
+     l'USCS — servent mal les terrassiers : elles ignorent l'état hydrique des sols sensibles à l'eau,
+     le caractère évolutif de certaines roches, la taille des plus gros éléments. Le GTR propose donc
+     une classification <em>spécifique</em>, fondée sur des paramètres qui ont un sens pour la mise en
+     remblai et en couche de forme <span class="ref">[F1 § 2.1]</span>. Celle du GTR 2024 est conforme
+     à la norme européenne NF EN 16907-2 tout en gardant l'esprit de la RTR de 1976 et du GTR de 1992 ;
+     elle change en revanche les lettres des classes et plusieurs seuils, ce qui demande un peu
+     d'attention à qui a appris l'ancienne.</p>
+
+  <h3>La démarche, en quatre niveaux</h3>
+  <figure class="figure-cours" data-schema="schemaSynoptique"><figcaption>Synoptique de la classification des sols du GTR 2024. Le D<sub>max</sub> sépare les sols VC ; la teneur en fines sépare les sols fins, intermédiaires, sableux et graveleux ; l'argilosité ou la granularité fixent la sous-classe de nature ; viennent ensuite le comportement mécanique, puis l'état hydrique — ou le suffixe « ins » des matériaux insensibles à l'eau.</figcaption></figure>
+  <ol>
+    <li><strong>Le D<sub>max</sub></strong> : au-delà de 63 mm, le sol est un sol à gros éléments VC.
+        Si ces gros éléments forment un squelette (matériau anguleux dont la fraction 0/63 mm ne
+        dépasse pas 60 à 80 %), le sol est <span class="classe gtr24">VC1</span> ; si la fraction 0/63 mm
+        gouverne le comportement (éléments roulés, ou anguleux peu charpentés), il est
+        <span class="classe gtr24">VC2</span>. Dans les deux cas, la fraction 0/63 mm se classe ensuite
+        comme un sol ordinaire, d'où un double symbole : VC2F1, VC1G3…</li>
+    <li><strong>La teneur en fines</strong> (tamisat à 63 µm, sur la fraction 0/63 mm) : plus de 35 %,
+        sol fin <span class="classe gtr24">F</span> ; de 15 à 35 %, sol intermédiaire
+        <span class="classe gtr24">I</span> ; 15 % au plus, sol sableux <span class="classe gtr24">S</span>
+        ou graveleux <span class="classe gtr24">G</span>, selon que la fraction 0,063/2 mm l'emporte ou
+        non sur la fraction 2/63 mm.</li>
+    <li><strong>La sous-classe de nature</strong> : pour F et I, l'argilosité — la VBS pour les sols peu
+        plastiques, l'IP dès qu'il dépasse 12 ; pour S et G, la propreté (fines ≤ 5 % ou de 5 à 15 %)
+        et l'étalement (C<sub>u</sub> ≥ 6 ou non).</li>
+    <li><strong>Le comportement, puis l'état</strong> : pour S et G, un chiffre dit si les grains
+        résistent (1) ou non (2) au trafic — friabilité FS ≤ 60 pour les sables, LA et MDE ≤ 45 pour les
+        graves. Vient enfin l'état hydrique (th, h, m, s, ts), ou le suffixe
+        <strong>ins</strong> si le matériau est insensible à l'eau.</li>
+  </ol>
+  <table class="resultats"><thead><tr><th>Sous-classe</th><th>Critère de nature</th><th>Matériaux typiques</th></tr></thead>
+    <tbody>
+      <tr><td><span class="classe gtr24">F1</span></td><td>VBS ≤ 2,5 ou IP ≤ 12</td><td class="motif">limons peu plastiques, lœss, silts alluvionnaires, sables fins peu pollués, arènes peu plastiques</td></tr>
+      <tr><td><span class="classe gtr24">F2</span></td><td>12 &lt; IP ≤ 22 ou 2,5 &lt; VBS ≤ 6</td><td class="motif">sables fins argileux, limons, argiles et marnes peu plastiques, arènes</td></tr>
+      <tr><td><span class="classe gtr24">F3</span></td><td>22 &lt; IP ≤ 40 ou 6 &lt; VBS ≤ 8</td><td class="motif">argiles et argiles marneuses, limons très plastiques</td></tr>
+      <tr><td><span class="classe gtr24">F4</span> <span class="classe gtr24">F4+</span></td><td>40 &lt; IP ≤ 55 ou VBS &gt; 8 ; IP &gt; 55</td><td class="motif">argiles très plastiques ; au-delà de 55, emploi en l'état exclu hors étude spécifique</td></tr>
+      <tr><td><span class="classe gtr24">I1</span> <span class="classe gtr24">I2</span></td><td>VBS ≤ 1,5 ou IP ≤ 12 ; au-delà</td><td class="motif">sables et graves très silteux ; sables et graves argileux à très argileux</td></tr>
+      <tr><td><span class="classe gtr24">S1</span> <span class="classe gtr24">S2</span></td><td>fines ≤ 5 % ; C<sub>u</sub> ≥ 6 ou &lt; 6</td><td class="motif">sables propres étalés ; sables propres mal gradués (sables de dune)</td></tr>
+      <tr><td><span class="classe gtr24">S3</span> <span class="classe gtr24">S4</span></td><td>fines de 5 à 15 % ; C<sub>u</sub> ≥ 6 ou &lt; 6</td><td class="motif">sables limoneux ou peu argileux, étalés ou mal gradués</td></tr>
+      <tr><td><span class="classe gtr24">G1</span> <span class="classe gtr24">G2</span></td><td>fines ≤ 5 % ; C<sub>u</sub> ≥ 6 ou &lt; 6</td><td class="motif">graves propres étalées ; graves homométriques (galets)</td></tr>
+      <tr><td><span class="classe gtr24">G3</span> <span class="classe gtr24">G4</span></td><td>fines de 5 à 15 % ; C<sub>u</sub> ≥ 6 ou &lt; 6</td><td class="motif">graves silteuses ou peu argileuses, étalées ou mal graduées</td></tr>
+    </tbody></table>
+  <p>Pour les sols fins peu plastiques, la VBS est préférée à l'IP, trop imprécis dans ce domaine ;
+     dès que l'IP dépasse 12, c'est lui le critère le mieux adapté
+     <span class="ref">[F1 § 2.2.2, tableau 2]</span>. Les deux paramètres peuvent désigner deux
+     sous-classes voisines : on retient alors le critère privilégié et l'on garde l'autre en mémoire,
+     c'est un signal sur la représentativité des essais.</p>
+
+  <h3>Lire un symbole</h3>
+  <figure class="figure-cours" data-schema="schemaSymbole"><figcaption>Un symbole se lit de gauche à droite : les gros éléments, la nature, le comportement mécanique, puis l'état hydrique ou « ins ». Le comportement n'est indiqué que pour les sables et les graves, quand l'essai a été fait.</figcaption></figure>
+
+  <h3>Les sables et graves insensibles à l'eau</h3>
+  <p>Un sable ou une grave dont les fines sont rares et peu actives garde sa portance quand il se
+     mouille : il n'a pas d'état hydrique, il porte le suffixe <strong>ins</strong>
+     <span class="ref">[F2 annexe 1]</span>. C'est l'héritier de la classe D du GTR 1992.</p>
+  <table class="resultats"><thead><tr><th>Fines (63 µm)</th><th>Sables S</th><th>Graves G</th></tr></thead>
+    <tbody>
+      <tr><td>≤ 5 %</td><td class="motif">VBS &lt; 0,2</td><td class="motif">VBS &lt; 0,2</td></tr>
+      <tr><td>de 5 à 10 %</td><td class="motif">VBS &lt; 0,1</td><td class="motif">VBS &lt; 0,1 ; ou 0,1 ≤ VBS &lt; 0,2 et CBR<sub>i</sub> &gt; 20</td></tr>
+      <tr><td>de 10 à 12 %</td><td class="motif">VBS &lt; 0,1 et CBR<sub>i</sub> &gt; 20</td><td class="motif">VBS &lt; 0,1 et CBR<sub>i</sub> &gt; 20</td></tr>
+    </tbody></table>
+
+  <h3>Sols organiques et matériaux particuliers</h3>
+  <p>La perte au feu à 550 °C (NF EN 17685-1) mesure la teneur en matières organiques. Jusqu'à 2 %,
+     le sol se classe normalement. Au-delà, il prend un préfixe : <span class="classe gtr24">O1</span>
+     de 2 à 6 %, <span class="classe gtr24">O2</span> de 6 à 20 %, puis on classe sa partie minérale
+     (O1F2, O2I1…) ; au-delà de 20 %, <span class="classe gtr24">O3</span>, ce sont des tourbes, exclues
+     des remblais <span class="ref">[F1 § 2.4.1]</span>. Les matières organiques se décomposent et font
+     tasser le remblai ; leur acidité perturbe aussi la prise des liants. Trois autres groupes
+     complètent la classification : les matériaux naturels particuliers <strong>AN</strong> (schistes
+     houillers noirs), les sous-produits industriels <strong>AM</strong> (laitiers, mâchefers, cendres…)
+     et les matériaux recyclés <strong>AR</strong> (bétons et matériaux de démolition, enrobés,
+     ballast), dont l'emploi se raccroche, après élaboration, à la classe de sol correspondant à leur
+     granularité.</p>
+
+  <div class="exemple"><strong>Exemples du guide</strong>
+    <p>Trois sols du tableau 6 du fascicule 1, classés pas à pas :</p>
+    <ul>
+      <li>D<sub>max</sub> = 30 mm, 60 % de fines, IP = 25 : sol fin (fines &gt; 35 %), IP entre 22 et
+          40 → <span class="classe gtr24">F3</span> ;</li>
+      <li>D<sub>max</sub> = 50 mm, 12 % de fines, tamisat à 2 mm de 60 %, C<sub>u</sub> = 25 : 48 % de
+          sable contre 40 % de grave, fines de 5 à 15 %, étalé → <span class="classe gtr24">S3</span> ;</li>
+      <li>D<sub>max</sub> = 80 mm, 95 % de fraction 0/63 mm, 4 % de fines, C<sub>u</sub> = 50, plus de
+          grave que de sable : la fraction 0/63 mm gouverne → <span class="classe gtr24">VC2G1</span>.</li>
+    </ul></div>
+
+  <h3>Du GTR 1992 au GTR 2024</h3>
+  <p>La classification de 1992, celle de la norme NF P11-300, reste citée dans des milliers de
+     rapports et de marchés. Les deux se ressemblent, mais aucune correspondance n'est exacte :
+     les tamis de référence et plusieurs seuils ont changé.</p>
+  <div class="comparaison">
+    <div class="gtr92"><h4>GTR 1992 · NF P11-300</h4>
+      <p>Fraction <strong>0/50 mm</strong>, fines au tamis de <strong>80 µm</strong>.</p>
+      <p>Classes <strong>A</strong> (fines &gt; 35 %), <strong>B</strong> (sableux et graveleux avec
+         fines), <strong>C</strong> (avec gros éléments), <strong>D</strong> (insensibles à l'eau),
+         <strong>R</strong> (roches R1 à R6).</p>
+      <p>Seuils d'IP : 12, <strong>25</strong>, 40. Sables et graves séparés par le tamisat à 2 mm
+         (70 %). Gros éléments : <strong>C1</strong> si la fraction 0/50 gouverne, C2 sinon.</p></div>
+    <div class="gtr24"><h4>GTR 2024 · NF EN 16907-2</h4>
+      <p>Fraction <strong>0/63 mm</strong>, fines au tamis de <strong>63 µm</strong>.</p>
+      <p>Classes <strong>F</strong>, <strong>I</strong>, <strong>S</strong>, <strong>G</strong>,
+         <strong>VC</strong> ; l'insensibilité à l'eau devient un suffixe <strong>ins</strong> ; roches
+         par famille (CH, Li, Cl, Sa, Co, SR, Vo, Me).</p>
+      <p>Seuils d'IP : 12, <strong>22</strong>, 40, 55. Sables et graves séparés par la plus grande des
+         fractions 0,063/2 et 2/63 mm. Gros éléments : <strong>VC2</strong> si la fraction 0/63 gouverne,
+         VC1 sinon — la numérotation s'inverse.</p></div>
+  </div>
+  <table class="resultats"><thead><tr><th>GTR 1992</th><th>GTR 2024 le plus proche</th><th>Ce qui peut faire basculer</th></tr></thead>
+    <tbody>
+      <tr><td><span class="classe gtr92">A1</span> <span class="classe gtr92">A2</span> <span class="classe gtr92">A3</span> <span class="classe gtr92">A4</span></td><td><span class="classe gtr24">F1</span> <span class="classe gtr24">F2</span> <span class="classe gtr24">F3</span> <span class="classe gtr24">F4</span></td><td class="motif">un IP entre 22 et 25 : A2 en 1992, F3 en 2024</td></tr>
+      <tr><td><span class="classe gtr92">B5</span> <span class="classe gtr92">B6</span></td><td><span class="classe gtr24">I1</span> <span class="classe gtr24">I2</span></td><td class="motif">12 à 15 % de fines : B5/B6 en 1992, S3/G3 en 2024</td></tr>
+      <tr><td><span class="classe gtr92">B1</span> <span class="classe gtr92">B2</span></td><td><span class="classe gtr24">S1</span> à <span class="classe gtr24">S4</span></td><td class="motif">le critère sable/grave et la propreté (5 %) ont changé</td></tr>
+      <tr><td><span class="classe gtr92">B3</span> <span class="classe gtr92">B4</span></td><td><span class="classe gtr24">G1</span> à <span class="classe gtr24">G4</span></td><td class="motif">idem ; l'étalement C<sub>u</sub> est nouveau</td></tr>
+      <tr><td><span class="classe gtr92">D1</span> <span class="classe gtr92">D2</span> <span class="classe gtr92">D3</span></td><td>S…ins, G…ins, VC…ins</td><td class="motif">règles d'insensibilité plus détaillées (fines, VBS, CBR<sub>i</sub>)</td></tr>
+      <tr><td><span class="classe gtr92">C1</span> <span class="classe gtr92">C2</span></td><td><span class="classe gtr24">VC2</span> <span class="classe gtr24">VC1</span></td><td class="motif">attention à l'inversion des numéros ; 50 mm devient 63 mm</td></tr>
+      <tr><td><span class="classe gtr92">R1</span> à <span class="classe gtr92">R6</span></td><td>CH, Li, Cl, Sa/Co, SR, Vo/Me</td><td class="motif">voir le chapitre 4</td></tr>
+    </tbody></table>
+  <p>Les états hydriques gardent les mêmes noms ; leurs seuils sont identiques pour A1 et F1 mais
+     diffèrent légèrement pour les autres sous-classes (voir le chapitre 3).</p>
+
+  <div class="calc" id="calcClasser">
+    <h3>Classer un sol aux deux éditions</h3>
+    <p class="method-note">Choisissez un sol type du cours, ou saisissez vos essais : la courbe
+       granulométrique (ouverture en mm, passant en %, matériau total), puis les paramètres
+       d'argilosité, d'état et de comportement. Les passants sont ramenés à la fraction 0/63 mm (2024)
+       et 0/50 mm (1992) ; laissez vide un essai non fait.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="clSol">Sol type</label>
+        <div class="input-wrap"><select id="clSol"></select></div></div>
+      <div class="field champ-large"><label for="clGranulo">Courbe granulométrique (mm, % passant)</label>
+        <textarea id="clGranulo" rows="6" spellcheck="false"></textarea></div>
+      <div class="field"><label for="clVbs">VBS</label><div class="input-wrap"><input id="clVbs" type="text" inputmode="decimal"><span class="unit">g/100 g</span></div></div>
+      <div class="field"><label for="clWl">w<sub>L</sub></label><div class="input-wrap"><input id="clWl" type="text" inputmode="decimal"><span class="unit">%</span></div></div>
+      <div class="field"><label for="clWp">w<sub>P</sub></label><div class="input-wrap"><input id="clWp" type="text" inputmode="decimal"><span class="unit">%</span></div></div>
+      <div class="field"><label for="clW">w<sub>n</sub></label><div class="input-wrap"><input id="clW" type="text" inputmode="decimal"><span class="unit">%</span></div></div>
+      <div class="field"><label for="clWopn">w<sub>OPN</sub></label><div class="input-wrap"><input id="clWopn" type="text" inputmode="decimal"><span class="unit">%</span></div></div>
+      <div class="field"><label for="clIpi">IPI à w<sub>n</sub></label><div class="input-wrap"><input id="clIpi" type="text" inputmode="decimal"><span class="unit">—</span></div></div>
+      <div class="field"><label for="clCbri">CBR<sub>i</sub></label><div class="input-wrap"><input id="clCbri" type="text" inputmode="decimal"><span class="unit">—</span></div></div>
+      <div class="field"><label for="clEs">ES (si pas de VBS)</label><div class="input-wrap"><input id="clEs" type="text" inputmode="decimal"><span class="unit">—</span></div></div>
+      <div class="field"><label for="clLa">LA</label><div class="input-wrap"><input id="clLa" type="text" inputmode="decimal"><span class="unit">—</span></div></div>
+      <div class="field"><label for="clMde">MDE</label><div class="input-wrap"><input id="clMde" type="text" inputmode="decimal"><span class="unit">—</span></div></div>
+      <div class="field"><label for="clFs">FS</label><div class="input-wrap"><input id="clFs" type="text" inputmode="decimal"><span class="unit">—</span></div></div>
+      <div class="field"><label for="clMo">Matières organiques</label><div class="input-wrap"><input id="clMo" type="text" inputmode="decimal"><span class="unit">%</span></div></div>
+      <div class="field"><label for="clForme">Gros éléments</label><div class="input-wrap"><select id="clForme"><option value="anguleux">anguleux</option><option value="roulés">roulés</option></select></div></div>
+    </div>
+    <div class="figure" id="clFig"></div>
+    <div class="comparaison" id="clRes"></div>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Le symbole d'un sol se construit dans l'ordre : D<sub>max</sub> (VC), fines (F, I, S, G),
+       argilosité ou granularité (1 à 4), comportement (1 ou 2), état (th à ts) ou « ins ». Quand on
+       reprend une étude ancienne, on reclasse à partir des essais — jamais par simple traduction des
+       lettres : les tamis de 80 µm et de 50 mm sont devenus 63 µm et 63 mm.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 6 ══════════════════════════ -->
+<section id="ch6" class="card">
+  <h2>6 · Les conditions d'utilisation en remblai</h2>
+
+  <h3>Des exigences techniques prêtes pour le marché</h3>
+  <p>Une fois le matériau classé, le GTR dit à quelles conditions il peut entrer dans un remblai.
+     Ces conditions sont rédigées comme des <strong>exigences techniques</strong> que l'on peut
+     reprendre directement dans le cahier des charges ; elles visent le juste niveau de qualité, avec
+     les matériels et les coûts courants <span class="ref">[F1 § 3.1]</span>. D'autres solutions
+     peuvent donner satisfaction dans un autre contexte économique — délais, niveau de service — mais
+     elles sortent alors du cadre du guide. Une règle traverse tous les tableaux : les sols sensibles à
+     l'eau dans un état <em>très humide</em> (th) ou <em>très sec</em> (ts) ne sont pas réutilisables
+     normalement, sauf étude spécifique.</p>
+
+  <h3>Lire un tableau d'utilisation</h3>
+  <p>L'annexe 2 du fascicule 2 consacre une ligne de tableau à chaque cas — classe, sous-classe et
+     état du matériau, l'état étant celui constaté à l'extraction. Pour chaque cas, le tableau envisage
+     les quatre <strong>situations météorologiques</strong> qui peuvent se présenter pendant
+     l'extraction et la mise en remblai <span class="ref">[F1 § 3.2]</span> :</p>
+  <table class="resultats"><thead><tr><th>Symbole</th><th>Situation</th><th>Effet sur la teneur en eau</th></tr></thead>
+    <tbody>
+      <tr><td><strong>++</strong></td><td>pluie forte</td><td class="motif">hausse brutale et imprévisible</td></tr>
+      <tr><td><strong>+</strong></td><td>pluie faible</td><td class="motif">hausse lente et relativement prévisible</td></tr>
+      <tr><td><strong>=</strong></td><td>ni pluie ni évaporation importante</td><td class="motif">pas d'effet sensible</td></tr>
+      <tr><td><strong>−</strong></td><td>évaporation importante</td><td class="motif">baisse, relativement prévisible sous nos climats</td></tr>
+    </tbody></table>
+  <p>Ces symboles ne correspondent à aucun seuil de pluie ou de température : la pluie agit avec le
+     vent, la chaleur et le sol lui-même. C'est le géotechnicien du chantier qui apprécie la situation
+     du moment. Pour chaque situation, le tableau donne une ou plusieurs <strong>solutions</strong>,
+     sans ordre de préférence, ou dit « NON » : pas de mise en remblai avec des garanties de qualité
+     suffisantes. Chaque solution porte un <strong>code à sept chiffres</strong>, un par rubrique,
+     qui permet de comparer d'un coup d'œil deux solutions ou deux matériaux.</p>
+
+  <h3>Sept rubriques</h3>
+  <table class="resultats"><thead><tr><th>Rubrique</th><th>Code</th><th>Condition d'utilisation</th></tr></thead>
+    <tbody id="tabRubriques"></tbody></table>
+  <ul>
+    <li><strong>E, l'extraction.</strong> En couches de 0,1 à 0,3 m (décapeuse, motor-scraper), elle
+        fragmente bien, trie les niveaux et expose le sol à l'air — ce qui aère un sol humide, mais
+        dessèche un sol sec. L'extraction frontale, à la pelle sur un front de plus de 1 à 2 m, fait
+        l'inverse et permet de réserver le meilleur niveau à la circulation <span class="ref">[F1 § 3.3]</span>.</li>
+    <li><strong>G, la granularité.</strong> Éliminer les blocs de plus de 800 mm (la limite des plus gros
+        compacteurs), ceux de plus de 250 mm si l'on doit malaxer un liant, ou fragmenter davantage
+        les roches évolutives pour obtenir une courbe étalée qui n'évoluera plus.</li>
+    <li><strong>W, la teneur en eau.</strong> Aérer ou essorer en dépôt pour sécher ; arroser pour
+        maintenir l'état par temps évaporant ; humidifier dans la masse pour changer d'état — une
+        opération qui demande beaucoup d'eau et un vrai malaxage.</li>
+    <li><strong>T, le traitement.</strong> À la chaux, ou avec un autre réactif ; en remblai, il vise
+        surtout à rendre la mise en œuvre possible, avec un malaxage sommaire à la charrue. Le dosage
+        se règle sur l'état constaté le jour même.</li>
+    <li><strong>R, le régalage.</strong> Couches minces de 20 à 30 cm, moyennes de 30 à 50 cm ; sans
+        prescription, l'épaisseur est celle que permet le compacteur (chapitre 7).</li>
+    <li><strong>C, le compactage.</strong> Intense, moyen ou faible : faible pour les sols humides, qu'un
+        compactage énergique mettrait en surpression interstitielle ; intense pour les sols secs.</li>
+    <li><strong>H, la hauteur.</strong> Remblai de faible hauteur jusqu'à 5 m, de hauteur moyenne jusqu'à
+        10 m. Les solutions qui parient sur une amélioration due à la météo ne valent pas pour les grands
+        remblais ; au-delà de 15 m, la conception relève d'une étude propre.</li>
+  </ul>
+  <figure class="figure-cours" data-schema="schemaRegalageRocheux"><figcaption>Régalage des matériaux rocheux. À gauche, la bonne pratique : les camions déchargent sur la couche en cours de régalage et un bouteur lourd pousse les blocs dans le talus de la couche, ce qui les fragmente et range les plus gros au fond. À droite, à éviter : déchargés sur la couche déjà compactée et étalés par un bouteur léger, les blocs restent en tas avec des vides.</figcaption></figure>
+
+  <div class="calc" id="calcCode">
+    <h3>Décoder un code</h3>
+    <div class="data-grid">
+      <div class="field"><label for="cdCode">Code E G W T R C H</label>
+        <div class="input-wrap"><input id="cdCode" type="text" inputmode="numeric" value="1010122" maxlength="7"><span class="unit">7 chiffres</span></div></div>
+    </div>
+    <div id="cdOut"></div>
+  </div>
+
+  <h3>Les conditions d'un matériau, situation par situation</h3>
+  <p>Le tableau 12 du fascicule 1 donne l'exemple des sols F2h — un limon moyennement plastique
+     humide. Sous la pluie faible, c'est NON. Par temps neutre, deux solutions : le traiter à la chaux
+     et le compacter moyennement (0002020), ou l'employer en l'état avec un compactage faible, dans un
+     remblai de 5 m au plus (0000031). Par temps évaporant, on peut aussi l'extraire en couches et
+     l'aérer, le régaler en couches minces et le compacter moyennement, pour un remblai de 10 m au plus
+     (1010122). Le calculateur ci-dessous retrouve ces conditions pour chacun des cas des tableaux du
+     guide.</p>
+  <div class="calc" id="calcRemblai">
+    <h3>Conditions d'utilisation en remblai</h3>
+    <div class="data-grid">
+      <div class="field"><label for="reClasse">Matériau (classe et état)</label>
+        <div class="input-wrap"><select id="reClasse"></select></div></div>
+      <div class="field"><label for="reMeteo">Situation météorologique</label>
+        <div class="input-wrap"><select id="reMeteo">
+          <option value="++">++ pluie forte</option><option value="+">+ pluie faible</option>
+          <option value="=" selected>= ni pluie ni évaporation</option><option value="-">− évaporation importante</option></select></div></div>
+    </div>
+    <div id="reOut"></div>
+  </div>
+  <div class="avertissement-tables"><strong>Tables transcrites</strong>
+    Les tableaux de l'annexe 2 ont été transcrits et contrôlés : chaque code a été confronté aux lignes de
+    conditions imprimées en regard. Le guide imprimé contient quelques discordances entre code et libellé ;
+    elles sont conservées telles quelles et listées ci-dessous. En cas de doute, le guide fait foi.
+    <details class="essai-detail"><summary>Discordances relevées dans le guide imprimé</summary><ul id="reAnomalies"></ul></details></div>
+
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Classer le matériau, constater son état à l'extraction, apprécier la météo du jour : le tableau
+       donne alors les solutions admises et leurs codes. Un même sol peut être refusé le matin sous la
+       pluie et accepté l'après-midi par temps sec — à condition d'adapter l'extraction, le régalage, le
+       compactage et la hauteur de l'ouvrage.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 7 ══════════════════════════ -->
+<section id="ch7" class="card">
+  <h2>7 · Le compactage : objectifs et méthode Q/S</h2>
+
+  <h3>Deux objectifs de densification</h3>
+  <p>Compacter, c'est serrer le sol pour qu'il ne tasse plus sous son poids et sous le trafic, qu'il
+     laisse moins passer l'eau et qu'il porte mieux. Le GTR fixe deux objectifs, exprimés en
+     pourcentage de la masse volumique sèche de l'optimum Proctor normal
+     <span class="ref">[F1 § 1.6]</span> :</p>
+  <table class="resultats"><thead><tr><th>Objectif</th><th>Usage</th><th class="num">ρ<sub>d</sub> moyenne de la couche</th><th class="num">ρ<sub>d</sub> en fond de couche</th></tr></thead>
+    <tbody>
+      <tr><td><strong>q4</strong></td><td class="motif">remblai</td><td class="n">≥ 95 % ρ<sub>dOPN</sub></td><td class="n">≥ 92 % ρ<sub>dOPN</sub></td></tr>
+      <tr><td><strong>q3</strong></td><td class="motif">couche de forme</td><td class="n">≥ 98,5 % ρ<sub>dOPN</sub></td><td class="n">≥ 96 % ρ<sub>dOPN</sub></td></tr>
+    </tbody></table>
+  <p>Le fond de couche — les 8 cm inférieurs — compte autant que la moyenne : la densité décroît
+     avec la profondeur sous le compacteur, et c'est là que le défaut apparaît d'abord. Ces objectifs
+     valent pour les remblais courants de moins de 15 m ; au-delà, ou pour un remblai contigu à un
+     ouvrage, une couche d'étanchéité, une assise de fondation, il faut des prescriptions propres.
+     Attention aussi au sol sec : un compactage intense atteint q4, mais n'empêche pas un limon
+     compacté sec de tasser plus tard s'il se mouille <span class="ref">[F1 § 2.2.1 C]</span>.</p>
+
+  <div class="calc" id="calcGradient">
+    <h3>La densité dans l'épaisseur d'une couche</h3>
+    <p class="method-note">Modèle d'enseignement : la densité croît avec le nombre d'applications de
+       charge N et décroît vers le fond de la couche, d'autant plus que la couche est épaisse. Il montre
+       pourquoi le guide limite l'épaisseur et contrôle le fond de couche ; il ne remplace pas une
+       planche d'essai.</p>
+    <div class="data-grid">
+      <div class="field"><label for="grE">Épaisseur compactée e</label>
+        <div class="input-wrap"><input id="grE" type="text" inputmode="decimal" value="0.30" data-curseur="0.15 0.8 0.01"><span class="unit">m</span></div></div>
+      <div class="field"><label for="grN">Applications de charge N</label>
+        <div class="input-wrap"><input id="grN" type="text" inputmode="decimal" value="5" data-curseur="1 14 1"><span class="unit">—</span></div></div>
+      <div class="field"><label for="grObj">Objectif</label>
+        <div class="input-wrap"><select id="grObj"><option value="q4">q4 — remblai</option><option value="q3">q3 — couche de forme</option></select></div></div>
+    </div>
+    <div class="figure" id="grFigD"></div>
+    <p class="final-result" id="grOutD"></p>
+  </div>
+
+  <h3>La méthode Q/S</h3>
+  <p>Contrôler la densité en tout point d'un remblai est impossible. Le GTR maîtrise donc le
+     compactage par les <em>moyens</em> : à chaque couple matériau–compacteur, il associe une
+     quantité d'énergie, exprimée par le rapport <strong>Q/S</strong> du volume de sol compacté Q
+     pendant un temps donné à la surface S balayée par le compacteur pendant ce temps
+     <span class="ref">[F2 annexe 4]</span>. Q/S est une épaisseur (en m) : c'est l'épaisseur de sol
+     que « traite » chaque passage. Pour une couche d'épaisseur e, le nombre d'applications de
+     charge vaut :</p>
+  <p class="formula">N = e / (Q/S), arrondi à l'entier supérieur</p>
+  <p>Un monocylindre ou un compacteur à pneus applique la charge une fois par passe (N = n) ; un tandem
+     deux fois, d'où N/n = 2. Les tableaux de l'annexe 4 donnent, pour chaque groupe de matériaux,
+     chaque énergie (code C des tableaux d'utilisation : 1 intense, 2 moyenne, 3 faible) et chaque
+     classe de compacteur : Q/S, l'épaisseur maximale e, la vitesse V et N. Le débit par mètre de
+     largeur et le débit pratique d'un compacteur s'en déduisent :</p>
+  <p class="formula">Q/L = 1 000 × (Q/S) × V &nbsp;(m³/h·m) &nbsp;&nbsp;·&nbsp;&nbsp; Q<sub>prat</sub> = k × (Q/L) × L × (N/n)</p>
+  <p>Le rendement k, de 0,5 à 0,75 selon les chantiers, est la part du temps de présence pendant
+     laquelle le compacteur travaille vraiment, avec les bons réglages. Pour les vibrants V3 à V5, le
+     tableau donne deux colonnes : la vitesse maximale avec une couche de 0,30 m, ou une couche épaisse
+     à vitesse lente ; entre les deux, le produit V × e reste constant. Il est interdit de panacher les
+     colonnes — la couche la plus épaisse à la vitesse la plus élevée.</p>
+  <div class="exemple"><strong>Exemple du guide</strong>
+    <p>Sol S1 en remblai, énergie moyenne (code 2), compacteur à pneus P1 : Q/S = 0,060 m, e = 0,30 m,
+       V = 5 km/h, d'où N = 0,30/0,060 = 5 et Q/L = 1 000 × 0,060 × 5 = 300 m³/h·m. Avec k = 0,6 et une
+       largeur de 2 m : Q<sub>prat</sub> = 0,6 × 300 × 2 = 360 m³/h. Le même sol avec un vibrant V3
+       (Q/S = 0,120) compacté en 0,50 m : V = 0,75 × 2/0,50 = 3 km/h, N = 0,50/0,120 = 4,2 → 5,
+       Q/L = 360 m³/h·m.</p></div>
+  <div class="banc" data-banc="compacteur">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · la planche de compactage</h3>
+      <p>Choisissez le matériau, l'objectif q4 ou q3, le compacteur, l'épaisseur et l'allure : le tableau donne Q/S et le N prescrit = e/(Q/S), puis le rouleau fait ses allers et retours sur une planche de 30 m, et la couche se tasse et se densifie, plus en surface qu'au fond. Le profil dans l'épaisseur et les taux moyen et de fond face à l'objectif montrent qu'une couche trop épaisse ne se rattrape pas par des passes de plus.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <div class="calc" id="calcQS">
+    <h3>Prescrire un compacteur</h3>
+    <p class="method-note">Le groupe de matériaux et l'énergie viennent du classement et du tableau
+       d'utilisation (chapitre 6) ; la ligne du tableau de compactage s'affiche, le compacteur choisi
+       en surbrillance.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="qsTab">Tableau de compactage (remblai)</label>
+        <div class="input-wrap"><select id="qsTab"></select></div></div>
+      <div class="field"><label for="qsCode">Énergie (code C)</label>
+        <div class="input-wrap"><select id="qsCode"></select></div></div>
+      <div class="field"><label for="qsComp">Compacteur</label>
+        <div class="input-wrap"><select id="qsComp"></select></div></div>
+      <div class="field"><label for="qsE">Épaisseur du chantier e</label>
+        <div class="input-wrap"><input id="qsE" type="text" inputmode="decimal" value="0.30" data-curseur="0.10 0.80 0.01"><span class="unit">m</span></div></div>
+      <div class="field"><label for="qsL">Largeur compactée L</label>
+        <div class="input-wrap"><input id="qsL" type="text" inputmode="decimal" value="2.1" data-curseur="1.3 3 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="qsK">Rendement k</label>
+        <div class="input-wrap"><input id="qsK" type="text" inputmode="decimal" value="0.6" data-curseur="0.5 0.75 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="qsTandem">Disposition</label>
+        <div class="input-wrap"><select id="qsTandem"><option value="1">monocylindre, pneus (N/n = 1)</option><option value="2">tandem (N/n = 2)</option></select></div></div>
+    </div>
+    <div id="qsLigne" style="overflow-x:auto"></div>
+    <p class="final-result" id="qsOut"></p>
+  </div>
+
+  <h3>Les classes de compacteurs</h3>
+  <p>Le GTR range les compacteurs en familles et en classes d'efficacité croissante, selon la norme
+     NF P98-736 <span class="ref">[GTR 1992 § 4.3]</span>. Un même engin peut changer de classe selon son
+     lestage ou son amplitude : c'est la configuration réelle du chantier qui compte.</p>
+  <table class="resultats"><thead><tr><th>Famille</th><th>Critère de classement</th><th>Classes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>P</strong> · pneus</td><td class="motif">charge par roue CR</td><td class="motif">P1 25 à 40 kN · P2 40 à 60 kN · P3 &gt; 60 kN</td></tr>
+      <tr><td><strong>V</strong> · vibrants à cylindre lisse</td><td class="motif">(M1/L)·√A0, M1/L en kg/cm sur la génératrice, A0 amplitude théorique à vide en mm, avec une amplitude minimale par classe</td><td class="motif">V1 15 à 25 (A0 ≥ 0,6) · V2 25 à 40 (≥ 0,8) · V3 40 à 55 (≥ 1,0) · V4 55 à 70 (≥ 1,3) · V5 &gt; 70 (≥ 1,6)</td></tr>
+      <tr><td><strong>VP</strong> · vibrants à pieds dameurs</td><td class="motif">mêmes critères que les vibrants lisses</td><td class="motif">VP1 à VP5</td></tr>
+      <tr><td><strong>SP</strong> · statiques à pieds dameurs</td><td class="motif">M1/L</td><td class="motif">SP1 30 à 60 kg/cm · SP2 60 à 90 kg/cm</td></tr>
+      <tr><td><strong>PQ</strong> · plaques vibrantes</td><td class="motif">pression statique Mg/S</td><td class="motif">PQ3 10 à 15 kPa · PQ4 &gt; 15 kPa</td></tr>
+    </tbody></table>
+  <p>Quand le paramètre (M1/L)·√A0 dépasse le haut de sa classe mais que l'amplitude n'atteint pas le
+     minimum de la classe suivante, c'est l'amplitude qui limite : un rouleau lourd à faible
+     amplitude reste dans une classe modeste.</p>
+  <div class="calc" id="calcClasseComp">
+    <h3>Classer un compacteur</h3>
+    <div class="data-grid">
+      <div class="field"><label for="ccFam">Famille</label>
+        <div class="input-wrap"><select id="ccFam"><option value="V">V — vibrant lisse</option><option value="VP">VP — vibrant à pieds</option><option value="P">P — pneus</option><option value="SP">SP — statique à pieds</option><option value="PQ">PQ — plaque vibrante</option></select></div></div>
+      <div class="field"><label for="ccM">Masse sur le cylindre M1</label>
+        <div class="input-wrap"><input id="ccM" type="text" inputmode="decimal" value="9800" data-curseur="2000 20000 100"><span class="unit">kg</span></div></div>
+      <div class="field"><label for="ccL">Longueur de génératrice L</label>
+        <div class="input-wrap"><input id="ccL" type="text" inputmode="decimal" value="213" data-curseur="100 240 1"><span class="unit">cm</span></div></div>
+      <div class="field"><label for="ccA">Amplitude théorique A0</label>
+        <div class="input-wrap"><input id="ccA" type="text" inputmode="decimal" value="1.7" data-curseur="0.3 2.2 0.05"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="ccCR">Charge par roue CR</label>
+        <div class="input-wrap"><input id="ccCR" type="text" inputmode="decimal" value="45" data-curseur="10 90 1"><span class="unit">kN</span></div></div>
+      <div class="field"><label for="ccMgS">Pression statique Mg/S</label>
+        <div class="input-wrap"><input id="ccMgS" type="text" inputmode="decimal" value="12" data-curseur="4 25 0.5"><span class="unit">kPa</span></div></div>
+    </div>
+    <div class="figure" id="ccFig"></div>
+    <p class="final-result" id="ccOut"></p>
+  </div>
+
+  <h3>Compacteurs mixtes et ateliers</h3>
+  <p>Un compacteur mixte (un cylindre vibrant et un train de pneus) ou un tandem dont les deux
+     cylindres diffèrent se traite comme la somme de deux compacteurs : Q/S est la somme des deux, e et
+     V les plus faibles des deux, N/n = 1 <span class="ref">[F2 annexe 4]</span>. Quand plusieurs
+     compacteurs se partagent une couche, on vérifie a posteriori que leurs contributions suffisent :
+     chaque compacteur i a balayé une surface S<sub>i</sub> dans la journée, pour un volume compacté Q,
+     et il faut</p>
+  <p class="formula">Σ (Q/S)<sub>tableau, i</sub> / (Q/S<sub>i</sub>) ≥ 1</p>
+  <div class="calc" id="calcAtelier">
+    <h3>Contrôle d'un atelier de compactage</h3>
+    <p class="method-note">Exemple du guide : remblai en VC1F1s, deux vibrants V4 (Q/S de tableau
+       0,05 m), 2 400 m³ compactés dans la journée.</p>
+    <div class="data-grid">
+      <div class="field"><label for="atQ">Volume compacté Q</label>
+        <div class="input-wrap"><input id="atQ" type="text" inputmode="decimal" value="2400" data-curseur="200 6000 50"><span class="unit">m³</span></div></div>
+      <div class="field"><label for="atS1">Surface balayée S<sub>1</sub></label>
+        <div class="input-wrap"><input id="atS1" type="text" inputmode="decimal" value="24000" data-curseur="0 60000 500"><span class="unit">m²</span></div></div>
+      <div class="field"><label for="atQS1">(Q/S) tableau, compacteur 1</label>
+        <div class="input-wrap"><input id="atQS1" type="text" inputmode="decimal" value="0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="atS2">Surface balayée S<sub>2</sub></label>
+        <div class="input-wrap"><input id="atS2" type="text" inputmode="decimal" value="18000" data-curseur="0 60000 500"><span class="unit">m²</span></div></div>
+      <div class="field"><label for="atQS2">(Q/S) tableau, compacteur 2</label>
+        <div class="input-wrap"><input id="atQS2" type="text" inputmode="decimal" value="0.05"><span class="unit">m</span></div></div>
+    </div>
+    <div class="figure" id="atFigA"></div>
+    <p class="final-result" id="atOutA"></p>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Q/S est une épaisseur : celle que chaque passage du compacteur densifie. Le tableau de compactage
+       donne Q/S, l'épaisseur maximale et la vitesse ; on en tire N = e/(Q/S) et le débit
+       Q<sub>prat</sub> = k (Q/L) L (N/n). Sur le chantier, on vérifie que le Q/S réalisé — volume mis
+       en œuvre divisé par la surface balayée — ne dépasse pas celui du tableau.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 8 ══════════════════════════ -->
+<section id="ch8" class="card">
+  <h2>8 · Contrôler le compactage et la portance</h2>
+
+  <h3>Contrôler les moyens, vérifier les résultats</h3>
+  <p>Un remblai se contrôle de deux façons complémentaires. Le <strong>contrôle des moyens</strong>
+     vérifie en continu que le chantier applique ce que prescrivent les tableaux : la classe du
+     compacteur, sa vitesse, l'épaisseur des couches, et surtout le Q/S réalisé. Le
+     <strong>contrôle des résultats</strong> mesure ponctuellement ce que le sol est devenu : sa masse
+     volumique sèche en place, sa résistance à la pénétration, sa portance. Le premier est exhaustif
+     mais indirect ; le second est direct mais ne voit que quelques points. Les deux se calent sur une
+     <strong>planche d'essai</strong> au démarrage du chantier, qui relie les moyens mis en œuvre aux
+     résultats obtenus sur le matériau réel.</p>
+
+  <h3>Le Q/S réalisé</h3>
+  <p>À la fin de chaque poste, le volume mis en œuvre Q (relevé par le nombre de camions ou par
+     topographie) est divisé par la surface S balayée par le compacteur, c'est-à-dire la distance qu'il
+     a parcourue en travail multipliée par sa largeur. Ce Q/S réalisé doit rester inférieur ou égal au
+     Q/S du tableau ; un enregistreur embarqué (distance, vitesse, vibration) rend ce contrôle continu.
+     Avec plusieurs compacteurs, on vérifie la somme des contributions du chapitre 7.</p>
+  <div class="calc" id="calcQSreel">
+    <h3>Q/S réalisé d'un poste</h3>
+    <div class="data-grid">
+      <div class="field"><label for="qrQ">Volume mis en œuvre Q</label>
+        <div class="input-wrap"><input id="qrQ" type="text" inputmode="decimal" value="1450" data-curseur="100 5000 10"><span class="unit">m³</span></div></div>
+      <div class="field"><label for="qrD">Distance parcourue en compactage</label>
+        <div class="input-wrap"><input id="qrD" type="text" inputmode="decimal" value="10.5" data-curseur="1 60 0.1"><span class="unit">km</span></div></div>
+      <div class="field"><label for="qrL">Largeur du compacteur L</label>
+        <div class="input-wrap"><input id="qrL" type="text" inputmode="decimal" value="2.1" data-curseur="1.3 3 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="qrTab">Q/S du tableau</label>
+        <div class="input-wrap"><input id="qrTab" type="text" inputmode="decimal" value="0.060" data-curseur="0.02 0.25 0.005"><span class="unit">m</span></div></div>
+    </div>
+    <p class="final-result" id="qrOut"></p>
+  </div>
+
+  <h3>La masse volumique en place</h3>
+  <p>Le <strong>gammadensimètre</strong> (NF P94-061-1) mesure la masse volumique humide du sol en
+     place : une source radioactive, descendue au bout d'une tige dans un avant-trou, émet des photons
+     gamma que le sol absorbe d'autant plus qu'il est dense ; un détecteur, dans le boîtier posé en
+     surface, compte ceux qui le traversent. La teneur en eau se mesure par prélèvement (ou par une
+     sonde à neutrons) et donne la masse volumique sèche :</p>
+  <p class="formula">ρ<sub>d</sub> = ρ<sub>h</sub> / (1 + w)</p>
+  <p>En transmission directe, la mesure donne la masse volumique <em>moyenne</em> entre la surface et
+     la profondeur de la source. Deux mesures, aux profondeurs z<sub>1</sub> et z<sub>2</sub>, donnent
+     par différence celle de la tranche comprise entre elles :</p>
+  <p class="formula">ρ<sub>z1–z2</sub> = (z<sub>2</sub> ρ̄<sub>2</sub> − z<sub>1</sub> ρ̄<sub>1</sub>) / (z<sub>2</sub> − z<sub>1</sub>)</p>
+  <p>C'est ainsi que l'on obtient la densité du fond de couche, entre e − 8 cm et e, à côté de la
+     densité moyenne de la couche entière ; les deux se comparent aux objectifs q4 ou q3 du chapitre 7.
+     Les mesures se font hors des traces de roues des engins, sur une couche dont le matériau a été
+     identifié : c'est la ρ<sub>dOPN</sub> de ce matériau-là qui sert de référence.</p>
+  <div class="banc" data-banc="gammadensimetre">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le gammadensimètre</h3>
+      <p>Choisissez le sol, l'état de la couche de 30 cm, la profondeur de la source et la référence ρ<sub>dOPN</sub> : en six points, la tige-guide ouvre le trou, la source descend, les détecteurs comptent et la sonde à neutrons mesure l'eau. L'étalonnage donne ρ<sub>h</sub>, puis w et ρ<sub>d</sub>, avec les taux face à q4 et q3 — et la mesure montre ce qu'elle ne voit pas : le fond de couche.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+  <div class="calc" id="calcDensite">
+    <h3>Densité en place et objectif de densification</h3>
+    <p class="method-note">Une ligne par mesure en transmission directe : profondeur de la source (cm),
+       masse volumique humide moyenne de 0 à z (Mg/m³) et teneur en eau w (%). Il faut une mesure à la
+       profondeur e (toute la couche) et une à e − 8 cm pour isoler le fond de couche.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="dePoints">Mesures (z cm, ρh moyenne Mg/m³, w %)</label>
+        <textarea id="dePoints" rows="5" spellcheck="false">10 2.111 16
+15 2.103 16
+22 2.087 16
+30 2.066 16</textarea></div>
+      <div class="field"><label for="deE">Épaisseur de la couche</label>
+        <div class="input-wrap"><input id="deE" type="text" inputmode="decimal" value="30" data-curseur="10 60 1"><span class="unit">cm</span></div></div>
+      <div class="field"><label for="deRef">ρ<sub>dOPN</sub> du matériau</label>
+        <div class="input-wrap"><input id="deRef" type="text" inputmode="decimal" value="1.86" data-curseur="1.4 2.3 0.01"><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="deObj">Objectif</label>
+        <div class="input-wrap"><select id="deObj"><option value="q4">q4 — remblai</option><option value="q3">q3 — couche de forme</option></select></div></div>
+    </div>
+    <div class="figure" id="deFig"></div>
+    <p class="final-result" id="deOut"></p>
+  </div>
+
+  <h3>Le pénétromètre dynamique</h3>
+  <p>Le pénétromètre dynamique léger à énergie variable (type Panda, XP P94-105) enfonce une pointe
+     conique en la frappant au marteau ; un capteur mesure l'énergie de chaque coup et l'enfoncement
+     qui en résulte. La résistance de pointe q<sub>d</sub> se calcule coup par coup, et son profil sur
+     toute l'épaisseur des couches dit où le compactage est insuffisant — très souvent en fond de
+     couche. Le profil se compare à deux droites établies pour le matériau et l'objectif : la
+     <em>droite de référence</em>, qui correspond à l'objectif de densification, et la <em>droite
+     limite</em>, en deçà de laquelle le compactage est refusé. L'essai est rapide et précis en
+     profondeur, mais il demande un étalonnage par matériau.</p>
+  <div class="banc" data-banc="panda">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le pénétromètre dynamique léger (Panda)</h3>
+      <p>Choisissez le matériau, l'objectif, l'épaisseur et l'état de la couche : chaque coup de marteau donne son énergie et son enfoncement, d'où q<sub>d</sub> par la formule des Hollandais, et le pénétrogramme se trace en direct face aux droites de référence et limite. Les zones sous la droite limite, souvent le fond de couche, sont relevées avec leur profondeur et leur épaisseur.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+
+  <h3>La portance : essai de plaque et dynaplaque</h3>
+  <p>L'<strong>essai de plaque</strong> (NF P94-117-1) charge une plaque rigide de 600 mm de diamètre
+     par un vérin qui prend appui sur un camion lesté. Un premier cycle monte à 0,25 MPa, un second à
+     0,20 MPa ; les enfoncements z<sub>1</sub> et z<sub>2</sub> (en mm) donnent les modules
+     <span class="ref">[NF P94-117-1]</span> :</p>
+  <p class="formula">EV = 1,5 q a / z &nbsp;⇒&nbsp; EV<sub>1</sub> = 112,5 / z<sub>1</sub> &nbsp;·&nbsp; EV<sub>2</sub> = 90 / z<sub>2</sub> &nbsp;(MPa)</p>
+  <p>EV<sub>2</sub>, le module du second chargement, caractérise la portance ; le rapport
+     k = EV<sub>2</sub>/EV<sub>1</sub> renseigne sur le compactage : un premier chargement qui serre encore
+     beaucoup le sol (k élevé, au-delà de 2 environ) trahit un compactage insuffisant. La
+     <strong>dynaplaque</strong> (NF P94-117-2) fait plus vite : une masse tombe sur une plaque de
+     300 mm par l'intermédiaire d'amortisseurs, et l'enfoncement élastique mesuré donne un module
+     dynamique E<sub>vd</sub>, qu'une planche d'étalonnage relie à EV<sub>2</sub> pour le matériau du
+     chantier.</p>
+  <div class="banc" data-banc="plaque">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai de plaque</h3>
+      <p>Choisissez la surface, arase ou couche de forme : le vérin charge la plaque de 600 mm par paliers jusqu'à 0,25 MPa, décharge, puis recharge jusqu'à 0,20 MPa, chaque palier tenu jusqu'à stabilisation. EV<sub>1</sub>, EV<sub>2</sub> et k en sortent, avec la classe AR ou PF et ce qu'elle permet.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+  <div class="calc" id="calcPlaque">
+    <h3>Modules à la plaque</h3>
+    <div class="data-grid">
+      <div class="field"><label for="plZ1">Enfoncement au 1<sup>er</sup> cycle z<sub>1</sub></label>
+        <div class="input-wrap"><input id="plZ1" type="text" inputmode="decimal" value="2.45" data-curseur="0.2 12 0.05"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="plZ2">Enfoncement au 2<sup>e</sup> cycle z<sub>2</sub></label>
+        <div class="input-wrap"><input id="plZ2" type="text" inputmode="decimal" value="1.15" data-curseur="0.1 8 0.05"><span class="unit">mm</span></div></div>
+      <div class="field"><label for="plNiv">Niveau contrôlé</label>
+        <div class="input-wrap"><select id="plNiv"><option value="arase">arase des terrassements</option><option value="plateforme">plateforme (sur couche de forme)</option></select></div></div>
+    </div>
+    <div class="figure" id="plFig"></div>
+    <p class="final-result" id="plOut"></p>
+  </div>
+  <div class="banc" data-banc="dynaplaque">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · la dynaplaque le long d'une ligne de mesure</h3>
+      <p>Choisissez la plateforme, le nombre de points sur 200 m et le seuil visé. À chaque point, la masse tombe six fois sur la plaque — trois chutes de mise en place, trois de mesure —, le boîtier trace la force et l'enfoncement, puis l'opérateur passe au point suivant. Le profil des E<sub>vd</sub> = 22,5/s montre l'homogénéité de la portance et ses points faibles, à rapporter à EV<sub>2</sub> par une planche d'étalonnage.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+  <div class="calc" id="calcDyna">
+    <h3>Module dynamique</h3>
+    <p class="method-note">Enfoncements élastiques des chutes de mesure (mm), séparés par des espaces ;
+       contrainte appliquée σ = 0,1 MPa, plaque de 300 mm : E<sub>vd</sub> = 1,5 σ a / s = 22,5 / s.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="dyS">Enfoncements (mm)</label>
+        <div class="input-wrap"><input id="dyS" type="text" inputmode="decimal" value="0.41 0.39 0.40 0.38"><span class="unit">mm</span></div></div>
+    </div>
+    <p class="final-result" id="dyOut"></p>
+  </div>
+
+  <h3>Les seuils de portance du chantier</h3>
+  <p>Le GTR fixe des portances minimales pour pouvoir construire la couche suivante
+     <span class="ref">[F1 § 4.1.3]</span> :</p>
+  <ul>
+    <li>sur l'<strong>arase des terrassements</strong>, un module EV<sub>2</sub> (ou un module équivalent à
+        la dynaplaque) d'au moins <strong>35 MPa</strong> pour exécuter une couche de forme traitée ;
+        <strong>15 à 20 MPa</strong> suffisent pour une couche de forme granulaire ;</li>
+    <li>sur la <strong>plateforme support de chaussée</strong>, au moment de construire la chaussée : un
+        module supérieur à <strong>50 MPa</strong>, ou une déflexion inférieure à <strong>2 mm</strong>
+        sous l'essieu de 13 t (déflectographe Lacroix, poutre Benkelman), et un nivellement dans une
+        tolérance fixée par le marché (± 3 cm à titre indicatif).</li>
+  </ul>
+  <p>Ces seuils sont des exigences de <em>court terme</em>, pour la construction. La portance de
+     <em>long terme</em>, celle qui sert au dimensionnement de la chaussée, se raisonne en classes
+     d'arase AR et de plateforme PF (chapitre 10).</p>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Le Q/S réalisé contrôle tout le chantier ; la densité en place, le pénétromètre et la plaque en
+       vérifient des points. EV<sub>2</sub> = 90/z<sub>2</sub> à la plaque, E<sub>vd</sub> = 22,5/s à la
+       dynaplaque ; 35 MPa sur l'arase pour une couche de forme traitée, 50 MPa sur la plateforme.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 9 ══════════════════════════ -->
+<section id="ch9" class="card">
+  <h2>9 · La stabilité des talus</h2>
+
+  <h3>Hors du GTR, mais au cœur du projet</h3>
+  <p>Le GTR le dit lui-même : il ne répond qu'aux questions d'emploi des matériaux, et n'est pas un
+     guide complet de conception. Les pentes de talus, le zonage des remblais, le drainage, la
+     stabilité des talus en matériaux évolutifs ou sensibles à l'eau relèvent d'autres documents
+     <span class="ref">[F1 § 1.5]</span> — le guide Sétra de conception et de réalisation des
+     terrassements, la norme NF P94-500 et l'Eurocode 7 pour les études. Ce chapitre donne les
+     ordres de grandeur et les raisonnements qui permettent d'en discuter : pourquoi un talus tient,
+     ce qui le fait glisser, et ce que changent l'eau et la pente.</p>
+  <p>La pente d'un talus s'écrit par son <strong>fruit</strong> : « 3/2 » signifie 3 de base pour 2 de
+     hauteur, soit une pente de 33,7° — la pente usuelle d'un talus de remblai en sol courant. Les
+     sols fins argileux, les matériaux évolutifs et les remblais de grande hauteur demandent des pentes
+     plus douces, des risbermes ou des encagements en matériaux plus frottants
+     <span class="ref">[F1 § 1.6]</span>. Des essais spécifiques (triaxiaux, œdométriques, perméabilité)
+     sont souvent indispensables pour les argiles plastiques, surconsolidées ou indurées : ils montrent
+     que les pentes courantes peuvent ne pas tenir dès qu'il y a risque de saturation
+     <span class="ref">[F1 § 1.7]</span>.</p>
+
+  <h3>Le talus infini : frottement, pente et eau</h3>
+  <p>Pour un sol sans cohésion, un glissement superficiel parallèle à la pente se juge par le rapport
+     de la résistance au frottement à la force motrice. À sec, le coefficient de sécurité ne dépend que
+     des angles :</p>
+  <p class="formula">F = tan φ' / tan β</p>
+  <p>Avec un écoulement d'eau parallèle à la pente — une nappe perchée dans un talus après de fortes
+     pluies —, la pression de l'eau réduit la contrainte effective et le coefficient tombe à peu près
+     de moitié :</p>
+  <p class="formula">F = (γ' / γ<sub>sat</sub>) × tan φ' / tan β ≈ ½ tan φ' / tan β</p>
+  <div class="calc" id="calcPente">
+    <h3>Talus infini</h3>
+    <div class="data-grid">
+      <div class="field"><label for="peFruit">Fruit du talus (base/hauteur)</label>
+        <div class="input-wrap"><input id="peFruit" type="text" inputmode="decimal" value="1.5" data-curseur="0.5 4 0.1"><span class="unit">H/V</span></div></div>
+      <div class="field"><label for="pePhi">Angle de frottement φ'</label>
+        <div class="input-wrap"><input id="pePhi" type="text" inputmode="decimal" value="35" data-curseur="20 45 0.5"><span class="unit">°</span></div></div>
+      <div class="field"><label for="peGamma">Poids volumique saturé γ<sub>sat</sub></label>
+        <div class="input-wrap"><input id="peGamma" type="text" inputmode="decimal" value="20" data-curseur="16 23 0.1"><span class="unit">kN/m³</span></div></div>
+    </div>
+    <div class="figure" id="peFig"></div>
+    <p class="final-result" id="peOut"></p>
+  </div>
+
+  <h3>Les glissements circulaires : la méthode de Bishop</h3>
+  <p>Dans un sol cohérent, le glissement le plus dangereux est profond et courbe. La méthode des
+     tranches découpe la masse qui glisse le long d'un cercle et compare, tranche par tranche, la
+     résistance mobilisable (cohésion c', frottement sur la contrainte effective) au moment moteur du
+     poids. La méthode de Bishop simplifiée tient compte des efforts entre tranches par un facteur
+     m<sub>α</sub> :</p>
+  <p class="formula">F = Σ [c' b + (W − u b) tan φ'] / m<sub>α</sub> / Σ W sin α &nbsp;·&nbsp; m<sub>α</sub> = cos α (1 + tan α tan φ' / F)</p>
+  <p>F apparaît des deux côtés : on itère. Puis on cherche, parmi de nombreux cercles, celui qui donne
+     le plus petit F : c'est le <strong>cercle critique</strong>. La pression interstitielle s'exprime
+     ici simplement par le rapport r<sub>u</sub> = u / (γ h) : 0 pour un talus sec, 0,2 à 0,3 pour un
+     remblai argileux mal drainé, jusqu'à 0,5 juste après la construction d'un remblai en sol fin
+     humide compacté.</p>
+  <div class="calc" id="calcBishop">
+    <h3>Cercle critique d'un talus homogène</h3>
+    <p class="method-note">Talus homogène sur un terrain de même nature ; recherche du cercle critique
+       sur une grille de centres et de rayons. Outil de compréhension : une étude de stabilité réelle
+       demande les paramètres mesurés, la géométrie exacte et les situations de projet de l'Eurocode 7.</p>
+    <div class="data-grid">
+      <div class="field"><label for="biH">Hauteur H</label>
+        <div class="input-wrap"><input id="biH" type="text" inputmode="decimal" value="8" data-curseur="2 20 0.5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="biF">Fruit (base/hauteur)</label>
+        <div class="input-wrap"><input id="biF" type="text" inputmode="decimal" value="1.5" data-curseur="0.5 4 0.1"><span class="unit">H/V</span></div></div>
+      <div class="field"><label for="biC">Cohésion effective c'</label>
+        <div class="input-wrap"><input id="biC" type="text" inputmode="decimal" value="8" data-curseur="0 40 1"><span class="unit">kPa</span></div></div>
+      <div class="field"><label for="biPhi">Angle de frottement φ'</label>
+        <div class="input-wrap"><input id="biPhi" type="text" inputmode="decimal" value="25" data-curseur="10 40 0.5"><span class="unit">°</span></div></div>
+      <div class="field"><label for="biGamma">Poids volumique γ</label>
+        <div class="input-wrap"><input id="biGamma" type="text" inputmode="decimal" value="20" data-curseur="16 23 0.1"><span class="unit">kN/m³</span></div></div>
+      <div class="field"><label for="biRu">Rapport r<sub>u</sub></label>
+        <div class="input-wrap"><input id="biRu" type="text" inputmode="decimal" value="0" data-curseur="0 0.5 0.05"><span class="unit">—</span></div></div>
+    </div>
+    <div class="figure" id="biFig"></div>
+    <p class="final-result" id="biOut"></p>
+  </div>
+  <div class="piege"><strong>Piège fréquent</strong>
+    <p>Un remblai en sol fin compacté du côté humide de l'optimum a des pressions interstitielles
+       élevées pendant et juste après la construction : c'est souvent le moment le plus critique. C'est
+       une raison de plus pour laquelle les tableaux d'utilisation limitent la hauteur des remblais
+       construits avec des sols humides (rubrique H du chapitre 6).</p></div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>À sec, un talus de sable tient tant que sa pente reste sous l'angle de frottement ; un écoulement
+       parallèle à la pente divise la marge par deux. Pour un sol cohérent, on cherche le cercle de
+       glissement le plus défavorable ; la cohésion fait tenir les talus de faible hauteur, le
+       frottement et le drainage font tenir les grands.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 10 ══════════════════════════ -->
+<section id="ch10" class="card">
+  <h2>10 · La PST, l'arase et la plateforme</h2>
+
+  <h3>Court terme, long terme</h3>
+  <p>Le GTR raisonne à deux échéances <span class="ref">[F1 § 4.3.1]</span>. Le <strong>court
+     terme</strong>, c'est le chantier : l'état hydrique du jour, souvent favorable l'été et défavorable
+     l'hiver, la circulation des engins, le réglage. Le <strong>long terme</strong>, c'est la vie de la
+     chaussée : la portance minimale que l'on peut escompter dans les conditions défavorables — pluies,
+     infiltrations, remontées de nappe —, compte tenu des dispositions de drainage retenues. Les
+     classes de portance de l'arase (<strong>AR</strong>) et de la plateforme (<strong>PF</strong>)
+     sont des valeurs de long terme : elles servent à dimensionner la chaussée, et leur choix relève de
+     la conception, pas des conditions du chantier.</p>
+  <figure class="figure-cours" data-schema="schemaPST"><figcaption>La partie supérieure des terrassements (PST) est le mètre supérieur du remblai ou du déblai ; sa surface est l'arase. La couche de forme repose sur l'arase et porte la plateforme, support de la chaussée. Un drain et la position de la nappe pèsent sur la portance à long terme de la PST.</figcaption></figure>
+
+  <h3>Sept cas de PST</h3>
+  <p>Selon la nature des matériaux du mètre supérieur et leur environnement hydrique, le tableau 17 du
+     fascicule 1 distingue sept cas <span class="ref">[F1 § 4.3.3]</span> :</p>
+  <table class="resultats"><thead><tr><th>Cas</th><th>Matériaux et contexte</th><th>Arase à long terme</th></tr></thead>
+    <tbody>
+      <tr><td><strong>PST0</strong></td><td class="motif">sols sensibles à l'eau très humides (th) — profil rasant avec nappe subaffleurante, déblai dans des matériaux très humides : portance quasi nulle. Pas de couche de forme sans reclassement (drainage, purge, substitution, traitement).</td><td>AR0</td></tr>
+      <tr><td><strong>PST1</strong></td><td class="motif">sols sensibles à l'eau humides (h), de mauvaise portance au moment des travaux, sans amélioration possible à long terme. Couche de forme granulaire épaisse (sur 15 à 20 MPa au moins), ou traitement pour passer à un autre cas ; jamais de couche de forme traitée directement.</td><td>AR1 · 20 MPa</td></tr>
+      <tr><td><strong>PST2</strong></td><td class="motif">sols sensibles à l'eau en état moyen ou sec (m, s), de bonne portance aux travaux mais exposés aux infiltrations et à une remontée de nappe. Les argiles F3 et F4 y restent même drainées.</td><td>AR1 · 20 MPa</td></tr>
+      <tr><td><strong>PST3</strong></td><td class="motif">mêmes sols, sans risque de remontée de nappe (remblai, ou déblai avec drainage profond). AR2 possible en état moyen, avec drainage à la base de la chaussée et imperméabilisation de l'arase — rarement pour les sols fins.</td><td>AR1 ou AR2</td></tr>
+      <tr><td><strong>PST4</strong></td><td class="motif">sols sensibles à l'eau <em>stabilisés</em> par traitement sur au moins 0,35 m (0,70 m en deux couches depuis une PST1), avec drainage en déblai.</td><td>AR2 · 50 MPa</td></tr>
+      <tr><td><strong>PST5</strong></td><td class="motif">sables insensibles à l'eau (S…ins) : portance durable, traficabilité difficile ; la couche de forme peut se réduire à une couche de réglage.</td><td>AR2 ou AR3</td></tr>
+      <tr><td><strong>PST6</strong></td><td class="motif">graves insensibles à l'eau (G…ins), craies CH1 et CH2, roches dures et de dureté moyenne (R1 à R4) : la couche de forme ne s'impose que pour le réglage et la traficabilité.</td><td>AR2 ou AR3</td></tr>
+    </tbody></table>
+  <p>Deux mots changent tout : <strong>amélioration</strong> et <strong>stabilisation</strong>. Un
+     traitement d'amélioration agit à court terme — il abaisse la teneur en eau, permet la circulation
+     et le compactage ; pour le tableau des PST, le sol amélioré reste un sol non traité. Une
+     stabilisation donne au sol une résistance durable, à l'eau et au gel, vérifiée par une étude et un
+     contrôle ; elle seule permet la PST4 <span class="ref">[F1 § 4.3.1]</span>.</p>
+  <div class="calc" id="calcPST">
+    <h3>Cas de PST et classe d'arase</h3>
+    <div class="data-grid">
+      <div class="field"><label for="psClasse">Matériau de la PST</label>
+        <div class="input-wrap"><select id="psClasse">
+          <optgroup label="Sols"><option>F1</option><option selected>F2</option><option>F3</option><option>F4</option><option>I1</option><option>I2</option>
+            <option>S1</option><option>S2</option><option>S3</option><option>S4</option><option>G1</option><option>G2</option><option>G3</option><option>G4</option><option>VC1G3</option><option>VC2F1</option></optgroup>
+          <optgroup label="Craies et roches"><option>CH1</option><option>CH2</option><option>CH3</option><option>CH4</option><option>R3 Li</option><option>R4 Cl</option><option>R5 Cl</option></optgroup>
+        </select></div></div>
+      <div class="field"><label for="psEtat">État</label>
+        <div class="input-wrap"><select id="psEtat"><option value="th">th — très humide</option><option value="h">h — humide</option><option value="m" selected>m — moyen</option><option value="s">s — sec</option><option value="ts">ts — très sec</option><option value="ins">ins — insensible à l'eau</option></select></div></div>
+      <div class="field"><label for="psNappe">Nappe</label>
+        <div class="input-wrap"><select id="psNappe"><option value="non">pas de remontée dans la PST</option><option value="risque">remontée possible, sans rabattement</option></select></div></div>
+      <div class="field"><label for="psDrain">Drainage et imperméabilisation de l'arase</label>
+        <div class="input-wrap"><select id="psDrain"><option value="non">non</option><option value="oui">oui</option></select></div></div>
+      <div class="field"><label for="psTrait">Traitement</label>
+        <div class="input-wrap"><select id="psTrait"><option value="non">aucun</option><option value="amelioration">amélioration (court terme)</option><option value="stabilisation">stabilisation</option></select></div></div>
+      <div class="field"><label for="psE">Épaisseur traitée</label>
+        <div class="input-wrap"><input id="psE" type="text" inputmode="decimal" value="0.35" data-curseur="0 1 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="psEv2">EV<sub>2</sub> mesuré sur l'arase (facultatif)</label>
+        <div class="input-wrap"><input id="psEv2" type="text" inputmode="decimal" value=""><span class="unit">MPa</span></div></div>
+    </div>
+    <p class="final-result" id="psOut"></p>
+  </div>
+
+  <h3>Les classes de portance de l'arase et de la plateforme</h3>
+  <figure class="figure-cours" data-schema="schemaClassesPortance"><figcaption>Classes de portance à long terme, en module EV<sub>2</sub>. La classe PF2qs (« qualité supérieure », 80 à 120 MPa) partage l'ancienne PF2, qui allait de 50 à 120 MPa ; issue d'une note d'information publiée depuis 2000, elle est intégrée au GTR 2024 [F1 § 1.1].</figcaption></figure>
+  <table class="resultats"><thead><tr><th>Arase</th><th class="num">EV<sub>2</sub> à long terme</th><th>Plateforme</th><th class="num">EV<sub>2</sub> à long terme</th></tr></thead>
+    <tbody>
+      <tr><td>AR0</td><td class="n">&lt; 20 MPa</td><td>PF1</td><td class="n">20 à 50 MPa</td></tr>
+      <tr><td>AR1</td><td class="n">20 à 50 MPa</td><td>PF2</td><td class="n">50 à 80 MPa</td></tr>
+      <tr><td>AR2</td><td class="n">50 à 120 MPa</td><td>PF2qs</td><td class="n">80 à 120 MPa</td></tr>
+      <tr><td>AR3</td><td class="n">120 à 200 MPa</td><td>PF3</td><td class="n">120 à 200 MPa</td></tr>
+      <tr><td>AR4</td><td class="n">≥ 200 MPa</td><td>PF4</td><td class="n">≥ 200 MPa</td></tr>
+    </tbody></table>
+  <p>Au chantier, la portance de l'arase mesurée à court terme doit être au moins égale au module de
+     long terme de la classe retenue. Pour les PST1 à PST3, sensibles à l'eau, on la contrôle peu avant
+     de recouvrir l'arase ; pour la PST4, on peut l'anticiper, mais il vaut mieux recontrôler après un
+     hiver ou un trafic de chantier intense ; pour les PST5 et PST6, la mesure de court terme vaut à
+     long terme. La plateforme se contrôle à l'avancement de la couche de forme : pour vérifier que la
+     classe visée est atteinte, et pour repérer les anomalies à temps <span class="ref">[F1 § 4.3.1]</span>.</p>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Nature et état du mètre supérieur, nappe et drainage : ils fixent le cas de PST et la classe
+       d'arase à long terme (AR1 20 MPa, AR2 50 MPa, AR3 120 MPa). La couche de forme fait passer de cette
+       arase à la plateforme visée par le dimensionnement de la chaussée (PF2 50 MPa, PF2qs 80 MPa,
+       PF3 120 MPa…) : c'est l'objet du chapitre suivant.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 11 ══════════════════════════ -->
+<section id="ch11" class="card">
+  <h2>11 · La couche de forme</h2>
+
+  <h3>Une couche aux deux visages</h3>
+  <p>La couche de forme est la transition entre les terrassements et la chaussée. Elle répond à des
+     objectifs de <strong>court terme</strong> — permettre la circulation des engins qui apportent les
+     matériaux de chaussée, assurer le nivellement de la plateforme, protéger l'arase des intempéries
+     en attendant la chaussée — et de <strong>long terme</strong> : homogénéiser la portance du support,
+     maintenir une portance minimale malgré les variations d'état hydrique des sols, l'améliorer pour
+     économiser sur la chaussée, protéger du gel les sols gélifs, contribuer au drainage
+     <span class="ref">[F1 § 4.1]</span>. Sur un petit chantier, on peut ne viser que le court terme ;
+     la couche de forme, plus mince, ne compte alors pas dans le dimensionnement de la chaussée.</p>
+
+  <h3>Les critères à satisfaire</h3>
+  <p>Un matériau de couche de forme doit répondre à cinq critères, quelle que soit sa nature —
+     naturelle, recyclée ou sous-produit industriel <span class="ref">[F1 § 4.2.1]</span> :</p>
+  <ul>
+    <li><strong>insensibilité à l'eau</strong>, à l'état naturel ou après traitement, ou après
+        élimination de la fraction fine : c'est elle qui garantit la circulation quasi tout temps et la
+        portance durable. Pour un matériau naturel qui ne satisfait pas les critères, une étude
+        spécifique (granulométrie, VBS, CBR<sub>i</sub>, Proctor et IPI, planche avec plaque avant et après
+        arrosage) peut démontrer l'insensibilité, si VBS &lt; 0,2 et fines &lt; 12 % ;</li>
+    <li><strong>dimension des plus gros éléments</strong> : sans traitement, L<sub>max</sub> ≤ 250 mm et
+        au plus la moitié de l'épaisseur de la couche élémentaire compactée, pour éviter la ségrégation et
+        tenir le nivellement à ± 3 cm ; traité, D<sub>max</sub> 63 mm pour un malaxage en centrale,
+        100 mm en place ;</li>
+    <li><strong>résistance au trafic de chantier</strong> : un matériau non traité ne doit pas produire
+        de fines en surface sous le compactage et la circulation — d'où les essais LA, MDE et FS du
+        chapitre 4 — ni s'enliser sous les efforts des pneus, travers des graves roulées homométriques ;</li>
+    <li><strong>insensibilité au gel</strong>, s'il y a lieu (chapitre 13) ;</li>
+    <li><strong>performances mécaniques</strong> des matériaux traités, établies par une étude de
+        traitement. La chaux seule n'est admise en couche de forme que pour les sols F3.</li>
+  </ul>
+  <div class="calc" id="calcLmax">
+    <h3>Épaisseur de couche et plus gros éléments</h3>
+    <div class="data-grid">
+      <div class="field"><label for="lmE">Épaisseur de la couche élémentaire compactée</label>
+        <div class="input-wrap"><input id="lmE" type="text" inputmode="decimal" value="0.40" data-curseur="0.2 0.8 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="lmL">L<sub>max</sub> du matériau</label>
+        <div class="input-wrap"><input id="lmL" type="text" inputmode="decimal" value="180" data-curseur="20 400 5"><span class="unit">mm</span></div></div>
+    </div>
+    <p class="final-result" id="lmOut"></p>
+  </div>
+
+  <h3>Les matériaux traités : classe mécanique</h3>
+  <p>Pour un matériau traité aux liants hydrauliques, la classe mécanique se lit sur un abaque qui
+     croise, à 90 jours, le module d'Young E et la résistance en traction directe R<sub>t</sub>, mesurés
+     sur des éprouvettes moulées à la compacité prévue en fond de couche ; un essai de fendage donne
+     R<sub>t</sub> = 0,8 R<sub>TB</sub>. Le mode de traitement compte : en place, le mélange est moins
+     homogène qu'en centrale, et la classe descend d'un rang <span class="ref">[F1 § 4.2.1, figure 12 et
+     tableau 14]</span>.</p>
+  <div class="calc" id="calcZone">
+    <h3>Classe mécanique d'un matériau traité</h3>
+    <p class="method-note">Frontières des zones numérisées sur l'abaque du guide (édition 2000) :
+       la lecture est précise à quelques pour cent près, comme sur le papier.</p>
+    <div class="data-grid">
+      <div class="field"><label for="zoE">Module E à 90 jours</label>
+        <div class="input-wrap"><input id="zoE" type="text" inputmode="decimal" value="8000" data-curseur="1000 40000 100"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="zoRt">Traction directe R<sub>t</sub> à 90 jours</label>
+        <div class="input-wrap"><input id="zoRt" type="text" inputmode="decimal" value="0.45" data-curseur="0.08 2.5 0.01"><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="zoMode">Traitement</label>
+        <div class="input-wrap"><select id="zoMode"><option value="centrale">en centrale</option><option value="place">en place</option></select></div></div>
+    </div>
+    <div class="figure" id="zoFig"></div>
+    <p class="final-result" id="zoOut"></p>
+  </div>
+
+  <h3>Les conditions d'utilisation en couche de forme</h3>
+  <p>Comme pour les remblais, l'annexe 3 du fascicule 2 donne, pour chaque classe — avec son chiffre de
+     comportement et le suffixe « ins » —, les solutions admises selon la météo, avec un code à quatre
+     chiffres <span class="ref">[F1 tableau 15]</span> : <strong>G</strong> l'action sur la granularité
+     (éliminer la fraction 0/d sensible à l'eau, éliminer les gros éléments, fragmenter),
+     <strong>W</strong> l'arrosage, <strong>T</strong> le traitement (liant hydraulique, avec ou sans
+     chaux, chaux seule, correcteur granulométrique), <strong>S</strong> la protection superficielle
+     (enduit de cure, gravillonné, clouté, ou couche de fin réglage).</p>
+  <div class="calc" id="calcCdf">
+    <h3>Conditions d'utilisation en couche de forme</h3>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="cfClasse">Matériau</label>
+        <div class="input-wrap"><select id="cfClasse"></select></div></div>
+      <div class="field"><label for="cfMeteo">Situation météorologique</label>
+        <div class="input-wrap"><select id="cfMeteo">
+          <option value="++">++ pluie forte</option><option value="+">+ pluie faible</option>
+          <option value="=" selected>= ni pluie ni évaporation</option><option value="-">− évaporation importante</option></select></div></div>
+    </div>
+    <div id="cfOut"></div>
+  </div>
+
+  <h3>L'épaisseur de la couche de forme</h3>
+  <p>L'épaisseur se fixe par deux critères : la <strong>portance à long terme</strong> de la plateforme
+     et la <strong>protection au gel</strong> de la chaussée <span class="ref">[F1 § 4.3.2]</span>. Le cas de
+     PST donne la classe d'arase (chapitre 10) ; pour chaque matériau de couche de forme, le guide
+     préconise l'épaisseur qui conduit à la classe de plateforme visée. La vérification au gel suit la
+     NF P98-086 (chapitre 13). Une étude d'optimisation peut ensuite retenir une couche plus épaisse ou
+     plus performante, si l'économie sur la chaussée le justifie.</p>
+  <p>Le principe se comprend avec un modèle à deux couches : une couche raide d'épaisseur h et de module
+     E<sub>1</sub>, posée sur l'arase de module E<sub>2</sub>, donne en surface un module apparent
+     E<sub>s</sub> qui croît avec h. La méthode d'Odemark remplace la couche par une épaisseur équivalente
+     de sol support, h<sub>e</sub> = 0,9 h (E<sub>1</sub>/E<sub>2</sub>)<sup>1/3</sup>.</p>
+  <div class="calc" id="calcEpaisseur">
+    <h3>Épaisseur et plateforme</h3>
+    <p class="method-note">Épaisseurs tabulées du GTR 2000 (tableaux XIII, XIV et XVI), données comme
+       référence : celles du GTR 2024 (F1 § 4.3.5), qui intègrent la classe PF2qs, sont à lire dans le
+       guide. Le modèle bicouche, lui, est un outil de compréhension.</p>
+    <div class="data-grid">
+      <div class="field"><label for="epType">Couche de forme</label>
+        <div class="input-wrap"><select id="epType">
+          <option value="nonTraite">granulaire non traitée</option><option value="finChaux">sol fin traité à la chaux seule</option>
+          <option value="finChauxCiment">sol fin traité chaux + ciment</option><option value="grenuTraite" selected>matériau grenu traité aux liants</option></select></div></div>
+      <div class="field"><label for="epAr">Arase</label>
+        <div class="input-wrap"><select id="epAr"><option value="AR1" selected>AR1 (20 MPa)</option><option value="AR2">AR2 (50 MPa)</option></select></div></div>
+      <div class="field"><label for="epClasse">Classe mécanique</label>
+        <div class="input-wrap"><select id="epClasse"><option value="3">3</option><option value="4" selected>4</option><option value="5">5</option></select></div></div>
+      <div class="field"><label for="epPf">Plateforme visée</label>
+        <div class="input-wrap"><select id="epPf"><option value="PF2">PF2</option><option value="PF3" selected>PF3</option><option value="PF4">PF4</option></select></div></div>
+      <div class="field"><label for="epE1">Module de la couche de forme E<sub>1</sub></label>
+        <div class="input-wrap"><input id="epE1" type="text" inputmode="decimal" value="1000" data-curseur="100 5000 50"><span class="unit">MPa</span></div></div>
+    </div>
+    <div class="figure" id="epFig"></div>
+    <p class="final-result" id="epOut"></p>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Une couche de forme doit être insensible à l'eau, sans éléments trop gros, résistante au trafic,
+       insensible au gel s'il le faut, et performante si elle est traitée. Son épaisseur dépend de
+       l'arase, du matériau et de la plateforme visée : plus la couche est raide et épaisse, plus le module
+       de la plateforme s'élève au-dessus de celui de l'arase.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 12 ══════════════════════════ -->
+<section id="ch12" class="card">
+  <h2>12 · Le traitement des sols à la chaux et aux liants</h2>
+
+  <h3>Améliorer ou stabiliser</h3>
+  <p>Traiter un sol, c'est le malaxer en place ou en centrale avec un produit qui modifie son état ou
+     ses propriétés. Le GTR distingue deux objectifs <span class="ref">[F1 § 4.3.1]</span> :</p>
+  <ul>
+    <li>l'<strong>amélioration</strong> agit à court terme : elle abaisse la teneur en eau, réduit la
+        plasticité, rend le sol traficable et compactable. C'est le traitement des remblais en sol
+        humide, celui de la rubrique T des tableaux d'utilisation ;</li>
+    <li>la <strong>stabilisation</strong> donne au sol, à moyen ou long terme, une résistance durable,
+        notamment à l'eau et au gel, mesurable comme celle d'un matériau solide. C'est le traitement des
+        couches de forme et de la PST4 ; il entre dans le dimensionnement.</li>
+  </ul>
+  <p>Les règles d'exécution détaillées sont celles du guide technique « Traitement des sols à la chaux
+     et/ou aux liants hydrauliques » (GTS) et de la NF EN 16907-4.</p>
+
+  <h3>Les produits et leurs effets</h3>
+  <table class="resultats"><thead><tr><th>Produit</th><th>Effets</th><th>Emplois typiques</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Chaux vive</strong> CaO</td><td class="motif">immédiats : elle consomme de l'eau en s'hydratant, dégage de la chaleur qui en évapore, apporte de la matière sèche ; les argiles floculent, la limite de plasticité monte, l'IPI aussi. À plus long terme, réactions pouzzolaniques avec les argiles.</td><td class="motif">sols fins humides en remblai (F, I) ; seule en couche de forme pour les sols F3 uniquement</td></tr>
+      <tr><td><strong>Ciments, liants hydrauliques routiers</strong></td><td class="motif">prise hydraulique : résistance et rigidité durables, dans un délai de maniabilité limité</td><td class="motif">sables, graves, sols peu argileux ; couches de forme traitées</td></tr>
+      <tr><td><strong>Chaux puis liant</strong> (traitement mixte)</td><td class="motif">la chaux prépare un sol argileux (teneur en eau, plasticité), le liant apporte la résistance</td><td class="motif">sols fins F1, F2, I en couche de forme ou en PST4</td></tr>
+    </tbody></table>
+
+  <h3>L'aptitude au traitement</h3>
+  <p>Certaines espèces minérales — pyrite, sulfates, smectites, serpentine — ou les matières organiques
+     peuvent faire gonfler un sol traité ou perturber la prise. Avant de compter sur un traitement, on
+     vérifie donc l'aptitude du sol (NF P94-100) : des éprouvettes du mélange sont conservées puis
+     immergées, et l'on mesure leur gonflement volumique G<sub>v</sub> et leur résistance en traction
+     indirecte R<sub>tb</sub> <span class="ref">[F1 § 1.7.3.2]</span>. Si l'aptitude est confirmée, une
+     étude de formulation fixe le produit et le dosage.</p>
+  <div class="calc" id="calcAptitude">
+    <h3>Aptitude d'un sol au traitement</h3>
+    <p class="method-note">Critères usuels de la NF P94-100 sur éprouvettes immergées : à vérifier
+       sur la norme pour l'étude d'un chantier.</p>
+    <div class="data-grid">
+      <div class="field"><label for="apGv">Gonflement volumique G<sub>v</sub></label>
+        <div class="input-wrap"><input id="apGv" type="text" inputmode="decimal" value="3.2" data-curseur="0 15 0.1"><span class="unit">%</span></div></div>
+      <div class="field"><label for="apRtb">Résistance R<sub>tb</sub> après immersion</label>
+        <div class="input-wrap"><input id="apRtb" type="text" inputmode="decimal" value="0.24" data-curseur="0 0.6 0.01"><span class="unit">MPa</span></div></div>
+    </div>
+    <p class="final-result" id="apOut"></p>
+  </div>
+
+  <h3>La chaux vive et la teneur en eau</h3>
+  <p>Pour 100 g de sol sec et C g de chaux vive, l'hydratation CaO + H<sub>2</sub>O → Ca(OH)<sub>2</sub>
+     consomme 18/56 = 0,32 g d'eau par gramme de chaux et ajoute 1,32 g de solide ; la chaleur dégagée,
+     environ 1,16 MJ/kg, vaporise une partie de l'eau. Il en résulte la règle de chantier : <strong>1 %
+     de chaux vive abaisse la teneur en eau d'environ un point</strong>, davantage par temps sec et venté,
+     quand le malaxage aère le sol.</p>
+  <p class="formula">w' = (w − 0,32 C − 0,51 η C) / (100 + 1,32 C) × 100</p>
+  <div class="calc" id="calcChaux">
+    <h3>Effet de la chaux vive sur un sol humide</h3>
+    <div class="data-grid">
+      <div class="field"><label for="chW">Teneur en eau du sol w</label>
+        <div class="input-wrap"><input id="chW" type="text" inputmode="decimal" value="22" data-curseur="8 40 0.1"><span class="unit">%</span></div></div>
+      <div class="field"><label for="chC">Dosage en chaux vive C</label>
+        <div class="input-wrap"><input id="chC" type="text" inputmode="decimal" value="2" data-curseur="0 6 0.1"><span class="unit">%</span></div></div>
+      <div class="field"><label for="chEta">Part de la chaleur qui évapore η</label>
+        <div class="input-wrap"><input id="chEta" type="text" inputmode="decimal" value="0.5" data-curseur="0 1 0.05"><span class="unit">—</span></div></div>
+      <div class="field"><label for="chVise">Teneur en eau visée (facultatif)</label>
+        <div class="input-wrap"><input id="chVise" type="text" inputmode="decimal" value="19"><span class="unit">%</span></div></div>
+    </div>
+    <div class="figure" id="chFig"></div>
+    <p class="final-result" id="chOut"></p>
+  </div>
+
+  <h3>Doser, épandre, malaxer</h3>
+  <p>Le dosage s'exprime en pourcentage de la masse de sol sec. Sur le chantier, il se traduit en masse
+     de produit par mètre carré, pour une couche d'épaisseur e compactée à ρ<sub>d</sub> :</p>
+  <p class="formula">q (kg/m²) = (dosage / 100) × ρ<sub>d</sub> (kg/m³) × e (m)</p>
+  <p>L'épandeur, à dosage pondéral asservi à sa vitesse, répand cette quantité ; on la contrôle en pesant
+     ce qui tombe sur une bâche de surface connue. Le malaxeur (pulvérisateur à rotor) mélange ensuite sur
+     toute l'épaisseur, jusqu'à une mouture fine ; en remblai, une charrue suffit souvent. Puis viennent
+     le réglage, le compactage dans le délai de maniabilité du liant, et la protection superficielle
+     (enduit de cure). On ne traite ni sous la pluie, ni par temps de gel, ni par vent fort pour la chaux
+     pulvérulente. Le bilan pluie–évaporation de la région aide à choisir la période des travaux
+     <span class="ref">[F1 § 1.7.3.3]</span>.</p>
+  <div class="banc" data-banc="traitement">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · le traitement à la chaux vive en place</h3>
+      <p>Choisissez le sol, le dosage, l'épaisseur et l'évaporation. La bâche pesée contrôle l'épandage, le pulvimixeur malaxe la couche, et la chaux vive en s'hydratant fait baisser la teneur en eau, qui franchit ou non la limite de l'état h. Le bilan donne le dosage mesuré, la baisse de teneur en eau et le nouvel état hydrique.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+  <div class="calc" id="calcDosage">
+    <h3>Quantités à épandre</h3>
+    <div class="data-grid">
+      <div class="field"><label for="doD">Dosage</label>
+        <div class="input-wrap"><input id="doD" type="text" inputmode="decimal" value="2.5" data-curseur="0.5 8 0.1"><span class="unit">%</span></div></div>
+      <div class="field"><label for="doRho">ρ<sub>d</sub> en place</label>
+        <div class="input-wrap"><input id="doRho" type="text" inputmode="decimal" value="1.75" data-curseur="1.4 2.2 0.01"><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="doE">Épaisseur traitée e</label>
+        <div class="input-wrap"><input id="doE" type="text" inputmode="decimal" value="0.35" data-curseur="0.15 0.6 0.01"><span class="unit">m</span></div></div>
+      <div class="field"><label for="doS">Surface à traiter</label>
+        <div class="input-wrap"><input id="doS" type="text" inputmode="decimal" value="12000" data-curseur="500 50000 500"><span class="unit">m²</span></div></div>
+      <div class="field"><label for="doB">Pesée sur la bâche (1 m²)</label>
+        <div class="input-wrap"><input id="doB" type="text" inputmode="decimal" value="14.6"><span class="unit">kg</span></div></div>
+    </div>
+    <p class="final-result" id="doOut"></p>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Améliorer pour pouvoir mettre en œuvre, stabiliser pour durer. Vérifier d'abord l'aptitude au
+       traitement ; 1 % de chaux vive ôte environ un point de teneur en eau ; la quantité à épandre vaut
+       dosage × ρ<sub>d</sub> × e, et se contrôle à la bâche.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 13 ══════════════════════════ -->
+<section id="ch13" class="card">
+  <h2>13 · Le gel et la sensibilité au gel</h2>
+
+  <h3>Deux façons de souffrir du gel</h3>
+  <p>Le gel abîme les terrassements de deux manières <span class="ref">[F1 § 4.2.1]</span> :</p>
+  <ul>
+    <li>la <strong>gélifraction</strong> : l'eau gèle dans les pores des granulats saturés, ou dans les
+        liaisons créées par la prise d'un liant, et fragmente le matériau. Pour les granulats, on la juge
+        par l'essai de gel-dégel (NF EN 1367-1) ou par l'absorption d'eau ; pour les matériaux traités, par
+        un essai de gélifraction : la perte de résistance en traction à 28 jours après les cycles de gel ne
+        doit pas dépasser 50 % ;</li>
+    <li>la <strong>cryosuccion</strong> : sous l'effet du gradient de température, l'eau libre est aspirée
+        vers le front de gel, où se forment des lentilles de glace. Le support gonfle pendant le gel ; au
+        dégel, les sols fins sensibles à l'eau perdent presque toute leur portance. Il faut pour cela une
+        forte teneur en eau et une alimentation en eau, que le diagnostic doit aussi apprécier.</li>
+  </ul>
+
+  <h3>L'essai de gonflement au gel</h3>
+  <p>L'essai de gonflement au gel (NF P98-234-2) soumet une éprouvette de matériau 0/20 mm à un gel par le
+     haut, sa base plongeant dans l'eau à température positive. On mesure le gonflement h au fur et à
+     mesure que l'<strong>indice de gel</strong> I (somme des degrés-heures sous zéro appliqués) augmente :
+     h croît comme √I, et la <strong>pente p</strong> de la droite h(√I), en mm/(°C·h)<sup>½</sup>,
+     classe le matériau <span class="ref">[F2 annexe 3]</span>.</p>
+  <table class="resultats"><thead><tr><th>Pente p (mm/(°C·h)<sup>½</sup>)</th><th>Classe</th></tr></thead>
+    <tbody>
+      <tr><td>p ≤ 0,05</td><td><strong>SGn</strong> · non gélif</td></tr>
+      <tr><td>0,05 &lt; p ≤ 0,4</td><td><strong>SGp</strong> · peu gélif</td></tr>
+      <tr><td>p &gt; 0,4</td><td><strong>SGt</strong> · très gélif</td></tr>
+    </tbody></table>
+  <div class="banc" data-banc="gel">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'essai de gonflement au gel</h3>
+      <p>Choisissez le matériau. Trois éprouvettes gèlent par la tête pendant six jours : le front de gel descend, la cryosuccion forme des lentilles de glace et les comparateurs lisent le gonflement. Sa pente p en fonction de √I classe le matériau SGn, SGp ou SGt.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+  <div class="calc" id="calcPenteGel">
+    <h3>Pente de gonflement au gel</h3>
+    <p class="method-note">Une ligne par mesure : indice de gel cumulé I (°C·h) et gonflement h (mm). La
+       droite passe par l'origine (moindres carrés sur √I).</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="pgPoints">Mesures (I °C·h, h mm)</label>
+        <textarea id="pgPoints" rows="5" spellcheck="false">100 1.9
+200 2.9
+400 4.0
+600 5.0
+900 6.1</textarea></div>
+    </div>
+    <div class="figure" id="pgFig"></div>
+    <p class="final-result" id="pgOut"></p>
+  </div>
+
+  <h3>Sans essai : les règles par défaut</h3>
+  <p>En l'absence d'essai, l'annexe 3 du fascicule 2 attribue une classe selon la nature et le traitement
+     <span class="ref">[F2 annexe 3]</span>. Un matériau non traité insensible à l'eau est non gélif si ses
+     granulats résistent à la gélifraction (LA ≤ 45 et MDE ≤ 45, ou catégorie F4 au gel-dégel, ou
+     absorption WA<sub>24</sub> ≤ 2 %), peu gélif sinon. Les sols F3, F4 non traités sont réputés peu gélifs ;
+     les sols F1, F2, I, S et G sensibles à l'eau, très gélifs ; les craies et les roches argileuses
+     dégradables, très gélives. Un matériau traité à la chaux seule est non gélif si sa résistance en
+     compression atteint 2,5 MPa à l'âge du premier gel possible ; traité au liant hydraulique, si sa
+     résistance en compression diamétrale atteint 0,25 MPa. L'essai de gonflement prévaut toujours.</p>
+  <div class="calc" id="calcGelDefaut">
+    <h3>Classe de gel d'un matériau, par les règles</h3>
+    <div class="data-grid">
+      <div class="field"><label for="gdNature">Matériau</label>
+        <div class="input-wrap"><select id="gdNature">
+          <option>F1</option><option>F2</option><option selected>F3</option><option>F4</option><option>I1</option><option>I2</option><option>S1</option><option>S3</option><option>G1</option><option>G3</option>
+          <option>VC1G3</option><option>VC2F2</option><option>CH3</option><option>R4 Cl</option><option>R4 Cld1</option><option>R5 Cl</option></select></div></div>
+      <div class="field"><label for="gdTrait">Traitement</label>
+        <div class="input-wrap"><select id="gdTrait"><option value="aucun">aucun</option><option value="chaux">chaux seule</option><option value="liant">liant hydraulique</option></select></div></div>
+      <div class="field"><label for="gdIns">Insensible à l'eau</label>
+        <div class="input-wrap"><select id="gdIns"><option value="non">non</option><option value="oui">oui</option></select></div></div>
+      <div class="field"><label for="gdLa">LA</label><div class="input-wrap"><input id="gdLa" type="text" inputmode="decimal" value=""><span class="unit">—</span></div></div>
+      <div class="field"><label for="gdMde">MDE</label><div class="input-wrap"><input id="gdMde" type="text" inputmode="decimal" value=""><span class="unit">—</span></div></div>
+      <div class="field"><label for="gdRc">R<sub>c</sub> au premier gel</label><div class="input-wrap"><input id="gdRc" type="text" inputmode="decimal" value=""><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="gdRit">R<sub>it</sub> au premier gel</label><div class="input-wrap"><input id="gdRit" type="text" inputmode="decimal" value=""><span class="unit">MPa</span></div></div>
+      <div class="field"><label for="gdP">Pente p mesurée (facultatif)</label><div class="input-wrap"><input id="gdP" type="text" inputmode="decimal" value=""><span class="unit">mm/(°C·h)½</span></div></div>
+    </div>
+    <p class="final-result" id="gdOut"></p>
+  </div>
+
+  <h3>Protéger la chaussée</h3>
+  <p>C'est au niveau de la couche de forme que la protection au gel s'obtient au moindre coût
+     <span class="ref">[F1 § 4.1.2]</span> : une épaisseur suffisante de matériaux non gélifs au-dessus d'un
+     sol support gélif empêche le front de gel de l'atteindre, ou limite la quantité de gel qui l'atteint.
+     La vérification se fait selon la NF P98-086, en comparant l'indice de gel de l'hiver de référence du
+     lieu à l'indice que la structure peut admettre ; elle peut conduire à épaissir la couche de forme
+     au-delà de ce qu'exige la portance <span class="ref">[F1 § 4.3.2]</span>. La formule de Stefan donne
+     un ordre de grandeur de la profondeur atteinte par le gel :</p>
+  <p class="formula">z = √(2 λ I / L) &nbsp;·&nbsp; L = w ρ<sub>d</sub> × 334 kJ/kg</p>
+  <div class="calc" id="calcStefan">
+    <h3>Profondeur de gel (Stefan)</h3>
+    <p class="method-note">Modèle d'enseignement : il néglige la chaleur sensible et le flux du sol, et
+       surestime la profondeur réelle. Il montre l'effet de l'hiver et de l'eau contenue dans le sol.</p>
+    <div class="data-grid">
+      <div class="field"><label for="stI">Indice de gel de l'hiver I</label>
+        <div class="input-wrap"><input id="stI" type="text" inputmode="decimal" value="200" data-curseur="20 800 10"><span class="unit">°C·jour</span></div></div>
+      <div class="field"><label for="stL">Conductivité thermique λ</label>
+        <div class="input-wrap"><input id="stL" type="text" inputmode="decimal" value="1.8" data-curseur="0.8 3 0.1"><span class="unit">W/m·K</span></div></div>
+      <div class="field"><label for="stW">Teneur en eau w</label>
+        <div class="input-wrap"><input id="stW" type="text" inputmode="decimal" value="8" data-curseur="2 30 0.5"><span class="unit">%</span></div></div>
+      <div class="field"><label for="stRho">ρ<sub>d</sub></label>
+        <div class="input-wrap"><input id="stRho" type="text" inputmode="decimal" value="2.0" data-curseur="1.4 2.3 0.01"><span class="unit">Mg/m³</span></div></div>
+    </div>
+    <div class="figure" id="stFig"></div>
+    <p class="final-result" id="stOut"></p>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Gélifraction des grains et des liaisons, cryosuccion des sols fins humides : la pente p de l'essai de
+       gonflement classe le matériau (0,05 et 0,4 mm/(°C·h)<sup>½</sup>), à défaut les règles de l'annexe 3.
+       La couche de forme en matériaux non gélifs est le meilleur rempart, vérifié par la NF P98-086.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 14 ══════════════════════════ -->
+<section id="ch14" class="card">
+  <h2>14 · Cubatures et mouvement des terres</h2>
+
+  <h3>Du tracé aux volumes</h3>
+  <p>Le projet routier se décrit par un <strong>profil en long</strong> (la cote de l'axe le long du
+     tracé) et des <strong>profils en travers</strong> perpendiculaires, tous les 20 à 50 m. Sur chaque
+     profil, la plateforme et ses talus coupent le terrain naturel : ce qui dépasse au-dessus du projet
+     est du <em>déblai</em>, ce qui manque en dessous du <em>remblai</em>. Les surfaces de chaque profil,
+     reportées le long du tracé, donnent les volumes ; leur balance, le <strong>mouvement des
+     terres</strong> : quels déblais vont dans quels remblais, sur quelle distance, et ce qui part en dépôt
+     ou vient d'un emprunt. Le GTR intervient en amont : c'est la classification des déblais et leurs
+     conditions d'utilisation qui disent quelle part est réutilisable, et où <span class="ref">[F1 § 1.4]</span>.</p>
+
+  <div class="calc" id="calcProfil">
+    <h3>Un profil en travers</h3>
+    <p class="method-note">Terrain naturel : une ligne par point, abscisse depuis l'axe (m, négative à
+       gauche) et cote (m). La plateforme de terrassement a un dévers en toit ; les talus rejoignent le
+       terrain avec leur fruit.</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="pfTn">Terrain naturel (x m, z m)</label>
+        <textarea id="pfTn" rows="5" spellcheck="false">-30 106.8
+-12 104.6
+0 102.6
+12 100.4
+30 97.6</textarea></div>
+      <div class="field"><label for="pfZ">Cote du projet à l'axe</label>
+        <div class="input-wrap"><input id="pfZ" type="text" inputmode="decimal" value="102.0" data-curseur="98 106 0.05"><span class="unit">m</span></div></div>
+      <div class="field"><label for="pfL">Demi-largeur de la plateforme</label>
+        <div class="input-wrap"><input id="pfL" type="text" inputmode="decimal" value="6" data-curseur="3 15 0.25"><span class="unit">m</span></div></div>
+      <div class="field"><label for="pfDev">Dévers</label>
+        <div class="input-wrap"><input id="pfDev" type="text" inputmode="decimal" value="2.5" data-curseur="0 7 0.5"><span class="unit">%</span></div></div>
+      <div class="field"><label for="pfFd">Fruit des talus de déblai</label>
+        <div class="input-wrap"><input id="pfFd" type="text" inputmode="decimal" value="1" data-curseur="0.5 3 0.1"><span class="unit">H/V</span></div></div>
+      <div class="field"><label for="pfFr">Fruit des talus de remblai</label>
+        <div class="input-wrap"><input id="pfFr" type="text" inputmode="decimal" value="1.5" data-curseur="1 3 0.1"><span class="unit">H/V</span></div></div>
+    </div>
+    <div class="figure" id="pfFig"></div>
+    <p class="final-result" id="pfOut"></p>
+  </div>
+
+  <h3>Les volumes entre profils</h3>
+  <p>Entre deux profils distants de d, on admet que la surface varie linéairement : c'est la méthode de
+     la <strong>moyenne des aires</strong>, V = d (S<sub>1</sub> + S<sub>2</sub>)/2, appliquée séparément
+     au déblai et au remblai. Quand un profil intermédiaire est connu, la formule des trois niveaux est
+     plus précise : V = d (S<sub>1</sub> + 4 S<sub>m</sub> + S<sub>2</sub>)/6.</p>
+
+  <h3>Foisonnement et compactage</h3>
+  <p>Un mètre cube extrait ne fait pas un mètre cube de remblai. Excavé, le sol <em>foisonne</em> :
+     1 m³ en place devient C<sub>f</sub> m³ dans la benne, de 1,1 à 1,3 pour un sol meuble et jusqu'à 1,5
+     ou 1,6 pour une roche abattue à l'explosif. Compacté en remblai, il se resserre : il occupe
+     C<sub>t</sub> m³, rapport de sa masse volumique sèche en place à celle du remblai compacté — souvent
+     un peu moins de 1 pour un sol meuble, plus de 1 pour une roche. Le volume transporté se compte
+     foisonné ; le volume de remblai se compte compacté.</p>
+  <div class="calc" id="calcFoison">
+    <h3>Du déblai au remblai</h3>
+    <div class="data-grid">
+      <div class="field"><label for="foV">Déblai en place</label>
+        <div class="input-wrap"><input id="foV" type="text" inputmode="decimal" value="12000" data-curseur="1000 100000 500"><span class="unit">m³</span></div></div>
+      <div class="field"><label for="foCf">Coefficient de foisonnement C<sub>f</sub></label>
+        <div class="input-wrap"><input id="foCf" type="text" inputmode="decimal" value="1.25" data-curseur="1.05 1.7 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="foRp">ρ<sub>d</sub> en place</label>
+        <div class="input-wrap"><input id="foRp" type="text" inputmode="decimal" value="1.78" data-curseur="1.4 2.6 0.01"><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="foRr">ρ<sub>d</sub> du remblai compacté</label>
+        <div class="input-wrap"><input id="foRr" type="text" inputmode="decimal" value="1.84" data-curseur="1.4 2.4 0.01"><span class="unit">Mg/m³</span></div></div>
+      <div class="field"><label for="foBenne">Capacité d'un tombereau</label>
+        <div class="input-wrap"><input id="foBenne" type="text" inputmode="decimal" value="18" data-curseur="6 60 1"><span class="unit">m³ foisonnés</span></div></div>
+    </div>
+    <p class="final-result" id="foOut"></p>
+  </div>
+
+  <h3>L'épure de Lalanne</h3>
+  <p>Le long du tracé, on cumule les volumes : chaque tronçon ajoute son déblai réutilisable, converti en
+     volume de remblai compacté, et retranche son remblai. La courbe obtenue — l'<strong>épure de
+     Lalanne</strong>, ou courbe des mouvements des terres — monte dans les déblais et descend dans les
+     remblais ; ses sommets sont aux passages déblai–remblai. Son ordonnée finale est le solde : excédent
+     à mettre en dépôt, ou déficit à emprunter.</p>
+  <p>Une <strong>ligne de répartition</strong> horizontale coupe la courbe en boucles : entre deux points
+     de coupe, déblais et remblais s'équilibrent. Dans chaque boucle, le volume transporté est l'écart
+     maximal entre la courbe et la ligne, et le <strong>moment de transport</strong> (m³·m) l'aire entre
+     elles ; leur quotient est la distance moyenne de transport. Déplacer la ligne change la répartition
+     entre transports longitudinaux, dépôts et emprunts : on la place pour minimiser le coût total.</p>
+  <div class="calc" id="calcLalanne">
+    <h3>Volumes, épure et répartition</h3>
+    <p class="method-note">Une ligne par profil : abscisse curviligne (m), surface de déblai et surface de
+       remblai (m²).</p>
+    <div class="data-grid">
+      <div class="field champ-large"><label for="lalProfils">Profils (x m, déblai m², remblai m²)</label>
+        <textarea id="lalProfils" rows="8" spellcheck="false">0 0 0
+50 32 0
+100 58 0
+150 46 4
+200 18 16
+250 0 42
+300 0 56
+350 0 30
+400 6 8
+450 14 0
+500 0 0</textarea></div>
+      <div class="field"><label for="lalReemploi">Part réutilisable du déblai</label>
+        <div class="input-wrap"><input id="lalReemploi" type="text" inputmode="decimal" value="0.85" data-curseur="0 1 0.05"><span class="unit">—</span></div></div>
+      <div class="field"><label for="lalCt">Coefficient de compactage C<sub>t</sub></label>
+        <div class="input-wrap"><input id="lalCt" type="text" inputmode="decimal" value="0.95" data-curseur="0.8 1.2 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="lalC">Ligne de répartition</label>
+        <div class="input-wrap"><input id="lalC" type="text" inputmode="decimal" value="0" data-curseur="-3000 6000 50"><span class="unit">m³</span></div></div>
+    </div>
+    <div class="figure" id="lalFig"></div>
+    <p class="final-result" id="lalOut"></p>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Surfaces des profils en travers, volumes par la moyenne des aires, conversion par le foisonnement
+       (transport) et le compactage (remblai), puis l'épure de Lalanne : elle montre d'un coup d'œil les
+       transports, leurs distances, les dépôts et les emprunts. Le GTR dit quelle part des déblais est
+       réutilisable, et dans quelles conditions.</p></div>
+</section>
+
+
+<!-- ══════════════════════════ CHAPITRE 15 ══════════════════════════ -->
+<section id="ch15" class="card">
+  <h2>15 · Les engins et leurs rendements</h2>
+
+  <h3>Un engin pour chaque opération</h3>
+  <p>Les conditions d'utilisation du GTR se traduisent en choix d'engins. Extraire en couches de 0,1 à
+     0,3 m (rubrique E1), c'est le travail de la décapeuse (motor-scraper) ou du bouteur ; extraire
+     frontalement sur un front de 1 à 2 m (E2), celui de la pelle hydraulique, qui choisit aussi le
+     meilleur niveau du déblai <span class="ref">[F1 § 3.3]</span>.</p>
+  <table class="resultats"><thead><tr><th>Opération</th><th>Engins</th><th>Ce qui fixe leur rendement</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Extraire</strong></td><td class="motif">pelle hydraulique (en rétro ou en butte), chargeuse, décapeuse, bouteur avec ripper pour les roches tendres, explosif pour les roches dures</td><td class="motif">capacité du godet, durée du cycle, difficulté d'extraction (foisonnement, remplissage du godet)</td></tr>
+      <tr><td><strong>Transporter</strong></td><td class="motif">tombereaux rigides ou articulés, décapeuses sur les distances moyennes, bouteur sur les courtes distances</td><td class="motif">charge utile, distance, vitesses sur la piste, temps fixes (chargement, déchargement, manœuvres)</td></tr>
+      <tr><td><strong>Régaler</strong></td><td class="motif">bouteur, niveleuse pour le réglage fin</td><td class="motif">épaisseur des couches (rubrique R), nature du matériau</td></tr>
+      <tr><td><strong>Compacter</strong></td><td class="motif">compacteurs P, V, VP, SP, plaques PQ (chapitre 7)</td><td class="motif">Q/S, vitesse, épaisseur, largeur</td></tr>
+      <tr><td><strong>Traiter</strong></td><td class="motif">épandeur à dosage pondéral, malaxeur, charrue (chapitre 12)</td><td class="motif">dosage, profondeur de malaxage, vitesse d'avancement</td></tr>
+    </tbody></table>
+  <p>Les engins n'avancent que si le sol les porte : c'est la <strong>traficabilité</strong>. Un sol fin
+     humide (h) porte mal, un sol très humide (th) ne porte plus — c'est précisément ce que mesure l'IPI
+     (chapitre 3). Les pistes de chantier, entretenues et drainées, conditionnent les vitesses des
+     tombereaux, donc le débit de tout l'atelier.</p>
+
+  <h3>La pelle et son cycle</h3>
+  <p>Une pelle charge à chaque cycle un godet de q m³ foisonnés, rempli à kr près ; elle fait 3 600/t<sub>c</sub>
+     cycles par heure, dont une fraction E de temps vraiment productif (environ 50 minutes par heure). Son
+     rendement, compté en m³ en place, est :</p>
+  <p class="formula">Q = 3 600 · q · kr · E / (t<sub>c</sub> · C<sub>f</sub>)</p>
+  <div class="calc" id="calcPelle">
+    <h3>Rendement d'une pelle</h3>
+    <div class="data-grid">
+      <div class="field"><label for="pelQ">Capacité du godet q</label>
+        <div class="input-wrap"><input id="pelQ" type="text" inputmode="decimal" value="2.5" data-curseur="0.5 8 0.1"><span class="unit">m³</span></div></div>
+      <div class="field"><label for="pelKr">Coefficient de remplissage kr</label>
+        <div class="input-wrap"><input id="pelKr" type="text" inputmode="decimal" value="0.9" data-curseur="0.5 1.1 0.05"><span class="unit">—</span></div></div>
+      <div class="field"><label for="pelTc">Durée d'un cycle t<sub>c</sub></label>
+        <div class="input-wrap"><input id="pelTc" type="text" inputmode="decimal" value="20" data-curseur="12 40 1"><span class="unit">s</span></div></div>
+      <div class="field"><label for="pelE">Efficacité horaire E</label>
+        <div class="input-wrap"><input id="pelE" type="text" inputmode="decimal" value="0.83" data-curseur="0.5 0.95 0.01"><span class="unit">—</span></div></div>
+      <div class="field"><label for="pelCf">Foisonnement C<sub>f</sub></label>
+        <div class="input-wrap"><input id="pelCf" type="text" inputmode="decimal" value="1.25" data-curseur="1.05 1.7 0.01"><span class="unit">—</span></div></div>
+    </div>
+    <p class="final-result" id="pelOut"></p>
+  </div>
+
+  <h3>L'atelier pelle + tombereaux</h3>
+  <p>Le cycle d'un tombereau additionne son chargement (n godets de la pelle), le trajet en charge,
+     le déchargement et les manœuvres, le retour à vide. Tant qu'il y a trop peu de tombereaux, la pelle
+     les attend : le débit croît avec leur nombre. Au-delà d'un nombre de <strong>saturation</strong> —
+     le cycle du tombereau divisé par la durée de son chargement —, ce sont les tombereaux qui attendent
+     la pelle : en ajouter ne sert plus à rien.</p>
+  <div class="banc" data-banc="chantier">
+    <div class="banc-tete"><span class="banc-marque" aria-hidden="true">▶</span><div>
+      <h3>Banc d'essai · l'atelier pelle et tombereaux</h3>
+      <p>Réglez le godet, la benne, la distance, le nombre de tombereaux et le foisonnement. La pelle charge, les camions roulent, vident au remblai et font la queue — ou bien la pelle les attend. Une heure de travail simulée donne le rendement réel, le nombre de tombereaux qui sature la pelle et ce qui limite l'atelier.</p></div></div>
+    <button type="button" class="primary banc-ouvrir">Lancer le banc d'essai</button>
+    <p class="banc-imprime">Banc d'essai interactif : dans le cours en ligne.</p>
+  </div>
+  <div class="calc" id="calcFlotte">
+    <h3>Combien de tombereaux pour une pelle ?</h3>
+    <p class="method-note">La pelle est celle du calculateur précédent.</p>
+    <div class="data-grid">
+      <div class="field"><label for="floCap">Capacité d'un tombereau</label>
+        <div class="input-wrap"><input id="floCap" type="text" inputmode="decimal" value="18" data-curseur="8 60 1"><span class="unit">m³ foisonnés</span></div></div>
+      <div class="field"><label for="floDist">Distance de transport</label>
+        <div class="input-wrap"><input id="floDist" type="text" inputmode="decimal" value="1200" data-curseur="100 5000 50"><span class="unit">m</span></div></div>
+      <div class="field"><label for="floVc">Vitesse en charge</label>
+        <div class="input-wrap"><input id="floVc" type="text" inputmode="decimal" value="20" data-curseur="8 40 1"><span class="unit">km/h</span></div></div>
+      <div class="field"><label for="floVv">Vitesse à vide</label>
+        <div class="input-wrap"><input id="floVv" type="text" inputmode="decimal" value="35" data-curseur="10 50 1"><span class="unit">km/h</span></div></div>
+      <div class="field"><label for="floTf">Temps fixes (déchargement, manœuvres)</label>
+        <div class="input-wrap"><input id="floTf" type="text" inputmode="decimal" value="120" data-curseur="30 300 5"><span class="unit">s</span></div></div>
+      <div class="field"><label for="floN">Tombereaux engagés</label>
+        <div class="input-wrap"><input id="floN" type="text" inputmode="decimal" value="4" data-curseur="1 15 1"><span class="unit">—</span></div></div>
+    </div>
+    <div class="figure" id="floFig"></div>
+    <p class="final-result" id="floOut"></p>
+  </div>
+
+  <h3>Le bouteur, sur les courtes distances</h3>
+  <p>Le bouteur pousse une lame de V<sub>l</sub> m³ foisonnés, puis revient à vide, plus vite. Son cycle
+     croît avec la distance, et son rendement s'effondre au-delà de quelques dizaines de mètres : au-delà,
+     la décapeuse ou les tombereaux prennent le relais.</p>
+  <div class="calc" id="calcBouteur">
+    <h3>Rendement d'un bouteur</h3>
+    <div class="data-grid">
+      <div class="field"><label for="bouVl">Volume de lame V<sub>l</sub></label>
+        <div class="input-wrap"><input id="bouVl" type="text" inputmode="decimal" value="6" data-curseur="2 20 0.5"><span class="unit">m³</span></div></div>
+      <div class="field"><label for="bouD">Distance de poussée</label>
+        <div class="input-wrap"><input id="bouD" type="text" inputmode="decimal" value="40" data-curseur="10 150 5"><span class="unit">m</span></div></div>
+      <div class="field"><label for="bouVp">Vitesse de poussée</label>
+        <div class="input-wrap"><input id="bouVp" type="text" inputmode="decimal" value="3" data-curseur="1.5 6 0.5"><span class="unit">km/h</span></div></div>
+      <div class="field"><label for="bouVr">Vitesse de retour</label>
+        <div class="input-wrap"><input id="bouVr" type="text" inputmode="decimal" value="7" data-curseur="3 12 0.5"><span class="unit">km/h</span></div></div>
+    </div>
+    <div class="figure" id="bouFig"></div>
+    <p class="final-result" id="bouOut"></p>
+  </div>
+  <div class="a-retenir"><strong>À retenir</strong>
+    <p>Les engins traduisent les conditions du GTR en méthodes : extraction en couches ou frontale,
+       couches minces ou moyennes, compactage intense ou faible. Leurs rendements se calculent par cycles,
+       en m³ en place ; un atelier pelle + tombereaux est réglé quand la pelle ne les attend pas et qu'ils
+       ne l'attendent pas : c'est le nombre de saturation.</p></div>
+</section>
+
+</div>
+<aside class="cours-aside">
+  <nav class="card" aria-label="Sommaire du cours"><h2>Sommaire</h2>
+    <ul class="chapitre-sommaire" id="sommaire"></ul></nav>
+</aside>
+</div>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<noscript>Activez JavaScript pour utiliser les calculateurs et les bancs d'essai du cours.</noscript>
+
+<script type="module">
+import { chargerJson } from "./src/donnees.js";
+const { chapitres } = await chargerJson("data/chapitres.json");
+document.getElementById("sommaire").innerHTML = chapitres.map((c) => {
+  const pret = document.getElementById(c.id);
+  return `<li><a data-ch="${c.id}" href="${pret ? "#" + c.id : "index.html#" + c.id}">
+    ${c.number} · ${c.title}<small>${pret ? "disponible" : "en préparation"}</small></a></li>`;
+}).join("");
+
+// Sommaire actif : la section dont le titre est le dernier franchi vers le haut.
+const liens = new Map([...document.querySelectorAll("#sommaire a[data-ch]")]
+  .map((a) => [a.dataset.ch, a]));
+const sections = chapitres.map((c) => document.getElementById(c.id)).filter(Boolean);
+
+function marquerSectionLue() {
+  const repere = 120;
+  let courante = sections[0];
+  for (const sec of sections)
+    if (sec.getBoundingClientRect().top <= repere) courante = sec;
+  for (const [id, a] of liens) a.classList.toggle("actif", id === courante?.id);
+  const actif = liens.get(courante?.id);
+  if (actif && liens.size > 6) {
+    const boite = actif.closest("ul");
+    const dessus = actif.offsetTop - boite.scrollTop;
+    if (dessus < 0 || dessus > boite.clientHeight - actif.offsetHeight)
+      boite.scrollTop = actif.offsetTop - boite.clientHeight / 2;
+  }
+}
+let planifie = false;
+addEventListener("scroll", () => {
+  if (planifie) return;
+  planifie = true;
+  requestAnimationFrame(() => { planifie = false; marquerSectionLue(); });
+}, { passive: true });
+addEventListener("resize", marquerSectionLue, { passive: true });
+marquerSectionLue();
+</script>
+<script type="module" src="src/impression.js"></script>
+<script type="module" src="src/socle.js"></script>
+<script type="module" src="src/cours-schemas.js"></script>
+<script type="module" src="src/curseurs.js"></script>
+<script type="module" src="src/bancs.js"></script>
+<script type="module" src="src/cours-ch1.js"></script>
+<script type="module" src="src/cours-ch2.js"></script>
+<script type="module" src="src/cours-ch3.js"></script>
+<script type="module" src="src/cours-ch4.js"></script>
+<script type="module" src="src/cours-ch5.js"></script>
+<script type="module" src="src/cours-ch6.js"></script>
+<script type="module" src="src/cours-ch7.js"></script>
+<script type="module" src="src/cours-ch8.js"></script>
+<script type="module" src="src/cours-ch9.js"></script>
+<script type="module" src="src/cours-ch10.js"></script>
+<script type="module" src="src/cours-ch11.js"></script>
+<script type="module" src="src/cours-ch12.js"></script>
+<script type="module" src="src/cours-ch13.js"></script>
+<script type="module" src="src/cours-ch14.js"></script>
+<script type="module" src="src/cours-ch15.js"></script>
+<script type="module" src="src/tableaux.js"></script>
+</body></html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#075985">
+<meta name="description" content="Exerciseur de terrassements routiers : exercices à données tirées au hasard, corrigés pas à pas, selon le GTR 2024">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="enhancements.css">
+<link rel="stylesheet" href="site.css">
+<title>Exerciseur — Terrassements</title>
+</head><body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Retour à l'accueil">
+    <span class="brand-mark">GR</span>
+    <span><strong>Terrassements</strong><small>Exerciseur</small></span>
+  </a>
+  <div class="header-actions">
+    <a class="ghost course-link" href="cours.html">Cours</a>
+    <a class="ghost course-link" href="bureau.html">Bureau de calcul</a>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <p class="method-note">Chargement de l'exerciseur…</p>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<noscript>Activez JavaScript pour utiliser l'exerciseur.</noscript>
+<script type="module" src="src/socle.js"></script>
+<script type="module" src="src/exerciseur.js"></script>
+<script type="module" src="src/tableaux.js"></script>
+</body></html>

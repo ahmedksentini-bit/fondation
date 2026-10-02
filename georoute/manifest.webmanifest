@@ -1,0 +1,14 @@
+{
+  "name": "Terrassements routiers — GTR 2024",
+  "short_name": "Terrassements",
+  "description": "Cours, essais animés, exerciseur et bureau de calcul des terrassements routiers : remblais et couches de forme selon le guide GTR 2024 du Cerema, comparé au GTR 1992",
+  "lang": "fr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f8fb",
+  "theme_color": "#075985",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
