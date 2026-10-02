@@ -1,0 +1,423 @@
+{
+ "chapitre": "ch15",
+ "exercices": [
+  {
+   "id": "ch15-pelle",
+   "titre": "Rendement d'une pelle hydraulique",
+   "difficulte": 1,
+   "graine": 3867444895,
+   "enonce": "Une pelle hydraulique en rétro extrait un calcaire fragmenté au ripper : godet de 1,9 m³, coefficient de remplissage kr = 0,85, cycle de 28 s, 55 minutes utiles par heure (E = 0,917), foisonnement Cf = 1,50. Le déblai à extraire représente 22 000 m³ en place.",
+   "donnees": [
+    {
+     "label": "Godet · kr",
+     "valeur": "1,9 m³ · 0,85"
+    },
+    {
+     "label": "Cycle",
+     "valeur": "28 s"
+    },
+    {
+     "label": "Temps utile",
+     "valeur": "55 min/h"
+    },
+    {
+     "label": "Cf",
+     "valeur": "1,50"
+    },
+    {
+     "label": "Déblai",
+     "valeur": "22 000 m³ en place"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Volume foisonné chargé à chaque cycle ?",
+     "type": "nombre",
+     "unite": "m³",
+     "reponse": 1.615,
+     "explication": "q kr = 1,9 × 0,85 = 1,615 m³ foisonnés.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Nombre de cycles utiles par heure ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 117.857,
+     "explication": "3 600 E / tc = 3 600 × 0,917 / 28 = 117,9 cycles.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rendement Q en m³ en place par heure ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 126.893,
+     "explication": "Q = 3 600 q kr E / (tc Cf) = 117,9 × 1,615 / 1,50 = 126,9 m³ en place par heure.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Nombre de postes de 8 heures pour tout le déblai ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 22,
+     "explication": "22 000 / (8 × 126,9) = 21,67 → 22 postes, si les tombereaux suivent.",
+     "tolerance": 0.5
+    }
+   ]
+  },
+  {
+   "id": "ch15-tombereau",
+   "titre": "Le cycle d'un tombereau",
+   "difficulte": 2,
+   "graine": 3750421799,
+   "enonce": "Une pelle (godet de 2,5 m³, kr = 0,85, cycle de 26 s) charge des tombereaux de 24 m³ foisonnés, qui roulent 450 m jusqu'au remblai à 22 km/h en charge et reviennent à vide à 33 km/h ; déchargement et manœuvres prennent 160 s par rotation.",
+   "donnees": [
+    {
+     "label": "Godet · kr · cycle",
+     "valeur": "2,5 m³ · 0,85 · 26 s"
+    },
+    {
+     "label": "Benne",
+     "valeur": "24 m³ foisonnés"
+    },
+    {
+     "label": "Distance",
+     "valeur": "450 m"
+    },
+    {
+     "label": "Vitesses",
+     "valeur": "22 km/h en charge · 33 km/h à vide"
+    },
+    {
+     "label": "Temps fixes",
+     "valeur": "160 s"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Nombre de godets pour remplir la benne ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 11,
+     "explication": "24 / (2,5 × 0,85) = 11,29 → 11 godets, soit 23,38 m³ foisonnés par voyage.",
+     "tolerance": 0.5
+    },
+    {
+     "texte": "Durée du chargement ?",
+     "type": "nombre",
+     "unite": "s",
+     "reponse": 286,
+     "explication": "Le tombereau reste sous la pelle le temps de ses godets : 11 × 26 s = 286 s.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Durée du trajet en charge ?",
+     "type": "nombre",
+     "unite": "s",
+     "reponse": 73.6364,
+     "explication": "22 km/h = 6,11 m/s ; 450 / 6,11 = 73,6 s.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Durée du cycle complet du tombereau ?",
+     "type": "nombre",
+     "unite": "min",
+     "reponse": 9.47879,
+     "explication": "286 + 73,6 + 49,1 (retour) + 160 = 568,7 s, soit 9,48 min.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch15-saturation",
+   "titre": "Combien de tombereaux pour une pelle ?",
+   "difficulte": 2,
+   "graine": 3159251531,
+   "enonce": "Pelle : godet de 2,0 m³, coefficient de remplissage kr = 0,80, cycle de 17 s, 51 minutes utiles par heure (E = 0,850), foisonnement Cf = 1,45. Elle charge des tombereaux de 13 m³ foisonnés, dont le cycle complet (chargement, trajets, déchargement et manœuvres) dure 7,08 min. On dispose de 2 tombereaux.",
+   "donnees": [
+    {
+     "label": "Pelle",
+     "valeur": "2,0 m³ · kr 0,80 · 17 s"
+    },
+    {
+     "label": "E · Cf",
+     "valeur": "0,850 · 1,45"
+    },
+    {
+     "label": "Tombereau",
+     "valeur": "13 m³ · cycle 7,08 min"
+    },
+    {
+     "label": "Tombereaux engagés",
+     "valeur": "2"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rendement de la pelle (m³ en place par heure) ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 198.621,
+     "explication": "Q = 3 600 × 2,0 × 0,80 × 0,850 / (17 × 1,45) = 198,6 m³/h.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Nombre de tombereaux qui sature la pelle ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 4,
+     "explication": "Chargement : 8 godets × 17 s = 136 s ; 425 / 136 = 3,12 → 4 tombereaux (on arrondit au-dessus).",
+     "tolerance": 0.5
+    },
+    {
+     "texte": "Débit de l'atelier avec 2 tombereaux ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 127.253,
+     "explication": "Flotte : 3 600 E n × charge / (cycle × Cf) = 3 600 × 0,850 × 2 × 12,80 / (425 × 1,45) = 127,3 m³/h ; l'atelier donne le plus faible de ce débit et de celui de la pelle : 127,3 m³/h.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Qu'est-ce qui limite l'atelier ?",
+     "type": "choix",
+     "options": [
+      "la pelle",
+      "la flotte de tombereaux"
+     ],
+     "reponse": 1,
+     "explication": "2 < 4 : la pelle attend les camions → la flotte de tombereaux."
+    }
+   ]
+  },
+  {
+   "id": "ch15-bouteur",
+   "titre": "Bouteur : la distance qui ruine le rendement",
+   "difficulte": 2,
+   "graine": 1245194931,
+   "enonce": "Un bouteur pousse une lame de 3,5 m³ foisonnés sur 75 m à 3,5 km/h, puis revient à vide à 9,5 km/h ; changements de vitesse et manœuvres prennent 15 s par cycle. Temps utile 50 min par heure (E = 0,833), foisonnement Cf = 1,25.",
+   "donnees": [
+    {
+     "label": "Lame",
+     "valeur": "3,5 m³ foisonnés"
+    },
+    {
+     "label": "Distance",
+     "valeur": "75 m"
+    },
+    {
+     "label": "Vitesses",
+     "valeur": "3,5 km/h · 9,5 km/h"
+    },
+    {
+     "label": "E · Cf",
+     "valeur": "0,833 · 1,25"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Durée d'un cycle ?",
+     "type": "nombre",
+     "unite": "s",
+     "reponse": 120.564,
+     "explication": "3,6 × 75/3,5 + 3,6 × 75/9,5 + 15 = 77,1 + 28,4 + 15 = 120,6 s.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rendement (m³ en place par heure) ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 69.6726,
+     "explication": "Q = 3 600 Vl E / (cycle × Cf) = 3 600 × 3,5 × 0,833 / (120,6 × 1,25) = 69,67 m³/h.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Rendement si la distance de poussée passe à 150 m ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 37.1471,
+     "explication": "Cycle de 226,1 s → Q = 37,15 m³/h, soit 53,3 % du rendement à 75 m : seul le temps fixe ne double pas.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Pour transporter sur quelques centaines de mètres, quel engin prend le relais du bouteur ?",
+     "type": "choix",
+     "options": [
+      "la chargeuse en reprise de stock",
+      "le compacteur à pieds dameurs",
+      "la décapeuse (motor-scraper)",
+      "la niveleuse"
+     ],
+     "reponse": 2,
+     "explication": "Au-delà de quelques dizaines de mètres, le rendement du bouteur s'effondre : sur les distances moyennes, c'est la décapeuse (motor-scraper) ; au-delà, la pelle et les tombereaux."
+    }
+   ]
+  },
+  {
+   "id": "ch15-extraction",
+   "titre": "Extraire en couches ou frontalement ? La rubrique E",
+   "difficulte": 1,
+   "graine": 337634762,
+   "enonce": "Pour mettre en remblai un sable très silteux I1 en état sec (I1s), par évaporation importante (−), le tableau de l'annexe 2 du fascicule 2 (GTR 2024) propose, entre autres, la solution codée 2030012. Son premier chiffre est celui de la rubrique E, l'extraction.",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "I1s"
+    },
+    {
+     "label": "Météo",
+     "valeur": "−"
+    },
+    {
+     "label": "Code",
+     "valeur": "2030012"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Que demande le chiffre E = 2 ?",
+     "type": "choix",
+     "options": [
+      "extraction en couches (0,1 à 0,3 m)",
+      "extraction frontale (front de taille > 1 à 2 m)",
+      "pas de condition particulière"
+     ],
+     "reponse": 1,
+     "explication": "Rubrique E [F1 tableau 11] : E = 2 → extraction frontale (front de taille > 1 à 2 m)."
+    },
+    {
+     "texte": "Avec quel engin extraire ?",
+     "type": "choix",
+     "options": [
+      "niveleuse",
+      "compacteur vibrant",
+      "décapeuse (motor-scraper), éventuellement poussée par un bouteur",
+      "pelle hydraulique, sur un front de taille de plus de 1 à 2 m"
+     ],
+     "reponse": 3,
+     "explication": "Extraire frontalement, c'est le travail de la pelle hydraulique, sur un front de taille de plus de 1 à 2 m [F1 § 3.3]."
+    },
+    {
+     "texte": "Pourquoi ce mode d'extraction ?",
+     "type": "choix",
+     "options": [
+      "soustraire le sol sec à l'évaporation, qui le dessécherait encore",
+      "exposer le sol humide à l'air, pour l'aérer et le sécher",
+      "soustraire le sol à la pluie, pour qu'il garde son état moyen",
+      "exposer le sol sec à la pluie faible, qui l'humidifie un peu"
+     ],
+     "reponse": 0,
+     "explication": "L'extraction en couches expose le sol aux agents atmosphériques, l'extraction frontale l'en protège [F1 § 3.3]. Sol sec par évaporation importante (−) : soustraire le sol sec à l'évaporation, qui le dessécherait encore."
+    }
+   ]
+  },
+  {
+   "id": "ch15-delai",
+   "titre": "Dimensionner un atelier pour tenir le délai",
+   "difficulte": 3,
+   "graine": 795508334,
+   "enonce": "Il faut déplacer 205 000 m³ en place en 20 jours ouvrés de 8 heures. Chaque pelle : godet de 2,6 m³, coefficient de remplissage kr = 0,95, cycle de 20 s, 54 minutes utiles par heure (E = 0,900), foisonnement Cf = 1,15. Elle charge des tombereaux de 15 m³ foisonnés dont le cycle complet dure 6,96 min.",
+   "donnees": [
+    {
+     "label": "Volume",
+     "valeur": "205 000 m³ en place"
+    },
+    {
+     "label": "Délai",
+     "valeur": "20 j × 8 h"
+    },
+    {
+     "label": "Pelle",
+     "valeur": "2,6 m³ · kr 0,95 · 20 s · E 0,900 · Cf 1,15"
+    },
+    {
+     "label": "Tombereau",
+     "valeur": "15 m³ · cycle 6,96 min"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Débit à tenir (m³ en place par heure) ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 1281.25,
+     "explication": "205 000 / (20 × 8) = 1 281 m³/h.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rendement d'une pelle ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 347.948,
+     "explication": "Q = 3 600 × 2,6 × 0,95 × 0,900 / (20 × 1,15) = 347,9 m³/h.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Nombre de pelles ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 4,
+     "explication": "1 281 / 347,9 = 3,68 → 4 pelles.",
+     "tolerance": 0.5
+    },
+    {
+     "texte": "Nombre total de tombereaux, chaque pelle étant saturée ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 16,
+     "explication": "Chargement d'un tombereau : 6 × 20 = 120 s ; 418 / 120 = 3,48 → 4 tombereaux par pelle, soit 16 en tout.",
+     "tolerance": 0.5
+    }
+   ]
+  },
+  {
+   "id": "ch15-godet",
+   "titre": "Quel godet pour un rendement visé ?",
+   "difficulte": 3,
+   "graine": 1092552002,
+   "enonce": "On veut extraire au moins 250 m³ en place par heure dans un limon (kr = 1,00, Cf = 1,30), avec une pelle dont le cycle dure 23 s et qui travaille 45 minutes utiles par heure. Le loueur propose des godets de 1,2 ; 1,5 ; 2,0 ; 2,5 ; 3,0 ; 3,5 ; 4,0 ; 4,5 ; 5,0 ; 6,0 m³.",
+   "donnees": [
+    {
+     "label": "Rendement visé",
+     "valeur": "250 m³/h en place"
+    },
+    {
+     "label": "kr · Cf",
+     "valeur": "1,00 · 1,30"
+    },
+    {
+     "label": "Cycle · E",
+     "valeur": "23 s · 0,750"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Capacité de godet minimale ?",
+     "type": "nombre",
+     "unite": "m³",
+     "reponse": 2.76852,
+     "explication": "De Q = 3 600 q kr E / (tc Cf) : q = Q tc Cf / (3 600 kr E) = 250 × 23 × 1,30 / (3 600 × 1,00 × 0,750) = 2,77 m³.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Godet à retenir dans la gamme ?",
+     "type": "choix",
+     "options": [
+      "3,0 m³",
+      "2,5 m³",
+      "4,0 m³",
+      "3,5 m³"
+     ],
+     "reponse": 0,
+     "explication": "Le plus petit godet d'au moins 2,77 m³ : 3,0 m³. Celui de 2,5 m³ ne donnerait que 226 m³/h."
+    },
+    {
+     "texte": "Rendement obtenu avec ce godet ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 270.903,
+     "explication": "Q = 3 600 × 3,0 × 1,00 × 0,750 / (23 × 1,30) = 270,9 m³/h ≥ 250 m³/h.",
+     "toleranceRel": 0.02
+    }
+   ]
+  }
+ ]
+}

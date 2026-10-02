@@ -1,0 +1,451 @@
+{
+ "chapitre": "ch11",
+ "exercices": [
+  {
+   "id": "ch11-lmax",
+   "titre": "Plus gros éléments et épaisseur de couche",
+   "difficulte": 1,
+   "graine": 267782601,
+   "enonce": "On prévoit une couche de forme non traitée en tout-venant de carrière calcaire, mise en œuvre en couches élémentaires de 0,25 m après compactage. Les plus gros éléments mesurent L = 400 mm (plus grande dimension). Variante étudiée : traiter ce matériau au liant hydraulique, malaxé en centrale.",
+   "donnees": [
+    {
+     "label": "Couche élémentaire compactée",
+     "valeur": "0,25 m"
+    },
+    {
+     "label": "Plus gros éléments L",
+     "valeur": "400 mm"
+    },
+    {
+     "label": "Variante traitée",
+     "valeur": "malaxage en centrale"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Plus grande longueur admise Lmax ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 125,
+     "explication": "Couche de forme non traitée : Lmax ≤ 250 mm et Lmax ≤ e/2 = 250 mm / 2 = 125 mm [F1 § 4.2.1] ; Lmax admise = min(250 ; 125) = 125 mm.",
+     "tolerance": 0.5
+    },
+    {
+     "texte": "Le matériau, à L = 400 mm, convient-il ?",
+     "type": "choix",
+     "options": [
+      "oui : L ne dépasse pas la longueur admise",
+      "non : éliminer les éléments de plus de 250 mm, aucune épaisseur ne les admet",
+      "non : couches élémentaires plus épaisses (au moins 2 L) ou élimination des plus gros éléments"
+     ],
+     "reponse": 1,
+     "explication": "L = 400 mm > 250 mm : quelle que soit l'épaisseur, la règle des 250 mm l'exclut → non : éliminer les éléments de plus de 250 mm, aucune épaisseur ne les admet."
+    },
+    {
+     "texte": "Variante traitée, malaxée en centrale : quel Dmax faut-il respecter ?",
+     "type": "choix",
+     "options": [
+      "100 mm",
+      "50 mm",
+      "63 mm",
+      "250 mm"
+     ],
+     "reponse": 2,
+     "explication": "Matériau traité : Dmax 63 mm pour un malaxage en centrale, 100 mm en place [F1 § 4.2.1] → 63 mm. Les 250 mm valent pour le non traité ; 50 mm était le seuil des gros éléments du GTR 1992."
+    }
+   ]
+  },
+  {
+   "id": "ch11-code",
+   "titre": "Lire un code G W T S de couche de forme",
+   "difficulte": 1,
+   "graine": 3857921986,
+   "enonce": "Pour un sable propre mal gradué à grains résistants (S21ins), par évaporation importante (−), le tableau des conditions d'utilisation en couche de forme (GTR 2024, fascicule 2, annexe 3, p. 59) donne entre autres la solution codée 0152. Les quatre chiffres se lisent dans l'ordre G W T S.",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "S21ins"
+    },
+    {
+     "label": "Météo",
+     "valeur": "−"
+    },
+    {
+     "label": "Code",
+     "valeur": "0152"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Que demande le chiffre W = 1 (action sur la teneur en eau) ?",
+     "type": "choix",
+     "options": [
+      "arrosage ou humidification pour gestion de l'état hydrique",
+      "pas de condition particulière",
+      "réduction de la teneur en eau par aération",
+      "essorage par mise en dépôt provisoire"
+     ],
+     "reponse": 0,
+     "explication": "Couche de forme, code G W T S [F1 tableau 15] : W = 1 → arrosage ou humidification pour gestion de l'état hydrique. Lu avec les rubriques du remblai (code à sept chiffres E G W T R C H), le même chiffre voudrait dire « réduction de la teneur en eau par aération » : les deux grilles ne se mélangent pas."
+    },
+    {
+     "texte": "Que demande le chiffre T = 5 (traitement) ?",
+     "type": "choix",
+     "options": [
+      "liant hydraulique et éventuellement correcteur granulométrique",
+      "chaux seule",
+      "pas de condition particulière",
+      "liant hydraulique (ciment ou LHR)"
+     ],
+     "reponse": 0,
+     "explication": "Couche de forme, code G W T S [F1 tableau 15] : T = 5 → liant hydraulique et éventuellement correcteur granulométrique."
+    },
+    {
+     "texte": "Que demande le chiffre S = 2 (protection superficielle) ?",
+     "type": "choix",
+     "options": [
+      "enduit de cure gravillonné éventuellement clouté",
+      "couche de fin réglage",
+      "pas de condition particulière",
+      "enduit de cure éventuellement gravillonné"
+     ],
+     "reponse": 0,
+     "explication": "Couche de forme, code G W T S [F1 tableau 15] : S = 2 → enduit de cure gravillonné éventuellement clouté."
+    }
+   ]
+  },
+  {
+   "id": "ch11-meteo",
+   "titre": "Couche de forme : selon le temps qu'il fait",
+   "difficulte": 2,
+   "graine": 1898260071,
+   "enonce": "On envisage d'employer en couche de forme un sable propre mal gradué à grains résistants, insensible à l'eau (S21ins). Le géotechnicien consulte le tableau de l'annexe 3 du fascicule 2 (GTR 2024, p. 59) pour deux situations météorologiques : temps neutre, ni pluie ni évaporation importante (=), puis pluie faible (+).",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "S21ins"
+    },
+    {
+     "label": "Situations",
+     "valeur": "« = » puis « + »"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Par temps neutre, ni pluie ni évaporation importante (=), que permet le tableau ?",
+     "type": "choix",
+     "options": [
+      "pas d'emploi dans cette situation météorologique",
+      "emploi après traitement aux liants seulement",
+      "emploi possible en l'état (code 0000)",
+      "emploi sans traitement, après action sur la granularité"
+     ],
+     "reponse": 2,
+     "explication": "S21ins par = : le tableau donne les solutions 0152 et 0000 → emploi possible en l'état (code 0000)."
+    },
+    {
+     "texte": "Par pluie faible (+) ?",
+     "type": "choix",
+     "options": [
+      "emploi possible en l'état (code 0000)",
+      "pas d'emploi dans cette situation météorologique",
+      "emploi sans traitement, après action sur la granularité",
+      "emploi après traitement aux liants seulement"
+     ],
+     "reponse": 0,
+     "explication": "S21ins par + : le tableau donne la solution 0000 → emploi possible en l'état (code 0000). Matériau insensible à l'eau, à grains résistants : la pluie ne change pas sa portance, il se met en œuvre sans traitement."
+    },
+    {
+     "texte": "Par temps neutre (=), quel traitement le tableau prévoit-il pour ce matériau ?",
+     "type": "choix",
+     "options": [
+      "traitement mixte chaux + liant hydraulique",
+      "liant hydraulique et éventuellement correcteur granulométrique",
+      "liant hydraulique éventuellement associé à la chaux",
+      "liant hydraulique (ciment ou LHR)"
+     ],
+     "reponse": 1,
+     "explication": "Solution avec traitement : 0152 ; chiffre T → liant hydraulique et éventuellement correcteur granulométrique. La chaux seule n'est admise en couche de forme que pour les sols F3."
+    }
+   ]
+  },
+  {
+   "id": "ch11-zone",
+   "titre": "Classe mécanique d'un matériau traité",
+   "difficulte": 2,
+   "graine": 3517694481,
+   "enonce": "Pour une couche de forme, on étudie une grave traitée au liant hydraulique routier, malaxée en place. À 90 jours, sur des éprouvettes moulées à la compacité visée en fond de couche, le module vaut E = 2 500 MPa et l'essai de fendage donne RTB = 0,28 MPa (Rt = 0,8 RTB). L'abaque est celui du guide, aux frontières numérisées à quelques pour cent près.",
+   "donnees": [
+    {
+     "label": "E à 90 jours",
+     "valeur": "2 500 MPa"
+    },
+    {
+     "label": "RTB à 90 jours",
+     "valeur": "0,28 MPa"
+    },
+    {
+     "label": "Malaxage",
+     "valeur": "en place"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 620 343\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f0-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f0-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f0-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f0-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f0-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f0-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M58.0 14.0L58.0 276.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">1 000</text><path d=\"M154.4 14.0L154.4 276.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"154.4\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">2 000</text><path d=\"M281.8 14.0L281.8 276.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"281.8\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">5 000</text><path d=\"M378.2 14.0L378.2 276.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"378.2\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">10 000</text><path d=\"M474.6 14.0L474.6 276.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"474.6\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">20 000</text><path d=\"M602.0 14.0L602.0 276.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"602.0\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">50 000</text><path d=\"M58.0 260.5L602.0 260.5\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"264.5\" text-anchor=\"end\" class=\"pt\">0,1</text><path d=\"M58.0 212.5L602.0 212.5\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"51.0\" y=\"216.5\" text-anchor=\"end\" class=\"pt\">0,2</text><path d=\"M58.0 148.9L602.0 148.9\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"51.0\" y=\"152.9\" text-anchor=\"end\" class=\"pt\">0,5</text><path d=\"M58.0 100.9L602.0 100.9\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"104.9\" text-anchor=\"end\" class=\"pt\">1</text><path d=\"M58.0 52.8L602.0 52.8\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"51.0\" y=\"56.8\" text-anchor=\"end\" class=\"pt\">2</text><rect x=\"58\" y=\"14\" width=\"544\" height=\"262\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"330.0\" y=\"310.0\" text-anchor=\"middle\" style=\"font-weight:700\">module d'Young E à 90 jours (MPa)</text><text transform=\"translate(14 145) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">Rt à 90 jours (MPa)</text><clipPath id=\"f0-clip\"><rect x=\"58\" y=\"14\" width=\"544\" height=\"262\"/></clipPath><path d=\"M58.0 160.0L71.9 153.6L85.9 147.1L99.8 140.7L113.8 134.2L127.7 127.7L141.7 121.3L155.6 114.8L169.6 109.8L183.5 105.0L197.5 100.3L211.4 95.7L225.4 92.2L239.3 88.7L253.3 85.2L267.2 81.7L281.2 78.3L295.1 75.3L309.1 72.3L323.0 69.3L337.0 66.3L350.9 63.3L364.9 60.3L378.8 57.4L392.8 54.9L406.7 52.5L420.7 50.1L434.6 47.7L448.6 45.2L462.5 42.8L476.5 40.6L490.4 38.7L504.4 36.9L518.3 35.0L532.3 33.1L546.2 31.2L560.2 29.4L574.1 27.8L588.1 26.5L602.0 25.2\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.5\"  stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M58.0 206.5L71.9 202.3L85.9 198.1L99.8 193.9L113.8 189.7L127.7 185.5L141.7 181.4L155.6 177.2L169.6 173.8L183.5 170.7L197.5 167.5L211.4 164.4L225.4 161.2L239.3 158.1L253.3 154.9L267.2 151.8L281.2 148.7L295.1 146.6L309.1 144.5L323.0 142.4L337.0 140.3L350.9 138.2L364.9 136.1L378.8 134.0L392.8 132.2L406.7 130.3L420.7 128.4L434.6 126.5L448.6 124.7L462.5 122.8L476.5 120.9L490.4 119.0L504.4 117.2L518.3 115.3L532.3 113.4L546.2 111.5L560.2 109.6L574.1 107.8L588.1 105.9L602.0 104.0\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.5\"  stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M58.0 226.2L71.9 222.1L85.9 218.0L99.8 213.9L113.8 209.7L127.7 205.6L141.7 201.5L155.6 197.4L169.6 194.1L183.5 191.0L197.5 187.9L211.4 184.7L225.4 181.6L239.3 178.5L253.3 175.4L267.2 172.3L281.2 169.2L295.1 167.2L309.1 165.1L323.0 163.0L337.0 161.0L350.9 158.9L364.9 156.8L378.8 154.8L392.8 152.7L406.7 150.7L420.7 148.6L434.6 146.6L448.6 144.5L462.5 142.5L476.5 140.5L490.4 138.6L504.4 136.7L518.3 134.8L532.3 132.9L546.2 131.1L560.2 129.2L574.1 127.3L588.1 125.4L602.0 123.5\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.5\"  stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M58.0 242.9L71.9 239.2L85.9 235.5L99.8 231.8L113.8 228.1L127.7 224.4L141.7 220.7L155.6 217.0L169.6 214.0L183.5 211.1L197.5 208.2L211.4 205.3L225.4 202.4L239.3 199.5L253.3 196.7L267.2 193.8L281.2 190.9L295.1 188.7L309.1 186.6L323.0 184.4L337.0 182.2L350.9 180.0L364.9 177.8L378.8 175.6L392.8 173.6L406.7 171.7L420.7 169.7L434.6 167.8L448.6 165.8L462.5 163.9L476.5 161.8L490.4 159.7L504.4 157.5L518.3 155.3L532.3 153.2L546.2 151.0L560.2 148.8L574.1 146.7L588.1 144.5L602.0 142.3\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.5\"  stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M58.0 256.5L71.9 252.8L85.9 249.1L99.8 245.4L113.8 241.8L127.7 238.1L141.7 234.4L155.6 230.7L169.6 228.0L183.5 225.4L197.5 222.9L211.4 220.3L225.4 217.8L239.3 215.2L253.3 212.7L267.2 210.1L281.2 207.6L295.1 205.3L309.1 203.1L323.0 200.9L337.0 198.6L350.9 196.4L364.9 194.3L378.8 192.2L392.8 190.1L406.7 188.1L420.7 186.0L434.6 183.9L448.6 181.8L462.5 179.7L476.5 177.5L490.4 175.3L504.4 173.1L518.3 170.9L532.3 168.7L546.2 166.5L560.2 164.3L574.1 162.1L588.1 159.8L602.0 157.6\" fill=\"none\" stroke=\"#334155\" stroke-width=\"2\" stroke-dasharray=\"5 3\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M185.4 276.0L185.4 14.0\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"1.6\" stroke-dasharray=\"6 4\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><text x=\"301.2\" y=\"60.1\" text-anchor=\"end\" class=\"halo\" style=\"font-size:12px;font-weight:700;fill:#0f766e\">zone 1</text><text x=\"425.0\" y=\"92.6\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#0f766e\">zone 2</text><text x=\"425.0\" y=\"141.9\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#0f766e\">zone 3</text><text x=\"425.0\" y=\"162.6\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#0f766e\">zone 4</text><text x=\"431.0\" y=\"190.2\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#0f766e\">zone 5</text><text x=\"425.0\" y=\"246.3\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#b91c1c\">non classable</text><path d=\"M202.1 324.0L220.1 324.0\" stroke=\"#0369a1\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"6 4\"/><text x=\"226.1\" y=\"328.0\" style=\"font-size:11px;font-weight:700\">module de l'étude : E = 2 500 MPa</text></svg>",
+   "questions": [
+    {
+     "texte": "Résistance en traction directe Rt ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.224,
+     "explication": "Rt = 0,8 RTB = 0,8 × 0,28 = 0,224 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Zone de l'abaque ?",
+     "type": "choix",
+     "options": [
+      "zone 3",
+      "zone 5",
+      "zone 2",
+      "zone 4"
+     ],
+     "reponse": 3,
+     "explication": "À E = 2 500 MPa, les frontières inférieures des zones 1 à 5 passent à Rt = 0,95 ; 0,37 ; 0,27 ; 0,21 ; 0,17 MPa. Rt = 0,224 MPa tombe entre la frontière de la zone 4 (0,21 MPa) et celle de la zone 3 (0,27 MPa) : zone 4."
+    },
+    {
+     "texte": "Classe mécanique du matériau ?",
+     "type": "choix",
+     "options": [
+      "classe 5",
+      "non classable",
+      "classe 3",
+      "classe 4"
+     ],
+     "reponse": 0,
+     "explication": "Malaxage en place : le mélange est moins homogène, la classe descend d'un rang [F1 § 4.2.1, tableau 14] : zone 4 → classe 5. En centrale, ce serait classe 4."
+    }
+   ]
+  },
+  {
+   "id": "ch11-rt-mini",
+   "titre": "Quelle résistance viser pour une classe mécanique ?",
+   "difficulte": 3,
+   "graine": 695117135,
+   "enonce": "Une couche de forme sera traitée au liant hydraulique en place. Le dimensionnement suppose un matériau de classe mécanique 3 au moins, et l'étude de formulation table sur un module de 5 000 MPa à 90 jours. Quelle résistance faut-il atteindre ?",
+   "donnees": [
+    {
+     "label": "Classe visée",
+     "valeur": "3"
+    },
+    {
+     "label": "Malaxage",
+     "valeur": "en place"
+    },
+    {
+     "label": "E à 90 jours",
+     "valeur": "5 000 MPa"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 620 343\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f1-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f1-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f1-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f1-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f1-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f1-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M58.0 14.0L58.0 276.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">1 000</text><path d=\"M154.4 14.0L154.4 276.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"154.4\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">2 000</text><path d=\"M281.8 14.0L281.8 276.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"281.8\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">5 000</text><path d=\"M378.2 14.0L378.2 276.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"378.2\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">10 000</text><path d=\"M474.6 14.0L474.6 276.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"474.6\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">20 000</text><path d=\"M602.0 14.0L602.0 276.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"602.0\" y=\"292.0\" text-anchor=\"middle\" class=\"pt\">50 000</text><path d=\"M58.0 260.5L602.0 260.5\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"264.5\" text-anchor=\"end\" class=\"pt\">0,1</text><path d=\"M58.0 212.5L602.0 212.5\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"51.0\" y=\"216.5\" text-anchor=\"end\" class=\"pt\">0,2</text><path d=\"M58.0 148.9L602.0 148.9\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"51.0\" y=\"152.9\" text-anchor=\"end\" class=\"pt\">0,5</text><path d=\"M58.0 100.9L602.0 100.9\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"104.9\" text-anchor=\"end\" class=\"pt\">1</text><path d=\"M58.0 52.8L602.0 52.8\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><text x=\"51.0\" y=\"56.8\" text-anchor=\"end\" class=\"pt\">2</text><rect x=\"58\" y=\"14\" width=\"544\" height=\"262\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"330.0\" y=\"310.0\" text-anchor=\"middle\" style=\"font-weight:700\">module d'Young E à 90 jours (MPa)</text><text transform=\"translate(14 145) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">Rt à 90 jours (MPa)</text><clipPath id=\"f1-clip\"><rect x=\"58\" y=\"14\" width=\"544\" height=\"262\"/></clipPath><path d=\"M58.0 160.0L71.9 153.6L85.9 147.1L99.8 140.7L113.8 134.2L127.7 127.7L141.7 121.3L155.6 114.8L169.6 109.8L183.5 105.0L197.5 100.3L211.4 95.7L225.4 92.2L239.3 88.7L253.3 85.2L267.2 81.7L281.2 78.3L295.1 75.3L309.1 72.3L323.0 69.3L337.0 66.3L350.9 63.3L364.9 60.3L378.8 57.4L392.8 54.9L406.7 52.5L420.7 50.1L434.6 47.7L448.6 45.2L462.5 42.8L476.5 40.6L490.4 38.7L504.4 36.9L518.3 35.0L532.3 33.1L546.2 31.2L560.2 29.4L574.1 27.8L588.1 26.5L602.0 25.2\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.5\"  stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M58.0 206.5L71.9 202.3L85.9 198.1L99.8 193.9L113.8 189.7L127.7 185.5L141.7 181.4L155.6 177.2L169.6 173.8L183.5 170.7L197.5 167.5L211.4 164.4L225.4 161.2L239.3 158.1L253.3 154.9L267.2 151.8L281.2 148.7L295.1 146.6L309.1 144.5L323.0 142.4L337.0 140.3L350.9 138.2L364.9 136.1L378.8 134.0L392.8 132.2L406.7 130.3L420.7 128.4L434.6 126.5L448.6 124.7L462.5 122.8L476.5 120.9L490.4 119.0L504.4 117.2L518.3 115.3L532.3 113.4L546.2 111.5L560.2 109.6L574.1 107.8L588.1 105.9L602.0 104.0\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.5\"  stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M58.0 226.2L71.9 222.1L85.9 218.0L99.8 213.9L113.8 209.7L127.7 205.6L141.7 201.5L155.6 197.4L169.6 194.1L183.5 191.0L197.5 187.9L211.4 184.7L225.4 181.6L239.3 178.5L253.3 175.4L267.2 172.3L281.2 169.2L295.1 167.2L309.1 165.1L323.0 163.0L337.0 161.0L350.9 158.9L364.9 156.8L378.8 154.8L392.8 152.7L406.7 150.7L420.7 148.6L434.6 146.6L448.6 144.5L462.5 142.5L476.5 140.5L490.4 138.6L504.4 136.7L518.3 134.8L532.3 132.9L546.2 131.1L560.2 129.2L574.1 127.3L588.1 125.4L602.0 123.5\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.5\"  stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M58.0 242.9L71.9 239.2L85.9 235.5L99.8 231.8L113.8 228.1L127.7 224.4L141.7 220.7L155.6 217.0L169.6 214.0L183.5 211.1L197.5 208.2L211.4 205.3L225.4 202.4L239.3 199.5L253.3 196.7L267.2 193.8L281.2 190.9L295.1 188.7L309.1 186.6L323.0 184.4L337.0 182.2L350.9 180.0L364.9 177.8L378.8 175.6L392.8 173.6L406.7 171.7L420.7 169.7L434.6 167.8L448.6 165.8L462.5 163.9L476.5 161.8L490.4 159.7L504.4 157.5L518.3 155.3L532.3 153.2L546.2 151.0L560.2 148.8L574.1 146.7L588.1 144.5L602.0 142.3\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.5\"  stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M58.0 256.5L71.9 252.8L85.9 249.1L99.8 245.4L113.8 241.8L127.7 238.1L141.7 234.4L155.6 230.7L169.6 228.0L183.5 225.4L197.5 222.9L211.4 220.3L225.4 217.8L239.3 215.2L253.3 212.7L267.2 210.1L281.2 207.6L295.1 205.3L309.1 203.1L323.0 200.9L337.0 198.6L350.9 196.4L364.9 194.3L378.8 192.2L392.8 190.1L406.7 188.1L420.7 186.0L434.6 183.9L448.6 181.8L462.5 179.7L476.5 177.5L490.4 175.3L504.4 173.1L518.3 170.9L532.3 168.7L546.2 166.5L560.2 164.3L574.1 162.1L588.1 159.8L602.0 157.6\" fill=\"none\" stroke=\"#334155\" stroke-width=\"2\" stroke-dasharray=\"5 3\" stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M281.8 276.0L281.8 14.0\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"1.6\" stroke-dasharray=\"6 4\" stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><text x=\"179.7\" y=\"68.1\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:12px;font-weight:700;fill:#0f766e\">zone 1</text><text x=\"425.0\" y=\"92.6\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#0f766e\">zone 2</text><text x=\"425.0\" y=\"141.9\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#0f766e\">zone 3</text><text x=\"425.0\" y=\"162.6\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#0f766e\">zone 4</text><text x=\"431.0\" y=\"190.2\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#0f766e\">zone 5</text><text x=\"425.0\" y=\"246.3\" text-anchor=\"middle\" class=\"halo\" style=\"font-size:11px;font-weight:700;fill:#b91c1c\">non classable</text><path d=\"M202.1 324.0L220.1 324.0\" stroke=\"#0369a1\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"6 4\"/><text x=\"226.1\" y=\"328.0\" style=\"font-size:11px;font-weight:700\">module de l'étude : E = 5 000 MPa</text></svg>",
+   "questions": [
+    {
+     "texte": "Zone de l'abaque à atteindre au moins ?",
+     "type": "choix",
+     "options": [
+      "zone 1",
+      "zone 3",
+      "zone 4",
+      "zone 2"
+     ],
+     "reponse": 3,
+     "explication": "En place, la classe descend d'un rang par rapport à la zone [F1 tableau 14] : la classe 3 demande la zone 2."
+    },
+    {
+     "texte": "Résistance en traction directe minimale Rt à 90 jours ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.502072,
+     "explication": "On lit, à E = 5 000 MPa, la frontière inférieure de la zone 2 : Rt ≈ 0,502 MPa (lecture d'abaque, à quelques pour cent près).",
+     "toleranceRel": 0.05
+    },
+    {
+     "texte": "Résistance au fendage RTB correspondante ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.62759,
+     "explication": "Rt = 0,8 RTB, donc RTB = Rt/0,8 = 0,502/0,8 = 0,628 MPa.",
+     "toleranceRel": 0.05
+    }
+   ]
+  },
+  {
+   "id": "ch11-epaisseur",
+   "titre": "Épaisseur de couche de forme (tableaux du GTR 2000)",
+   "difficulte": 1,
+   "graine": 1597551374,
+   "enonce": "Sur une section de 2,5 km, la plateforme de terrassement mesure 8,5 m de large ; l'arase est de classe AR2 (50 MPa) et l'on vise une plateforme PF3. La couche de forme est en grave traitée au liant hydraulique, de classe mécanique 3. On prend les épaisseurs tabulées du GTR 2000 (fascicule I, tableaux XIII, XIV et XVI) comme référence : celles du GTR 2024 (F1 § 4.3.5), qui intègrent la classe PF2qs, se lisent dans le guide.",
+   "donnees": [
+    {
+     "label": "Arase",
+     "valeur": "AR2 (50 MPa)"
+    },
+    {
+     "label": "Plateforme visée",
+     "valeur": "PF3"
+    },
+    {
+     "label": "Couche de forme",
+     "valeur": "grave traitée, classe 3"
+    },
+    {
+     "label": "Section",
+     "valeur": "2,5 km × 8,5 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Épaisseur de couche de forme selon le GTR 2000 ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.25,
+     "explication": "Tableau du GTR 2000 pour ce matériau, de AR2 à PF3 : e = 0,25 m.",
+     "tolerance": 0.005
+    },
+    {
+     "texte": "Volume de couche de forme compactée sur la section ?",
+     "type": "nombre",
+     "unite": "m³",
+     "reponse": 5312.5,
+     "explication": "V = e × largeur × longueur = 0,25 × 8,5 × 2 500 = 5 313 m³.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Volume supplémentaire si l'arase n'était que AR1 ?",
+     "type": "nombre",
+     "unite": "m³",
+     "reponse": 1062.5,
+     "explication": "Avec AR1, le même tableau donne 0,30 m ; ΔV = 0,05 × 8,5 × 2 500 = 1 062 m³. La portance de l'arase se paie en épaisseur de couche de forme.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch11-bicouche",
+   "titre": "Module en surface d'une couche de forme : modèle bicouche",
+   "difficulte": 2,
+   "graine": 257938867,
+   "enonce": "Une couche de forme en grave traitée au liant hydraulique (E1 = 3 500 MPa), épaisse de 0,40 m, repose sur une arase AR2 (E2 = 50 MPa). On estime le module que mesurerait à sa surface une plaque de 600 mm (rayon a = 0,30 m) par le modèle d'Odemark–Boussinesq du cours : he = 0,9 h (E1/E2)^(1/3), f = 1/√(1 + (he/a)²), 1/Es = (1 − f)/E1 + f/E2.",
+   "donnees": [
+    {
+     "label": "E1 · h",
+     "valeur": "3 500 MPa · 0,40 m"
+    },
+    {
+     "label": "Arase",
+     "valeur": "AR2 · E2 = 50 MPa"
+    },
+    {
+     "label": "Plaque",
+     "valeur": "a = 0,30 m"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 560 210\" role=\"img\" aria-label=\"Modèle bicouche sous la plaque\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f2-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f2-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f2-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f2-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f2-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f2-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f2-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f2-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"70.0\" y=\"64.0\" width=\"450.0\" height=\"44.0\" fill=\"#e3e8d6\"/>\n    <rect x=\"70.0\" y=\"64.0\" width=\"450.0\" height=\"44.0\" fill=\"url(#f2-traite)\"/><text x=\"514.0\" y=\"80.0\" text-anchor=\"end\" class=\"gr halo\" style=\"font-size:11px\">couche de forme · E1 = 3 500 MPa</text><rect x=\"70.0\" y=\"108.0\" width=\"450.0\" height=\"92.0\" fill=\"#dccab0\"/>\n    <rect x=\"70.0\" y=\"108.0\" width=\"450.0\" height=\"92.0\" fill=\"url(#f2-argile)\"/><text x=\"514.0\" y=\"124.0\" text-anchor=\"end\" class=\"gr halo\" style=\"font-size:11px\">arase AR2 · E2 = 50 MPa</text><path d=\"M70 64H520M70 108.0H520\" stroke=\"#334155\" stroke-width=\"1.4\"/><rect x=\"167.0\" y=\"55\" width=\"66.0\" height=\"9\" fill=\"#475569\"/><path d=\"M200.0 14.0L200.0 53.0\" stroke=\"#dc2626\" stroke-width=\"2.4\" fill=\"none\" marker-end=\"url(#f2-fl)\"/><text x=\"241.0\" y=\"50.0\" class=\"halo\" style=\"font-size:11.5px;font-weight:700\">plaque Ø 600 mm (a = 0,30 m)</text><path d=\"M40.0 64.0L40.0 108.0\" stroke=\"#2b2d42\" stroke-width=\"1.1\" fill=\"none\" marker-start=\"url(#f2-fc)\" marker-end=\"url(#f2-fc)\"/><text x=\"45.0\" y=\"90.0\" text-anchor=\"start\" class=\"halo\" style=\"font-size:11.5px;font-weight:700;fill:#2b2d42\">h = 0,40 m</text></svg>",
+   "questions": [
+    {
+     "texte": "Épaisseur équivalente he ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.48366,
+     "explication": "he = 0,9 × 0,40 × (3 500/50)^(1/3) = 0,9 × 0,40 × 4,121 = 1,484 m.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Facteur f ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.198191,
+     "explication": "f = 1/√(1 + (1,484/0,30)²) = 0,198 : la part de la déflexion qui vient de l'arase.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Module en surface Es ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 238.498,
+     "explication": "1/Es = (1 − 0,198)/3 500 + 0,198/50 = 0,00419 MPa⁻¹ → Es = 238 MPa.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Classe de plateforme correspondante ?",
+     "type": "choix",
+     "options": [
+      "PF2",
+      "PF2qs",
+      "PF3",
+      "PF4"
+     ],
+     "reponse": 3,
+     "explication": "Es = 238 MPa : PF4 (200 MPa et plus ; seuils 20, 50, 80, 120 et 200 MPa). Un modèle d'enseignement : il montre l'effet de l'épaisseur et de la raideur, les tableaux du guide font foi."
+    }
+   ]
+  },
+  {
+   "id": "ch11-bicouche-inverse",
+   "titre": "Épaisseur pour une plateforme : modèle bicouche et GTR 2000",
+   "difficulte": 3,
+   "graine": 831902066,
+   "enonce": "On vise une plateforme PF4 (EV2 ≥ 200 MPa) sur une arase AR2 (E2 = 50 MPa), avec une couche de forme en grave traitée au liant hydraulique de classe mécanique 5, de module E1 = 6 000 MPa. Modèle bicouche du cours (plaque de rayon a = 0,30 m) : he = 0,9 h (E1/E2)^(1/3), f = 1/√(1 + (he/a)²), 1/Es = (1 − f)/E1 + f/E2.",
+   "donnees": [
+    {
+     "label": "Plateforme visée",
+     "valeur": "PF4 (200 MPa)"
+    },
+    {
+     "label": "Arase",
+     "valeur": "AR2 · 50 MPa"
+    },
+    {
+     "label": "E1",
+     "valeur": "6 000 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Valeur de f qui donne Es = 200 MPa ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.243697,
+     "explication": "f = (1/Es − 1/E1)/(1/E2 − 1/E1) = (1/200 − 1/6 000)/(1/50 − 1/6 000) = 0,244.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Épaisseur donnée par le modèle bicouche ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.268951,
+     "explication": "he = a √(1/f² − 1) = 0,30 × √(1/0,244² − 1) = 1,194 m ; h = he / [0,9 (E1/E2)^(1/3)] = 1,194 / (0,9 × 4,932) = 0,269 m.",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Épaisseur tabulée par le GTR 2000 pour ce cas ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.45,
+     "explication": "GTR 2000, de AR2 à PF4 pour ce matériau : 0,45 m (la compacité visée en fond de couche conduit en général à deux couches). Le GTR 2024 (F1 § 4.3.5) a ses propres tableaux.",
+     "tolerance": 0.005
+    },
+    {
+     "texte": "Quelle épaisseur retenir pour le projet ?",
+     "type": "choix",
+     "options": [
+      "celle des tableaux du guide : le modèle ignore la fatigue, le gel et le trafic de chantier",
+      "celle du modèle, puisqu'elle est calculée",
+      "la moyenne des deux",
+      "la plus faible des deux, par économie"
+     ],
+     "reponse": 0,
+     "explication": "Le modèle donne 0,27 m, le tableau 0,45 m : le modèle n'est qu'un outil de compréhension. On retient celle des tableaux du guide : le modèle ignore la fatigue, le gel et le trafic de chantier. La vérification au gel (NF P98-086) peut encore l'augmenter."
+    }
+   ]
+  }
+ ]
+}

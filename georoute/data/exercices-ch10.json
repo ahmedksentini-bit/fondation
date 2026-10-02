@@ -1,0 +1,471 @@
+{
+ "chapitre": "ch10",
+ "exercices": [
+  {
+   "id": "ch10-classes",
+   "titre": "Classes d'arase et de plateforme",
+   "difficulte": 1,
+   "graine": 448690262,
+   "enonce": "Essais de plaque (600 mm) en fin de chantier : sur l'arase des terrassements, z2 = 6,00 mm au second chargement ; sur la plateforme, après la couche de forme, z2 = 1,05 mm. On admet que ces portances sont celles du long terme (EV2 = 90/z2).",
+   "donnees": [
+    {
+     "label": "z2 sur l'arase",
+     "valeur": "6,00 mm"
+    },
+    {
+     "label": "z2 sur la plateforme",
+     "valeur": "1,05 mm"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "EV2 de l'arase ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 15,
+     "explication": "EV2 = 90/6,00 = 15,0 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Classe de l'arase ?",
+     "type": "choix",
+     "options": [
+      "AR4",
+      "AR1",
+      "AR2",
+      "AR0"
+     ],
+     "reponse": 3,
+     "explication": "AR0 < 20 MPa ≤ AR1 < 50 MPa ≤ AR2 < 120 MPa ≤ AR3 < 200 MPa ≤ AR4 : EV2 = 15,0 MPa → AR0."
+    },
+    {
+     "texte": "EV2 de la plateforme ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 85.7143,
+     "explication": "EV2 = 90/1,05 = 85,7 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Classe de la plateforme au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "PF2qs",
+      "PF3",
+      "PF2",
+      "PF4"
+     ],
+     "reponse": 0,
+     "explication": "PF1 20 à 50 MPa, PF2 50 à 80, PF2qs 80 à 120, PF3 120 à 200, PF4 au-delà : EV2 = 85,7 MPa → PF2qs."
+    },
+    {
+     "texte": "Et dans la classification antérieure à la PF2qs ?",
+     "type": "choix",
+     "options": [
+      "PF3",
+      "PF4",
+      "PF1",
+      "PF2"
+     ],
+     "reponse": 3,
+     "explication": "L'ancienne PF2 allait de 50 à 120 MPa ; la PF2qs (« qualité supérieure », 80 à 120 MPa) la partage depuis une note d'information intégrée au GTR 2024. Ici : PF2 — le même module vaut aujourd'hui une PF2qs, ce qui allège la chaussée."
+    }
+   ]
+  },
+  {
+   "id": "ch10-pst",
+   "titre": "Cas de PST et classe d'arase",
+   "difficulte": 2,
+   "graine": 3157721885,
+   "enonce": "Remblai routier : le mètre supérieur des terrassements (PST) est constitué d'un sable ou d'une grave très silteux, à l'état très humide (I1th). En remblai : pas de remontée de nappe possible dans la PST. Le projet ne prévoit ni drainage à la base de la chaussée ni imperméabilisation de l'arase.",
+   "donnees": [
+    {
+     "label": "Matériau de la PST",
+     "valeur": "I1th"
+    },
+    {
+     "label": "Ouvrage",
+     "valeur": "remblai"
+    },
+    {
+     "label": "Nappe",
+     "valeur": "pas de remontée"
+    },
+    {
+     "label": "Drainage et imperméabilisation",
+     "valeur": "non"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cas de PST ?",
+     "type": "choix",
+     "options": [
+      "PST5",
+      "PST4",
+      "PST0",
+      "PST6"
+     ],
+     "reponse": 2,
+     "explication": "PST0 : sol sensible à l'eau très humide : pas de couche de forme possible sans reclassement (drainage, purge, substitution, traitement)."
+    },
+    {
+     "texte": "Classe de l'arase à long terme ?",
+     "type": "choix",
+     "options": [
+      "AR2",
+      "AR2 ou AR3",
+      "AR0",
+      "AR1 ou AR2"
+     ],
+     "reponse": 2,
+     "explication": "PST0 → AR0 (tableau 17 du fascicule 1). Ces classes de long terme servent au dimensionnement de la chaussée."
+    },
+    {
+     "texte": "Peut-on construire la couche de forme sur cette arase ?",
+     "type": "choix",
+     "options": [
+      "oui, une couche de forme traitée",
+      "oui, après un simple compactage intense",
+      "non, pas sans reclassement : drainage, purge, substitution ou traitement",
+      "oui, une couche de forme granulaire épaisse"
+     ],
+     "reponse": 2,
+     "explication": "PST0 : portance quasi nulle, pas de couche de forme possible sans reclasser d'abord la PST dans un autre cas."
+    }
+   ]
+  },
+  {
+   "id": "ch10-traitement",
+   "titre": "Amélioration ou stabilisation ?",
+   "difficulte": 2,
+   "graine": 1430622637,
+   "enonce": "La PST d'un déblai, où la nappe peut remonter, est constituée d'un sable silteux mal gradué, à l'état humide (S4h). L'entreprise propose un traitement de stabilisation (liant hydraulique, étude de formulation et contrôle) sur 0,40 m d'épaisseur ; pas de drainage à la base de la chaussée.",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "S4h"
+    },
+    {
+     "label": "Traitement",
+     "valeur": "stabilisation"
+    },
+    {
+     "label": "Épaisseur traitée",
+     "valeur": "0,40 m"
+    },
+    {
+     "label": "Nappe",
+     "valeur": "remontée possible"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cas de PST obtenu ?",
+     "type": "choix",
+     "options": [
+      "PST0",
+      "PST2",
+      "PST1",
+      "PST4"
+     ],
+     "reponse": 2,
+     "explication": "PST1 : sol sensible à l'eau de mauvaise portance au moment des travaux, sans amélioration possible à long terme : couche de forme granulaire épaisse, ou traitement pour changer de cas ; pas de couche de forme traitée sur une PST1. Épaisseur traitée insuffisante pour une PST4 (0,7 m au moins en deux couches depuis une PST1) : le sol est classé comme non traité."
+    },
+    {
+     "texte": "Classe de l'arase à long terme ?",
+     "type": "choix",
+     "options": [
+      "AR2",
+      "AR1 ou AR2",
+      "AR2 ou AR3",
+      "AR1"
+     ],
+     "reponse": 3,
+     "explication": "PST1 → AR1."
+    },
+    {
+     "texte": "Épaisseur minimale à stabiliser pour obtenir une PST4 ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.7,
+     "explication": "Depuis une PST1 (sol humide), la PST4 demande 0,70 m stabilisés, en deux couches : 0,70 m.",
+     "tolerance": 0.001
+    }
+   ]
+  },
+  {
+   "id": "ch10-court-long",
+   "titre": "Portance à court terme, classe à long terme",
+   "difficulte": 2,
+   "graine": 321096450,
+   "enonce": "Remblai dont la PST est constituée d'un sable silteux à granulométrie étalée, à l'état humide (S3h). En remblai : pas de remontée de nappe possible dans la PST. Le projet ne prévoit ni drainage à la base de la chaussée ni imperméabilisation de l'arase. Le dimensionnement de la chaussée retient la classe AR1. Un essai de plaque sur l'arase donne z2 = 5,56 mm (EV2 = 90/z2).",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "S3h"
+    },
+    {
+     "label": "Classe retenue",
+     "valeur": "AR1"
+    },
+    {
+     "label": "z2",
+     "valeur": "5,56 mm"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cas de PST ?",
+     "type": "choix",
+     "options": [
+      "PST4",
+      "PST6",
+      "PST1",
+      "PST2"
+     ],
+     "reponse": 2,
+     "explication": "PST1 : sol sensible à l'eau de mauvaise portance au moment des travaux, sans amélioration possible à long terme : couche de forme granulaire épaisse, ou traitement pour changer de cas ; pas de couche de forme traitée sur une PST1."
+    },
+    {
+     "texte": "EV2 mesuré sur l'arase ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 16.1871,
+     "explication": "EV2 = 90/5,56 = 16,2 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "La portance mesurée justifie-t-elle la classe AR1 ?",
+     "type": "choix",
+     "options": [
+      "oui : 16 MPa ≥ 20 MPa",
+      "oui, une mesure de court terme suffit toujours",
+      "non : 16 MPa < 20 MPa",
+      "on ne peut rien conclure avant l'hiver"
+     ],
+     "reponse": 2,
+     "explication": "Au chantier, la portance de l'arase mesurée à court terme doit être au moins égale au module de long terme de la classe retenue : AR1 → 20 MPa ; EV2 = 16,2 MPa."
+    },
+    {
+     "texte": "Quand cette mesure est-elle représentative ?",
+     "type": "choix",
+     "options": [
+      "à tout moment : pour un matériau insensible à l'eau, la mesure de court terme vaut à long terme",
+      "peu avant de recouvrir l'arase : le sol sensible à l'eau peut perdre sa portance d'ici là",
+      "seulement après la construction de la chaussée",
+      "on peut l'anticiper, mais il vaut mieux la recontrôler après un hiver ou un trafic de chantier intense"
+     ],
+     "reponse": 1,
+     "explication": "PST1 : peu avant de recouvrir l'arase : le sol sensible à l'eau peut perdre sa portance d'ici là. Pour les PST1 à PST3, sensibles à l'eau, on contrôle peu avant de recouvrir ; pour la PST4, on peut anticiper ; pour les PST5 et PST6, la mesure de court terme vaut à long terme."
+    }
+   ]
+  },
+  {
+   "id": "ch10-nappe",
+   "titre": "Un même sol, en remblai et en déblai",
+   "difficulte": 2,
+   "graine": 812679482,
+   "enonce": "Sur un même tracé, un sable ou une grave très silteux, à l'état moyen (I1m) forme la PST de deux tronçons : A, en remblai ; B, en déblai, où la nappe peut remonter dans la PST (pas de rabattement). Le projet prévoit, sur les deux tronçons, un drainage à la base de la chaussée et l'imperméabilisation de l'arase.",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "I1m"
+    },
+    {
+     "label": "Tronçon A",
+     "valeur": "remblai"
+    },
+    {
+     "label": "Tronçon B",
+     "valeur": "déblai, nappe pouvant remonter"
+    },
+    {
+     "label": "Drainage et imperméabilisation",
+     "valeur": "oui"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cas de PST du tronçon A ?",
+     "type": "choix",
+     "options": [
+      "PST2",
+      "PST4",
+      "PST0",
+      "PST3"
+     ],
+     "reponse": 3,
+     "explication": "A : PST3 — sol sensible à l'eau, sans remontée de nappe, en état moyen, avec drainage à la base de la chaussée et imperméabilisation de l'arase : AR2 accessible selon la nature du matériau."
+    },
+    {
+     "texte": "Cas de PST du tronçon B ?",
+     "type": "choix",
+     "options": [
+      "PST2",
+      "PST0",
+      "PST4",
+      "PST3"
+     ],
+     "reponse": 0,
+     "explication": "B : PST2 — sol sensible à l'eau de bonne portance aujourd'hui, mais exposé à une remontée de nappe et aux infiltrations : la portance peut chuter à long terme."
+    },
+    {
+     "texte": "Classe d'arase du tronçon A ?",
+     "type": "choix",
+     "options": [
+      "AR1",
+      "AR2",
+      "AR2 ou AR3",
+      "AR1 ou AR2"
+     ],
+     "reponse": 3,
+     "explication": "A : PST3 → AR1 ou AR2 : l'AR2 n'est accessible qu'en état moyen, avec le drainage et l'imperméabilisation, et selon la nature du matériau."
+    },
+    {
+     "texte": "Pourquoi les deux tronçons sont-ils classés différemment ?",
+     "type": "choix",
+     "options": [
+      "un déblai est toujours mieux classé qu'un remblai",
+      "le cas de PST ne dépend que de la nature du matériau",
+      "le drainage à la base de la chaussée rend tout sol insensible à l'eau",
+      "en déblai sans rabattement, la nappe peut remonter et la portance chuter à long terme ; le remblai en est à l'abri"
+     ],
+     "reponse": 3,
+     "explication": "A : PST3, B : PST2. Le cas de PST dépend de la nature et de l'état du mètre supérieur, mais aussi de son environnement hydrique : nappe, drainage, imperméabilisation."
+    }
+   ]
+  },
+  {
+   "id": "ch10-objectif",
+   "titre": "Viser une arase AR2 : quelle disposition ?",
+   "difficulte": 3,
+   "graine": 1182932238,
+   "enonce": "La PST d'un remblai est constituée d'un limon ou d'une argile peu plastique, à l'état moyen (F2m), sans traitement ni drainage. Le dimensionnement de la chaussée suppose une arase AR2 (50 MPa à long terme).",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "F2m"
+    },
+    {
+     "label": "Ouvrage",
+     "valeur": "remblai"
+    },
+    {
+     "label": "Classe visée",
+     "valeur": "AR2"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cas de PST en l'état ?",
+     "type": "choix",
+     "options": [
+      "PST1",
+      "PST3",
+      "PST4",
+      "PST0"
+     ],
+     "reponse": 1,
+     "explication": "PST3 → AR1 : sol sensible à l'eau sans risque de remontée de nappe ; sans dispositions de drainage et d'imperméabilisation, AR1."
+    },
+    {
+     "texte": "Laquelle de ces dispositions permet de viser AR2 ?",
+     "type": "choix",
+     "options": [
+      "compactage intensif de la PST, sans autre disposition",
+      "stabilisation du sol sur 0,35 m",
+      "drainage à la base de la chaussée et imperméabilisation de l'arase",
+      "stabilisation du sol sur 0,25 m"
+     ],
+     "reponse": 1,
+     "explication": "stabilisation du sol sur 0,35 m → PST4 (AR2). Les autres : drainage à la base de la chaussée et imperméabilisation de l'arase → PST3 (AR1) ; compactage intensif de la PST, sans autre disposition → PST3 (AR1) ; stabilisation du sol sur 0,25 m → PST3 (AR1). Une amélioration ne change pas le cas de PST ; une stabilisation trop mince non plus."
+    },
+    {
+     "texte": "Au contrôle de l'arase, quel enfoncement z2 maximal à la plaque justifiera AR2 ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 1.8,
+     "explication": "La portance mesurée à court terme doit atteindre le module de long terme de la classe : EV2 ≥ 50 MPa ⇔ z2 ≤ 90/50 = 1,80 mm (plaque de 600 mm, EV2 = 90/z2).",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch10-diagnostic",
+   "titre": "Du sol mesuré à la classe d'arase",
+   "difficulte": 3,
+   "graine": 2910514145,
+   "enonce": "PST d'un remblai en limon peu plastique (F1) : wOPN = 20,5 %, et sur place wn = 24,2 % et IPI = 6. En remblai : pas de remontée de nappe possible dans la PST. Le projet prévoit un drainage à la base de la chaussée et l'imperméabilisation de l'arase. Un essai de plaque sur l'arase donne z2 = 9,47 mm (EV2 = 90/z2).",
+   "donnees": [
+    {
+     "label": "Nature",
+     "valeur": "F1"
+    },
+    {
+     "label": "wOPN · wn",
+     "valeur": "20,5 % · 24,2 %"
+    },
+    {
+     "label": "IPI",
+     "valeur": "6"
+    },
+    {
+     "label": "z2 sur l'arase",
+     "valeur": "9,47 mm"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "État hydrique du sol ?",
+     "type": "choix",
+     "options": [
+      "th (très humide)",
+      "s (sec)",
+      "h (humide)",
+      "ts (très sec)",
+      "m (moyen)"
+     ],
+     "reponse": 2,
+     "explication": "wn/wOPN = 1,18 ; IPI → h ; wn/wOPN → h : état h (humide) (l'IPI prime pour les états humides, wn/wOPN pour les états secs)."
+    },
+    {
+     "texte": "Cas de PST ?",
+     "type": "choix",
+     "options": [
+      "PST0",
+      "PST1",
+      "PST3",
+      "PST4"
+     ],
+     "reponse": 0,
+     "explication": "EV2 = 90/9,47 = 9,5 MPa. PST0 : sol humide dont la portance à court terme est inférieure à 15–20 MPa : on est ramené au cas PST0, une amélioration est indispensable."
+    },
+    {
+     "texte": "Classe de l'arase à long terme ?",
+     "type": "choix",
+     "options": [
+      "AR2",
+      "AR1",
+      "AR2 ou AR3",
+      "AR0"
+     ],
+     "reponse": 3,
+     "explication": "PST0 → AR0."
+    },
+    {
+     "texte": "Peut-on exécuter directement une couche de forme traitée ?",
+     "type": "choix",
+     "options": [
+      "non : le cas de PST l'admettrait, mais EV2 < 35 MPa",
+      "oui : EV2 ≥ 35 MPa, et le cas de PST l'admet",
+      "oui, dès que le sol est traité à la chaux, quel que soit EV2",
+      "non : jamais de couche de forme traitée directement sur une PST0 ou une PST1"
+     ],
+     "reponse": 3,
+     "explication": "PST0, EV2 = 9,5 MPa : non : jamais de couche de forme traitée directement sur une PST0 ou une PST1. Sur l'arase, une couche de forme traitée demande au moins 35 MPa à court terme (chapitre 8)."
+    }
+   ]
+  }
+ ]
+}

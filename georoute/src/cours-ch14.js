@@ -48,10 +48,11 @@ const majLalanne = garde("lalOut", () => {
     marques: rep.coupes.map((x) => ({ x, y: c, couleur: COULEURS.rouge, rayon: 4 })),
   });
   const boucles = rep.boucles.map((b, i) => `boucle ${i + 1} (${f(b.de, 4)}–${f(b.a, 4)} m) : ${f(b.volume, 4)} m³ ${b.sens}, moment ${f(b.moment / 1000, 4)} × 10³ m³·m, distance moyenne <strong>${f(b.distance, 3)} m</strong>`).join("<br>");
-  const debut = rep.debut, fin = rep.fin;
+  // Bouts de l'épure hors des boucles : positif, du déblai sans emploi (dépôt) ; négatif, du remblai sans apport (emprunt).
   const bout = (v_, ou) => (Math.abs(v_) < 1 ? "" : v_ > 0 ? `${ou} : ${f(v_, 4)} m³ en dépôt` : `${ou} : ${f(-v_, 4)} m³ d'emprunt`);
+  const bouts = [bout(rep.debut, "au début"), bout(rep.fin, "à la fin")].filter(Boolean);
   el("lalOut").innerHTML = `Déblai ${f(v.total.deblai, 5)} m³ en place (${f(v.total.deblai * reemploi * Ct, 5)} m³ réutilisables, compactés) · remblai ${f(v.total.remblai, 5)} m³ · solde <strong>${e.solde >= 0 ? `+${f(e.solde, 4)} m³ (excédent)` : `−${f(-e.solde, 4)} m³ (déficit)`}</strong>
-    <br>${boucles || "La ligne ne coupe pas l'épure : aucun transport équilibré."}
-    <small>${[bout(-debut, "au début"), bout(fin, "à la fin")].filter(Boolean).join(" ; ")}${[bout(-debut, ""), bout(fin, "")].some(Boolean) ? ". " : ""}Moment total ${f(rep.momentTotal / 1000, 4)} × 10³ m³·m. En montant ou en descendant la ligne, on échange du transport longitudinal contre des dépôts et des emprunts : la bonne position est celle qui minimise le coût total.</small>`;
+    <br>${boucles || "La ligne ne referme aucune boucle sur l'épure : aucun transport équilibré."}
+    <small>${bouts.join(" ; ")}${bouts.length ? ". " : ""}Moment total ${f(rep.momentTotal / 1000, 4)} × 10³ m³·m. En montant ou en descendant la ligne, on échange du transport longitudinal contre des dépôts et des emprunts : la bonne position est celle qui minimise le coût total.</small>`;
 });
 brancher(["lalProfils", "lalReemploi", "lalCt", "lalC"], majLalanne);

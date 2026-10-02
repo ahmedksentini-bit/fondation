@@ -1,0 +1,431 @@
+{
+ "chapitre": "ch8",
+ "exercices": [
+  {
+   "id": "ch8-qs-poste",
+   "titre": "Q/S réalisé d'un poste",
+   "difficulte": 1,
+   "graine": 2344639653,
+   "enonce": "Remblai construit avec un limon ou une argile peu plastique à éléments de plus de 63 mm (VC1F2), énergie faible : le tableau de compactage (annexe 4, p. 85) donne Q/S = 0,105 m pour le V4 du chantier, de largeur 2,10 m. À la fin du poste, le comptage des camions donne 1 230 m³ mis en œuvre, et l'enregistreur du compacteur 6,3 km parcourus en compactage.",
+   "donnees": [
+    {
+     "label": "Q",
+     "valeur": "1 230 m³"
+    },
+    {
+     "label": "Distance",
+     "valeur": "6,3 km"
+    },
+    {
+     "label": "L",
+     "valeur": "2,10 m"
+    },
+    {
+     "label": "Q/S du tableau",
+     "valeur": "0,105 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Surface balayée S ?",
+     "type": "nombre",
+     "unite": "m²",
+     "reponse": 13230,
+     "explication": "S = distance × largeur = 1 000 × 6,3 × 2,10 = 13 230 m².",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Q/S réalisé ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.0929705,
+     "explication": "Q/S = 1 230/13 230 = 0,093 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Le poste est-il conforme ?",
+     "type": "choix",
+     "options": [
+      "non conforme : un Q/S réalisé plus petit que celui du tableau traduit un excès d'énergie",
+      "non conforme : le Q/S réalisé dépasse celui du tableau, l'énergie est insuffisante",
+      "conforme : le Q/S réalisé ne dépasse pas celui du tableau",
+      "conforme : un Q/S réalisé plus grand que celui du tableau traduit plus de travail"
+     ],
+     "reponse": 2,
+     "explication": "0,093 m ≤ 0,105 m. Q/S est l'épaisseur de sol « traitée » par chaque passage : plus il est petit, plus le compacteur a travaillé ; le Q/S réalisé doit rester inférieur ou égal à celui du tableau."
+    },
+    {
+     "texte": "Distance minimale de compactage pour ce volume ?",
+     "type": "nombre",
+     "unite": "km",
+     "reponse": 5.57823,
+     "explication": "Il faut S ≥ Q/(Q/S)tableau = 1 230/0,105 = 11 714 m², soit 11 714/(1 000 × 2,10) = 5,58 km.",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch8-rhod",
+   "titre": "Masse volumique sèche en place et taux de compactage",
+   "difficulte": 1,
+   "graine": 4125787756,
+   "enonce": "Contrôle d'une couche de forme (objectif q3). Le gammadensimètre, en transmission directe sur toute l'épaisseur, mesure une masse volumique humide ρh = 2,166 Mg/m³ ; la teneur en eau d'un prélèvement voisin est w = 9,9 %. Pour ce matériau, ρdOPN = 2,03 Mg/m³.",
+   "donnees": [
+    {
+     "label": "ρh",
+     "valeur": "2,166 Mg/m³"
+    },
+    {
+     "label": "w",
+     "valeur": "9,9 %"
+    },
+    {
+     "label": "ρdOPN",
+     "valeur": "2,03 Mg/m³"
+    },
+    {
+     "label": "Objectif",
+     "valeur": "q3 · couche de forme"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Masse volumique sèche ρd ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.97088,
+     "explication": "ρd = ρh/(1 + w) = 2,166/1,099 = 1,971 Mg/m³.",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "Taux de compactage ρd/ρdOPN ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 97.0878,
+     "explication": "1,971/2,03 = 97,1 %.",
+     "tolerance": 0.3
+    },
+    {
+     "texte": "La densité moyenne respecte-t-elle l'objectif ?",
+     "type": "choix",
+     "options": [
+      "objectif atteint dès que ρh dépasse ρdOPN",
+      "objectif moyen non atteint : taux < 98,5 %",
+      "objectif moyen atteint : taux ≥ 98,5 %",
+      "impossible à dire sans essai de plaque"
+     ],
+     "reponse": 1,
+     "explication": "L'objectif q3 (couche de forme) demande une densité moyenne d'au moins 98,5 % de ρdOPN : 97,1 % → non atteint. On compare la masse volumique sèche, jamais la masse humide, à ρdOPN ; reste à vérifier le fond de couche (96 %)."
+    },
+    {
+     "texte": "Masse volumique humide minimale qu'il fallait mesurer, à cette teneur en eau ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 2.19751,
+     "explication": "ρd requise = 0,985 × 2,03 = 2,000 Mg/m³ ; ρh = ρd (1 + w) = 2,000 × 1,099 = 2,198 Mg/m³.",
+     "toleranceRel": 0.004
+    }
+   ]
+  },
+  {
+   "id": "ch8-plaque",
+   "titre": "Essai de plaque : EV1, EV2 et k",
+   "difficulte": 1,
+   "graine": 2686597541,
+   "enonce": "Essai de plaque (NF P94-117-1, plaque de 600 mm) sur une couche compactée : enfoncement de 1,25 mm au premier chargement, jusqu'à 0,25 MPa, puis de 0,69 mm au second, jusqu'à 0,20 MPa.",
+   "donnees": [
+    {
+     "label": "z1 (0,25 MPa)",
+     "valeur": "1,25 mm"
+    },
+    {
+     "label": "z2 (0,20 MPa)",
+     "valeur": "0,69 mm"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 560 283\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f1-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f1-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f1-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f1-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f1-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f1-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M58.0 14.0L58.0 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">0</text><path d=\"M138.7 14.0L138.7 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"138.7\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">0,05</text><path d=\"M219.3 14.0L219.3 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"219.3\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">0,1</text><path d=\"M300.0 14.0L300.0 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"300.0\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">0,15</text><path d=\"M380.7 14.0L380.7 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"380.7\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">0,2</text><path d=\"M461.3 14.0L461.3 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"461.3\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">0,25</text><path d=\"M542.0 14.0L542.0 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"542.0\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">0,3</text><path d=\"M58.0 14.0L542.0 14.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"18.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M58.0 40.9L542.0 40.9\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"44.9\" text-anchor=\"end\" class=\"pt\">0,2</text><path d=\"M58.0 67.9L542.0 67.9\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"71.9\" text-anchor=\"end\" class=\"pt\">0,4</text><path d=\"M58.0 94.8L542.0 94.8\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"98.8\" text-anchor=\"end\" class=\"pt\">0,6</text><path d=\"M58.0 121.7L542.0 121.7\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"125.7\" text-anchor=\"end\" class=\"pt\">0,8</text><path d=\"M58.0 148.7L542.0 148.7\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"152.7\" text-anchor=\"end\" class=\"pt\">1</text><path d=\"M58.0 175.6L542.0 175.6\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"179.6\" text-anchor=\"end\" class=\"pt\">1,2</text><path d=\"M58.0 202.5L542.0 202.5\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"206.5\" text-anchor=\"end\" class=\"pt\">1,4</text><rect x=\"58\" y=\"14\" width=\"484\" height=\"202\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"300.0\" y=\"250.0\" text-anchor=\"middle\" style=\"font-weight:700\">contrainte sous la plaque q (MPa)</text><text transform=\"translate(14 115) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">enfoncement (mm)</text><clipPath id=\"f1-clip\"><rect x=\"58\" y=\"14\" width=\"484\" height=\"202\"/></clipPath><path d=\"M58.0 14.0L78.2 18.8L98.3 24.0L118.5 29.6L138.7 35.5L158.8 41.9L179.0 48.6L199.2 55.7L219.3 63.2L239.5 71.0L259.7 79.2L279.8 87.8L300.0 96.8L320.2 106.2L340.3 115.9L360.5 126.0L380.7 136.5L400.8 147.4L421.0 158.7L441.2 170.3L461.3 182.3\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"2.4\"  stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M461.3 182.3L421.0 174.1L380.7 165.5L340.3 156.7L300.0 147.4L259.7 137.7L219.3 127.3L179.0 116.2L138.7 103.8L98.3 89.4L58.0 66.2\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"1.6\" stroke-dasharray=\"5 4\" stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M58.0 66.2L74.1 70.4L90.3 74.6L106.4 78.9L122.5 83.3L138.7 87.7L154.8 92.1L170.9 96.6L187.1 101.1L203.2 105.7L219.3 110.3L235.5 115.0L251.6 119.7L267.7 124.5L283.9 129.3L300.0 134.1L316.1 139.0L332.3 144.0L348.4 149.0L364.5 154.0L380.7 159.1\" fill=\"none\" stroke=\"#b91c1c\" stroke-width=\"2.4\"  stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><circle cx=\"461.3\" cy=\"182.3\" r=\"5\" fill=\"#0369a1\" stroke=\"#fff\" stroke-width=\"1.5\"/><circle cx=\"380.7\" cy=\"159.1\" r=\"5\" fill=\"#b91c1c\" stroke=\"#fff\" stroke-width=\"1.5\"/><text x=\"453.3\" y=\"200.3\" text-anchor=\"end\" class=\"halo\" style=\"font-weight:800;fill:#0369a1\">z1 = 1,25 mm</text><text x=\"372.7\" y=\"177.1\" text-anchor=\"end\" class=\"halo\" style=\"font-weight:800;fill:#b91c1c\">z2 = 0,69 mm</text><path d=\"M47.4 264.0L65.4 264.0\" stroke=\"#0369a1\" stroke-width=\"2.4\" fill=\"none\" /><text x=\"71.4\" y=\"268.0\" style=\"font-size:11px;font-weight:700\">1er chargement (0,25 MPa)</text><path d=\"M229.5 264.0L247.5 264.0\" stroke=\"#94a3b8\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"5 4\"/><text x=\"253.5\" y=\"268.0\" style=\"font-size:11px;font-weight:700\">déchargement</text><path d=\"M340.8 264.0L358.8 264.0\" stroke=\"#b91c1c\" stroke-width=\"2.4\" fill=\"none\" /><text x=\"364.8\" y=\"268.0\" style=\"font-size:11px;font-weight:700\">2e chargement (0,20 MPa)</text></svg>",
+   "questions": [
+    {
+     "texte": "Module EV1 ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 90,
+     "explication": "EV1 = 1,5 q a / z1 = 1,5 × 0,25 × 300/1,25 = 112,5/1,25 = 90,0 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Module EV2 ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 130.435,
+     "explication": "EV2 = 1,5 × 0,20 × 300/z2 = 90/0,69 = 130,4 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rapport k = EV2/EV1 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.44928,
+     "explication": "k = 130,4/90,0 = 1,45.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Que dit k du compactage ?",
+     "type": "choix",
+     "options": [
+      "compactage insuffisant (k > 2) : le premier chargement a encore serré le sol",
+      "bon compactage (k ≤ 2)",
+      "rien : k ne dépend que de la plaque utilisée"
+     ],
+     "reponse": 1,
+     "explication": "k = 1,45 : bon compactage (k ≤ 2). Un premier chargement qui serre encore beaucoup le sol (k élevé, au-delà de 2 environ) trahit un compactage insuffisant ; EV2, lui, caractérise la portance."
+    }
+   ]
+  },
+  {
+   "id": "ch8-dynaplaque",
+   "titre": "Dynaplaque et planche d'étalonnage",
+   "difficulte": 2,
+   "graine": 441633619,
+   "enonce": "Contrôle d'une arase de terrassement, avant une couche de forme traitée à la dynaplaque (NF P94-117-2, plaque de 300 mm, σ = 0,1 MPa). En un point, les chutes de mesure donnent des enfoncements élastiques de 0,73 ; 0,77 ; 0,80 mm. La planche d'étalonnage du chantier a établi, pour ce matériau, EV2 ≈ 1,50 × Evd.",
+   "donnees": [
+    {
+     "label": "Enfoncements",
+     "valeur": "0,73 · 0,77 · 0,80 mm"
+    },
+    {
+     "label": "Étalonnage",
+     "valeur": "EV2 ≈ 1,50 Evd"
+    },
+    {
+     "label": "Niveau",
+     "valeur": "arase"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Enfoncement moyen ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 0.766667,
+     "explication": "(0,73 + 0,77 + 0,80)/3 = 0,767 mm.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Module dynamique Evd ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 29.3478,
+     "explication": "Evd = 1,5 σ a / s = 1,5 × 0,1 × 150/0,767 = 22,5/0,767 = 29,3 MPa.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "EV2 estimé par l'étalonnage ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 44.0217,
+     "explication": "EV2 ≈ 1,50 × 29,3 = 44,0 MPa.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Conclusion ?",
+     "type": "choix",
+     "options": [
+      "on compare directement Evd au seuil de 35 MPa",
+      "EV2 < 35 MPa : pas de couche de forme traitée sur cette arase",
+      "EV2 ≥ 35 MPa : une couche de forme traitée peut être exécutée",
+      "la dynaplaque ne renseigne pas sur la portance"
+     ],
+     "reponse": 2,
+     "explication": "EV2 ≈ 44,0 MPa ≥ 35 MPa. Le seuil du GTR est exprimé en EV2 : Evd ne s'y compare qu'à travers la relation établie sur la planche d'étalonnage, propre au matériau."
+    }
+   ]
+  },
+  {
+   "id": "ch8-panda",
+   "titre": "Pénétromètre dynamique léger : un coup de marteau",
+   "difficulte": 2,
+   "graine": 247530291,
+   "enonce": "Pénétromètre dynamique léger à énergie variable (XP P94-105) sur une couche de sol fin : marteau de M = 2 kg, pointe de 2 cm², masse frappée P = 2,55 kg (tête, 2 tiges et pointe). À z = 0,28 m, le capteur mesure une énergie de coup E = 58,1 J et un enfoncement e = 7,6 mm. Pour ce matériau et l'objectif visé, les droites donnent à cette profondeur qd = 12,0 MPa (référence) et 8,0 MPa (limite).",
+   "donnees": [
+    {
+     "label": "M · P",
+     "valeur": "2 kg · 2,55 kg"
+    },
+    {
+     "label": "A",
+     "valeur": "2 cm²"
+    },
+    {
+     "label": "E · e",
+     "valeur": "58,1 J · 7,6 mm"
+    },
+    {
+     "label": "Droites à z",
+     "valeur": "12,0 · 8,0 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Énergie transmise à la pointe E·M/(M + P) ?",
+     "type": "nombre",
+     "unite": "J",
+     "reponse": 25.5385,
+     "explication": "Le choc du marteau sur la masse frappée ne transmet que la part M/(M + P) : 58,1 × 2/4,55 = 25,54 J.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Résistance de pointe qd (formule des Hollandais) ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 16.8016,
+     "explication": "qd = E·M/(M + P) / (A e) = 25,54 J / (2 × 10⁻⁴ m² × 7,6 × 10⁻³ m) = 16,80 MPa.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Que conclure à cette profondeur ?",
+     "type": "choix",
+     "options": [
+      "entre la droite limite et la droite de référence : zone de tolérance, compactage jugé conforme",
+      "sous la droite limite : anomalie de compactage à cette profondeur",
+      "au-dessus de la droite de référence : objectif de densification atteint à cette profondeur",
+      "qd dépasse la droite de référence : le sol est trop compacté"
+     ],
+     "reponse": 2,
+     "explication": "qd = 16,80 MPa pour 12,0 MPa (référence) et 8,0 MPa (limite) : au-dessus de la droite de référence : objectif de densification atteint à cette profondeur. Le profil complet, coup par coup, montre où le compactage manque — très souvent en fond de couche."
+    }
+   ]
+  },
+  {
+   "id": "ch8-tranches",
+   "titre": "Gammadensimètre : densité du fond de couche",
+   "difficulte": 3,
+   "graine": 2117885619,
+   "enonce": "Couche de forme de 25 cm, ρdOPN = 2,00 Mg/m³, teneur en eau w = 12,5 % (uniforme). Le gammadensimètre en transmission directe donne, pour chaque profondeur z de la source, la masse volumique humide moyenne entre la surface et z : 10 cm → 2,272 Mg/m³ ; 17 cm → 2,249 Mg/m³ ; 25 cm → 2,235 Mg/m³.",
+   "donnees": [
+    {
+     "label": "Épaisseur",
+     "valeur": "25 cm"
+    },
+    {
+     "label": "ρdOPN",
+     "valeur": "2,00 Mg/m³"
+    },
+    {
+     "label": "w",
+     "valeur": "12,5 %"
+    },
+    {
+     "label": "ρh moyenne 0–10 cm",
+     "valeur": "2,272 Mg/m³"
+    },
+    {
+     "label": "ρh moyenne 0–17 cm",
+     "valeur": "2,249 Mg/m³"
+    },
+    {
+     "label": "ρh moyenne 0–25 cm",
+     "valeur": "2,235 Mg/m³"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 560 283\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f2-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f2-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f2-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f2-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f2-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f2-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f2-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f2-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f2-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f2-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"58.0\" y=\"136.6\" width=\"484.0\" height=\"57.7\" fill=\"#f59e0b\" opacity=\"0.16\"/><path d=\"M58.0 14.0L58.0 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">2,2</text><path d=\"M154.8 14.0L154.8 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"154.8\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">2,22</text><path d=\"M251.6 14.0L251.6 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"251.6\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">2,24</text><path d=\"M348.4 14.0L348.4 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"348.4\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">2,26</text><path d=\"M445.2 14.0L445.2 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"445.2\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">2,28</text><path d=\"M542.0 14.0L542.0 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"542.0\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">2,3</text><path d=\"M58.0 14.0L542.0 14.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"18.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M58.0 50.1L542.0 50.1\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"54.1\" text-anchor=\"end\" class=\"pt\">5</text><path d=\"M58.0 86.1L542.0 86.1\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"90.1\" text-anchor=\"end\" class=\"pt\">10</text><path d=\"M58.0 122.2L542.0 122.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"126.2\" text-anchor=\"end\" class=\"pt\">15</text><path d=\"M58.0 158.3L542.0 158.3\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"162.3\" text-anchor=\"end\" class=\"pt\">20</text><path d=\"M58.0 194.4L542.0 194.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"198.4\" text-anchor=\"end\" class=\"pt\">25</text><rect x=\"58\" y=\"14\" width=\"484\" height=\"202\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"300.0\" y=\"250.0\" text-anchor=\"middle\" style=\"font-weight:700\">ρh moyenne de la surface à z (Mg/m³)</text><text transform=\"translate(14 115) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">profondeur de la source z (cm)</text><clipPath id=\"f2-clip\"><rect x=\"58\" y=\"14\" width=\"484\" height=\"202\"/></clipPath><path d=\"M406.5 86.1L295.2 136.6L227.4 194.4\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"1.6\" stroke-dasharray=\"4 3\" stroke-linejoin=\"round\" clip-path=\"url(#f2-clip)\"/><circle cx=\"406.5\" cy=\"86.1\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f2-clip)\"/><circle cx=\"295.2\" cy=\"136.6\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f2-clip)\"/><circle cx=\"227.4\" cy=\"194.4\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f2-clip)\"/><text x=\"537.0\" y=\"149.1\" text-anchor=\"end\" class=\"pt halo\">fond de couche (8 cm)</text><path d=\"M177.3 264.0L195.3 264.0\" stroke=\"#0369a1\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"4 3\"/><text x=\"201.3\" y=\"268.0\" style=\"font-size:11px;font-weight:700\">mesures en transmission directe</text></svg>",
+   "questions": [
+    {
+     "texte": "Masse volumique sèche moyenne de la couche ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.98667,
+     "explication": "La mesure à z = 25 cm couvre toute la couche : ρd = 2,235/1,125 = 1,987 Mg/m³ (99,3 % de ρdOPN).",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "Masse volumique sèche du fond de couche (17 à 25 cm) ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.96022,
+     "explication": "ρd moyennes : 1,999 Mg/m³ sur 0–17 cm et 1,987 Mg/m³ sur 0–25 cm ; par différence, ρ = (25 × 1,987 − 17 × 1,999)/8 = 1,960 Mg/m³.",
+     "toleranceRel": 0.008
+    },
+    {
+     "texte": "Taux de compactage du fond de couche ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 98.0111,
+     "explication": "1,960/2,00 = 98,0 % de ρdOPN, pour 96 % exigés en fond de couche par l'objectif q3 (couche de forme).",
+     "tolerance": 0.8
+    },
+    {
+     "texte": "Verdict ?",
+     "type": "choix",
+     "options": [
+      "objectif q3 non atteint : la densité moyenne est insuffisante",
+      "objectif q3 atteint (moyenne et fond de couche)",
+      "on ne peut pas conclure sans essai de plaque",
+      "objectif q3 non atteint : la moyenne passe, le fond de couche non"
+     ],
+     "reponse": 1,
+     "explication": "Moyenne 99,3 % (≥ 98,5 % exigés) ; fond de couche 98,0 % (≥ 96 % exigés) : objectif q3 atteint (moyenne et fond de couche)."
+    }
+   ]
+  },
+  {
+   "id": "ch8-seuils",
+   "titre": "Arase et plateforme : les seuils du chantier",
+   "difficulte": 3,
+   "graine": 2474536362,
+   "enonce": "Avant de construire la couche de forme, un essai de plaque sur l'arase donne z2 = 7,20 mm au second chargement. Plus tard, sur la plateforme achevée, on lit z2 = 2,12 mm. (Plaque de 600 mm : EV2 = 90/z2, z2 en mm.)",
+   "donnees": [
+    {
+     "label": "z2 sur l'arase",
+     "valeur": "7,20 mm"
+    },
+    {
+     "label": "z2 sur la plateforme",
+     "valeur": "2,12 mm"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "EV2 de l'arase ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 12.5,
+     "explication": "EV2 = 90/7,20 = 12,5 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Quelle couche de forme peut-on exécuter sur cette arase ?",
+     "type": "choix",
+     "options": [
+      "couche de forme granulaire seulement : pas de couche de forme traitée (EV2 < 35 MPa)",
+      "couche de forme traitée possible (EV2 ≥ 35 MPa), ou granulaire",
+      "toute couche de forme, l'arase n'a pas d'exigence de portance",
+      "ni l'une ni l'autre en l'état : améliorer d'abord l'arase (EV2 < 15 MPa)"
+     ],
+     "reponse": 3,
+     "explication": "Seuils du GTR (F1 § 4.1.3) : 35 MPa sur l'arase pour une couche de forme traitée, 15 à 20 MPa pour une couche de forme granulaire. EV2 = 12,5 MPa → ni l'une ni l'autre en l'état : améliorer d'abord l'arase (EV2 < 15 MPa)."
+    },
+    {
+     "texte": "Enfoncement z2 maximal admissible sur la plateforme pour construire la chaussée ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 1.8,
+     "explication": "EV2 > 50 MPa ⇔ z2 < 90/50 = 1,80 mm (sur l'arase, pour une couche de forme traitée : 90/35 = 2,57 mm).",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "La chaussée peut-elle être construite sur la plateforme ?",
+     "type": "choix",
+     "options": [
+      "non : EV2 = 42 MPa < 50 MPa",
+      "on ne peut pas conclure sans le rapport k",
+      "oui, dès que l'arase dépassait 35 MPa",
+      "oui : EV2 = 42 MPa > 50 MPa"
+     ],
+     "reponse": 0,
+     "explication": "z2 = 2,12 mm > 1,80 mm : EV2 = 90/2,12 = 42,5 MPa. Au moment de construire la chaussée, la plateforme doit offrir plus de 50 MPa (ou une déflexion de moins de 2 mm sous l'essieu de 13 t), et un nivellement dans la tolérance du marché."
+    }
+   ]
+  }
+ ]
+}

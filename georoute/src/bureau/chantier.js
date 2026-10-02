@@ -192,7 +192,7 @@ export function calculerMouvement(v) {
     <h3>2. Volumes entre profils (moyenne des aires)</h3>
     ${tableau(["Tronçon", "Déblai (m³)", "Remblai (m³)"], vol.troncons.map((t) => [`${f(t.de, 4)} – ${f(t.a, 4)} m`, f(t.deblai, 4), f(t.remblai, 4)]).concat([["<strong>Total</strong>", `<strong>${f(vol.total.deblai, 5)}</strong>`, `<strong>${f(vol.total.remblai, 5)}</strong>`]]))}
     <h3>3. Épure de Lalanne et répartition</h3>
-    <p>Ordonnée = Σ (déblai × ${fd(reemploi, 2)} × ${fd(Ct, 2)} − remblai). ${boucles.length ? "" : "La ligne ne coupe pas l'épure."}</p>
+    <p>Ordonnée = Σ (déblai × ${fd(reemploi, 2)} × ${fd(Ct, 2)} − remblai). ${boucles.length ? "" : "La ligne ne referme aucune boucle sur l'épure."}</p>
     ${tableau(["n°", "De – à", "Volume", "Distance moyenne", "Moment (10³ m³·m)", "Atelier", "Durée"], lignesB)}
     <p>Extrémités : début ${bout(rep.debut)} ; fin ${bout(rep.fin)}.</p>`;
   return { figure, synthese, note, verdict: null, etat: "étude du mouvement des terres", resume: `solde ${ep.solde >= 0 ? "+" : "−"}${f(Math.abs(ep.solde), 4)} m³` };

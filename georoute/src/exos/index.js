@@ -1,6 +1,16 @@
 // Registre des modèles d'exercices, chapitre par chapitre. Chargement à la
 // demande : l'exerciseur n'importe que le chapitre ouvert.
 export const MODELES = {
+  ch6: () => import("./ch06.js"),
+  ch7: () => import("./ch07.js"),
+  ch8: () => import("./ch08.js"),
+  ch9: () => import("./ch09.js"),
+  ch10: () => import("./ch10.js"),
+  ch11: () => import("./ch11.js"),
+  ch12: () => import("./ch12.js"),
+  ch13: () => import("./ch13.js"),
+  ch14: () => import("./ch14.js"),
+  ch15: () => import("./ch15.js"),
 };
 
 /** Graine stable d'un exercice de banque (FNV-1a sur l'identifiant). */

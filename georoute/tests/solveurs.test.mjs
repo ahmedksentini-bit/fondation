@@ -143,6 +143,12 @@ test("volumes, épure de Lalanne et ligne de répartition", () => {
   proche(r.boucles[0].volume, 1000);
   proche(r.boucles[0].moment, 100000); // triangle : 200 m × 1 000 m³ / 2
   proche(r.boucles[0].distance, 100);
+  // Ligne relevée à 300 m³ : le déblai d'avant la boucle part en dépôt (+),
+  // le remblai d'après la boucle vient d'un emprunt (−).
+  const h = repartition(e.points, 300);
+  proche(h.boucles[0].volume, 700);
+  proche(h.debut, 300);
+  proche(h.fin, -300);
 });
 
 test("engins : pelle, tombereau, atelier", () => {

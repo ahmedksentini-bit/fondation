@@ -1,0 +1,380 @@
+{
+ "chapitre": "ch13",
+ "exercices": [
+  {
+   "id": "ch13-pente",
+   "titre": "Pente de l'essai de gonflement au gel",
+   "difficulte": 2,
+   "graine": 1059432795,
+   "enonce": "Essai de gonflement au gel (NF P98-234-2) sur une grave calcaire concassée 0/20 : l'éprouvette 0/20 mm gèle par la tête, la base dans l'eau. On relève le gonflement h à mesure que l'indice de gel cumulé I augmente : I = 80 °C·h → h = 0,19 mm ; I = 200 °C·h → h = 0,28 mm ; I = 350 °C·h → h = 0,37 mm ; I = 550 °C·h → h = 0,49 mm ; I = 750 °C·h → h = 0,55 mm. La droite h = p √I passe par l'origine (moindres carrés : p = Σ(√I·h)/ΣI).",
+   "donnees": [
+    {
+     "label": "I = 80 °C·h",
+     "valeur": "h = 0,19 mm"
+    },
+    {
+     "label": "I = 200 °C·h",
+     "valeur": "h = 0,28 mm"
+    },
+    {
+     "label": "I = 350 °C·h",
+     "valeur": "h = 0,37 mm"
+    },
+    {
+     "label": "I = 550 °C·h",
+     "valeur": "h = 0,49 mm"
+    },
+    {
+     "label": "I = 750 °C·h",
+     "valeur": "h = 0,55 mm"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 600 313\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f3-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f3-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f3-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f3-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f3-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f3-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f3-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f3-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f3-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f3-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f3-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f3-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f3-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M58.0 14.0L58.0 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"262.0\" text-anchor=\"middle\" class=\"pt\">0</text><path d=\"M132.9 14.0L132.9 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"132.9\" y=\"262.0\" text-anchor=\"middle\" class=\"pt\">5</text><path d=\"M207.7 14.0L207.7 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"207.7\" y=\"262.0\" text-anchor=\"middle\" class=\"pt\">10</text><path d=\"M282.6 14.0L282.6 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"282.6\" y=\"262.0\" text-anchor=\"middle\" class=\"pt\">15</text><path d=\"M357.4 14.0L357.4 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"357.4\" y=\"262.0\" text-anchor=\"middle\" class=\"pt\">20</text><path d=\"M432.3 14.0L432.3 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"432.3\" y=\"262.0\" text-anchor=\"middle\" class=\"pt\">25</text><path d=\"M507.1 14.0L507.1 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"507.1\" y=\"262.0\" text-anchor=\"middle\" class=\"pt\">30</text><path d=\"M582.0 14.0L582.0 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"582.0\" y=\"262.0\" text-anchor=\"middle\" class=\"pt\">35</text><path d=\"M58.0 246.0L582.0 246.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"250.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M58.0 217.0L582.0 217.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"221.0\" text-anchor=\"end\" class=\"pt\">0,1</text><path d=\"M58.0 188.0L582.0 188.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"192.0\" text-anchor=\"end\" class=\"pt\">0,2</text><path d=\"M58.0 159.0L582.0 159.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"163.0\" text-anchor=\"end\" class=\"pt\">0,3</text><path d=\"M58.0 130.0L582.0 130.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"134.0\" text-anchor=\"end\" class=\"pt\">0,4</text><path d=\"M58.0 101.0L582.0 101.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"105.0\" text-anchor=\"end\" class=\"pt\">0,5</text><path d=\"M58.0 72.0L582.0 72.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"76.0\" text-anchor=\"end\" class=\"pt\">0,6</text><path d=\"M58.0 43.0L582.0 43.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"47.0\" text-anchor=\"end\" class=\"pt\">0,7</text><path d=\"M58.0 14.0L582.0 14.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"18.0\" text-anchor=\"end\" class=\"pt\">0,8</text><rect x=\"58\" y=\"14\" width=\"524\" height=\"232\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"320.0\" y=\"280.0\" text-anchor=\"middle\" style=\"font-weight:700\">√I ((°C·h)½)</text><text transform=\"translate(14 130) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">gonflement h (mm)</text><clipPath id=\"f3-clip\"><rect x=\"58\" y=\"14\" width=\"524\" height=\"232\"/></clipPath><path d=\"M58.0 246.0L582.0 -261.5\" fill=\"none\" stroke=\"#15803d\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\" stroke-linejoin=\"round\" clip-path=\"url(#f3-clip)\"/><path d=\"M58.0 246.0L582.0 -3814.0\" fill=\"none\" stroke=\"#b91c1c\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\" stroke-linejoin=\"round\" clip-path=\"url(#f3-clip)\"/><circle cx=\"191.9\" cy=\"190.9\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f3-clip)\"/><circle cx=\"269.7\" cy=\"164.8\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f3-clip)\"/><circle cx=\"338.1\" cy=\"138.7\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f3-clip)\"/><circle cx=\"409.1\" cy=\"103.9\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f3-clip)\"/><circle cx=\"468.0\" cy=\"86.5\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f3-clip)\"/><path d=\"M161.0 294.0L179.0 294.0\" stroke=\"#15803d\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"5 4\"/><text x=\"185.0\" y=\"298.0\" style=\"font-size:11px;font-weight:700\">p = 0,05 (SGn / SGp)</text><path d=\"M308.4 294.0L326.4 294.0\" stroke=\"#b91c1c\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"5 4\"/><text x=\"332.4\" y=\"298.0\" style=\"font-size:11px;font-weight:700\">p = 0,4 (SGp / SGt)</text></svg>",
+   "questions": [
+    {
+     "texte": "Pente p de la droite h(√I) ?",
+     "type": "nombre",
+     "unite": "mm/(°C·h)½",
+     "reponse": 0.0202773,
+     "explication": "Σ√I·h = 8,94 × 0,19 + 14,14 × 0,28 + 18,71 × 0,37 + 23,45 × 0,49 + 27,39 × 0,55 = 39,14 ; ΣI = 1 930 ; p = 39,14/1 930 = 0,020 mm/(°C·h)½.",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Classe de sensibilité au gel ?",
+     "type": "choix",
+     "options": [
+      "SGt · très gélif",
+      "SGp · peu gélif",
+      "SGn · non gélif"
+     ],
+     "reponse": 2,
+     "explication": "p = 0,020 : SGn · non gélif (p ≤ 0,05 non gélif ; 0,05 < p ≤ 0,4 peu gélif ; p > 0,4 très gélif) [F2 annexe 3]."
+    },
+    {
+     "texte": "Gonflement prévu par la droite pour I = 1 200 °C·h ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 0.702426,
+     "explication": "h = p √I = 0,020 × √1 200 = 0,020 × 34,64 = 0,70 mm : le gonflement croît comme la racine de l'indice de gel, pas comme l'indice lui-même.",
+     "toleranceRel": 0.03
+    }
+   ]
+  },
+  {
+   "id": "ch13-eprouvettes",
+   "titre": "Trois éprouvettes, une classe de gel",
+   "difficulte": 1,
+   "graine": 3024699299,
+   "enonce": "On a soumis une argile très plastique F4 à l'essai de gonflement au gel. Les pentes des trois éprouvettes valent 0,757 ; 0,827 ; 0,741 mm/(°C·h)½.",
+   "donnees": [
+    {
+     "label": "éprouvette 1",
+     "valeur": "p = 0,757"
+    },
+    {
+     "label": "éprouvette 2",
+     "valeur": "p = 0,827"
+    },
+    {
+     "label": "éprouvette 3",
+     "valeur": "p = 0,741"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Pente moyenne p ?",
+     "type": "nombre",
+     "unite": "mm/(°C·h)½",
+     "reponse": 0.775,
+     "explication": "p = (0,757 + 0,827 + 0,741)/3 = 0,775 mm/(°C·h)½.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Classe du matériau ?",
+     "type": "choix",
+     "options": [
+      "SGt · très gélif",
+      "SGp · peu gélif",
+      "SGn · non gélif"
+     ],
+     "reponse": 0,
+     "explication": "p = 0,775 → SGt · très gélif : l'essai de gonflement prévaut sur toute autre règle [F2 annexe 3]."
+    },
+    {
+     "texte": "Sans l'essai, quelle classe les règles par défaut de l'annexe 3 lui auraient-elles donnée ?",
+     "type": "choix",
+     "options": [
+      "SGp · peu gélif",
+      "SGn · non gélif",
+      "SGt · très gélif"
+     ],
+     "reponse": 0,
+     "explication": "Règle par défaut : F4 non traité, sans essai : peu gélif (tableau par défaut de l'annexe 3) → SGp · peu gélif. L'essai change ici la classe : il vaut la peine d'être fait."
+    }
+   ]
+  },
+  {
+   "id": "ch13-defaut",
+   "titre": "Deux matériaux sans essai de gel",
+   "difficulte": 1,
+   "graine": 4292523814,
+   "enonce": "Sans essai de gonflement au gel, on doit classer deux matériaux non traités disponibles sur le chantier. A : une grave alluvionnaire insensible à l'eau (G31ins) : LA = 20, MDE = 23. B : une grave silteuse G3, sensible à l'eau.",
+   "donnees": [
+    {
+     "label": "Matériau A",
+     "valeur": "grave alluvionnaire insensible à l'eau (G31ins) : LA = 20, MDE = 23"
+    },
+    {
+     "label": "Matériau B",
+     "valeur": "grave silteuse G3, sensible à l'eau"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Classe de gel du matériau A ?",
+     "type": "choix",
+     "options": [
+      "SGn · non gélif",
+      "SGt · très gélif",
+      "SGp · peu gélif"
+     ],
+     "reponse": 0,
+     "explication": "A : Matériau insensible à l'eau (§ 4.2.1) ; LA ≤ 45 et MDE ≤ 45 : non gélif → SGn · non gélif [F2 annexe 3]."
+    },
+    {
+     "texte": "Classe de gel du matériau B ?",
+     "type": "choix",
+     "options": [
+      "SGp · peu gélif",
+      "SGt · très gélif",
+      "SGn · non gélif"
+     ],
+     "reponse": 1,
+     "explication": "B : G3 sensible à l'eau, sans essai : très gélif (tableau par défaut de l'annexe 3) → SGt · très gélif [F2 annexe 3]."
+    },
+    {
+     "texte": "Lequel peut-on placer au-dessus d'un sol support gélif pour le protéger du gel ?",
+     "type": "choix",
+     "options": [
+      "les deux",
+      "aucun des deux",
+      "le matériau B",
+      "le matériau A"
+     ],
+     "reponse": 3,
+     "explication": "Seul un matériau non gélif protège ce qui est dessous : A est SGn · non gélif, B est SGt · très gélif → le matériau A. Un matériau peu gélif peut rester sous la chaussée, mais la vérification au gel (NF P98-086) tient compte de sa pente."
+    }
+   ]
+  },
+  {
+   "id": "ch13-traite",
+   "titre": "Matériau traité : gélif ou non ?",
+   "difficulte": 2,
+   "graine": 1118286234,
+   "enonce": "En couche de forme, une argile F3 traitée à la chaux seule. Aucun essai de gonflement n'a été fait, et l'on ne dispose pas des autres justifications de l'annexe 3 (dosage, mouture, compactage…). Trois éprouvettes conservées jusqu'à l'âge du premier gel possible donnent une résistance en compression Rc = 1,8 ; 1,6 ; 1,8 MPa.",
+   "donnees": [
+    {
+     "label": "Traitement",
+     "valeur": "chaux seule"
+    },
+    {
+     "label": "Rc éprouvette 1",
+     "valeur": "1,8 MPa"
+    },
+    {
+     "label": "Rc éprouvette 2",
+     "valeur": "1,6 MPa"
+    },
+    {
+     "label": "Rc éprouvette 3",
+     "valeur": "1,8 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rc moyenne à l'âge du premier gel ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 1.73333,
+     "explication": "(1,8 + 1,6 + 1,8)/3 = 1,73 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Classe de gel par les règles par défaut ?",
+     "type": "choix",
+     "options": [
+      "SGt · très gélif",
+      "SGp · peu gélif",
+      "SGn · non gélif"
+     ],
+     "reponse": 0,
+     "explication": "Rc = 1,73 MPa à l'âge du premier gel. Matériau traité à la chaux seule, sans essai de gonflement ; aucune des règles par défaut n'est satisfaite : à défaut d'essai, le matériau est à considérer comme très gélif (un essai de gonflement peut le reclasser) → SGt · très gélif. Repères du cours : traité à la chaux seule, non gélif si Rc ≥ 2,5 MPa ; traité au liant, si la compression diamétrale Rit atteint 0,25 MPa."
+    },
+    {
+     "texte": "Un essai de gonflement donne ensuite p = 0,300 mm/(°C·h)½. Classe retenue ?",
+     "type": "choix",
+     "options": [
+      "SGp · peu gélif",
+      "SGt · très gélif",
+      "SGn · non gélif"
+     ],
+     "reponse": 0,
+     "explication": "p = 0,300 → SGp · peu gélif : l'essai de gonflement prévaut toujours sur les règles par défaut."
+    }
+   ]
+  },
+  {
+   "id": "ch13-gelifraction",
+   "titre": "Gélifraction d'un matériau traité",
+   "difficulte": 1,
+   "graine": 2202536472,
+   "enonce": "Pour une couche de forme en grave traitée au liant hydraulique routier, on vérifie la résistance à la gélifraction : à 28 jours, trois éprouvettes témoins et trois éprouvettes soumises aux cycles de gel sont rompues en traction. Témoins : 0,54 ; 0,52 ; 0,50 MPa. Après les cycles : 0,39 ; 0,38 ; 0,41 MPa.",
+   "donnees": [
+    {
+     "label": "Rt témoins",
+     "valeur": "0,54 · 0,52 · 0,50 MPa"
+    },
+    {
+     "label": "Rt après gel",
+     "valeur": "0,39 · 0,38 · 0,41 MPa"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Résistance moyenne des témoins ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.52,
+     "explication": "(0,54 + 0,52 + 0,50)/3 = 0,520 MPa.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Perte de résistance due au gel ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 24.359,
+     "explication": "Moyenne après gel : 0,393 MPa ; perte = 1 − 0,393/0,520 = 24,4 %.",
+     "tolerance": 1
+    },
+    {
+     "texte": "Le matériau résiste-t-il à la gélifraction ?",
+     "type": "choix",
+     "options": [
+      "insuffisant : la perte dépasse 50 %",
+      "satisfaisant : la perte ne dépasse pas 50 %"
+     ],
+     "reponse": 1,
+     "explication": "Perte de 24,4 % → satisfaisant : la perte ne dépasse pas 50 % (critère : au plus 50 % de perte de résistance en traction à 28 jours) [F1 § 4.2.1]."
+    },
+    {
+     "texte": "Quel mécanisme cet essai examine-t-il ?",
+     "type": "choix",
+     "options": [
+      "le gonflement dû aux sulfates",
+      "la gélifraction : l'eau gèle dans les liaisons créées par la prise et les fragmente",
+      "le retrait de dessiccation du mélange",
+      "la cryosuccion : l'eau aspirée vers le front de gel forme des lentilles de glace"
+     ],
+     "reponse": 1,
+     "explication": "la gélifraction : l'eau gèle dans les liaisons créées par la prise et les fragmente. La cryosuccion, elle, se juge par l'essai de gonflement au gel et la pente p."
+    }
+   ]
+  },
+  {
+   "id": "ch13-stefan",
+   "titre": "Jusqu'où gèle le sol ? Formule de Stefan",
+   "difficulte": 2,
+   "graine": 1178322434,
+   "enonce": "L'hiver de référence d'un site a un indice de gel I = 100 °C·jour. Le sol, de conductivité thermique λ = 1,3 W/m·K à l'état gelé, a une teneur en eau w = 15,0 % et ρd = 1,85 Mg/m³ ; la chaleur latente de fusion de l'eau vaut 334 kJ/kg. On estime la profondeur gelée par la formule de Stefan, z = √(2 λ I / L), un modèle d'enseignement qui surestime la profondeur réelle.",
+   "donnees": [
+    {
+     "label": "I",
+     "valeur": "100 °C·jour"
+    },
+    {
+     "label": "λ",
+     "valeur": "1,3 W/m·K"
+    },
+    {
+     "label": "w · ρd",
+     "valeur": "15,0 % · 1,85 Mg/m³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Chaleur latente du sol L par m³ ?",
+     "type": "nombre",
+     "unite": "MJ/m³",
+     "reponse": 92.685,
+     "explication": "L = w ρd × 334 kJ/kg = 0,150 × 1 850 kg/m³ × 334 kJ/kg = 92,7 MJ/m³.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Profondeur de gel z ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.49231,
+     "explication": "I = 100 × 86 400 = 8 640 000 °C·s ; z = √(2 × 1,3 × 8 640 000 / 92 700 000) = 0,49 m.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Et si le sol contenait deux fois plus d'eau ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.348116,
+     "explication": "L double, z est divisé par √2 : 0,49/1,414 = 0,35 m. Il faut extraire plus de chaleur pour geler un sol humide : le front de gel y descend moins vite.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch13-stefan-inverse",
+   "titre": "Quel hiver une couche non gélive arrête-t-elle ?",
+   "difficulte": 3,
+   "graine": 1323459819,
+   "enonce": "Sur un sol support très gélif, la chaussée et la couche de forme forment 0,80 m de matériaux non gélifs (λ = 1,9 W/m·K gelés, w = 5,0 %, ρd = 2,20 Mg/m³ ; chaleur latente de l'eau 334 kJ/kg). On raisonne avec la formule de Stefan, z = √(2 λ I / L), en supposant ces matériaux sur toute la hauteur gelée : un modèle d'enseignement, majorant. L'hiver de référence du lieu a un indice I = 100 °C·jour.",
+   "donnees": [
+    {
+     "label": "Matériaux non gélifs",
+     "valeur": "0,80 m"
+    },
+    {
+     "label": "λ · w · ρd",
+     "valeur": "1,9 W/m·K · 5,0 % · 2,20 Mg/m³"
+    },
+    {
+     "label": "I de référence",
+     "valeur": "100 °C·jour"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Chaleur latente L des matériaux ?",
+     "type": "nombre",
+     "unite": "MJ/m³",
+     "reponse": 36.74,
+     "explication": "L = 0,050 × 2 200 × 334 kJ/kg = 36,7 MJ/m³.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Indice de gel qui amène le front de gel juste au sol support ?",
+     "type": "nombre",
+     "unite": "°C·jour",
+     "reponse": 71.6179,
+     "explication": "z = H ⇔ I = L H²/(2 λ) = 36 700 000 × 0,80² / (2 × 1,9) = 6 190 000 °C·s, soit 71,6 °C·jour.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Avec l'hiver de référence (I = 100 °C·jour), le gel atteint-il le sol support ?",
+     "type": "choix",
+     "options": [
+      "non : le front de gel reste dans les matériaux non gélifs",
+      "oui : le front de gel dépasse les matériaux non gélifs"
+     ],
+     "reponse": 1,
+     "explication": "z = √(2 × 1,9 × 8 640 000 / 36 700 000) = 0,95 m > 0,80 m → oui : le front de gel dépasse les matériaux non gélifs. Le modèle majore la profondeur : la vérification réglementaire (NF P98-086) dira s'il faut épaissir la couche de forme."
+    }
+   ]
+  }
+ ]
+}

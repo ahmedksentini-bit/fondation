@@ -1,0 +1,465 @@
+{
+ "chapitre": "ch7",
+ "exercices": [
+  {
+   "id": "ch7-objectifs",
+   "titre": "Objectifs de densification q4 et q3",
+   "difficulte": 1,
+   "graine": 3879758083,
+   "enonce": "Un même matériau, de masse volumique sèche à l'optimum Proctor normal ρdOPN = 1,70 Mg/m³, sert en remblai et en couche de forme. Sur une couche, le gammadensimètre donne une masse volumique sèche moyenne de 1,634 Mg/m³ et, sur les 8 cm inférieurs (fond de couche), de 1,573 Mg/m³.",
+   "donnees": [
+    {
+     "label": "ρdOPN",
+     "valeur": "1,70 Mg/m³"
+    },
+    {
+     "label": "ρd moyenne",
+     "valeur": "1,634 Mg/m³"
+    },
+    {
+     "label": "ρd fond de couche",
+     "valeur": "1,573 Mg/m³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "ρd moyenne minimale d'une couche de remblai (objectif q4) ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.615,
+     "explication": "q4 : ρd moyenne ≥ 95 % de ρdOPN = 0,95 × 1,70 = 1,615 Mg/m³.",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "ρd minimale en fond de couche de remblai (q4) ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.564,
+     "explication": "q4 : ρd en fond de couche ≥ 92 % de ρdOPN = 0,92 × 1,70 = 1,564 Mg/m³.",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "ρd moyenne minimale en couche de forme (q3) ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.6745,
+     "explication": "q3 : ρd moyenne ≥ 98,5 % de ρdOPN = 0,985 × 1,70 = 1,674 Mg/m³ (et ≥ 96 % en fond de couche, soit 1,632 Mg/m³).",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "Verdict pour la couche contrôlée ?",
+     "type": "choix",
+     "options": [
+      "q4 non atteint : la moyenne passe, le fond de couche non",
+      "objectif q3 atteint (couche de forme), donc q4 aussi",
+      "q4 atteint (remblai), mais pas q3",
+      "q4 non atteint : la densité moyenne est insuffisante"
+     ],
+     "reponse": 2,
+     "explication": "Taux moyen 96,1 % et taux en fond de couche 92,5 % de ρdOPN, face à 95/92 % (q4) et 98,5/96 % (q3) : q4 atteint (remblai), mais pas q3. Le fond de couche compte autant que la moyenne : c'est là que le défaut apparaît d'abord."
+    }
+   ]
+  },
+  {
+   "id": "ch7-qs",
+   "titre": "Q/S, nombre d'applications et débit d'un compacteur",
+   "difficulte": 1,
+   "graine": 2813473134,
+   "enonce": "Remblai construit avec une grave silteuse à granulométrie étalée à éléments de plus de 63 mm (VC2G3), énergie de compactage moyenne (code 2). Pour un compacteur vibrant à cylindre lisse de classe V1, le tableau de compactage (fascicule 2, annexe 4, p. 81) donne Q/S = 0,035 m, une épaisseur e = 0,20 m et une vitesse V = 2 km/h. Largeur compactée L = 1,20 m, rendement k = 0,60.",
+   "donnees": [
+    {
+     "label": "Compacteur",
+     "valeur": "V1"
+    },
+    {
+     "label": "Q/S",
+     "valeur": "0,035 m"
+    },
+    {
+     "label": "e · V",
+     "valeur": "0,20 m · 2 km/h"
+    },
+    {
+     "label": "L · k",
+     "valeur": "1,20 m · 0,60"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Nombre d'applications de charge N ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 6,
+     "explication": "N = e/(Q/S) = 0,20/0,035 = 5,71, arrondi à l'entier supérieur : N = 6.",
+     "tolerance": 0
+    },
+    {
+     "texte": "Nombre de passes du compacteur ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 6,
+     "explication": "Un monocylindre applique la charge une fois par passe (N/n = 1) : 6 passes.",
+     "tolerance": 0
+    },
+    {
+     "texte": "Débit par mètre de largeur Q/L ?",
+     "type": "nombre",
+     "unite": "m³/h·m",
+     "reponse": 70,
+     "explication": "Q/L = 1 000 × (Q/S) × V = 1 000 × 0,035 × 2 = 70 m³/h·m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Débit pratique Qprat ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 50.4,
+     "explication": "Qprat = k × (Q/L) × L × (N/n) = 0,60 × 70 × 1,20 × 1 = 50,4 m³/h, soit 403,2 m³ en 8 heures de présence.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch7-classe",
+   "titre": "Classer un vibrant et un compacteur à pneus",
+   "difficulte": 1,
+   "graine": 420470389,
+   "enonce": "Pour classer les compacteurs d'un chantier selon la norme NF P98-736 : un vibrant à pieds dameurs porte M1 = 8 300 kg sur son cylindre, de génératrice L = 174 cm, avec une amplitude théorique à vide A0 = 1,50 mm ; un compacteur à pneus de 33,5 t repose sur 8 roues de même charge (g = 9,81 m/s²).",
+   "donnees": [
+    {
+     "label": "M1 · L",
+     "valeur": "8 300 kg · 174 cm"
+    },
+    {
+     "label": "A0",
+     "valeur": "1,50 mm"
+    },
+    {
+     "label": "Pneus",
+     "valeur": "33,5 t sur 8 roues"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Charge linéique M1/L ?",
+     "type": "nombre",
+     "unite": "kg/cm",
+     "reponse": 47.7011,
+     "explication": "M1/L = 8 300/174 = 47,7 kg/cm.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Paramètre de classement (M1/L)·√A0 ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 58.4217,
+     "explication": "(M1/L)·√A0 = 47,7 × √1,50 = 58,4.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Classe du vibrant ?",
+     "type": "choix",
+     "options": [
+      "VP4",
+      "VP3",
+      "VP2",
+      "VP5",
+      "VP1"
+     ],
+     "reponse": 0,
+     "explication": "Classe par le paramètre : 15 à 25 → VP1, 25 à 40 → VP2, 40 à 55 → VP3, 55 à 70 → VP4, au-delà → VP5 ; amplitude minimale 0,6 / 0,8 / 1,0 / 1,3 / 1,6 mm. On retient la plus faible des deux : VP4."
+    },
+    {
+     "texte": "Qu'est-ce qui fixe cette classe ?",
+     "type": "choix",
+     "options": [
+      "l'amplitude A0",
+      "les deux critères",
+      "le paramètre (M1/L)·√A0"
+     ],
+     "reponse": 1,
+     "explication": "Paramètre 58,4 et amplitude 1,50 mm : la classe est limitée par les deux critères. Un rouleau lourd à faible amplitude reste dans une classe modeste."
+    },
+    {
+     "texte": "Charge par roue CR du compacteur à pneus ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 41.0794,
+     "explication": "CR = 33,5 × 9,81 / 8 = 41,1 kN.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Classe du compacteur à pneus ?",
+     "type": "choix",
+     "options": [
+      "P3",
+      "P2",
+      "P1"
+     ],
+     "reponse": 1,
+     "explication": "P1 de 25 à 40 kN par roue, P2 de 40 à 60 kN, P3 au-delà : CR = 41,1 kN → P2."
+    }
+   ]
+  },
+  {
+   "id": "ch7-vibrant",
+   "titre": "Vibrant à deux colonnes : V × e = constante",
+   "difficulte": 2,
+   "graine": 2033674584,
+   "enonce": "Remblai construit avec un sable ou une grave très silteux à éléments de plus de 63 mm (VC2I1), énergie moyenne (code 2), compacteur vibrant V4. Le tableau de compactage (annexe 4, p. 79) donne Q/S = 0,100 m et deux colonnes : e = 0,30 m à V = 4 km/h (vitesse maximale), ou e = 0,60 m à V = 2 km/h (couche épaisse, vitesse lente). L'entreprise veut régaler des couches de 0,50 m.",
+   "donnees": [
+    {
+     "label": "Compacteur",
+     "valeur": "V4"
+    },
+    {
+     "label": "Q/S",
+     "valeur": "0,100 m"
+    },
+    {
+     "label": "Colonne de gauche",
+     "valeur": "0,30 m · 4 km/h"
+    },
+    {
+     "label": "Colonne de droite",
+     "valeur": "0,60 m · 2 km/h"
+    },
+    {
+     "label": "e du chantier",
+     "valeur": "0,50 m"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 560 273\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f0-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f0-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f0-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f0-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f0-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f0-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"380.7\" y=\"14.0\" width=\"161.3\" height=\"192.0\" fill=\"#dc2626\" opacity=\"0.08\"/><path d=\"M58.0 14.0L58.0 206.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"222.0\" text-anchor=\"middle\" class=\"pt\">0,2</text><path d=\"M138.7 14.0L138.7 206.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"138.7\" y=\"222.0\" text-anchor=\"middle\" class=\"pt\">0,3</text><path d=\"M219.3 14.0L219.3 206.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"219.3\" y=\"222.0\" text-anchor=\"middle\" class=\"pt\">0,4</text><path d=\"M300.0 14.0L300.0 206.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"300.0\" y=\"222.0\" text-anchor=\"middle\" class=\"pt\">0,5</text><path d=\"M380.7 14.0L380.7 206.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"380.7\" y=\"222.0\" text-anchor=\"middle\" class=\"pt\">0,6</text><path d=\"M461.3 14.0L461.3 206.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"461.3\" y=\"222.0\" text-anchor=\"middle\" class=\"pt\">0,7</text><path d=\"M542.0 14.0L542.0 206.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"542.0\" y=\"222.0\" text-anchor=\"middle\" class=\"pt\">0,8</text><path d=\"M58.0 206.0L542.0 206.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"210.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M58.0 167.6L542.0 167.6\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"171.6\" text-anchor=\"end\" class=\"pt\">1</text><path d=\"M58.0 129.2L542.0 129.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"133.2\" text-anchor=\"end\" class=\"pt\">2</text><path d=\"M58.0 90.8L542.0 90.8\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"94.8\" text-anchor=\"end\" class=\"pt\">3</text><path d=\"M58.0 52.4L542.0 52.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"56.4\" text-anchor=\"end\" class=\"pt\">4</text><path d=\"M58.0 14.0L542.0 14.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"18.0\" text-anchor=\"end\" class=\"pt\">5</text><rect x=\"58\" y=\"14\" width=\"484\" height=\"192\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"300.0\" y=\"240.0\" text-anchor=\"middle\" style=\"font-weight:700\">épaisseur de la couche e (m)</text><text transform=\"translate(14 110) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">vitesse V (km/h)</text><clipPath id=\"f0-clip\"><rect x=\"58\" y=\"14\" width=\"484\" height=\"192\"/></clipPath><path d=\"M138.7 52.4L144.7 56.1L150.8 59.7L156.8 63.1L162.9 66.4L168.9 69.5L175.0 72.4L181.0 75.3L187.1 78.0L193.1 80.6L199.2 83.1L205.2 85.5L211.3 87.8L217.3 90.1L223.4 92.2L229.4 94.3L235.5 96.3L241.5 98.2L247.6 100.1L253.6 101.9L259.7 103.6L265.7 105.3L271.8 106.9L277.8 108.5L283.9 110.0L289.9 111.5L296.0 112.9L302.0 114.3L308.1 115.6L314.1 117.0L320.2 118.2L326.2 119.5L332.3 120.7L338.3 121.8L344.4 123.0L350.4 124.1L356.5 125.2L362.5 126.2L368.6 127.2L374.6 128.2L380.7 129.2\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"2.4\"  stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M300.0 206.0L300.0 14.0\" fill=\"none\" stroke=\"#b91c1c\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><circle cx=\"138.7\" cy=\"52.4\" r=\"5\" fill=\"#0f766e\" stroke=\"#fff\" stroke-width=\"1.5\"/><circle cx=\"380.7\" cy=\"129.2\" r=\"5\" fill=\"#0f766e\" stroke=\"#fff\" stroke-width=\"1.5\"/><text x=\"146.7\" y=\"44.4\" text-anchor=\"start\" class=\"halo\" style=\"font-weight:800;fill:#0f766e\">colonne de gauche</text><text x=\"388.7\" y=\"121.2\" text-anchor=\"start\" class=\"halo\" style=\"font-weight:800;fill:#0f766e\">colonne de droite</text><text x=\"385.7\" y=\"26.5\" text-anchor=\"start\" class=\"pt halo\">au-delà de e max : interdit</text><path d=\"M142.9 254.0L160.9 254.0\" stroke=\"#0369a1\" stroke-width=\"2.4\" fill=\"none\" /><text x=\"166.9\" y=\"258.0\" style=\"font-size:11px;font-weight:700\">V × e = constante</text><path d=\"M273.3 254.0L291.3 254.0\" stroke=\"#b91c1c\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"5 4\"/><text x=\"297.3\" y=\"258.0\" style=\"font-size:11px;font-weight:700\">épaisseur du chantier</text></svg>",
+   "questions": [
+    {
+     "texte": "Vitesse à prescrire pour cette épaisseur ?",
+     "type": "nombre",
+     "unite": "km/h",
+     "reponse": 2.4,
+     "explication": "Entre les deux colonnes, V × e reste constant : 2 × 0,60 = 1,200 ; V = 1,200/0,50 = 2,40 km/h.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Nombre d'applications N ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 5,
+     "explication": "N = 0,50/0,100 = 5,00 → 5.",
+     "tolerance": 0
+    },
+    {
+     "texte": "Débit par mètre de largeur Q/L ?",
+     "type": "nombre",
+     "unite": "m³/h·m",
+     "reponse": 240,
+     "explication": "Q/L = 1 000 × 0,100 × 2,40 = 240 m³/h·m — moins qu'avec la colonne de gauche (400 m³/h·m) : la couche épaisse se paie en vitesse.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Peut-on compacter des couches de 0,75 m avec ce compacteur ?",
+     "type": "choix",
+     "options": [
+      "non : 0,75 m dépasse l'épaisseur maximale du tableau (0,60 m)",
+      "oui, en augmentant le nombre de passes",
+      "oui, à 4 km/h (vitesse de la colonne de gauche)",
+      "oui, à 1,60 km/h en prolongeant V × e = constante"
+     ],
+     "reponse": 0,
+     "explication": "Épaisseur 0,75 m supérieure à l'épaisseur maximale du tableau (0,6 m). On ne prolonge pas la loi V × e au-delà de la colonne de droite, et l'on ne panache jamais les colonnes (couche la plus épaisse à la vitesse la plus élevée)."
+    }
+   ]
+  },
+  {
+   "id": "ch7-mixte",
+   "titre": "Compacteur mixte : vibrant et pneus",
+   "difficulte": 2,
+   "graine": 3317580631,
+   "enonce": "Remblai construit avec un limon peu plastique à éléments de plus de 63 mm (VC2F1), énergie faible (code 3). Le compacteur est mixte : un cylindre vibrant de classe V5 à l'avant, un train de pneus de classe P2 à l'arrière. Tableau de compactage (annexe 4, p. 75) : V5 — Q/S = 0,205 m, e = 0,40 m à V = 5 km/h ; P2 — Q/S = 0,120 m, e = 0,45 m à V = 5 km/h. Largeur L = 2,10 m, rendement k = 0,65.",
+   "donnees": [
+    {
+     "label": "V5",
+     "valeur": "0,205 m · 0,40 m · 5 km/h"
+    },
+    {
+     "label": "P2",
+     "valeur": "0,120 m · 0,45 m · 5 km/h"
+    },
+    {
+     "label": "L · k",
+     "valeur": "2,10 m · 0,65"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Q/S du compacteur mixte ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.325,
+     "explication": "Un mixte se traite comme la somme de deux compacteurs : Q/S = 0,205 + 0,120 = 0,325 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Épaisseur de couche à retenir ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.4,
+     "explication": "e et V sont les plus faibles des deux : e = min(0,40 ; 0,45) = 0,40 m, V = min(5 ; 5) = 5 km/h.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Nombre d'applications N ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2,
+     "explication": "N = 0,40/0,325 = 1,23 → 2 (N/n = 1 : chaque passe applique les deux essieux, déjà comptés dans Q/S).",
+     "tolerance": 0
+    },
+    {
+     "texte": "Débit pratique Qprat ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 2218.13,
+     "explication": "Q/L = 1 000 × 0,325 × 5 = 1 625 m³/h·m ; Qprat = 0,65 × 1 625 × 2,10 × 1 = 2 218 m³/h.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch7-atelier",
+   "titre": "Contrôle a posteriori d'un atelier de compactage",
+   "difficulte": 2,
+   "graine": 1652595382,
+   "enonce": "Remblai construit avec un sable ou une grave argileux à éléments de plus de 63 mm (VC1I2), énergie moyenne (code 2). Un VP5 et un SP2 se partagent les couches ; le tableau de compactage (annexe 4, p. 85) donne Q/S = 0,110 m pour le VP5 et 0,045 m pour le SP2. En fin de journée, 4 000 m³ ont été compactés ; les enregistreurs donnent les surfaces balayées S1 = 13 200 m² et S2 = 30 900 m².",
+   "donnees": [
+    {
+     "label": "Q",
+     "valeur": "4 000 m³"
+    },
+    {
+     "label": "S1 (VP5)",
+     "valeur": "13 200 m²"
+    },
+    {
+     "label": "S2 (SP2)",
+     "valeur": "30 900 m²"
+    },
+    {
+     "label": "(Q/S) tableau",
+     "valeur": "0,110 · 0,045 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Q/S réalisé par le compacteur 1 (Q/S1) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.30303,
+     "explication": "Q/S1 = 4 000/13 200 = 0,303 m.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Somme Σ (Q/S)tableau,i / (Q/Si) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.710625,
+     "explication": "Compacteur 1 : 0,110/0,303 = 0,363 ; compacteur 2 : Q/S2 = 4 000/30 900 = 0,129 m, 0,045/0,129 = 0,348 ; Σ = 0,711.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Le compactage de la journée est-il suffisant ?",
+     "type": "choix",
+     "options": [
+      "non : Σ < 1",
+      "oui, dès que l'un des compacteurs respecte seul son Q/S",
+      "on ne peut pas conclure sans mesure de densité",
+      "oui : Σ ≥ 1"
+     ],
+     "reponse": 0,
+     "explication": "Σ = 0,711 < 1 : énergie insuffisante — il fallait plus de surface balayée, ou moins de volume. Le contrôle du Q/S vérifie les moyens sur tout le chantier, sans attendre les mesures ponctuelles."
+    },
+    {
+     "texte": "Volume maximal que ces surfaces balayées permettaient de compacter ?",
+     "type": "nombre",
+     "unite": "m³",
+     "reponse": 2842.5,
+     "explication": "Σ ≥ 1 ⇔ Q ≤ Σ (Q/S)tableau,i × Si = 0,110 × 13 200 + 0,045 × 30 900 = 2 843 m³ (1 160 m³ de trop).",
+     "toleranceRel": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ch7-prescrire",
+   "titre": "Du tableau d'utilisation au tableau de compactage",
+   "difficulte": 3,
+   "graine": 3863014201,
+   "enonce": "Remblai construit avec une grave silteuse à granulométrie étalée, à l'état moyen (G3m), sous une pluie faible (+). Le géotechnicien retient la solution 2000022 du tableau d'utilisation ; l'entreprise régale en couches de 0,45 m et compacte avec des V3 (largeur 2,05 m, rendement k = 0,65). Extrait du tableau de compactage (annexe 4, p. 81) pour le V3 : code 1 (intense) : Q/S = 0,045 m, e = 0,25 m à V = 2,5 km/h ou e = 0,35 m à V = 2 km/h ; code 2 (moyenne) : Q/S = 0,085 m, e = 0,30 m à V = 3,5 km/h ou e = 0,50 m à V = 2 km/h ; code 3 (faible) : Q/S = 0,175 m, e = 0,35 m à V = 5 km/h ou e = 0,70 m à V = 2,5 km/h. L'atelier d'extraction produit 580 m³/h.",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "G3m"
+    },
+    {
+     "label": "Solution",
+     "valeur": "2000022"
+    },
+    {
+     "label": "Compacteur",
+     "valeur": "V3"
+    },
+    {
+     "label": "e · L · k",
+     "valeur": "0,45 m · 2,05 m · 0,65"
+    },
+    {
+     "label": "Extraction",
+     "valeur": "580 m³/h"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Énergie de compactage imposée par la solution ?",
+     "type": "choix",
+     "options": [
+      "compactage faible",
+      "compactage moyen",
+      "compactage intense"
+     ],
+     "reponse": 1,
+     "explication": "6e chiffre du code 2000022 : C = 2 → compactage moyen ; on lit la ligne « code 2 » du tableau de compactage."
+    },
+    {
+     "texte": "Q/S à appliquer ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 0.085,
+     "explication": "Code 2, V3 : Q/S = 0,085 m.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Nombre d'applications N ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 6,
+     "explication": "N = 0,45/0,085 = 5,29 → 6.",
+     "tolerance": 0
+    },
+    {
+     "texte": "Débit pratique d'un compacteur ?",
+     "type": "nombre",
+     "unite": "m³/h",
+     "reponse": 251.694,
+     "explication": "Deux colonnes : V × e = constante, V = 1,000/0,45 = 2,22 km/h ; Q/L = 1 000 × 0,085 × 2,22 = 188,9 m³/h·m ; Qprat = 0,65 × 188,9 × 2,05 = 251,7 m³/h.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Combien de compacteurs pour suivre l'extraction ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 3,
+     "explication": "580/251,7 = 2,30 → 3 compacteurs : le compactage ne doit jamais freiner l'atelier, ni être bâclé pour le suivre.",
+     "tolerance": 0
+    }
+   ]
+  }
+ ]
+}

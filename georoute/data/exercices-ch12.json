@@ -1,0 +1,413 @@
+{
+ "chapitre": "ch12",
+ "exercices": [
+  {
+   "id": "ch12-quantite",
+   "titre": "Quantité de produit à épandre",
+   "difficulte": 1,
+   "graine": 3941374481,
+   "enonce": "On traite un sable limoneux au ciment à 4,5 % (en masse de sol sec), sur une épaisseur de 0,45 m compactée à ρd = 1,93 Mg/m³. La bande à traiter mesure 1 300 m de long sur 10,5 m de large ; le produit arrive en camions-citernes de 28 t.",
+   "donnees": [
+    {
+     "label": "Dosage",
+     "valeur": "4,5 %"
+    },
+    {
+     "label": "ρd · e",
+     "valeur": "1,93 Mg/m³ · 0,45 m"
+    },
+    {
+     "label": "Surface",
+     "valeur": "1 300 × 10,5 m"
+    },
+    {
+     "label": "Citerne",
+     "valeur": "28 t"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Quantité de produit par mètre carré q ?",
+     "type": "nombre",
+     "unite": "kg/m²",
+     "reponse": 39.0825,
+     "explication": "q = (dosage/100) × ρd × e = 0,045 × 1 930 kg/m³ × 0,45 m = 39,08 kg/m².",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Masse totale de produit pour la bande ?",
+     "type": "nombre",
+     "unite": "t",
+     "reponse": 533.476,
+     "explication": "S = 1 300 × 10,5 = 13 650 m² ; 39,08 × 13 650 / 1 000 = 533,5 t.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Nombre de citernes à commander ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 20,
+     "explication": "533,5 / 28 = 19,05 → 20 citernes (on arrondit au-dessus).",
+     "tolerance": 0.5
+    }
+   ]
+  },
+  {
+   "id": "ch12-bache",
+   "titre": "Contrôle de l'épandage à la bâche",
+   "difficulte": 2,
+   "graine": 964649649,
+   "enonce": "Traitement à la chaux vive, dosé à 2,5 %, sur 0,35 m compactés à ρd = 1,77 Mg/m³. Avant le passage de l'épandeur, on a posé une bâche de 1 m² sur la bande ; elle recueille 18,1 kg de produit. On prend ± 10 % comme repère de tolérance (la vraie tolérance est celle du marché).",
+   "donnees": [
+    {
+     "label": "Dosage visé",
+     "valeur": "2,5 %"
+    },
+    {
+     "label": "ρd · e",
+     "valeur": "1,77 Mg/m³ · 0,35 m"
+    },
+    {
+     "label": "Pesée de la bâche (1 m²)",
+     "valeur": "18,1 kg"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Quantité visée q ?",
+     "type": "nombre",
+     "unite": "kg/m²",
+     "reponse": 15.4875,
+     "explication": "q = 0,025 × 1 770 × 0,35 = 15,49 kg/m².",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Dosage réellement épandu ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 2.92171,
+     "explication": "Un point de dosage vaut 1 770 × 0,35 / 100 = 6,19 kg/m² ; 18,1 / 6,19 = 2,92 %.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Écart à la quantité visée, en % (négatif en cas de sous-dosage) ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 16.8684,
+     "explication": "(18,1 − 15,49) / 15,49 = +16,9 %.",
+     "tolerance": 0.5
+    },
+    {
+     "texte": "Conclusion du contrôle ?",
+     "type": "choix",
+     "options": [
+      "dosage dans le repère de ± 10 %",
+      "sous-dosage au-delà de 10 % : compléter l'épandage",
+      "surdosage au-delà de 10 % : régler l'épandeur"
+     ],
+     "reponse": 2,
+     "explication": "Écart de +16,9 % → surdosage au-delà de 10 % : régler l'épandeur. Le surdosage coûte, et peut rendre le mélange trop sec ou trop raide."
+    }
+   ]
+  },
+  {
+   "id": "ch12-chaux-vive",
+   "titre": "Chaux vive : où passe l'eau ?",
+   "difficulte": 2,
+   "graine": 20521298,
+   "enonce": "On traite un sable argileux trop humide (w = 20,0 %) avec 3,5 % de chaux vive, par temps doux, sans vent : on estime que la part de la chaleur d'hydratation qui vaporise de l'eau vaut η = 0,4. Pour 100 g de sol sec, l'hydratation CaO + H₂O → Ca(OH)₂ consomme 0,32 g d'eau par gramme de chaux et ajoute 1,32 g de solide ; la chaleur (1,16 MJ/kg de CaO) vaporise 0,51 η g d'eau par gramme de chaux.",
+   "donnees": [
+    {
+     "label": "w initiale",
+     "valeur": "20,0 %"
+    },
+    {
+     "label": "Chaux vive",
+     "valeur": "3,5 %"
+    },
+    {
+     "label": "η",
+     "valeur": "0,4"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Eau fixée par l'hydratation (g pour 100 g de sol sec) ?",
+     "type": "nombre",
+     "unite": "g",
+     "reponse": 1.1235,
+     "explication": "18/56 = 0,32 g d'eau par gramme de CaO : 0,32 × 3,5 = 1,12 g.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Eau vaporisée par la chaleur dégagée ?",
+     "type": "nombre",
+     "unite": "g",
+     "reponse": 0.7182,
+     "explication": "0,51 η C = 0,51 × 0,4 × 3,5 = 0,72 g.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Teneur en eau après traitement w' ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 17.3559,
+     "explication": "w' = (w − 0,32 C − 0,51 η C)/(100 + 1,32 C) × 100 = (20,0 − 1,12 − 0,72)/104,62 × 100 = 17,36 %.",
+     "tolerance": 0.15
+    },
+    {
+     "texte": "Baisse de teneur en eau par % de chaux ?",
+     "type": "nombre",
+     "unite": "point",
+     "reponse": 0.755471,
+     "explication": "(20,0 − 17,36) / 3,5 = 0,76 point par % de chaux, dont 0,23 dû à la seule matière sèche ajoutée. La règle de chantier dit « environ un point » ; le malaxage par temps sec et venté aère encore le sol.",
+     "toleranceRel": 0.03
+    }
+   ]
+  },
+  {
+   "id": "ch12-etat-h",
+   "titre": "Ramener un sol à l'état moyen à la chaux vive",
+   "difficulte": 3,
+   "graine": 4086229057,
+   "enonce": "Un sable très silteux I1 doit entrer en remblai ; à l'extraction, sa teneur en eau vaut w = 15,1 % pour un optimum Proctor normal wOPN = 12,5 %. On veut le ramener juste à l'état moyen par un traitement d'amélioration à la chaux vive, par temps doux et sec (η = 0,5), sur des couches de 0,35 m compactées à ρd ≈ 1,68 Mg/m³. On néglige le déplacement de l'optimum dû à la chaux.",
+   "donnees": [
+    {
+     "label": "Sol",
+     "valeur": "sable très silteux I1"
+    },
+    {
+     "label": "w · wOPN",
+     "valeur": "15,1 % · 12,5 %"
+    },
+    {
+     "label": "η",
+     "valeur": "0,5"
+    },
+    {
+     "label": "ρd · e",
+     "valeur": "1,68 Mg/m³ · 0,35 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rapport wn/wOPN à l'extraction ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.208,
+     "explication": "wn/wOPN = 15,1/12,5 = 1,208 ; pour un I1, l'état est humide (h) si 1,10 ≤ wn/wOPN < 1,25 [F2 annexe 1] → état humide (h).",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Teneur en eau à atteindre pour l'état moyen ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 13.75,
+     "explication": "Limite basse de l'état h : wn = 1,10 wOPN = 1,10 × 12,5 = 13,75 %.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Dosage minimal en chaux vive ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 1.77833,
+     "explication": "En résolvant w' = (w − 0,32 C − 0,51 η C)/(100 + 1,32 C) × 100 = 13,75 : C = (w − w')/(0,32 + 0,51 η + 0,0132 w') = (15,1 − 13,75)/0,759 = 1,78 %.",
+     "toleranceRel": 0.04
+    },
+    {
+     "texte": "Quantité à épandre, dosage arrondi au demi-point supérieur ?",
+     "type": "nombre",
+     "unite": "kg/m²",
+     "reponse": 11.76,
+     "explication": "Dosage retenu 2,0 % ; q = 0,020 × 1 680 × 0,35 = 11,76 kg/m², à contrôler à la bâche.",
+     "toleranceRel": 0.02
+    }
+   ]
+  },
+  {
+   "id": "ch12-aptitude",
+   "titre": "Aptitude d'un sol au traitement",
+   "difficulte": 1,
+   "graine": 1893187562,
+   "enonce": "Pour savoir si l'on peut traiter une marne au ciment, on a confectionné trois éprouvettes du mélange, conservées puis immergées (NF P94-100). On mesure leur gonflement volumique Gv (1,6 ; 1,6 ; 1,5 %) et leur résistance en traction indirecte après immersion Rtb (0,35 ; 0,31 ; 0,37 MPa). Critères usuels : apte si Gv ≤ 5 % et Rtb ≥ 0,2 MPa, inapte si Gv > 10 % ou Rtb < 0,1 MPa, douteux entre les deux.",
+   "donnees": [
+    {
+     "label": "Gv (%)",
+     "valeur": "1,6 · 1,6 · 1,5"
+    },
+    {
+     "label": "Rtb (MPa)",
+     "valeur": "0,35 · 0,31 · 0,37"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Gonflement volumique moyen Gv ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 1.56667,
+     "explication": "(1,6 + 1,6 + 1,5) / 3 = 1,57 %.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Résistance moyenne Rtb ?",
+     "type": "nombre",
+     "unite": "MPa",
+     "reponse": 0.343333,
+     "explication": "(0,35 + 0,31 + 0,37) / 3 = 0,343 MPa.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Verdict sur l'aptitude au traitement ?",
+     "type": "choix",
+     "options": [
+      "inapte",
+      "douteux",
+      "apte"
+     ],
+     "reponse": 2,
+     "explication": "Gv = 1,57 % et Rtb = 0,343 MPa : apte (gonflement ≤ 5 % et résistance ≥ 0,2 MPa)."
+    },
+    {
+     "texte": "Et ensuite ?",
+     "type": "choix",
+     "options": [
+      "étude de formulation : fixer le produit et le dosage",
+      "renoncer à traiter ce sol avec ce produit",
+      "changer de produit ou de dosage, ou rechercher la cause (sulfates, matières organiques) avant de conclure"
+     ],
+     "reponse": 0,
+     "explication": "Sol apte → étude de formulation : fixer le produit et le dosage. Pyrite, sulfates, smectites ou matières organiques peuvent faire gonfler un sol traité ou gêner la prise : c'est ce que l'essai d'aptitude détecte."
+    }
+   ]
+  },
+  {
+   "id": "ch12-pst4",
+   "titre": "Améliorer ou stabiliser : ce que devient la PST",
+   "difficulte": 2,
+   "graine": 3594677369,
+   "enonce": "Le mètre supérieur d'un déblai est un sable très silteux I1 en état humide (h). Pour la partie supérieure des terrassements, on prévoit un traitement à la chaux puis au liant hydraulique sur 0,70 m (en deux couches), malaxé au pulvérisateur, avec des dosages fixés par une étude de formulation qui vérifie la tenue à l'immersion et au gel, et un drainage en pied de chaussée.",
+   "donnees": [
+    {
+     "label": "Sol de la PST",
+     "valeur": "I1 · état h"
+    },
+    {
+     "label": "Nappe",
+     "valeur": "pas de remontée"
+    },
+    {
+     "label": "Traitement",
+     "valeur": "chaux + liant sur 0,70 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Ce traitement est :",
+     "type": "choix",
+     "options": [
+      "une amélioration : action à court terme, pour la mise en œuvre",
+      "une stabilisation : résistance durable, à l'eau et au gel"
+     ],
+     "reponse": 1,
+     "explication": "Une résistance durable, vérifiée par une étude et contrôlée, c'est stabiliser → une stabilisation : résistance durable, à l'eau et au gel [F1 § 4.3.1]."
+    },
+    {
+     "texte": "Cas de PST du sol non traité ?",
+     "type": "choix",
+     "options": [
+      "PST1",
+      "PST0",
+      "PST3",
+      "PST2"
+     ],
+     "reponse": 0,
+     "explication": "Sans traitement : PST1, sol sensible à l'eau de mauvaise portance au moment des travaux, sans amélioration possible à long terme : couche de forme granulaire épaisse, ou traitement pour changer de cas ; pas de couche de forme traitée sur une PST1 (arase AR1)."
+    },
+    {
+     "texte": "Cas de PST après le traitement prévu ?",
+     "type": "choix",
+     "options": [
+      "PST3",
+      "PST1",
+      "PST4",
+      "PST2"
+     ],
+     "reponse": 2,
+     "explication": "PST4 : sol sensible à l'eau stabilisé par un traitement sur 0,7 m (au moins 0,7 m, en deux couches depuis une PST1)."
+    },
+    {
+     "texte": "Classe d'arase à long terme après traitement ?",
+     "type": "choix",
+     "options": [
+      "AR2",
+      "AR1 ou AR2",
+      "AR1",
+      "AR0"
+     ],
+     "reponse": 0,
+     "explication": "PST4 → arase AR2 (50 MPa). Seule la stabilisation donne la PST4 et l'AR2 ; le sol amélioré reste, pour le tableau des PST, un sol non traité."
+    }
+   ]
+  },
+  {
+   "id": "ch12-epandeur",
+   "titre": "Régler et approvisionner l'épandeur",
+   "difficulte": 2,
+   "graine": 72354314,
+   "enonce": "Un épandeur à dosage pondéral de 10 t de capacité répand du ciment sur une largeur de 2,5 m, à 5,0 % de la masse de sol sec, pour une couche de 0,40 m compactée à ρd = 1,91 Mg/m³. La plateforme à traiter mesure 1 400 m × 11,5 m.",
+   "donnees": [
+    {
+     "label": "Épandeur",
+     "valeur": "10 t · 2,5 m de large"
+    },
+    {
+     "label": "Dosage",
+     "valeur": "5,0 %"
+    },
+    {
+     "label": "ρd · e",
+     "valeur": "1,91 Mg/m³ · 0,40 m"
+    },
+    {
+     "label": "Plateforme",
+     "valeur": "1 400 × 11,5 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Quantité à épandre q ?",
+     "type": "nombre",
+     "unite": "kg/m²",
+     "reponse": 38.2,
+     "explication": "q = 0,050 × 1 910 × 0,40 = 38,20 kg/m².",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Longueur de bande couverte par un plein ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 104.712,
+     "explication": "10 000 kg / (38,20 kg/m² × 2,5 m) = 104,7 m.",
+     "toleranceRel": 0.015
+    },
+    {
+     "texte": "Nombre de pleins pour toute la plateforme ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 62,
+     "explication": "Produit nécessaire : 38,20 × 16 100 m² = 615 t ; 615 / 10 = 61,50 → 62 pleins.",
+     "tolerance": 0.5
+    },
+    {
+     "texte": "Débit que doit délivrer l'épandeur à 2,5 km/h ?",
+     "type": "nombre",
+     "unite": "kg/min",
+     "reponse": 3979.17,
+     "explication": "L'épandeur avance de 41,7 m/min ; 38,20 × 2,5 × 41,7 = 3 980 kg/min : son dosage pondéral est asservi à la vitesse.",
+     "toleranceRel": 0.02
+    }
+   ]
+  }
+ ]
+}

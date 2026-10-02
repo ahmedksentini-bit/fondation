@@ -1,0 +1,419 @@
+{
+ "chapitre": "ch6",
+ "exercices": [
+  {
+   "id": "ch6-decoder",
+   "titre": "Décoder un code E G W T R C H",
+   "difficulte": 1,
+   "graine": 3896457473,
+   "enonce": "Matériau F2h : un limon ou une argile peu plastique, à l'état humide. Pour son extraction par temps neutre, sans pluie ni évaporation importante (=), le tableau d'utilisation en remblai (fascicule 2, annexe 2, p. 29) propose, parmi 2 solutions, la solution « traitement » codée 0002020. Ses sept chiffres se lisent dans l'ordre des rubriques E, G, W, T, R, C, H.",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "F2h"
+    },
+    {
+     "label": "Météo",
+     "valeur": "ni pluie ni évaporation importante (=)"
+    },
+    {
+     "label": "Code",
+     "valeur": "0002020"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "4e chiffre (rubrique T, traitement) = 2 : que prescrit-il ?",
+     "type": "choix",
+     "options": [
+      "pas de condition particulière",
+      "traitement à la chaux seule",
+      "traitement avec un réactif ou un additif adapté"
+     ],
+     "reponse": 1,
+     "explication": "Rubrique T — Traitement : le chiffre 2 signifie « traitement à la chaux seule »."
+    },
+    {
+     "texte": "5e chiffre (rubrique R, régalage) = 0 : que prescrit-il ?",
+     "type": "choix",
+     "options": [
+      "pas de condition particulière",
+      "couches minces (20 à 30 cm)",
+      "couches moyennes (30 à 50 cm)"
+     ],
+     "reponse": 0,
+     "explication": "Rubrique R — Régalage : le chiffre 0 signifie « pas de condition particulière ». Un 0 veut dire qu'aucune condition n'est imposée sur cette rubrique."
+    },
+    {
+     "texte": "6e chiffre (rubrique C, compactage) = 2 : que prescrit-il ?",
+     "type": "choix",
+     "options": [
+      "compactage intense",
+      "compactage faible",
+      "compactage moyen"
+     ],
+     "reponse": 2,
+     "explication": "Rubrique C — Compactage : le chiffre 2 signifie « compactage moyen ». La rubrique C n'est jamais nulle : toute mise en remblai fixe une énergie de compactage, que les tableaux de l'annexe 4 traduisent en Q/S (chapitre 7)."
+    }
+   ]
+  },
+  {
+   "id": "ch6-lecture",
+   "titre": "Lire une ligne du tableau d'utilisation",
+   "difficulte": 1,
+   "graine": 4019186351,
+   "enonce": "Un déblai fournit un sable silteux à granulométrie étalée, à l'état moyen — classe S3m. Le géotechnicien du chantier apprécie la situation du jour : évaporation importante (−). On consulte le tableau d'utilisation en remblai de ce matériau (fascicule 2, annexe 2).",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "S3m"
+    },
+    {
+     "label": "Météo",
+     "valeur": "évaporation importante (−)"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Combien de solutions le tableau admet-il pour cette situation ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2,
+     "explication": "Tableau S3m, p. 35, ligne « évaporation importante » : 2 solutions, 0000010 (utilisation en l’état), 0030020 (arrosage). Elles sont données sans ordre de préférence : toutes conviennent.",
+     "tolerance": 0
+    },
+    {
+     "texte": "Lequel de ces codes est une solution admise ?",
+     "type": "choix",
+     "options": [
+      "0000010",
+      "0011020",
+      "0040120",
+      "0000020"
+     ],
+     "reponse": 0,
+     "explication": "Solutions de la ligne : 0000010 (utilisation en l’état), 0030020 (arrosage). Les autres codes proposés appartiennent à d'autres situations météorologiques ou à d'autres états du même sol : l'état constaté à l'extraction et la météo du jour fixent la ligne à lire."
+    },
+    {
+     "texte": "Quelle hauteur de remblai l'ensemble de ces solutions permet-il au mieux ?",
+     "type": "choix",
+     "options": [
+      "10 m (remblai de hauteur moyenne)",
+      "pas de limite propre à la solution (15 m, domaine du guide)",
+      "5 m (remblai de faible hauteur)"
+     ],
+     "reponse": 1,
+     "explication": "Rubrique H (7e chiffre) des solutions : 0000010 → H = 0, 0030020 → H = 0. H = 0 : pas de limite propre à la solution ; H = 1 : 5 m ; H = 2 : 10 m. Une solution au moins n'impose pas de hauteur : le remblai reste dans le domaine du guide (15 m au plus, au-delà une étude propre)."
+    }
+   ]
+  },
+  {
+   "id": "ch6-journee",
+   "titre": "Refusé le matin, accepté l'après-midi",
+   "difficulte": 2,
+   "graine": 2840641341,
+   "enonce": "Chantier de remblai avec un sable ou une grave très silteux, à l'état humide (I1h). Le matin : pluie faible (+). Vers midi, le temps change ; l'après-midi : évaporation importante (−).",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "I1h"
+    },
+    {
+     "label": "Matin",
+     "valeur": "pluie faible (+)"
+    },
+    {
+     "label": "Après-midi",
+     "valeur": "évaporation importante (−)"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Que dit le tableau pour le matin ?",
+     "type": "choix",
+     "options": [
+      "mise en remblai avec un compactage faible",
+      "mise en remblai après extraction frontale",
+      "NON : pas de mise en remblai par ce temps",
+      "mise en remblai sans condition particulière"
+     ],
+     "reponse": 2,
+     "explication": "Tableau I1h (p. 33) : « Situation ne permettant pas la mise en remblai avec des garanties de qualité suffisantes. » On suspend la mise en remblai, ou l'on change de matériau."
+    },
+    {
+     "texte": "Combien de solutions l'après-midi ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 2,
+     "explication": "Ligne « évaporation importante » : 1010122 (extraction en couche - aération), 0011020 (aération et traitement).",
+     "tolerance": 0
+    },
+    {
+     "texte": "Lequel de ces codes est admis l'après-midi ?",
+     "type": "choix",
+     "options": [
+      "0011020",
+      "2030012",
+      "0000031",
+      "0001020"
+     ],
+     "reponse": 0,
+     "explication": "Solutions admises l'après-midi : 1010122, 0011020. Le même sol peut être refusé le matin et accepté l'après-midi, à condition d'adapter l'extraction, le régalage, le compactage et la hauteur."
+    },
+    {
+     "texte": "Pourquoi le tableau refuse-t-il le matin ?",
+     "type": "choix",
+     "options": [
+      "la pluie ferait monter la teneur en eau d'un sol sensible à l'eau : la qualité du remblai ne serait plus garantie",
+      "le GTR interdit tout terrassement par temps de pluie, quel que soit le sol",
+      "la pluie empêche le fonctionnement des compacteurs vibrants",
+      "la pluie rend le sol insensible à l'eau"
+     ],
+     "reponse": 0,
+     "explication": "Sous la pluie, la teneur en eau monte (brutalement et de façon imprévisible sous une pluie forte, lentement sous une pluie faible). Pour ce sol sensible à l'eau, le guide ne voit pas de solution assurant la qualité — alors qu'un sable insensible à l'eau (S…ins) reste utilisable sauf sous une forte pluie, et une grave insensible à l'eau (G…ins) par tous les temps."
+    }
+   ]
+  },
+  {
+   "id": "ch6-hauteur",
+   "titre": "Solutions et hauteur du remblai",
+   "difficulte": 2,
+   "graine": 3965126527,
+   "enonce": "Un remblai de 11 m de hauteur doit être construit avec un sable ou une grave très silteux, à l'état sec (I1s), par temps neutre, sans pluie ni évaporation importante (=).",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "I1s"
+    },
+    {
+     "label": "Météo",
+     "valeur": "ni pluie ni évaporation importante (=)"
+    },
+    {
+     "label": "Hauteur du remblai",
+     "valeur": "11 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Combien de solutions du tableau restent applicables à cette hauteur ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1,
+     "explication": "Solutions de la ligne (p. 33) et rubrique H : 0040120 → pas de limite ; 0000012 → ≤ 10 m. Pour 11 m : 1 solution.",
+     "tolerance": 0
+    },
+    {
+     "texte": "Lequel de ces codes convient pour ce remblai ?",
+     "type": "choix",
+     "options": [
+      "0000012",
+      "1000112",
+      "0040120",
+      "2030012"
+     ],
+     "reponse": 2,
+     "explication": "0040120 est admis par le tableau et sa rubrique H (0) n'impose pas de hauteur. 0000012 : admis par cette météo, mais limité à 10 m. Les autres codes ne figurent pas sur cette ligne du tableau."
+    },
+    {
+     "texte": "Pourquoi certaines solutions limitent-elles la hauteur du remblai ?",
+     "type": "choix",
+     "options": [
+      "la hauteur du remblai fixe l'épaisseur des couches de régalage",
+      "un sol mis en œuvre humide, ou dont l'état dépend de la météo, garde des pressions interstitielles et tasse : seul un remblai bas le tolère",
+      "le GTR interdit tout remblai de plus de 10 m",
+      "les compacteurs ne peuvent pas travailler à plus de 5 m de hauteur"
+     ],
+     "reponse": 1,
+     "explication": "Les solutions qui comptent sur un état hydrique limite ou sur une amélioration due à la météo ne valent pas pour les grands remblais : pressions interstitielles pendant et après la construction, tassements, stabilité (chapitre 9). Au-delà de 15 m, la conception relève d'une étude propre."
+    }
+   ]
+  },
+  {
+   "id": "ch6-compactage",
+   "titre": "Humide, moyen ou sec : l'énergie de compactage",
+   "difficulte": 2,
+   "graine": 1091998259,
+   "enonce": "Le même sol VC2G3 (grave silteuse à granulométrie étalée à éléments de plus de 63 mm) est extrait en trois points d'un chantier : à l'état humide (VC2G3h), à l'état moyen (VC2G3m) et à l'état sec (VC2G3s). Par temps neutre (=), on veut l'employer en l'état — sans action sur la teneur en eau ni traitement.",
+   "donnees": [
+    {
+     "label": "Nature",
+     "valeur": "VC2G3"
+    },
+    {
+     "label": "États",
+     "valeur": "h · m · s"
+    },
+    {
+     "label": "Météo",
+     "valeur": "ni pluie ni évaporation importante (=)"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Emploi en l'état du VC2G3m : quelle énergie de compactage ?",
+     "type": "choix",
+     "options": [
+      "compactage intense",
+      "compactage faible",
+      "compactage moyen"
+     ],
+     "reponse": 2,
+     "explication": "Tableau VC2G3m, situation « = » : solution 0000020, 6e chiffre C = 2 → compactage moyen. À l'état moyen, proche de l'optimum, un compactage moyen suffit."
+    },
+    {
+     "texte": "Emploi en l'état du VC2G3h : quelle énergie de compactage ?",
+     "type": "choix",
+     "options": [
+      "compactage faible",
+      "compactage moyen",
+      "compactage intense"
+     ],
+     "reponse": 0,
+     "explication": "Tableau VC2G3h, situation « = » : solution 0000032 (utilisation en l’état), 6e chiffre C = 3 → compactage faible. Un sol humide se compacte faiblement : un compactage énergique le mettrait en surpression interstitielle (matelassage, orniérage) sans le densifier."
+    },
+    {
+     "texte": "Emploi en l'état du VC2G3s : quelle énergie de compactage ?",
+     "type": "choix",
+     "options": [
+      "compactage intense",
+      "compactage faible",
+      "compactage moyen"
+     ],
+     "reponse": 0,
+     "explication": "Tableau VC2G3s, situation « = » : solution 0000012 (utilisation en l’état), 6e chiffre C = 1 → compactage intense. Un sol sec se compacte intensément : avec peu d'eau, il faut beaucoup d'énergie pour atteindre q4 — et il pourra encore tasser s'il se mouille plus tard."
+    },
+    {
+     "texte": "Lequel des trois emplois permet le remblai le plus haut ?",
+     "type": "choix",
+     "options": [
+      "VC2G3m",
+      "VC2G3s",
+      "VC2G3h"
+     ],
+     "reponse": 0,
+     "explication": "Rubrique H : VC2G3h → 0000032 (H = 2, ≤ 10 m) ; VC2G3m → 0000020 (H = 0, pas de limite) ; VC2G3s → 0000012 (H = 2, ≤ 10 m). C'est l'état moyen, le plus proche de l'optimum, qui donne le remblai le plus sûr."
+    }
+   ]
+  },
+  {
+   "id": "ch6-code",
+   "titre": "Écrire le code d'une solution",
+   "difficulte": 3,
+   "graine": 3393524910,
+   "enonce": "Pour une grave propre à granulométrie étalée à éléments de plus de 63 mm, insensible à l'eau (VC1G1ins) par temps neutre, sans pluie ni évaporation importante (=), le tableau d'utilisation en remblai décrit une solution par ses conditions. Conditions imprimées — C : compactage moyen. Écrire son code à sept chiffres.",
+   "donnees": [
+    {
+     "label": "Matériau",
+     "valeur": "VC1G1ins"
+    },
+    {
+     "label": "Météo",
+     "valeur": "ni pluie ni évaporation importante (=)"
+    },
+    {
+     "label": "Ordre des rubriques",
+     "valeur": "E G W T R C H"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Code de la solution décrite ?",
+     "type": "choix",
+     "options": [
+      "0000010",
+      "0030020",
+      "0000030",
+      "0000020"
+     ],
+     "reponse": 3,
+     "explication": "Rubrique par rubrique, dans l'ordre E G W T R C H : E = 0, G = 0, W = 0, T = 0, R = 0, C = 2, H = 0 → 0000020. Une rubrique sans condition vaut 0 ; seule C n'est jamais nulle."
+    },
+    {
+     "texte": "Quel chiffre du code porte l'épaisseur de régalage ?",
+     "type": "choix",
+     "options": [
+      "le 1er (E)",
+      "le 5e (R)",
+      "le 6e (C)",
+      "le 7e (H)"
+     ],
+     "reponse": 1,
+     "explication": "Ordre des rubriques : E extraction, G granularité, W teneur en eau, T traitement, R régalage, C compactage, H hauteur. R est le 5e chiffre : 1 pour des couches minces (20 à 30 cm), 2 pour des couches moyennes (30 à 50 cm)."
+    }
+   ]
+  },
+  {
+   "id": "ch6-etat",
+   "titre": "De l'état hydrique au tableau d'utilisation",
+   "difficulte": 3,
+   "graine": 2656081771,
+   "enonce": "Au laboratoire, un limon peu plastique (F1) donne wOPN = 19,5 % ; sur le chantier, on mesure wn = 12,9 % et un indice portant immédiat IPI = 40. La mise en remblai est prévue sous une pluie forte (++).",
+   "donnees": [
+    {
+     "label": "Nature",
+     "valeur": "F1"
+    },
+    {
+     "label": "wOPN",
+     "valeur": "19,5 %"
+    },
+    {
+     "label": "wn",
+     "valeur": "12,9 %"
+    },
+    {
+     "label": "IPI",
+     "valeur": "40"
+    },
+    {
+     "label": "Météo",
+     "valeur": "pluie forte (++)"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rapport wn/wOPN ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.661538,
+     "explication": "wn/wOPN = 12,9/19,5 = 0,662.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "État hydrique du F1 ?",
+     "type": "choix",
+     "options": [
+      "h (humide)",
+      "m (moyen)",
+      "th (très humide)",
+      "s (sec)",
+      "ts (très sec)"
+     ],
+     "reponse": 4,
+     "explication": "wn/wOPN → ts. Le GTR privilégie l'IPI pour les états humides (il traduit la traficabilité) et wn/wOPN pour les états secs (difficulté de compactage) : état ts (très sec)."
+    },
+    {
+     "texte": "Nombre de solutions admises sous une pluie forte (++) (0 si le tableau dit NON) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0,
+     "explication": "Tableau F1ts, p. 28 : NON — Sols inutilisables en l’état. Leur humidification pour les ramener à l’état « s » voire « m » peut être envisagée sous réserve d’une étude spécifique.",
+     "tolerance": 0
+    },
+    {
+     "texte": "Que conclure ?",
+     "type": "choix",
+     "options": [
+      "sol normalement inutilisable en l'état, quelle que soit la météo",
+      "mise en remblai possible avec un compactage faible",
+      "pas de mise en remblai par ce temps : attendre une situation plus favorable",
+      "mise en remblai possible après un simple arrosage"
+     ],
+     "reponse": 0,
+     "explication": "Les sols très secs ne sont pas réutilisables normalement : « Sols inutilisables en l’état. Leur humidification pour les ramener à l’état « s » voire « m » peut être envisagée sous réserve d’une étude spécifique. »"
+    }
+   ]
+  }
+ ]
+}
