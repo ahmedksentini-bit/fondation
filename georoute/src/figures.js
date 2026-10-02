@@ -68,6 +68,8 @@ export function largeurTexte(s, taille = 12, gras = true) {
 let compteur = 0;
 /** Préfixe unique par figure : deux figures d'une même page ne partagent pas leurs motifs. */
 const nouvelId = () => `f${(compteur++).toString(36)}`;
+/** Repart de f0 : une banque d'exercices ne dépend plus des chapitres produits avant elle. */
+export const renumeroterFigures = () => { compteur = 0; };
 
 function defs(id) {
   return `<defs>

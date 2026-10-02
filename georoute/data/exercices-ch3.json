@@ -1,0 +1,595 @@
+{
+ "chapitre": "ch3",
+ "exercices": [
+  {
+   "id": "ch3-point",
+   "titre": "Un point Proctor : de la pesée à ρd",
+   "difficulte": 1,
+   "graine": 1352957648,
+   "enonce": "Un point d'essai Proctor normal est compacté dans le moule Proctor A (Ø 100 mm, hauteur 120 mm). Moule et sol arasé pèsent 6 149 g, le moule vide 4 043 g. Un prélèvement de sol pèse 217,7 g humide et 195,4 g après étuvage à 105 °C. Masse volumique des grains : ρs = 2,67 Mg/m³.",
+   "donnees": [
+    {
+     "label": "Moule",
+     "valeur": "A · Ø 100 × 120 mm"
+    },
+    {
+     "label": "Moule + sol",
+     "valeur": "6 149 g"
+    },
+    {
+     "label": "Moule vide",
+     "valeur": "4 043 g"
+    },
+    {
+     "label": "Prélèvement",
+     "valeur": "217,7 g → 195,4 g sec"
+    },
+    {
+     "label": "ρs",
+     "valeur": "2,67 Mg/m³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Volume du moule ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 942.478,
+     "explication": "V = π D² H / 4 = π × 10² × 12 / 4 = 942,5 cm³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Teneur en eau du point ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 11.4125,
+     "explication": "w = 100 (mh − ms)/ms = 100 × (217,7 − 195,4)/195,4 = 11,41 %.",
+     "tolerance": 0.1
+    },
+    {
+     "texte": "Masse volumique humide ρ ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 2.23454,
+     "explication": "Sol : 6 149 − 4 043 = 2 106 g ; ρ = 2 106 / 942,5 = 2,235 Mg/m³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Masse volumique sèche ρd ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 2.00564,
+     "explication": "ρd = ρ/(1 + w) = 2,235 / (1 + 0,1141) = 2,006 Mg/m³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Degré de saturation Sr ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 91.9904,
+     "explication": "e = ρs/ρd − 1 = 2,67/2,006 − 1 = 0,331 ; Sr = w ρs/(e ρw) = 0,1141 × 2,67 / 0,331 = 92 % : le point reste sous la courbe de saturation.",
+     "tolerance": 1.5
+    }
+   ]
+  },
+  {
+   "id": "ch3-proctor",
+   "titre": "Optimum Proctor normal et objectif q4",
+   "difficulte": 2,
+   "graine": 3471548623,
+   "enonce": "Un essai Proctor normal (ρs = 2,72 Mg/m³) donne les cinq points ci-dessous. On ajuste une parabole ρd = c0 + c1 w + c2 w² sur les points qui entourent le plus dense. Le sol en place a une teneur en eau naturelle wn = 24,9 %.",
+   "donnees": [
+    {
+     "label": "w = 16,3 %",
+     "valeur": "1,501 Mg/m³"
+    },
+    {
+     "label": "w = 18,2 %",
+     "valeur": "1,598 Mg/m³"
+    },
+    {
+     "label": "w = 20,5 %",
+     "valeur": "1,632 Mg/m³"
+    },
+    {
+     "label": "w = 22,2 %",
+     "valeur": "1,620 Mg/m³"
+    },
+    {
+     "label": "w = 24,5 %",
+     "valeur": "1,584 Mg/m³"
+    },
+    {
+     "label": "wn",
+     "valeur": "24,9 %"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 600 323\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f0-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f0-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f0-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f0-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f0-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f0-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M58.0 14.0L58.0 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">14</text><path d=\"M138.6 14.0L138.6 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"138.6\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">16</text><path d=\"M219.2 14.0L219.2 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"219.2\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">18</text><path d=\"M299.8 14.0L299.8 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"299.8\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">20</text><path d=\"M380.5 14.0L380.5 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"380.5\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">22</text><path d=\"M461.1 14.0L461.1 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"461.1\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">24</text><path d=\"M541.7 14.0L541.7 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"541.7\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">26</text><path d=\"M58.0 248.4L582.0 248.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"252.4\" text-anchor=\"end\" class=\"pt\">1,45</text><path d=\"M58.0 210.6L582.0 210.6\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"214.6\" text-anchor=\"end\" class=\"pt\">1,5</text><path d=\"M58.0 172.8L582.0 172.8\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"176.8\" text-anchor=\"end\" class=\"pt\">1,55</text><path d=\"M58.0 135.0L582.0 135.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"139.0\" text-anchor=\"end\" class=\"pt\">1,6</text><path d=\"M58.0 97.2L582.0 97.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"101.2\" text-anchor=\"end\" class=\"pt\">1,65</text><path d=\"M58.0 59.4L582.0 59.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"63.4\" text-anchor=\"end\" class=\"pt\">1,7</text><path d=\"M58.0 21.6L582.0 21.6\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"25.6\" text-anchor=\"end\" class=\"pt\">1,75</text><rect x=\"58\" y=\"14\" width=\"524\" height=\"242\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"320.0\" y=\"290.0\" text-anchor=\"middle\" style=\"font-weight:700\">teneur en eau w (%)</text><text transform=\"translate(14 135) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">ρd (Mg/m³)</text><clipPath id=\"f0-clip\"><rect x=\"58\" y=\"14\" width=\"524\" height=\"242\"/></clipPath><path d=\"M58.0 -144.7L66.7 -138.4L75.5 -132.1L84.2 -125.9L92.9 -119.7L101.7 -113.6L110.4 -107.5L119.1 -101.5L127.9 -95.5L136.6 -89.6L145.3 -83.7L154.1 -77.9L162.8 -72.1L171.5 -66.4L180.3 -60.7L189.0 -55.1L197.7 -49.5L206.5 -43.9L215.2 -38.4L223.9 -33.0L232.7 -27.6L241.4 -22.2L250.1 -16.8L258.9 -11.5L267.6 -6.3L276.3 -1.1L285.1 4.1L293.8 9.2L302.5 14.3L311.3 19.4L320.0 24.4L328.7 29.4L337.5 34.3L346.2 39.2L354.9 44.1L363.7 48.9L372.4 53.7L381.1 58.5L389.9 63.2L398.6 67.9L407.3 72.5L416.1 77.1L424.8 81.7L433.5 86.3L442.3 90.8L451.0 95.3L459.7 99.8L468.5 104.2L477.2 108.6L485.9 112.9L494.7 117.3L503.4 121.6L512.1 125.9L520.9 130.1L529.6 134.3L538.3 138.5L547.1 142.7L555.8 146.8L564.5 150.9L573.3 155.0L582.0 159.0\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"2\"  stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M58.0 -48.6L66.7 -41.7L75.5 -34.9L84.2 -28.1L92.9 -21.4L101.7 -14.7L110.4 -8.1L119.1 -1.6L127.9 4.9L136.6 11.3L145.3 17.6L154.1 23.9L162.8 30.1L171.5 36.3L180.3 42.4L189.0 48.4L197.7 54.4L206.5 60.4L215.2 66.2L223.9 72.1L232.7 77.9L241.4 83.6L250.1 89.3L258.9 94.9L267.6 100.4L276.3 106.0L285.1 111.4L293.8 116.9L302.5 122.2L311.3 127.6L320.0 132.9L328.7 138.1L337.5 143.3L346.2 148.4L354.9 153.5L363.7 158.6L372.4 163.6L381.1 168.6L389.9 173.5L398.6 178.4L407.3 183.3L416.1 188.1L424.8 192.9L433.5 197.6L442.3 202.3L451.0 207.0L459.7 211.6L468.5 216.2L477.2 220.7L485.9 225.2L494.7 229.7L503.4 234.1L512.1 238.5L520.9 242.9L529.6 247.2L538.3 251.5L547.1 255.8L555.8 260.0L564.5 264.2L573.3 268.4L582.0 272.5\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"1.6\" stroke-dasharray=\"6 4\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><circle cx=\"150.7\" cy=\"209.9\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f0-clip)\"/><circle cx=\"227.3\" cy=\"136.5\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f0-clip)\"/><circle cx=\"320.0\" cy=\"110.8\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f0-clip)\"/><circle cx=\"388.5\" cy=\"119.9\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f0-clip)\"/><circle cx=\"481.2\" cy=\"147.1\" r=\"4.5\" fill=\"#0f172a\" fill-opacity=\".85\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#f0-clip)\"/><path d=\"M184.5 304.0L202.5 304.0\" stroke=\"#0369a1\" stroke-width=\"2.2\" fill=\"none\" /><text x=\"208.5\" y=\"308.0\" style=\"font-size:11px;font-weight:700\">saturation Sr = 100 %</text><path d=\"M336.0 304.0L354.0 304.0\" stroke=\"#0369a1\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"6 4\"/><text x=\"360.0\" y=\"308.0\" style=\"font-size:11px;font-weight:700\">Sr = 80 %</text></svg>",
+   "questions": [
+    {
+     "texte": "Teneur en eau de l'optimum wOPN ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 21.2425,
+     "explication": "Parabole des moindres carrés sur 5 points : c1 = 0,2225, c2 = −0,00524 ; sommet en w = −c1/(2 c2) = 21,2 %.",
+     "tolerance": 0.4
+    },
+    {
+     "texte": "Masse volumique sèche de l'optimum ρdOPN ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.63493,
+     "explication": "Valeur de la parabole au sommet : ρdOPN = 1,635 Mg/m³ (le point le plus dense mesuré vaut 1,632 Mg/m³).",
+     "tolerance": 0.012
+    },
+    {
+     "texte": "Degré de saturation à l'optimum ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 87.0597,
+     "explication": "e = 2,72/1,635 − 1 = 0,664 ; Sr = 0,2124 × 2,72/0,664 = 87 %. L'optimum se place, comme il se doit, sous la courbe de saturation (en général entre 75 et 90 %).",
+     "tolerance": 2.5
+    },
+    {
+     "texte": "Masse volumique sèche moyenne exigée par l'objectif q4 ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.55318,
+     "explication": "q4 : 95 % de ρdOPN = 0,95 × 1,635 = 1,553 Mg/m³ ; en fond de couche, 92 % = 1,504 Mg/m³.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rapport wn/wOPN du sol en place ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.17218,
+     "explication": "24,9 % / 21,2 % = 1,17 : le sol est nettement du côté humide de l'optimum.",
+     "tolerance": 0.03
+    }
+   ]
+  },
+  {
+   "id": "ch3-saturation",
+   "titre": "Courbe de saturation : un point possible ?",
+   "difficulte": 2,
+   "graine": 2903182638,
+   "enonce": "Un laboratoire annonce, pour un point d'essai Proctor, w = 20,4 % et ρd = 1,488 Mg/m³. La masse volumique des grains du sol vaut ρs = 2,60 Mg/m³ (ρw = 1 Mg/m³).",
+   "donnees": [
+    {
+     "label": "w",
+     "valeur": "20,4 %"
+    },
+    {
+     "label": "ρd",
+     "valeur": "1,488 Mg/m³"
+    },
+    {
+     "label": "ρs",
+     "valeur": "2,60 Mg/m³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Masse volumique sèche sur la courbe de saturation (Sr = 100 %) à cette teneur en eau ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.6989,
+     "explication": "ρd = ρs/(1 + w ρs/ρw) = 2,60/(1 + 0,204 × 2,60) = 1,699 Mg/m³.",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "Et sur la courbe Sr = 80 % ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.56344,
+     "explication": "ρd = ρs/(1 + w ρs/(0,8 ρw)) = 1,563 Mg/m³.",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "Teneur en eau qui saturerait le sol à la masse volumique sèche annoncée ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 28.7428,
+     "explication": "w = ρw (1/ρd − 1/ρs) = 100 × (1/1,488 − 1/2,60) = 28,7 %.",
+     "tolerance": 0.3
+    },
+    {
+     "texte": "Degré de saturation du point annoncé ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 70.9744,
+     "explication": "e = 2,60/1,488 − 1 = 0,747 ; Sr = w ρs/(e ρw) = 71 %.",
+     "tolerance": 1.5
+    },
+    {
+     "texte": "Ce point est-il possible ?",
+     "type": "choix",
+     "options": [
+      "oui : il reste sous la courbe de saturation",
+      "on ne peut pas le dire sans la courbe Proctor complète",
+      "non : il passe au-dessus de la courbe de saturation, une mesure est fausse"
+     ],
+     "reponse": 0,
+     "explication": "ρd = 1,488 < 1,699 Mg/m³ : Sr = 71 % < 100 %, le point est plausible."
+    }
+   ]
+  },
+  {
+   "id": "ch3-energie",
+   "titre": "Proctor normal et modifié : l'énergie de compactage",
+   "difficulte": 1,
+   "graine": 865203001,
+   "enonce": "Au laboratoire, on compacte au Proctor dans le moule Proctor A (Ø 100 mm, hauteur 120 mm). Proctor normal : dame de 2,5 kg tombant de 305 mm, 3 couches de 25 coups ; Proctor modifié : dame de 4,5 kg tombant de 457 mm, 5 couches de 25 coups. Un jour, un opérateur pressé n'a donné que 22 coups par couche au Proctor normal.",
+   "donnees": [
+    {
+     "label": "Moule",
+     "valeur": "A · Ø 100 × 120 mm"
+    },
+    {
+     "label": "Proctor normal",
+     "valeur": "2,5 kg · 305 mm · 3 × 25"
+    },
+    {
+     "label": "Proctor modifié",
+     "valeur": "4,5 kg · 457 mm · 5 × 25"
+    },
+    {
+     "label": "Coups donnés",
+     "valeur": "22 par couche"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Volume du moule ?",
+     "type": "nombre",
+     "unite": "cm³",
+     "reponse": 942.478,
+     "explication": "π × 10² × 12 / 4 = 942,5 cm³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Énergie du Proctor normal par unité de volume ?",
+     "type": "nombre",
+     "unite": "kJ/m³",
+     "reponse": 595.249,
+     "explication": "E = 3 couches × 25 coups × 2,5 kg × 9,81 m/s² × 0,305 m / 942,5·10⁻⁶ m³ = 595 kJ/m³, soit environ 0,6 MJ/m³.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Énergie du Proctor modifié ?",
+     "type": "nombre",
+     "unite": "kJ/m³",
+     "reponse": 2675.69,
+     "explication": "E = 5 couches × 25 coups × 4,5 kg × 9,81 m/s² × 0,457 m / 942,5·10⁻⁶ m³ = 2 676 kJ/m³, soit environ 2,7 MJ/m³.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Rapport des deux énergies ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 4.49508,
+     "explication": "2 676 / 595 = 4,50 : le Proctor modifié est quatre fois et demie plus énergique.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Énergie réellement appliquée par l'opérateur pressé ?",
+     "type": "nombre",
+     "unite": "kJ/m³",
+     "reponse": 523.82,
+     "explication": "L'énergie est proportionnelle au nombre de coups : 595 × 22/25 = 524 kJ/m³.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Par rapport au vrai optimum Proctor normal, l'optimum qu'il mesurera sera…",
+     "type": "choix",
+     "options": [
+      "identique : l'énergie ne change que la forme de la cloche",
+      "plus dense et plus sec",
+      "plus dense et plus humide",
+      "moins dense et plus humide"
+     ],
+     "reponse": 3,
+     "explication": "Avec plus d'énergie, l'optimum est plus dense et plus sec ; avec moins d'énergie, c'est l'inverse : ρdOPN serait sous-estimé et wOPN surestimé, et les objectifs q4 et q3, rapportés à ce ρdOPN, deviendraient trop faciles."
+    }
+   ]
+  },
+  {
+   "id": "ch3-ipi",
+   "titre": "Indice portant immédiat et état hydrique",
+   "difficulte": 1,
+   "graine": 422056354,
+   "enonce": "Juste après son compactage à l'énergie Proctor normal, à sa teneur en eau naturelle, une éprouvette d'un sol fin moyennement argileux (F2) est poinçonnée sans surcharge ni immersion. La presse lit 0,15 kN à 2,5 mm d'enfoncement et 0,19 kN à 5 mm.",
+   "donnees": [
+    {
+     "label": "Sol",
+     "valeur": "un sol fin moyennement argileux (F2)"
+    },
+    {
+     "label": "F à 2,5 mm",
+     "valeur": "0,15 kN"
+    },
+    {
+     "label": "F à 5 mm",
+     "valeur": "0,19 kN"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rapport à la force de référence à 2,5 mm ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 1.1236,
+     "explication": "100 × 0,15 / 13,35 = 1,1 %.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Rapport à la force de référence à 5 mm ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 0.95,
+     "explication": "100 × 0,19 / 20 = 1,0 %.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Indice portant immédiat IPI ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.1236,
+     "explication": "On retient le plus grand des deux rapports : IPI = 1,1 (à 2,5 mm).",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "État hydrique que l'IPI désigne pour ce sol ?",
+     "type": "choix",
+     "options": [
+      "h : humide",
+      "s : sec",
+      "ts : très sec",
+      "th : très humide",
+      "m : moyen"
+     ],
+     "reponse": 3,
+     "explication": "Seuils d'IPI d'un sol fin moyennement argileux (F2) : th : IPI ≤ 2 ; h : 2 < IPI ≤ 6 ; m : 6 < IPI ≤ 15. IPI = 1,1 → th : très humide. L'IPI est le paramètre à privilégier pour les états humides : il traduit la difficulté des engins à circuler."
+    }
+   ]
+  },
+  {
+   "id": "ch3-poinconnement",
+   "titre": "Courbe de poinçonnement et correction d'origine",
+   "difficulte": 3,
+   "graine": 162208245,
+   "enonce": "Poinçonnement d'une éprouvette compactée au Proctor normal, sans surcharge ni immersion (essai IPI) : forces lues de 0,625 à 10 mm d'enfoncement. La courbe commence concave (mauvaise mise en contact) : on corrige l'origine en prolongeant jusqu'à F = 0 la droite du segment le plus raide, passant par son milieu, et l'on décale les enfoncements d'autant. Forces de référence : 13,35 kN à 2,5 mm et 20 kN à 5 mm.",
+   "donnees": [
+    {
+     "label": "0,625 mm",
+     "valeur": "0,34 kN"
+    },
+    {
+     "label": "1,25 mm",
+     "valeur": "0,86 kN"
+    },
+    {
+     "label": "2 mm",
+     "valeur": "1,55 kN"
+    },
+    {
+     "label": "2,5 mm",
+     "valeur": "1,98 kN"
+    },
+    {
+     "label": "4 mm",
+     "valeur": "3,25 kN"
+    },
+    {
+     "label": "5 mm",
+     "valeur": "4,09 kN"
+    },
+    {
+     "label": "7,5 mm",
+     "valeur": "5,98 kN"
+    },
+    {
+     "label": "10 mm",
+     "valeur": "7,68 kN"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 600 303\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f1-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f1-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f1-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f1-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f1-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f1-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M58.0 14.0L58.0 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">0</text><path d=\"M110.4 14.0L110.4 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"110.4\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">1</text><path d=\"M162.8 14.0L162.8 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"162.8\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">2</text><path d=\"M215.2 14.0L215.2 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"215.2\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">3</text><path d=\"M267.6 14.0L267.6 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"267.6\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">4</text><path d=\"M320.0 14.0L320.0 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"320.0\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">5</text><path d=\"M372.4 14.0L372.4 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"372.4\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">6</text><path d=\"M424.8 14.0L424.8 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"424.8\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">7</text><path d=\"M477.2 14.0L477.2 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"477.2\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">8</text><path d=\"M529.6 14.0L529.6 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"529.6\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">9</text><path d=\"M582.0 14.0L582.0 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"582.0\" y=\"252.0\" text-anchor=\"middle\" class=\"pt\">10</text><path d=\"M58.0 236.0L582.0 236.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"240.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M58.0 211.1L582.0 211.1\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"215.1\" text-anchor=\"end\" class=\"pt\">1</text><path d=\"M58.0 186.1L582.0 186.1\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"190.1\" text-anchor=\"end\" class=\"pt\">2</text><path d=\"M58.0 161.2L582.0 161.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"165.2\" text-anchor=\"end\" class=\"pt\">3</text><path d=\"M58.0 136.2L582.0 136.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"140.2\" text-anchor=\"end\" class=\"pt\">4</text><path d=\"M58.0 111.3L582.0 111.3\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"115.3\" text-anchor=\"end\" class=\"pt\">5</text><path d=\"M58.0 86.3L582.0 86.3\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"90.3\" text-anchor=\"end\" class=\"pt\">6</text><path d=\"M58.0 61.4L582.0 61.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"65.4\" text-anchor=\"end\" class=\"pt\">7</text><path d=\"M58.0 36.4L582.0 36.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"40.4\" text-anchor=\"end\" class=\"pt\">8</text><rect x=\"58\" y=\"14\" width=\"524\" height=\"222\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"320.0\" y=\"270.0\" text-anchor=\"middle\" style=\"font-weight:700\">enfoncement (mm)</text><text transform=\"translate(14 125) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">force (kN)</text><clipPath id=\"f1-clip\"><rect x=\"58\" y=\"14\" width=\"524\" height=\"222\"/></clipPath><path d=\"M58.0 236.0L90.8 227.5L123.5 214.5L162.8 197.3L189.0 186.6L267.6 154.9L320.0 134.0L451.0 86.8L582.0 44.4\" fill=\"none\" stroke=\"#0f172a\" stroke-width=\"2\"  stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><circle cx=\"58.0\" cy=\"236.0\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><circle cx=\"90.8\" cy=\"227.5\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><circle cx=\"123.5\" cy=\"214.5\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><circle cx=\"162.8\" cy=\"197.3\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><circle cx=\"189.0\" cy=\"186.6\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><circle cx=\"267.6\" cy=\"154.9\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><circle cx=\"320.0\" cy=\"134.0\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><circle cx=\"451.0\" cy=\"86.8\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><circle cx=\"582.0\" cy=\"44.4\" r=\"3\" fill=\"#0f172a\" clip-path=\"url(#f1-clip)\"/><path d=\"M229.7 284.0L247.7 284.0\" stroke=\"#0f172a\" stroke-width=\"2.2\" fill=\"none\" /><text x=\"253.7\" y=\"288.0\" style=\"font-size:11px;font-weight:700\">lectures de la presse</text></svg>",
+   "questions": [
+    {
+     "texte": "Pente du segment le plus raide ?",
+     "type": "nombre",
+     "unite": "kN/mm",
+     "reponse": 0.92,
+     "explication": "Segment de 1,25 à 2 mm : (1,55 − 0,86) / (2 − 1,25) = 0,920 kN/mm.",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Décalage de l'origine ?",
+     "type": "nombre",
+     "unite": "mm",
+     "reponse": 0.315217,
+     "explication": "Milieu du segment : (1,625 mm ; 1,205 kN) ; la droite coupe F = 0 en 1,625 − 1,205/0,920 = 0,315 mm.",
+     "tolerance": 0.05
+    },
+    {
+     "texte": "Force corrigée à 2,5 mm ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 2.24688,
+     "explication": "On lit la courbe à 2,5 + 0,315 = 2,815 mm, entre 2,5 mm (1,98 kN) et 4 mm (3,25 kN) : F = 2,247 kN.",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Force corrigée à 5 mm ?",
+     "type": "nombre",
+     "unite": "kN",
+     "reponse": 4.3283,
+     "explication": "Lecture à 5 + 0,315 = 5,315 mm, entre 5 mm (4,09 kN) et 7,5 mm (5,98 kN) : F = 4,328 kN.",
+     "toleranceRel": 0.03
+    },
+    {
+     "texte": "Indice portant immédiat ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 21.6415,
+     "explication": "max(100 × 2,247/13,35 ; 100 × 4,328/20) = max(16,8 ; 21,6) = 21,6, lu à 5 mm. Sans correction, on aurait trouvé 20,5 : la correction relève l'indice.",
+     "toleranceRel": 0.03
+    }
+   ]
+  },
+  {
+   "id": "ch3-etat",
+   "titre": "État hydrique : wn/wOPN contre IPI",
+   "difficulte": 2,
+   "graine": 236941434,
+   "enonce": "Un limon peu plastique (F1) est extrait à la teneur en eau wn = 15,2 % ; son optimum Proctor normal est à wOPN = 19,7 %. Un essai de poinçonnement immédiat à cette teneur en eau donne IPI = 23,6.",
+   "donnees": [
+    {
+     "label": "Sol",
+     "valeur": "un limon peu plastique (F1)"
+    },
+    {
+     "label": "wn",
+     "valeur": "15,2 %"
+    },
+    {
+     "label": "wOPN",
+     "valeur": "19,7 %"
+    },
+    {
+     "label": "IPI",
+     "valeur": "23,6"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Rapport wn/wOPN ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.771574,
+     "explication": "15,2 % / 19,7 % = 0,772.",
+     "tolerance": 0.01
+    },
+    {
+     "texte": "État hydrique d'après wn/wOPN seul ?",
+     "type": "choix",
+     "options": [
+      "h : humide",
+      "ts : très sec",
+      "m : moyen",
+      "th : très humide",
+      "s : sec"
+     ],
+     "reponse": 4,
+     "explication": "Seuils d'un limon peu plastique (F1) : th : wn/wOPN ≥ 1,25 ; h : 1,1 ≤ wn/wOPN < 1,25 ; m : 0,9 ≤ wn/wOPN < 1,1 ; s : 0,7 ≤ wn/wOPN < 0,9 ; ts : wn/wOPN < 0,7. wn/wOPN = 0,772 → s : sec."
+    },
+    {
+     "texte": "État hydrique d'après l'IPI seul ?",
+     "type": "choix",
+     "options": [
+      "h : humide",
+      "s : sec",
+      "th : très humide",
+      "ts : très sec",
+      "m : moyen"
+     ],
+     "reponse": 4,
+     "explication": "Seuils d'IPI : th : IPI ≤ 3 ; h : 3 < IPI ≤ 8 ; m : 8 < IPI ≤ 25. IPI = 23,6 → m : moyen."
+    },
+    {
+     "texte": "État hydrique à retenir ?",
+     "type": "choix",
+     "options": [
+      "s : sec",
+      "th : très humide",
+      "h : humide",
+      "ts : très sec",
+      "m : moyen"
+     ],
+     "reponse": 0,
+     "explication": "Les deux paramètres ne concordent pas : pour les états secs, c'est wn/wOPN qui tranche : la difficulté de compactage en dépend directement, et l'IPI perd son sens [F1 § 2.2.1 C]. État retenu : s : sec."
+    }
+   ]
+  },
+  {
+   "id": "ch3-ic-1992",
+   "titre": "Indice de consistance : GTR 2024 et GTR 1992",
+   "difficulte": 3,
+   "graine": 3199465432,
+   "enonce": "Un sol fin (62 % de passant à 63 µm, 64 % à 80 µm) a pour limites wL = 63 % et wP = 28 % ; au déblai, sa teneur en eau naturelle est wn = 37,8 %. Ni l'IPI ni l'optimum Proctor ne sont encore connus : on situe son état par l'indice de consistance, dans les deux éditions du guide.",
+   "donnees": [
+    {
+     "label": "wL",
+     "valeur": "63 %"
+    },
+    {
+     "label": "wP",
+     "valeur": "28 %"
+    },
+    {
+     "label": "wn",
+     "valeur": "37,8 %"
+    },
+    {
+     "label": "Fines",
+     "valeur": "62 % (63 µm)"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Indice de plasticité IP ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 35,
+     "explication": "IP = 63 − 28 = 35.",
+     "tolerance": 0.1
+    },
+    {
+     "texte": "Indice de consistance Ic ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.72,
+     "explication": "Ic = (wL − wn)/IP = (63 − 37,8)/35 = 0,720.",
+     "tolerance": 0.01
+    },
+    {
+     "texte": "Sous-classe au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "F2",
+      "F1",
+      "F4",
+      "F3"
+     ],
+     "reponse": 3,
+     "explication": "Fines > 35 % et IP = 35 > 12 : l'IP est le critère ; seuils 12, 22, 40 → F3."
+    },
+    {
+     "texte": "État hydrique au GTR 2024 d'après Ic ?",
+     "type": "choix",
+     "options": [
+      "s : sec",
+      "h : humide",
+      "th : très humide",
+      "m : moyen",
+      "ts : très sec"
+     ],
+     "reponse": 2,
+     "explication": "Seuils d'Ic de F3 : th : Ic ≤ 0,85 ; h : 0,85 < Ic ≤ 1 ; m : 1 < Ic ≤ 1,1 ; s : 1,1 < Ic ≤ 1,25 ; ts : Ic > 1,25. Ic = 0,720 → th : très humide."
+    },
+    {
+     "texte": "Classe et état au GTR 1992, avec le même Ic ?",
+     "type": "choix",
+     "options": [
+      "A2h",
+      "A2th",
+      "A3h",
+      "A3th"
+     ],
+     "reponse": 3,
+     "explication": "GTR 1992 : IP = 35 entre 25 et 40 → A3 ; seuils d'Ic de A3 : th : Ic ≤ 0,8 ; h : 0,8 < Ic ≤ 1 ; m : 1 < Ic ≤ 1,15 ; s : 1,15 < Ic ≤ 1,3 ; ts : Ic > 1,3. Ic = 0,720 → A3th. Les deux éditions donnent ici le même état."
+    }
+   ]
+  }
+ ]
+}

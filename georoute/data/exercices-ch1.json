@@ -1,0 +1,533 @@
+{
+ "chapitre": "ch1",
+ "exercices": [
+  {
+   "id": "ch1-q4",
+   "titre": "Objectif q4 : contrôler une couche de remblai",
+   "difficulte": 1,
+   "graine": 1428493621,
+   "enonce": "Une couche du noyau d'un remblai est contrôlée au gammadensimètre. Le matériau a une masse volumique sèche à l'optimum Proctor normal ρdOPN = 1,91 Mg/m³. On mesure ρdm = 1,83 Mg/m³ en moyenne sur la couche et ρdfc = 1,78 Mg/m³ dans ses 8 cm inférieurs.",
+   "donnees": [
+    {
+     "label": "ρdOPN",
+     "valeur": "1,91 Mg/m³"
+    },
+    {
+     "label": "ρd moyenne",
+     "valeur": "1,83 Mg/m³"
+    },
+    {
+     "label": "ρd fond de couche",
+     "valeur": "1,78 Mg/m³"
+    },
+    {
+     "label": "Objectif",
+     "valeur": "q4 (remblai)"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Masse volumique sèche moyenne exigée par q4 ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.8145,
+     "explication": "q4 : ρdm ≥ 95 % ρdOPN = 0,95 × 1,91 = 1,814 Mg/m³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Minimum exigé en fond de couche ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.7572,
+     "explication": "q4 : ρdfc ≥ 92 % ρdOPN = 0,92 × 1,91 = 1,757 Mg/m³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Taux de compactage moyen mesuré (en % de ρdOPN) ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 95.8115,
+     "explication": "1,83 / 1,91 = 95,8 %.",
+     "tolerance": 0.3
+    },
+    {
+     "texte": "Taux de compactage en fond de couche ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 93.1937,
+     "explication": "1,78 / 1,91 = 93,2 %.",
+     "tolerance": 0.3
+    },
+    {
+     "texte": "Verdict du contrôle ?",
+     "type": "choix",
+     "options": [
+      "non atteint : le fond de couche passe, mais la moyenne est insuffisante",
+      "objectif q4 atteint : moyenne et fond de couche conformes",
+      "non atteint : moyenne et fond de couche insuffisants",
+      "non atteint : la moyenne passe, mais le fond de couche est insuffisant"
+     ],
+     "reponse": 1,
+     "explication": "Moyenne : 95,8 % ≥ 95 % ; fond de couche : 93,2 % ≥ 92 %. Les deux critères sont exigés ensemble."
+    }
+   ]
+  },
+  {
+   "id": "ch1-q3-inverse",
+   "titre": "Couche de forme : jusqu'où peut aller ρdOPN ?",
+   "difficulte": 3,
+   "graine": 54918433,
+   "enonce": "Sur une planche de couche de forme, le gammadensimètre donne ρdm = 2,17 Mg/m³ en moyenne et ρdfc = 2,04 Mg/m³ en fond de couche. Deux essais Proctor normal du même matériau ont donné ρdOPN = 2,13 Mg/m³ et 2,18 Mg/m³ ; on retient la valeur la plus forte, qui est la plus sévère.",
+   "donnees": [
+    {
+     "label": "ρd moyenne",
+     "valeur": "2,17 Mg/m³"
+    },
+    {
+     "label": "ρd fond de couche",
+     "valeur": "2,04 Mg/m³"
+    },
+    {
+     "label": "ρdOPN (essais)",
+     "valeur": "2,13 · 2,18 Mg/m³"
+    },
+    {
+     "label": "Objectif",
+     "valeur": "q3 (couche de forme)"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Au-delà de quelle valeur de ρdOPN la moyenne ne satisfait-elle plus q3 ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 2.20305,
+     "explication": "q3 : ρdm ≥ 0,985 ρdOPN, soit ρdOPN ≤ ρdm / 0,985 = 2,17 / 0,985 = 2,203 Mg/m³.",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "Même question pour le fond de couche ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 2.125,
+     "explication": "q3 : ρdfc ≥ 0,96 ρdOPN, soit ρdOPN ≤ 2,04 / 0,96 = 2,125 Mg/m³.",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "Plus grande valeur de ρdOPN compatible avec l'objectif q3 ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 2.125,
+     "explication": "Les deux critères doivent tenir : min(2,203 ; 2,125) = 2,125 Mg/m³ — c'est le critère du fond de couche qui limite.",
+     "toleranceRel": 0.004
+    },
+    {
+     "texte": "Avec ρdOPN = 2,18 Mg/m³, la planche est…",
+     "type": "choix",
+     "options": [
+      "conforme à q3 : elle convient en couche de forme",
+      "conforme à q4 seulement : suffisante pour un remblai, pas pour une couche de forme",
+      "non conforme, même à l'objectif q4 d'un remblai"
+     ],
+     "reponse": 1,
+     "explication": "Taux mesurés : 99,5 % en moyenne et 93,6 % en fond de couche. q3 demande 98,5 % et 96 % : non tenu ; q4 demande 95 % et 92 % : tenu. ρdOPN = 2,18 dépasse la limite de 2,125 Mg/m³."
+    }
+   ]
+  },
+  {
+   "id": "ch1-zones",
+   "titre": "Les zones d'un remblai et leur objectif",
+   "difficulte": 1,
+   "graine": 2034161807,
+   "enonce": "La figure montre la coupe d'un remblai routier dont les zones, au sens de la NF EN 16907-1, ne sont repérées que par une lettre. Le matériau de l'élément étudié a une masse volumique sèche à l'optimum Proctor normal ρdOPN = 2,03 Mg/m³.",
+   "donnees": [
+    {
+     "label": "Élément étudié",
+     "valeur": "la couche de forme, partie haute de la zone D"
+    },
+    {
+     "label": "ρdOPN",
+     "valeur": "2,03 Mg/m³"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 640 290\" role=\"img\" aria-label=\"Coupe d'un remblai : zones repérées par une lettre\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f0-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f0-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f0-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f0-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f0-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f0-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M0.0 240.0L640.0 240.0L640.0 290.0L0.0 290.0Z\" fill=\"#dccab0\"/><path d=\"M0.0 240.0L640.0 240.0L640.0 290.0L0.0 290.0Z\" fill=\"url(#f0-argile)\"/><path d=\"M48.0 240.0L592.0 240.0L570.0 218.0L70.0 218.0Z\" fill=\"#d6d3d1\"/><path d=\"M104.0 218.0L536.0 218.0L426.0 112.0L214.0 112.0Z\" fill=\"#eadfd2\"/><path d=\"M104.0 218.0L536.0 218.0L426.0 112.0L214.0 112.0Z\" fill=\"url(#f0-remblai)\"/><path d=\"M70.0 218.0L104.0 218.0L214.0 112.0L190.0 112.0Z\" fill=\"#bbf7d0\" fill-opacity=\".8\"/><path d=\"M570.0 218.0L536.0 218.0L426.0 112.0L450.0 112.0Z\" fill=\"#bbf7d0\" fill-opacity=\".8\"/><path d=\"M190.0 112.0L450.0 112.0L432.0 88.0L208.0 88.0Z\" fill=\"#fde68a\" fill-opacity=\".85\"/><path d=\"M208.0 88.0L432.0 88.0L424.0 76.0L216.0 76.0Z\" fill=\"#d9d2bf\"/><path d=\"M240.0 76.0L400.0 76.0L394.0 66.0L246.0 66.0Z\" fill=\"#475569\"/><path d=\"M40 240L220 76L420 76L600 240\" fill=\"none\" stroke=\"#334155\" stroke-width=\"2\"/><path d=\"M0.0 240.0L640.0 240.0\" stroke=\"#334155\" stroke-width=\"1.6\" fill=\"none\" /><circle cx=\"320\" cy=\"229\" r=\"11\" fill=\"#0f172a\"/><text x=\"320.0\" y=\"233.0\" text-anchor=\"middle\" style=\"font-size:12px;font-weight:900;fill:#fff\">A</text><circle cx=\"320\" cy=\"168\" r=\"11\" fill=\"#0f172a\"/><text x=\"320.0\" y=\"172.0\" text-anchor=\"middle\" style=\"font-size:12px;font-weight:900;fill:#fff\">B</text><circle cx=\"118\" cy=\"196\" r=\"11\" fill=\"#0f172a\"/><text x=\"118.0\" y=\"200.0\" text-anchor=\"middle\" style=\"font-size:12px;font-weight:900;fill:#fff\">C</text><circle cx=\"522\" cy=\"196\" r=\"11\" fill=\"#0f172a\"/><text x=\"522.0\" y=\"200.0\" text-anchor=\"middle\" style=\"font-size:12px;font-weight:900;fill:#fff\">C</text><circle cx=\"320\" cy=\"100\" r=\"11\" fill=\"#0f172a\"/><text x=\"320.0\" y=\"104.0\" text-anchor=\"middle\" style=\"font-size:12px;font-weight:900;fill:#fff\">D</text><circle cx=\"320\" cy=\"52\" r=\"11\" fill=\"#0f172a\"/><text x=\"320.0\" y=\"56.0\" text-anchor=\"middle\" style=\"font-size:12px;font-weight:900;fill:#fff\">S</text><text x=\"14.0\" y=\"272.0\" class=\"halo\" style=\"font-size:11.5px;font-weight:700\">terrain en place</text></svg>",
+   "questions": [
+    {
+     "texte": "Quelle lettre désigne le corps du remblai, qui en fait l'essentiel du volume ?",
+     "type": "choix",
+     "options": [
+      "C",
+      "S",
+      "B",
+      "D",
+      "A"
+     ],
+     "reponse": 2,
+     "explication": "B : le noyau. A la base ; B le noyau ; C les encagements ; D la zone supérieure ; S la superstructure. Dans la plupart des remblais routiers, ces zones se confondent et le remblai est dit homogène."
+    },
+    {
+     "texte": "Quel objectif de densification vise-t-on pour la couche de forme, partie haute de la zone D ?",
+     "type": "choix",
+     "options": [
+      "q4 : 95 % de ρdOPN en moyenne, 92 % en fond de couche",
+      "q3 : 95 % de ρdOPN en moyenne, 92 % en fond de couche",
+      "q4 : 98,5 % de ρdOPN en moyenne, 96 % en fond de couche",
+      "q3 : 98,5 % de ρdOPN en moyenne, 96 % en fond de couche"
+     ],
+     "reponse": 3,
+     "explication": "La couche de forme porte directement la chaussée : objectif q3 (q3 : 98,5 % de ρdOPN en moyenne, 96 % en fond de couche) [F1 § 1.6]."
+    },
+    {
+     "texte": "Masse volumique sèche moyenne minimale de cet élément ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.99955,
+     "explication": "98,5 % × 2,03 = 2,000 Mg/m³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Et le minimum en fond de couche ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.9488,
+     "explication": "96 % × 2,03 = 1,949 Mg/m³ — les 8 cm inférieurs, les plus difficiles à atteindre.",
+     "toleranceRel": 0.005
+    }
+   ]
+  },
+  {
+   "id": "ch1-cotes",
+   "titre": "De l'arase à la plateforme : cotes et vocabulaire",
+   "difficulte": 1,
+   "graine": 91842530,
+   "enonce": "Au droit d'un profil en déblai, la plateforme support de chaussée est calée à la cote 140,55 m. Elle est la surface d'une couche de forme de 60 cm posée sur l'arase. À l'axe, le terrain naturel est à la cote 143,55 m.",
+   "donnees": [
+    {
+     "label": "Cote de la plateforme",
+     "valeur": "140,55 m"
+    },
+    {
+     "label": "Couche de forme",
+     "valeur": "60 cm"
+    },
+    {
+     "label": "Terrain naturel à l'axe",
+     "valeur": "143,55 m"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Cote de l'arase ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 139.95,
+     "explication": "L'arase porte la couche de forme : 140,55 − 0,60 = 139,95 m.",
+     "tolerance": 0.01
+    },
+    {
+     "texte": "Profondeur de déblai jusqu'à l'arase, à l'axe ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 3.6,
+     "explication": "Le terrain est au-dessus de l'arase : 143,55 − 139,95 = 3,60 m de terrain à enlever.",
+     "tolerance": 0.01
+    },
+    {
+     "texte": "Cote du bas de la PST ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 138.95,
+     "explication": "La PST est le mètre supérieur des terrassements, sous l'arase : 139,95 − 1 = 138,95 m.",
+     "tolerance": 0.01
+    },
+    {
+     "texte": "Ici, la PST est faite…",
+     "type": "choix",
+     "options": [
+      "du terrain en place, mis à nu par le déblai",
+      "de matériaux rapportés et compactés : c'est le haut du remblai",
+      "des matériaux de la couche de forme"
+     ],
+     "reponse": 0,
+     "explication": "En déblai, la PST est le mètre supérieur des terrains en place [F1 § 4.1.1]. La couche de forme est au-dessus de l'arase, pas dans la PST."
+    },
+    {
+     "texte": "Quel nom porte la structure d'adaptation, parfois absente, entre l'arase et la chaussée ?",
+     "type": "choix",
+     "options": [
+      "l'arase de terrassement (AR)",
+      "la partie supérieure des terrassements (PST)",
+      "la plateforme support de chaussée (PF)",
+      "la couche de forme"
+     ],
+     "reponse": 3,
+     "explication": "La couche de forme : la structure d'adaptation, parfois absente, entre l'arase et la chaussée. Sans couche de forme, la plateforme est l'arase elle-même."
+    }
+   ]
+  },
+  {
+   "id": "ch1-profil",
+   "titre": "Profil en travers : déblai, remblai ou mixte ?",
+   "difficulte": 2,
+   "graine": 405625474,
+   "enonce": "Sur un profil en travers, le terrain naturel passe par les points (x ; z) (−30 ; 90,10), (−15 ; 91,85), (0 ; 92,50), (15 ; 93,25), (30 ; 94,65), x étant compté en mètres depuis l'axe, positif à droite. L'arase est calée à 94,25 m à l'axe, avec un dévers de 2,5 % vers chaque bord d'une plateforme de terrassement de 2 × 7 m ; talus de déblai à 1/1, de remblai à 3/2.",
+   "donnees": [
+    {
+     "label": "Arase à l'axe",
+     "valeur": "94,25 m"
+    },
+    {
+     "label": "Demi-largeur",
+     "valeur": "7 m"
+    },
+    {
+     "label": "Dévers",
+     "valeur": "2,5 %"
+    },
+    {
+     "label": "Talus",
+     "valeur": "déblai 1/1 · remblai 3/2"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 600 283\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f1-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f1-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f1-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f1-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f1-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f1-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f1-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f1-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f1-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <path d=\"M58.0 14.0L58.0 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"58.0\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">-15</text><path d=\"M151.6 14.0L151.6 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"151.6\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">-10</text><path d=\"M245.1 14.0L245.1 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"245.1\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">-5</text><path d=\"M338.7 14.0L338.7 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"338.7\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">0</text><path d=\"M432.3 14.0L432.3 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"432.3\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">5</text><path d=\"M525.9 14.0L525.9 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"525.9\" y=\"232.0\" text-anchor=\"middle\" class=\"pt\">10</text><path d=\"M58.0 216.0L582.0 216.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"220.0\" text-anchor=\"end\" class=\"pt\">90</text><path d=\"M58.0 182.3L582.0 182.3\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"186.3\" text-anchor=\"end\" class=\"pt\">91</text><path d=\"M58.0 148.7L582.0 148.7\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"152.7\" text-anchor=\"end\" class=\"pt\">92</text><path d=\"M58.0 115.0L582.0 115.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"119.0\" text-anchor=\"end\" class=\"pt\">93</text><path d=\"M58.0 81.3L582.0 81.3\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"85.3\" text-anchor=\"end\" class=\"pt\">94</text><path d=\"M58.0 47.7L582.0 47.7\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"51.7\" text-anchor=\"end\" class=\"pt\">95</text><path d=\"M58.0 14.0L582.0 14.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"18.0\" text-anchor=\"end\" class=\"pt\">96</text><rect x=\"58\" y=\"14\" width=\"524\" height=\"202\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"320.0\" y=\"250.0\" text-anchor=\"middle\" style=\"font-weight:700\">distance à l'axe x (m)</text><text transform=\"translate(14 115) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">cote (m)</text><clipPath id=\"f1-clip\"><rect x=\"58\" y=\"14\" width=\"524\" height=\"202\"/></clipPath><path d=\"M338.7 216.0L338.7 14.0\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"1\" stroke-dasharray=\"3 3\" stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M58.0 153.7L338.7 131.8L582.0 109.9\" fill=\"none\" stroke=\"#92400e\" stroke-width=\"2\" stroke-dasharray=\"7 4\" stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M151.3 146.4L207.7 78.8L338.7 72.9L469.7 78.8L501.7 117.2\" fill=\"none\" stroke=\"#0f172a\" stroke-width=\"2.4\"  stroke-linejoin=\"round\" clip-path=\"url(#f1-clip)\"/><path d=\"M145.2 264.0L163.2 264.0\" stroke=\"#94a3b8\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"3 3\"/><text x=\"169.2\" y=\"268.0\" style=\"font-size:11px;font-weight:700\">axe</text><path d=\"M198.6 264.0L216.6 264.0\" stroke=\"#92400e\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"7 4\"/><text x=\"222.6\" y=\"268.0\" style=\"font-size:11px;font-weight:700\">terrain naturel</text><path d=\"M311.1 264.0L329.1 264.0\" stroke=\"#0f172a\" stroke-width=\"2.4\" fill=\"none\" /><text x=\"335.1\" y=\"268.0\" style=\"font-size:11px;font-weight:700\">projet : arase et talus</text></svg>",
+   "questions": [
+    {
+     "texte": "À l'axe, est-on en déblai ou en remblai ?",
+     "type": "choix",
+     "options": [
+      "ni l'un ni l'autre : l'arase suit le terrain naturel",
+      "en déblai : le terrain naturel est au-dessus de l'arase",
+      "en remblai : le terrain naturel est sous l'arase"
+     ],
+     "reponse": 2,
+     "explication": "À l'axe, le terrain est à 92,50 m et l'arase à 94,25 m : il faut rapporter des matériaux (remblai)."
+    },
+    {
+     "texte": "Épaisseur à enlever ou à rapporter à l'axe ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.75,
+     "explication": "|92,50 − 94,25| = 1,75 m.",
+     "tolerance": 0.02
+    },
+    {
+     "texte": "Cote de l'arase au bord droit (x = 7 m) ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 94.075,
+     "explication": "Le dévers abaisse le bord : 94,25 − 0,025 × 7 = 94,075 m.",
+     "tolerance": 0.01
+    },
+    {
+     "texte": "Au bord droit, épaisseur à enlever ou à rapporter ?",
+     "type": "nombre",
+     "unite": "m",
+     "reponse": 1.225,
+     "explication": "Terrain naturel en x = 7 m, interpolé entre x = 0 (92,50 m) et x = 15 m (93,25 m) : 92,850 m ; |92,850 − 94,075| = 1,23 m, en remblai.",
+     "tolerance": 0.03
+    },
+    {
+     "texte": "Ce profil en travers est…",
+     "type": "choix",
+     "options": [
+      "en remblai sur toute sa largeur",
+      "mixte : déblai d'un côté de l'axe, remblai de l'autre",
+      "en déblai sur toute sa largeur"
+     ],
+     "reponse": 0,
+     "explication": "Entre les deux extrémités de l'emprise (x = −10,0 et 8,7 m), le projet laisse 0,0 m² de déblai et 27,0 m² de remblai : profil en remblai. Un tracé économe équilibre ses déblais et ses remblais."
+    }
+   ]
+  },
+  {
+   "id": "ch1-foisonnement",
+   "titre": "Du déblai au remblai : vides et volumes",
+   "difficulte": 2,
+   "graine": 2272732283,
+   "enonce": "Un déblai doit fournir 2 500 m³ en place d'un sol réemployable en remblai. En place, sa masse volumique sèche vaut 1,87 Mg/m³ ; extrait, il foisonne (Cf = 1,15). Son optimum Proctor normal donne ρdOPN = 1,91 Mg/m³ ; le remblai sera compacté juste à l'objectif q4. Le transport se fait en tombereaux de 10 m³.",
+   "donnees": [
+    {
+     "label": "Volume en place",
+     "valeur": "2 500 m³"
+    },
+    {
+     "label": "ρd en place",
+     "valeur": "1,87 Mg/m³"
+    },
+    {
+     "label": "Foisonnement Cf",
+     "valeur": "1,15"
+    },
+    {
+     "label": "ρdOPN",
+     "valeur": "1,91 Mg/m³"
+    },
+    {
+     "label": "Benne",
+     "valeur": "10 m³"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Volume foisonné à transporter ?",
+     "type": "nombre",
+     "unite": "m³",
+     "reponse": 2875,
+     "explication": "2 500 × 1,15 = 2 875 m³ : l'extraction crée des vides.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Nombre de rotations de tombereaux ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 288,
+     "explication": "2 875 / 10 = 287,5, arrondi à l'entier supérieur : 288.",
+     "tolerance": 0.5
+    },
+    {
+     "texte": "Masse volumique sèche moyenne du remblai à l'objectif q4 ?",
+     "type": "nombre",
+     "unite": "Mg/m³",
+     "reponse": 1.8145,
+     "explication": "0,95 × 1,91 = 1,814 Mg/m³.",
+     "toleranceRel": 0.005
+    },
+    {
+     "texte": "Coefficient Ct = ρd en place / ρd du remblai ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.03059,
+     "explication": "1,87 / 1,814 = 1,031.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Volume de remblai compacté obtenu ?",
+     "type": "nombre",
+     "unite": "m³",
+     "reponse": 2576.47,
+     "explication": "2 500 × 1,031 = 2 576,5 m³ : la masse de sol sec se conserve, seul son volume change. Le remblai est ici moins dense que le terrain en place : il occupe plus de volume.",
+     "toleranceRel": 0.01
+    },
+    {
+     "texte": "Si ce même sol était compacté à l'objectif q3 (98,5 % de ρdOPN), le volume de remblai obtenu…",
+     "type": "choix",
+     "options": [
+      "diminuerait : la même masse sèche, plus dense, occupe moins de place",
+      "ne changerait pas : seul le foisonnement compte",
+      "augmenterait : un sol mieux compacté gonfle"
+     ],
+     "reponse": 0,
+     "explication": "À 98,5 % de ρdOPN, ρd = 1,881 Mg/m³ : Ct = 0,994 et le volume tombe à 2 484,9 m³. Compacter, c'est réduire les vides que l'extraction a créés."
+    }
+   ]
+  },
+  {
+   "id": "ch1-cours",
+   "titre": "Questions de cours : la démarche et le domaine du GTR",
+   "difficulte": 1,
+   "graine": 1915815266,
+   "enonce": "Questions de cours sur la démarche du GTR, ses objectifs et son domaine d'application.",
+   "questions": [
+    {
+     "texte": "Compacter un remblai, c'est d'abord…",
+     "type": "choix",
+     "options": [
+      "réduire la teneur en fines du matériau",
+      "amener le sol à saturation pour qu'il ne gonfle plus",
+      "dessécher le sol pour le rendre insensible à l'eau",
+      "réduire les vides créés par l'extraction, pour augmenter ρd et la résistance au cisaillement"
+     ],
+     "reponse": 3,
+     "explication": "L'extraction crée des vides (le foisonnement) ; le compactage les réduit, ce qui augmente la masse volumique sèche et la résistance au cisaillement du matériau."
+    },
+    {
+     "texte": "Le GTR demande-t-il de mesurer la masse volumique sèche partout ?",
+     "type": "choix",
+     "options": [
+      "non : il donne, pour chaque matériau et chaque compacteur, le réglage qui assure q4 ou q3",
+      "non : il ne fixe aucun objectif de densité",
+      "oui, mais seulement dans la couche de forme",
+      "oui : un essai par couche et par tranche de 50 m"
+     ],
+     "reponse": 0,
+     "explication": "Le GTR ne demande pas de mesurer ces masses volumiques partout : il donne le réglage de l'atelier (tables de compactage, Q/S) qui les assure ; le contrôle vérifie que les règles ont été tenues."
+    },
+    {
+     "texte": "Pourquoi l'objectif de la couche de forme (q3) est-il plus exigeant que celui du remblai (q4) ?",
+     "type": "choix",
+     "options": [
+      "parce qu'elle est plus épaisse que les couches de remblai",
+      "parce qu'elle porte directement la chaussée",
+      "parce que son matériau est toujours plus fin",
+      "parce qu'elle est toujours traitée au liant"
+     ],
+     "reponse": 1,
+     "explication": "q4 garantit, pour la grande majorité des remblais de moins de 15 m, l'absence de fluage et de tassement sous le poids propre ; la couche de forme, qui porte directement la chaussée, demande davantage : 98,5 % et 96 % de ρdOPN."
+    },
+    {
+     "texte": "Le GTR impose la façon de faire (matériau, épaisseur des couches, compacteur, vitesse, passes) et contrôle qu'elle est respectée. C'est une spécification…",
+     "type": "choix",
+     "options": [
+      "du produit fini",
+      "de résultat sur la seule densité",
+      "de la méthode",
+      "de performance mécanique"
+     ],
+     "reponse": 2,
+     "explication": "La spécification de la méthode (NF EN 16907-1 et -5) impose les moyens ; celle du produit fini fixe des performances (densité, module) et exige bien plus de contrôles. Le GTR combine les deux : méthode pour les remblais, méthode et contrôle de portance pour les plateformes."
+    }
+   ]
+  },
+  {
+   "id": "ch1-editions",
+   "titre": "GTR 1992 ou GTR 2024 ?",
+   "difficulte": 2,
+   "graine": 1425330419,
+   "enonce": "On relit plusieurs rapports géotechniques. Pour chaque phrase relevée, dites de quelle édition du guide elle relève ; puis lisez un symbole trouvé dans un rapport de 1995.",
+   "questions": [
+    {
+     "texte": "« Les sols fins sont les classes A1 à A4. »",
+     "type": "choix",
+     "options": [
+      "GTR 2024 (NF EN 16907-2)",
+      "GTR 1992 (NF P11-300)"
+     ],
+     "reponse": 1,
+     "explication": "GTR 1992 (NF P11-300). L'édition de 1992 (révisée en 2000) lisait les sols sur la fraction 0/50 mm, fines au tamis de 80 µm, avec les classes A, B, C, D, R et F."
+    },
+    {
+     "texte": "« Un sol dont le Dmax dépasse 50 mm est rangé dans la classe C. »",
+     "type": "choix",
+     "options": [
+      "GTR 1992 (NF P11-300)",
+      "GTR 2024 (NF EN 16907-2)"
+     ],
+     "reponse": 0,
+     "explication": "GTR 1992 (NF P11-300). L'édition de 1992 (révisée en 2000) lisait les sols sur la fraction 0/50 mm, fines au tamis de 80 µm, avec les classes A, B, C, D, R et F."
+    },
+    {
+     "texte": "« Les sols insensibles à l'eau forment une classe à part, la classe D. »",
+     "type": "choix",
+     "options": [
+      "GTR 2024 (NF EN 16907-2)",
+      "GTR 1992 (NF P11-300)"
+     ],
+     "reponse": 1,
+     "explication": "GTR 1992 (NF P11-300). L'édition de 1992 (révisée en 2000) lisait les sols sur la fraction 0/50 mm, fines au tamis de 80 µm, avec les classes A, B, C, D, R et F."
+    },
+    {
+     "texte": "Un rapport de 1995 classe un matériau « F2 ». C'est…",
+     "type": "choix",
+     "options": [
+      "un sol organique ou un sous-produit industriel (classe F du GTR 1992)",
+      "l'ancien nom de la classe A2",
+      "un sol fin moyennement argileux (classe F2 du GTR 2024)",
+      "un matériau rocheux fragmentable"
+     ],
+     "reponse": 0,
+     "explication": "Le rapport date d'avant 2024 : il suit le GTR 1992, où la classe F désignait les sols organiques et les sous-produits industriels. En 2024, F désigne les sols fins (les anciens A). Vérifier toujours l'édition de référence, et ne jamais convertir une classe sans revenir aux essais."
+    }
+   ]
+  }
+ ]
+}

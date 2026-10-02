@@ -8,6 +8,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { creerAlea } from "../src/exos/alea.js";
 import { MODELES, graineDe, controler } from "../src/exos/index.js";
+import { renumeroterFigures } from "../src/figures.js";
 
 const racine = new URL("../", import.meta.url);
 const { chapitres } = JSON.parse(readFileSync(new URL("data/chapitres.json", racine), "utf8"));
@@ -17,6 +18,7 @@ let anomalies = 0;
 for (const ch of chapitres) {
   if (!MODELES[ch.id] || (demandes.length && !demandes.includes(ch.id))) continue;
   const modeles = (await MODELES[ch.id]()).default;
+  renumeroterFigures();
   const exercices = modeles.map((m) => {
     const graine = graineDe(m.id);
     const r = m.generer(creerAlea(graine));

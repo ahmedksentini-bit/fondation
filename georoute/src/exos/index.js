@@ -1,6 +1,11 @@
 // Registre des modèles d'exercices, chapitre par chapitre. Chargement à la
 // demande : l'exerciseur n'importe que le chapitre ouvert.
 export const MODELES = {
+  ch1: () => import("./ch01.js"),
+  ch2: () => import("./ch02.js"),
+  ch3: () => import("./ch03.js"),
+  ch4: () => import("./ch04.js"),
+  ch5: () => import("./ch05.js"),
   ch6: () => import("./ch06.js"),
   ch7: () => import("./ch07.js"),
   ch8: () => import("./ch08.js"),

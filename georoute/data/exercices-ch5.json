@@ -1,0 +1,650 @@
+{
+ "chapitre": "ch5",
+ "exercices": [
+  {
+   "id": "ch5-fin",
+   "titre": "Classer un sol fin : sous-classe, état, symbole",
+   "difficulte": 1,
+   "graine": 4154466633,
+   "enonce": "Un sol de déblai (49 % de passant à 63 µm sur la fraction 0/63 mm, Dmax = 10 mm) a pour limites wL = 61 % et wP = 19 %, pour valeur de bleu VBS = 9,3. Au moment de l'extraction, wn = 13,9 % ; son optimum Proctor normal est à wOPN = 18,1 %, et l'IPI à wn vaut 21,0.",
+   "donnees": [
+    {
+     "label": "Fines (63 µm)",
+     "valeur": "49 %"
+    },
+    {
+     "label": "wL · wP",
+     "valeur": "61 · 19 %"
+    },
+    {
+     "label": "VBS",
+     "valeur": "9,3"
+    },
+    {
+     "label": "wn · wOPN",
+     "valeur": "13,9 % · 18,1 %"
+    },
+    {
+     "label": "IPI",
+     "valeur": "21,0"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Sous-classe de nature ?",
+     "type": "choix",
+     "options": [
+      "F2",
+      "F3",
+      "F4",
+      "F1"
+     ],
+     "reponse": 2,
+     "explication": "Fines > 35 % : sol fin F. IP = 42 → F4 (l'autre critère : VBS = 9,3 → F4). Seuils : IP 12, 22, 40, 55 ; VBS 2,5, 6, 8 ; l'IP prime dès qu'il dépasse 12."
+    },
+    {
+     "texte": "Rapport wn/wOPN ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 0.767956,
+     "explication": "13,9 % / 18,1 % = 0,768.",
+     "tolerance": 0.01
+    },
+    {
+     "texte": "Indice de consistance Ic ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 1.12143,
+     "explication": "Ic = (wL − wn)/IP = (61 − 13,9)/42 = 1,121.",
+     "tolerance": 0.01
+    },
+    {
+     "texte": "État hydrique ?",
+     "type": "choix",
+     "options": [
+      "m : moyen",
+      "ts : très sec",
+      "th : très humide",
+      "h : humide",
+      "s : sec"
+     ],
+     "reponse": 4,
+     "explication": "s : sec, retenu par wn/wOPN ; chaque paramètre mesuré : Ic → s ; wn/wOPN → s. Les paramètres concordent ici."
+    },
+    {
+     "texte": "Symbole complet au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "F4m",
+      "F4s",
+      "F3m",
+      "F3s"
+     ],
+     "reponse": 1,
+     "explication": "Nature F4, puis l'état s : F4s (argiles et argiles marneuses très plastiques). Au GTR 1992, le même sol aurait été noté A…, avec d'autres seuils."
+    }
+   ]
+  },
+  {
+   "id": "ch5-intermediaire",
+   "titre": "Sol intermédiaire : I1 ou I2, et B5 ou B6 en 1992",
+   "difficulte": 2,
+   "graine": 73997168,
+   "enonce": "Un sable argileux de déblai (Dmax = 20 mm) a 26,5 % de passant à 63 µm (29,0 % à 80 µm), une valeur de bleu VBS = 1,95 et des limites wL = 31 %, wP = 15 %. Extrait à wn = 12,9 % (wOPN = 11,2 %), il donne IPI = 29,0.",
+   "donnees": [
+    {
+     "label": "Fines",
+     "valeur": "26,5 % (63 µm) · 29,0 % (80 µm)"
+    },
+    {
+     "label": "VBS",
+     "valeur": "1,95"
+    },
+    {
+     "label": "wL · wP",
+     "valeur": "31 · 15 %"
+    },
+    {
+     "label": "wn · wOPN",
+     "valeur": "12,9 % · 11,2 %"
+    },
+    {
+     "label": "IPI",
+     "valeur": "29,0"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Sous-classe de nature au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "S3",
+      "I1",
+      "F1",
+      "I2"
+     ],
+     "reponse": 3,
+     "explication": "Fines de 15 à 35 % : sol intermédiaire I. IP = 16 → I2 (l'autre critère : VBS = 1,95 → I2). Le GTR utilise prioritairement la VBS pour les sols I, sauf quand l'IP dépasse 12."
+    },
+    {
+     "texte": "État hydrique au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "s : sec",
+      "ts : très sec",
+      "h : humide",
+      "m : moyen",
+      "th : très humide"
+     ],
+     "reponse": 3,
+     "explication": "m : moyen, retenu par IPI ; chaque paramètre mesuré : Ic → m ; wn/wOPN → h — les paramètres ne concordent pas, le guide prévient que la correspondance n'est pas parfaite. Pour un état humide, l'IPI l'emporte s'il dit que le sol porte ; pour un état sec, c'est wn/wOPN."
+    },
+    {
+     "texte": "Symbole au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "I2m",
+      "I1m",
+      "I1s",
+      "I2s"
+     ],
+     "reponse": 0,
+     "explication": "I2 puis l'état m : I2m (sables et graves argileux à très argileux)."
+    },
+    {
+     "texte": "Et au GTR 1992 (fines au tamis de 80 µm) ?",
+     "type": "choix",
+     "options": [
+      "B5m",
+      "B6m",
+      "B6h",
+      "B5h"
+     ],
+     "reponse": 1,
+     "explication": "Fines à 80 µm : 29,0 %, entre 12 et 35 % : classe B ; la VBS décide (1,95 > 1,5) → B6 ; état m avec les seuils de 1992 → B6m. En 1992, la VBS décidait même quand l'IP dépassait 12 : les deux éditions divergent."
+    }
+   ]
+  },
+  {
+   "id": "ch5-sable-grave",
+   "titre": "Sable ou grave : de S1 à G4, comportement et état",
+   "difficulte": 2,
+   "graine": 3128943049,
+   "enonce": "Un sable alluvionnaire (Dmax = 5 mm) a, sur sa fraction 0/63 mm, 1,5 % de fines (63 µm) et 69 % de passant à 2 mm ; Cu = 29,5 ; VBS = 0,65. Friabilité FS = 83. Teneur en eau naturelle 5,0 %, optimum à 5,8 %.",
+   "donnees": [
+    {
+     "label": "Fines (63 µm)",
+     "valeur": "1,5 %"
+    },
+    {
+     "label": "Passant 2 mm",
+     "valeur": "69 %"
+    },
+    {
+     "label": "Cu",
+     "valeur": "29,5"
+    },
+    {
+     "label": "VBS",
+     "valeur": "0,65"
+    },
+    {
+     "label": "FS",
+     "valeur": "83"
+    },
+    {
+     "label": "wn · wOPN",
+     "valeur": "5,0 % · 5,8 %"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Sable ou grave ?",
+     "type": "choix",
+     "options": [
+      "on ne peut pas trancher sans le tamisat à 2 mm de 70 %",
+      "S : la fraction 0,063/2 mm l'emporte",
+      "G : la fraction 2/63 mm l'emporte"
+     ],
+     "reponse": 1,
+     "explication": "Fines 1,5 % ≤ 15 % ; fraction 0,063/2 mm = 67,5 %, fraction 2/63 mm = 31,0 % : le sable l'emporte, S. Le GTR 2024 compare les deux fractions ; le seuil de 70 % au tamis de 2 mm ne sert plus qu'aux états hydriques des sables."
+    },
+    {
+     "texte": "Sous-classe de nature ?",
+     "type": "choix",
+     "options": [
+      "S1",
+      "G2",
+      "S2",
+      "G1"
+     ],
+     "reponse": 0,
+     "explication": "Fines 1,5 % : ≤ 5 % ; Cu = 29,5 ≥ 6, granulométrie étalée → S1 (sables propres ou silteux à granulométrie étalée)."
+    },
+    {
+     "texte": "Symbole complet au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "G21s",
+      "S11ts",
+      "S12s",
+      "G22ts"
+     ],
+     "reponse": 2,
+     "explication": "S12 : comportement 2 (FS > 60) ; insensible à l'eau ? non : aucun critère d'insensibilité à l'eau n'est rempli ; état s (wn/wOPN → s) → S12s."
+    },
+    {
+     "texte": "Dans un symbole comme G31h, que dit le chiffre qui suit la sous-classe (S1 à S4, G1 à G4) ?",
+     "type": "choix",
+     "options": [
+      "le comportement mécanique : 1 si les grains résistent au trafic, 2 sinon",
+      "l'étalement de la courbe granulométrique",
+      "la propreté : fines à moins de 5 % ou non",
+      "l'état hydrique du matériau"
+     ],
+     "reponse": 0,
+     "explication": "Un symbole se lit de gauche à droite : gros éléments, nature (ici S1), comportement (ici 2), puis état ou « ins ». Le comportement n'est indiqué que pour les sables et les graves, quand l'essai (FS) a été fait ; il ne sert qu'à l'emploi en couche de forme."
+    }
+   ]
+  },
+  {
+   "id": "ch5-ins",
+   "titre": "Sable ou grave insensible à l'eau ?",
+   "difficulte": 2,
+   "graine": 2537241080,
+   "enonce": "Un sable (fraction 0/63 mm) a 3,7 % de fines au tamis de 63 µm (4,7 % à 80 µm) et une valeur de bleu VBS = 0,06 ; tamisat à 2 mm 93 %, Cu = 12,0. Après quatre jours d'immersion, le poinçonnement lit 2,01 kN à 2,5 mm et 3,80 kN à 5 mm. Teneur en eau naturelle 9,3 %, optimum à 10,6 %.",
+   "donnees": [
+    {
+     "label": "Fines",
+     "valeur": "3,7 % (63 µm) · 4,7 % (80 µm)"
+    },
+    {
+     "label": "VBS",
+     "valeur": "0,06"
+    },
+    {
+     "label": "Passant 2 mm · Cu",
+     "valeur": "93 % · 12,0"
+    },
+    {
+     "label": "Immersion : F 2,5 · 5 mm",
+     "valeur": "2,01 · 3,80 kN"
+    },
+    {
+     "label": "wn · wOPN",
+     "valeur": "9,3 % · 10,6 %"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Indice CBR après immersion (CBRi) ?",
+     "type": "nombre",
+     "unite": "",
+     "reponse": 19,
+     "explication": "max(100 × 2,01/13,35 ; 100 × 3,80/20) = 19,0.",
+     "toleranceRel": 0.02
+    },
+    {
+     "texte": "Au GTR 2024, ce sable est-il insensible à l'eau ?",
+     "type": "choix",
+     "options": [
+      "non : un sable n'est jamais insensible à l'eau",
+      "non : aucun critère d'insensibilité à l'eau n'est rempli",
+      "oui : moins de 12 % de fines et une VBS inférieure à 0,2 suffisent",
+      "oui : fines ≤ 5 % et VBS < 0,2"
+     ],
+     "reponse": 3,
+     "explication": "Sables : fines ≤ 5 % et VBS < 0,2 ; ou 5 à 10 % et VBS < 0,1 ; ou VBS < 0,1, fines < 12 % et CBRi > 20. Ici : fines ≤ 5 % et VBS < 0,2."
+    },
+    {
+     "texte": "Symbole au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "S1ins",
+      "S1s",
+      "S2ins",
+      "S2s"
+     ],
+     "reponse": 0,
+     "explication": "≤ 5 % ; Cu = 12,0 ≥ 6 → S1 ; insensible : suffixe ins à la place de l'état → S1ins."
+    },
+    {
+     "texte": "Au GTR 1992, le même matériau était…",
+     "type": "choix",
+     "options": [
+      "B1",
+      "B5s",
+      "B2s",
+      "D1"
+     ],
+     "reponse": 3,
+     "explication": "GTR 1992 : classe D (insensible) si VBS ≤ 0,1 et fines à 80 µm ≤ 12 % ; sinon B1 à B4 selon le tamisat à 2 mm et la VBS (seuil 0,2). Ici → D1."
+    }
+   ]
+  },
+  {
+   "id": "ch5-vc",
+   "titre": "Sol à gros éléments : VC1, VC2 et l'ancien C",
+   "difficulte": 2,
+   "graine": 4067343727,
+   "enonce": "Un matériau d'éboulis à éléments anguleux a un Dmax de 110 mm. La fraction 0/63 mm représente 86 % du total (la fraction 0/50 mm, 85 %). Sur la fraction 0/63 mm : 6,0 % de fines (63 µm), 44 % de passant à 2 mm, Cu = 30, VBS = 0,80 ; LA = 58, MDE = 40. Teneur en eau 5,1 % pour un optimum à 5,9 %. Ramenés à la fraction 0/50 mm, les passants valent 7,1 % à 80 µm et 45 % à 2 mm.",
+   "donnees": [
+    {
+     "label": "Dmax",
+     "valeur": "110 mm"
+    },
+    {
+     "label": "Éléments",
+     "valeur": "anguleux"
+    },
+    {
+     "label": "Fraction 0/63 · 0/50",
+     "valeur": "86 % · 85 %"
+    },
+    {
+     "label": "0/63 : fines · 2 mm",
+     "valeur": "6,0 % · 44 %"
+    },
+    {
+     "label": "Cu · VBS",
+     "valeur": "30 · 0,80"
+    },
+    {
+     "label": "LA · MDE",
+     "valeur": "58 · 40"
+    },
+    {
+     "label": "wn · wOPN",
+     "valeur": "5,1 % · 5,9 %"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Le matériau est-il VC1 ou VC2 ?",
+     "type": "choix",
+     "options": [
+      "VC1",
+      "ni l'un ni l'autre : il se classe comme une roche",
+      "VC2"
+     ],
+     "reponse": 2,
+     "explication": "Dmax = 110 mm > 63 mm : sol VC ; fraction 0/63 mm de 86 % (> 80 %) : elle gouverne le comportement, VC2."
+    },
+    {
+     "texte": "Symbole complet au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "VC2G32s",
+      "VC1G31s",
+      "VC2G31ts",
+      "VC1G32ts"
+     ],
+     "reponse": 0,
+     "explication": "VC2, puis la fraction 0/63 mm classée comme un sol : G32 (de 5 à 15 %, comportement par LA et MDE), état s → VC2G32s."
+    },
+    {
+     "texte": "Au GTR 1992, le même matériau était…",
+     "type": "choix",
+     "options": [
+      "C2B42m",
+      "C1B41m",
+      "C1B42s",
+      "C2B41s"
+     ],
+     "reponse": 2,
+     "explication": "GTR 1992 : Dmax > 50 mm, classe C ; C1 si les éléments sont roulés ou si la fraction 0/50 mm dépasse 80 %, C2 sinon → C1 ; la fraction 0/50 mm (fines à 80 µm 7,1 %) se classe B4 → C1B42s."
+    },
+    {
+     "texte": "Ce qu'il faut retenir du passage de C à VC :",
+     "type": "choix",
+     "options": [
+      "rien n'a changé : C1 et VC1 désignent les mêmes matériaux",
+      "la numérotation s'inverse : C1 (fraction fine gouvernante) est devenu VC2",
+      "les sols à gros éléments sont désormais classés comme des roches",
+      "le seuil de Dmax est passé de 63 à 50 mm"
+     ],
+     "reponse": 1,
+     "explication": "Au GTR 1992, C1 désignait les matériaux roulés ou peu charpentés (la fraction 0/50 mm gouverne) et C2 les anguleux charpentés ; au GTR 2024, c'est VC2 et VC1 — et le Dmax de référence est passé de 50 à 63 mm."
+    }
+   ]
+  },
+  {
+   "id": "ch5-organique",
+   "titre": "Sol organique : perte au feu et double symbole",
+   "difficulte": 1,
+   "graine": 3842309913,
+   "enonce": "Une perte au feu à 550 °C (NF EN 17685-1) est faite sur un sol fin de fond de vallée : l'échantillon séché à 105 °C pèse 39,23 g, 28,64 g après calcination. Sa partie minérale a 70 % de fines, wL = 40 %, wP = 19 % ; teneur en eau 14,3 % pour un optimum à 14,9 %.",
+   "donnees": [
+    {
+     "label": "Avant calcination",
+     "valeur": "39,23 g"
+    },
+    {
+     "label": "Après 550 °C",
+     "valeur": "28,64 g"
+    },
+    {
+     "label": "Fines · wL · wP",
+     "valeur": "70 % · 40 % · 19 %"
+    },
+    {
+     "label": "wn · wOPN",
+     "valeur": "14,3 % · 14,9 %"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Teneur en matières organiques ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 26.9946,
+     "explication": "MO = 100 × (39,23 − 28,64) / 39,23 = 26,99 % — en se méfiant des matériaux qui perdent aussi de l'eau de constitution à 550 °C (gypse, certaines argiles).",
+     "tolerance": 0.1
+    },
+    {
+     "texte": "Classe vis-à-vis des matières organiques ?",
+     "type": "choix",
+     "options": [
+      "O1 : faible teneur (2 à 6 %)",
+      "O2 : teneur modérée (6 à 20 %)",
+      "pas de préfixe : MO ≤ 2 %, le sol se classe normalement",
+      "O3 : tourbe (plus de 20 %)"
+     ],
+     "reponse": 3,
+     "explication": "Jusqu'à 2 %, classement normal ; O1 de 2 à 6 %, O2 de 6 à 20 %, O3 au-delà (tourbe) [F1 § 2.4.1]. MO = 26,99 % → O3."
+    },
+    {
+     "texte": "Symbole au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "O2",
+      "O3",
+      "O2F2m",
+      "O3F2m"
+     ],
+     "reponse": 1,
+     "explication": "Au-delà de 20 %, c'est une tourbe : O3, sans autre classement — ni remblai ni couche de forme."
+    },
+    {
+     "texte": "Peut-on l'employer en remblai ?",
+     "type": "choix",
+     "options": [
+      "seulement pour des surfaces à enherber ou des merlons",
+      "oui, comme un sol ordinaire",
+      "non : tourbe exclue des remblais",
+      "oui, pour des remblais courants de moins de 10 m"
+     ],
+     "reponse": 2,
+     "explication": "O3 : non : tourbe exclue des remblais. Les matières organiques se décomposent et font tasser le remblai."
+    },
+    {
+     "texte": "Et en couche de forme ?",
+     "type": "choix",
+     "options": [
+      "seulement après une étude particulière (dès 3 %)",
+      "oui, sous 3 % de matières organiques",
+      "non",
+      "oui"
+     ],
+     "reponse": 2,
+     "explication": "Couche de forme : non. Leur acidité perturbe aussi la prise des liants : un sol organique se traite mal."
+    }
+   ]
+  },
+  {
+   "id": "ch5-bascule",
+   "titre": "Un seuil qui a changé entre 1992 et 2024",
+   "difficulte": 2,
+   "graine": 3305130369,
+   "enonce": "Un matériau à éléments roulés a un Dmax de 250 mm ; sa fraction 0/63 mm représente 67 % du total (0/50 mm : 64 %). Sur la fraction 0/63 mm : 9,5 % de fines, 27 % de passant à 2 mm, Cu = 79, VBS = 0,45 ; sur la fraction 0/50 mm : 11,0 % à 80 µm, 28 % à 2 mm. On le classe aux deux éditions du guide.",
+   "donnees": [
+    {
+     "label": "Dmax · éléments",
+     "valeur": "250 mm · roulés"
+    },
+    {
+     "label": "Fraction 0/63 · 0/50",
+     "valeur": "67 % · 64 %"
+    },
+    {
+     "label": "0/63 : fines · 2 mm",
+     "valeur": "9,5 % · 27 %"
+    },
+    {
+     "label": "Cu · VBS",
+     "valeur": "79 · 0,45"
+    }
+   ],
+   "questions": [
+    {
+     "texte": "Classe au GTR 1992 (NF P11-300) ?",
+     "type": "choix",
+     "options": [
+      "C2B3",
+      "C1B5",
+      "C1B4",
+      "C2B5"
+     ],
+     "reponse": 2,
+     "explication": "Dmax > 50 mm ? oui (250 mm) : sol C, la fraction 0/50 mm est classée à part ; Tamisat à 80 µm : > 35 %, de 12 à 35 %, ≤ 12 % ? 11 % → classe B, B4 (tamisat 2 mm ≤ 70 %, VBS = 0,45) ; Gros éléments : comportement régi par la fraction 0/50 mm ? oui : C1."
+    },
+    {
+     "texte": "Classe au GTR 2024 (NF EN 16907-2) ?",
+     "type": "choix",
+     "options": [
+      "VC2G4",
+      "VC1G4",
+      "VC2G3",
+      "VC1G3"
+     ],
+     "reponse": 2,
+     "explication": "Dmax > 63 mm ? oui (250 mm) : sol VC, la fraction 0/63 mm est classée à part ; Comportement régi par les gros éléments ? non : VC2 (la fraction 0/63 mm gouverne) ; Tamisat à 63 µm ≤ 15 % : fraction 0,063/2 mm > fraction 2/63 mm ? non (18 % contre 73 %) : sol graveleux G ; Fines ≤ 5 % ? Granulométrie étalée (Cu ≥ 6) ? de 5 à 15 % ; Cu = 79,0 ≥ 6 → G3 ; Insensible à l'eau (VBS, fines, CBRi) ? non : aucun critère d'insensibilité à l'eau n'est rempli."
+    },
+    {
+     "texte": "Qu'est-ce qui fait basculer ce sol d'une classe à l'autre ?",
+     "type": "choix",
+     "options": [
+      "le Dmax de référence des sols à gros éléments, passé de 50 à 63 mm",
+      "le tamis des fines (80 → 63 µm) et le seuil des sols riches en fines (12 → 15 %)",
+      "les règles d'insensibilité à l'eau, plus détaillées (fines, VBS, CBRi)",
+      "l'inversion des numéros des sols à gros éléments (C1 devient VC2, C2 devient VC1)"
+     ],
+     "reponse": 3,
+     "explication": "L'inversion des numéros des sols à gros éléments (C1 devient VC2, C2 devient VC1) : C1B4 en 1992, VC2G3 en 2024. Quand on reprend une étude ancienne, on reclasse à partir des essais, jamais par simple traduction des lettres."
+    }
+   ]
+  },
+  {
+   "id": "ch5-deux-editions",
+   "titre": "Une courbe, deux classements",
+   "difficulte": 3,
+   "graine": 64540942,
+   "enonce": "La courbe granulométrique d'un sol de déblai (matériau total) passe par les points ci-dessous ; le tamis de 80 µm a été ajouté à la série pour pouvoir le classer aussi au GTR 1992. VBS = 0,75 ; teneur en eau 10,5 % pour un optimum Proctor normal à 10,7 % ; éléments anguleux.",
+   "donnees": [
+    {
+     "label": "0,063 mm",
+     "valeur": "6,4 %"
+    },
+    {
+     "label": "0,08 mm",
+     "valeur": "7,0 %"
+    },
+    {
+     "label": "0,5 mm",
+     "valeur": "22,4 %"
+    },
+    {
+     "label": "2 mm",
+     "valeur": "51,1 %"
+    },
+    {
+     "label": "10 mm",
+     "valeur": "82,3 %"
+    },
+    {
+     "label": "31,5 mm",
+     "valeur": "98,7 %"
+    },
+    {
+     "label": "50 mm",
+     "valeur": "99,8 %"
+    },
+    {
+     "label": "63 mm",
+     "valeur": "100,0 %"
+    },
+    {
+     "label": "VBS",
+     "valeur": "0,75"
+    },
+    {
+     "label": "wn · wOPN",
+     "valeur": "10,5 % · 10,7 %"
+    }
+   ],
+   "figure": "<svg viewBox=\"0 0 600 323\" role=\"img\" aria-label=\"\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <marker id=\"f0-fl\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#dc2626\"/></marker>\n    <marker id=\"f0-fr\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0f766e\"/></marker>\n    <marker id=\"f0-fb\" markerWidth=\"9\" markerHeight=\"9\" refX=\"8\" refY=\"4.5\" orient=\"auto\"><path d=\"M0 0l9 4.5-9 4.5z\" fill=\"#0369a1\"/></marker>\n    <marker id=\"f0-fc\" markerWidth=\"7\" markerHeight=\"7\" refX=\"3.5\" refY=\"3.5\" orient=\"auto-start-reverse\"><path d=\"M0 0l7 3.5-7 3.5z\" fill=\"#2b2d42\"/></marker>\n    <pattern id=\"f0-argile\" width=\"14\" height=\"8\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 4h6\" stroke=\"#8b7355\" stroke-width=\"1\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-sable\" width=\"9\" height=\"9\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\".9\" fill=\"#8a6d1f\" opacity=\".55\"/><circle cx=\"6.5\" cy=\"6\" r=\".9\" fill=\"#8a6d1f\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-grave\" width=\"14\" height=\"12\" patternUnits=\"userSpaceOnUse\"><circle cx=\"4\" cy=\"4\" r=\"2.2\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".6\"/><circle cx=\"10.5\" cy=\"9\" r=\"1.6\" fill=\"none\" stroke=\"#7c6a3a\" stroke-width=\".9\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-craie\" width=\"16\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 0h16M0 5h16M4 0v5M12 5v5\" stroke=\"#94a3b8\" stroke-width=\".8\" fill=\"none\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-marne\" width=\"12\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 3h12M0 8h5\" stroke=\"#5b6b52\" stroke-width=\".9\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-roche\" width=\"18\" height=\"14\" patternUnits=\"userSpaceOnUse\"><path d=\"M0 7h18M9 0v7M3 7v7M15 7v7\" stroke=\"#4b5563\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-remblai\" width=\"12\" height=\"12\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 10l3-3M7 11l2-2M8 4l2-2\" stroke=\"#7c6a58\" stroke-width=\".9\" opacity=\".6\"/></pattern>\n    <pattern id=\"f0-terre\" width=\"12\" height=\"9\" patternUnits=\"userSpaceOnUse\"><path d=\"M1 3q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M7 7q2-2 4 0\" stroke=\"#5b4630\" stroke-width=\".9\" fill=\"none\" opacity=\".45\"/></pattern>\n    <pattern id=\"f0-traite\" width=\"11\" height=\"11\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 2l3 3M5 2l-3 3\" stroke=\"#4d7c0f\" stroke-width=\".8\" opacity=\".5\"/><circle cx=\"8\" cy=\"8\" r=\".9\" fill=\"#64748b\" opacity=\".55\"/></pattern>\n    <pattern id=\"f0-enrobe\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\"><circle cx=\"1.5\" cy=\"1.5\" r=\".7\" fill=\"#e2e8f0\" opacity=\".6\"/><circle cx=\"4.5\" cy=\"4\" r=\".6\" fill=\"#cbd5e1\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-blocs\" width=\"26\" height=\"18\" patternUnits=\"userSpaceOnUse\"><path d=\"M2 3l8-1l3 6l-6 5l-6-3z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".55\"/><path d=\"M15 9l7 1l2 6l-8 1z\" stroke=\"#57534e\" stroke-width=\".9\" fill=\"none\" opacity=\".5\"/></pattern>\n    <pattern id=\"f0-beton\" width=\"7\" height=\"7\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><path d=\"M0 0v7\" stroke=\"#94a3b8\" stroke-width=\"1\"/></pattern>\n  </defs><style>text{font-family:Inter,-apple-system,\"Segoe UI\",sans-serif;font-size:12px;fill:#0f172a}.pt{font-size:11px;fill:#64748b}.gr{font-weight:800}.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}</style>\n  <rect x=\"58.0\" y=\"14.0\" width=\"65.3\" height=\"242.0\" fill=\"#ca8a04\" opacity=\"0.05\"/><rect x=\"123.3\" y=\"14.0\" width=\"196.7\" height=\"242.0\" fill=\"#eab308\" opacity=\"0.06\"/><rect x=\"320.0\" y=\"14.0\" width=\"196.3\" height=\"242.0\" fill=\"#78716c\" opacity=\"0.06\"/><rect x=\"516.3\" y=\"14.0\" width=\"65.7\" height=\"242.0\" fill=\"#44403c\" opacity=\"0.07\"/><path d=\"M58.0 14.0L58.0 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M110.1 14.0L110.1 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M149.6 14.0L149.6 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"149.6\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">0,1</text><path d=\"M189.0 14.0L189.0 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M241.1 14.0L241.1 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M280.6 14.0L280.6 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"280.6\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">1</text><path d=\"M320.0 14.0L320.0 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M372.1 14.0L372.1 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M411.6 14.0L411.6 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"411.6\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">10</text><path d=\"M451.0 14.0L451.0 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M503.1 14.0L503.1 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M542.6 14.0L542.6 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"542.6\" y=\"272.0\" text-anchor=\"middle\" class=\"pt\">100</text><path d=\"M582.0 14.0L582.0 256.0\" stroke=\"#e2e8f0\" stroke-width=\"0.7\" fill=\"none\" /><path d=\"M58.0 256.0L582.0 256.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"260.0\" text-anchor=\"end\" class=\"pt\">0</text><path d=\"M58.0 231.8L582.0 231.8\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"235.8\" text-anchor=\"end\" class=\"pt\">10</text><path d=\"M58.0 207.6L582.0 207.6\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"211.6\" text-anchor=\"end\" class=\"pt\">20</text><path d=\"M58.0 183.4L582.0 183.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"187.4\" text-anchor=\"end\" class=\"pt\">30</text><path d=\"M58.0 159.2L582.0 159.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"163.2\" text-anchor=\"end\" class=\"pt\">40</text><path d=\"M58.0 135.0L582.0 135.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"139.0\" text-anchor=\"end\" class=\"pt\">50</text><path d=\"M58.0 110.8L582.0 110.8\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"114.8\" text-anchor=\"end\" class=\"pt\">60</text><path d=\"M58.0 86.6L582.0 86.6\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"90.6\" text-anchor=\"end\" class=\"pt\">70</text><path d=\"M58.0 62.4L582.0 62.4\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"66.4\" text-anchor=\"end\" class=\"pt\">80</text><path d=\"M58.0 38.2L582.0 38.2\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"42.2\" text-anchor=\"end\" class=\"pt\">90</text><path d=\"M58.0 14.0L582.0 14.0\" stroke=\"#e2e8f0\" stroke-width=\"1\" fill=\"none\" /><text x=\"51.0\" y=\"18.0\" text-anchor=\"end\" class=\"pt\">100</text><rect x=\"58\" y=\"14\" width=\"524\" height=\"242\" fill=\"none\" stroke=\"#334155\" stroke-width=\"1.2\"/><text x=\"320.0\" y=\"290.0\" text-anchor=\"middle\" style=\"font-weight:700\">diamètre des grains (mm)</text><text transform=\"translate(14 135) rotate(-90)\" text-anchor=\"middle\" style=\"font-weight:700\">passant cumulé (%)</text><clipPath id=\"f0-clip\"><rect x=\"58\" y=\"14\" width=\"524\" height=\"242\"/></clipPath><path d=\"M123.3 256.0L123.3 14.0\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"1\" stroke-dasharray=\"3 3\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M320.0 256.0L320.0 14.0\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"1\" stroke-dasharray=\"3 3\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M516.3 256.0L516.3 14.0\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"1\" stroke-dasharray=\"3 3\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M503.1 256.0L503.1 14.0\" fill=\"none\" stroke=\"#b45309\" stroke-width=\"1.4\" stroke-dasharray=\"6 3\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M136.9 256.0L136.9 14.0\" fill=\"none\" stroke=\"#b45309\" stroke-width=\"1.4\" stroke-dasharray=\"6 3\" stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><path d=\"M123.3 240.5L136.9 239.1L241.1 201.8L320.0 132.3L411.6 56.8L476.8 17.1L503.1 14.5L516.3 14.0\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"2.6\"  stroke-linejoin=\"round\" clip-path=\"url(#f0-clip)\"/><circle cx=\"123.3\" cy=\"240.5\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f0-clip)\"/><circle cx=\"136.9\" cy=\"239.1\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f0-clip)\"/><circle cx=\"241.1\" cy=\"201.8\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f0-clip)\"/><circle cx=\"320.0\" cy=\"132.3\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f0-clip)\"/><circle cx=\"411.6\" cy=\"56.8\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f0-clip)\"/><circle cx=\"476.8\" cy=\"17.1\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f0-clip)\"/><circle cx=\"503.1\" cy=\"14.5\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f0-clip)\"/><circle cx=\"516.3\" cy=\"14.0\" r=\"3\" fill=\"#0369a1\" clip-path=\"url(#f0-clip)\"/><text x=\"63.0\" y=\"26.5\" text-anchor=\"start\" class=\"pt halo\">limon</text><text x=\"315.0\" y=\"26.5\" text-anchor=\"end\" class=\"pt halo\">sable</text><text x=\"325.0\" y=\"26.5\" text-anchor=\"start\" class=\"pt halo\">grave</text><text x=\"521.3\" y=\"26.5\" text-anchor=\"start\" class=\"pt halo\">blocs</text><path d=\"M133.7 304.0L151.7 304.0\" stroke=\"#b45309\" stroke-width=\"2.2\" fill=\"none\" stroke-dasharray=\"6 3\"/><text x=\"157.7\" y=\"308.0\" style=\"font-size:11px;font-weight:700\">50 mm (GTR 1992)</text><path d=\"M270.4 304.0L288.4 304.0\" stroke=\"#0369a1\" stroke-width=\"2.6\" fill=\"none\" /><text x=\"294.4\" y=\"308.0\" style=\"font-size:11px;font-weight:700\">passant cumulé, matériau total</text></svg>",
+   "questions": [
+    {
+     "texte": "Tamisat à 80 µm rapporté à la fraction 0/50 mm ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 7.01403,
+     "explication": "Passant à 50 mm : 99,8 % ; 100 × 7,0 % / 99,8 % = 7,0 %.",
+     "tolerance": 0.4
+    },
+    {
+     "texte": "Tamisat à 63 µm rapporté à la fraction 0/63 mm ?",
+     "type": "nombre",
+     "unite": "%",
+     "reponse": 6.4,
+     "explication": "Passant à 63 mm : 100,0 % ; 100 × 6,4 % / 100,0 % = 6,4 %.",
+     "tolerance": 0.4
+    },
+    {
+     "texte": "Symbole au GTR 1992 ?",
+     "type": "choix",
+     "options": [
+      "B4h",
+      "B4th",
+      "B4m",
+      "B4s"
+     ],
+     "reponse": 2,
+     "explication": "Dmax > 50 mm ? non (24,3 mm) ; Tamisat à 80 µm : > 35 %, de 12 à 35 %, ≤ 12 % ? 7,01 % → classe B, B4 (tamisat 2 mm ≤ 70 %, VBS = 0,75) ; État hydrique ? m → B4m."
+    },
+    {
+     "texte": "Symbole au GTR 2024 ?",
+     "type": "choix",
+     "options": [
+      "G3h",
+      "G3s",
+      "G3m",
+      "G3th"
+     ],
+     "reponse": 2,
+     "explication": "Dmax > 63 mm ? non (24,3 mm) : sol F, I, S ou G ; Tamisat à 63 µm ≤ 15 % : fraction 0,063/2 mm > fraction 2/63 mm ? non (45 % contre 49 %) : sol graveleux G ; Fines ≤ 5 % ? Granulométrie étalée (Cu ≥ 6) ? de 5 à 15 % ; Cu = 27,7 ≥ 6 → G3 ; Insensible à l'eau (VBS, fines, CBRi) ? non : aucun critère d'insensibilité à l'eau n'est rempli ; État hydrique ? m (par wn/wOPN) → G3m."
+    }
+   ]
+  }
+ ]
+}
